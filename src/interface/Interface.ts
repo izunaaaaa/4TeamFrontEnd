@@ -33,3 +33,7 @@ export interface FormValue {
   group: number;
   is_coach: boolean;
 }
+
+export interface SidebarProps {
+  sidebar: boolean;
+}
