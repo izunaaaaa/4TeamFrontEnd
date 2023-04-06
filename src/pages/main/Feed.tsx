@@ -7,7 +7,7 @@ import { useState } from "react";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
-
+//
 function Feed() {
   const feedData = useFeed();
   const [isClickLike, setIsClickLike] = useState(false);
