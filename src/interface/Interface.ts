@@ -1,5 +1,35 @@
-export interface data {
-  id: Number;
+/**example */
+// export interface data {
+//   id: Number;
+//   name: string;
+//   content: string;
+// }
+
+export interface Feed {
+  id: number;
+  user: string;
+  group: string;
+  title: String;
+  description: String;
+  visited: Number;
+  medias: any;
+}
+
+export interface Comment {
+  id: number;
+  user: number;
+  feed: number;
+  description: string;
+}
+
+export interface FormValue {
+  Id: string;
+  password: string;
+  passwordConfirm: string;
   name: string;
-  content: string;
+  phone_number: string;
+  email: string;
+  gender: string;
+  group: number;
+  is_coach: boolean;
 }
