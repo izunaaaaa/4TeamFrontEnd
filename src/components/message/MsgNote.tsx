@@ -16,8 +16,6 @@ const MsgNote = () => {
     <div>
       <Stack direction="column" sx={{ width: 200 }} spacing={2}>
         <Item>안녕하세요</Item>
-        <Item>안녕하세요</Item>
-        <Item>안녕하세요</Item>
       </Stack>
     </div>
   );
