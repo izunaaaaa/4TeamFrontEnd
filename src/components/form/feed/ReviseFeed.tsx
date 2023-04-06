@@ -1,7 +1,7 @@
 import React from "react";
 
-const UploadFeed = () => {
+const ReviseFeed = () => {
   return <div></div>;
 };
 
-export default UploadFeed;
+export default ReviseFeed;

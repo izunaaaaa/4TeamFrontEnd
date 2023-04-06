@@ -19,6 +19,41 @@
 .signUp .signUpImg {
   width: 170px;
 }
+.signUp label {
+  line-height: 2;
+  text-align: left;
+  display: block;
+  color: black;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.signUp label::after {
+  content: "*";
+  color: red;
+}
+.signUp .genderTypeDiv {
+  display: flex;
+  flex-direction: row;
+}
+.signUp .genderTypeDiv h3 {
+  margin: 0;
+  line-height: 2;
+}
+.signUp .genderTypeDiv .genderRadio {
+  width: 20px;
+  margin: 0 10px 0 0;
+}
+.signUp input {
+  display: block;
+  box-sizing: border-box;
+  width: 60%;
+  height: 35px;
+  border-radius: 4px;
+  border: 1px solid black;
+  padding: 10px 15px;
+  margin-bottom: 1px;
+  font-size: 0.8rem;
+}
 .signUp h2 {
   margin-left: 30px;
   font-size: 1.3rem;
@@ -58,31 +93,6 @@
   justify-content: space-between;
   width: 87%;
   height: 35px;
-}
-
-.signUp label {
-  line-height: 2;
-  text-align: left;
-  display: block;
-  margin-bottom: 10px;
-  color: black;
-  font-size: 1rem;
-  font-weight: bold;
-}
-.signUp label::after {
-  content: "*";
-  color: red;
-}
-.signUp input {
-  display: block;
-  box-sizing: border-box;
-  width: 60%;
-  height: 35px;
-  border-radius: 4px;
-  border: 1px solid black;
-  padding: 10px 15px;
-  margin-bottom: 1px;
-  font-size: 0.8rem;
 }
 
 select {
