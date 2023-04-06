@@ -1,0 +1,24 @@
+.feedDiv {
+  background-color: beige;
+  padding: 20px;
+  border-radius: 20px;
+  margin: 20px;
+  width: 60%;
+}
+.feedDiv .feedUser {
+  margin: 0 0 20px 0;
+}
+.feedDiv img {
+  width: 100%;
+}
+.feedDiv button {
+  margin: 3px;
+  background-color: transparent;
+  border: 0;
+}
+.feedDiv button svg {
+  pointer-events: none;
+}
+.feedDiv button path {
+  pointer-events: none;
+}/*# sourceMappingURL=Feed.module.css.map */
