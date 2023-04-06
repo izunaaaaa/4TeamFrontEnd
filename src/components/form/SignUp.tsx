@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormValue } from "../../interface/Interface";
 
+const genderType = ["남", "여"];
+
 const SignUp = () => {
   const {
     register,
@@ -52,7 +54,9 @@ const SignUp = () => {
               })}
             />
           </div>
-          <div className={styles.errorMessage}></div>
+          <div className={styles.errorMessage}>
+            {errors.Id && <p>{errors.Id.message}</p>}
+          </div>
 
           <div className={styles.typeDiv}>
             <label>비밀번호</label>
@@ -180,7 +184,23 @@ const SignUp = () => {
 
           <div className={styles.typeDiv}>
             <label>성별</label>
-            <input type="checkbox" />
+            {genderType.map((gender) => (
+              <div className={styles.genderTypeDiv}>
+                <input
+                  className={styles.genderRadio}
+                  key={Math.random()}
+                  type="radio"
+                  value={gender}
+                  {...register("gender", {
+                    required: "필수 정보입니다.",
+                  })}
+                />
+                <h3 key={Math.random()}>{gender}</h3>
+              </div>
+            ))}
+          </div>
+          <div className={styles.errorMessage}>
+            {errors?.gender && <p>{errors.gender.message}</p>}
           </div>
 
           <div className={styles.buttonDiv}>
