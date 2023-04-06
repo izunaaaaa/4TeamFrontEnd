@@ -6,8 +6,8 @@ import Routing from "./Routing";
 function App() {
   const newData: data = {
     id: 1,
-    name: "fwe",
-    content: "few",
+    name: "ex",
+    content: "ex",
   };
 
   console.log(newData);
