@@ -39,3 +39,7 @@ export interface Message {
   content: string;
   date: Date;
 }
+
+export interface SidebarProps {
+  sidebar: boolean;
+}
