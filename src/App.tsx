@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { data } from "./interface/Interface";
 import Routing from "./Routing";
 
