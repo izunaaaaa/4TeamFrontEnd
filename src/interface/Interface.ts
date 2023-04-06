@@ -34,6 +34,12 @@ export interface FormValue {
   is_coach: boolean;
 }
 
+export interface Message {
+  title: string;
+  content: string;
+  date: Date;
+}
+
 export interface SidebarProps {
   sidebar: boolean;
 }
