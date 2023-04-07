@@ -156,7 +156,7 @@ const SignUp = () => {
             />
           </div>
           <div className={styles.errorMessage}>
-            {errors?.email && <p>{errors.email.message}</p>}
+            {errors?.email && <p>{errors.phone_number?.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
@@ -185,7 +185,7 @@ const SignUp = () => {
           <div className={styles.typeDiv}>
             <label>성별</label>
             {genderType.map((gender) => (
-              <div className={styles.genderTypeDiv}>
+              <div key={gender} className={styles.genderTypeDiv}>
                 <input
                   className={styles.genderRadio}
                   key={Math.random()}
