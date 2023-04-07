@@ -31,7 +31,10 @@ function Main(): ReactElement {
           <div className={styles.nav_bar}>
             <h1>CurB</h1>
             <div className={styles.myFrofile}>
-              <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
+              <img
+                src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"
+                alt=""
+              ></img>
             </div>
           </div>
           <Sidebar sidebar={true} />

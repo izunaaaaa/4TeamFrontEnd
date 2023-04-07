@@ -4,6 +4,7 @@ import App from "./App";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const client = new QueryClient();
 
@@ -13,11 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <RecoilRoot>
     <QueryClientProvider client={client}>
-      <App />
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </QueryClientProvider>
   </RecoilRoot>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
