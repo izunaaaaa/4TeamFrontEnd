@@ -1,4 +1,5 @@
 import { Feed } from "../../../interface/Interface";
+import axios from "axios";
 
 export function useFeed(): Feed[] {
   const fallBack = [];
