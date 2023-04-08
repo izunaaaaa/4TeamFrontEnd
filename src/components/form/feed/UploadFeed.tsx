@@ -1,4 +1,11 @@
-import { Avatar } from "@chakra-ui/react";
+import {
+  Avatar,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   faBackspace,
   faCloudArrowUp,
@@ -8,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import CropUploadImg from "./CropUploadImg";
 import styles from "./UploadFeed.module.scss";
 
 const UploadFeed = () => {
@@ -15,17 +23,19 @@ const UploadFeed = () => {
   const [previewImg, setPreviewImg] = useState();
   const navigate = useNavigate();
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   /**썸네일 보기 */
   const changeImg = async (e: any) => {
     const reader: any = new FileReader();
     const file = e.target.files[0];
-    console.log(e.target.files);
 
     reader.readAsDataURL(file);
 
     reader.onloadend = () => {
       setPreviewImg(reader.result);
     };
+    onOpen();
   };
 
   /**제출하기 */
@@ -35,6 +45,13 @@ const UploadFeed = () => {
 
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
+        <ModalOverlay />
+        <ModalContent>
+          <CropUploadImg previewImg={previewImg} data="fqwe" />
+        </ModalContent>
+      </Modal>
+
       <form onSubmit={handleSubmit(submitHandler)} className={styles.postForm}>
         <div className={styles.postFormHeader}>
           <button onClick={() => navigate("/main")}>
