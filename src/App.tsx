@@ -1,9 +1,11 @@
 import React from "react";
 import Routing from "./Routing";
+import GlobalStyle from "./GlobalStyle";
 
 function App() {
   return (
     <>
+      <GlobalStyle />
       <Routing />
     </>
   );

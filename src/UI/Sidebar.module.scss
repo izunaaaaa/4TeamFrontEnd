@@ -5,14 +5,15 @@
   left: -100%;
   height: 100%;
   transition: 850ms;
+  z-index: 100;
 }
 
 @media (max-width: 768px) {
   .nav_menu {
-    height: 100vh;
+    height: 100%;
   }
   .navmenu_items {
-    height: 100vh;
+    height: 100%;
   }
 }
 @media (max-width: 376px) {
@@ -65,5 +66,4 @@
   padding: 12px;
   border-right: 1px solid rgb(219, 219, 219);
   width: 15vw;
-  margin-top: 2rem;
 }
