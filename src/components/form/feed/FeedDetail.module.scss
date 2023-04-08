@@ -1,0 +1,21 @@
+.feedDetailDiv {
+  padding: 25px 0px 0px 20px;
+
+  .nickName {
+    display: flex;
+  }
+  p {
+    font-size: 1rem;
+    margin-left: 10px;
+  }
+  .commentInput {
+    border-top: 1px solid grey;
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+    textarea {
+      width: 80%;
+      resize: none;
+    }
+  }
+}

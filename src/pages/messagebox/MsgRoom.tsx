@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MsgComment from "../../components/message/MsgComment";
 import { MockCont } from "../../MsgMock";
 import { mockMsgCont } from "../../MsgMock";
-import { Box, Button } from "@mui/material";
+import { Box, Button } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import MsgModal from "../../components/message/MsgModal";

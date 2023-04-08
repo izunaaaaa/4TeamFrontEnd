@@ -1,14 +1,7 @@
 import React from "react";
-import { Stack, Paper, Typography, Box, Avatar } from "@mui/material";
+import { Stack, Text, Box, Avatar } from "@chakra-ui/react";
 import { styled } from "@mui/material/styles";
 import { MockCont } from "../../MsgMock";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  color: theme.palette.text.secondary,
-}));
 
 export default function MsgComment(props: MockCont) {
   return (
@@ -16,9 +9,9 @@ export default function MsgComment(props: MockCont) {
       {" "}
       <Stack>
         {" "}
-        <Typography>{props.time}</Typography>
+        <Text>{props.time}</Text>
       </Stack>
-      <Item
+      <Box
         sx={{
           width: "15rem",
           textAlign: "end",
@@ -29,9 +22,9 @@ export default function MsgComment(props: MockCont) {
         {" "}
         <Stack spacing={2} direction="row">
           <Avatar>{props.user.avatar}</Avatar>
-          <Typography>{props.content}</Typography>
+          <Text>{props.content}</Text>
         </Stack>
-      </Item>
+      </Box>
     </>
   );
 }
