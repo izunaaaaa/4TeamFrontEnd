@@ -37,14 +37,16 @@ function Header(): ReactElement {
 
           <div className={styles.nav_bar}>
             <h1>CurA</h1>
-            <div className={styles.myFrofile} onClick={toggleDropdown}>
-              <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
-            </div>
-            {showDropdown && (
-              <div className={styles.dropList}>
-                <DropDown />
+            <div className={styles.fofile_box}>
+              <div className={styles.myFrofile} onClick={toggleDropdown}>
+                <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
               </div>
-            )}
+              {showDropdown && (
+                <div className={styles.dropList}>
+                  <DropDown />
+                </div>
+              )}
+            </div>
           </div>
 
           <Sidebar sidebar={true} />

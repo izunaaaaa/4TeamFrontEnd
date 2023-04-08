@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
-
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import styles from "./DropDown.module.scss";
 interface ListItem {
   id: number;
   title: string;
@@ -13,17 +14,17 @@ const list: ListItem[] = [
 ];
 
 function DropDown() {
-  const outside = useRef();
+  const outside = useRef<any>();
 
   const handleOnClick = () => {};
   return (
     <>
-      <ul className="dd-list">
+      <ul className={styles.drop_list}>
         {list.map((item) => (
-          <li className="dd-list-item" key={item.id}>
-            <button type="button" onClick={() => handleOnClick()}>
+          <li className={styles.drop_listItem} key={item.id}>
+            <Link to={"/"}>
               <span>{item.title}</span>
-            </button>
+            </Link>
           </li>
         ))}
       </ul>
