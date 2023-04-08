@@ -48,8 +48,6 @@ const CropUploadImg = (props: any) => {
             defaultValue={0}
             onChange={(val) => {
               setZoom(val);
-
-              console.log(val);
             }}
             max={5}
             min={1}
