@@ -1,17 +1,16 @@
 import React from "react";
-import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
+import { List, ListItem, Divider } from "@chakra-ui/react";
 import { Note } from "../../MsgMock";
 
 const MsgList = (props: Note) => {
   return (
     <div>
       {" "}
-      <ListItem alignItems="flex-start">
-        <ListItemText primary={props.title} secondary={props.content} />
-      </ListItem>
-      <Divider variant="inset" component="li" />
+      <List alignItems="flex-start">
+        <ListItem>{props.title}</ListItem>
+        <ListItem>{props.content}</ListItem>
+      </List>
+      <Divider />
     </div>
   );
 };

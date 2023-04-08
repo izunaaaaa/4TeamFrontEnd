@@ -1,12 +1,12 @@
 import React from "react";
-import List from "@mui/material/List";
+import { Box } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
 import { msgMock } from "../../MsgMock";
 import { Note } from "../../MsgMock";
 
 function Mailbox() {
   return (
-    <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+    <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
       {msgMock?.length
         ? msgMock?.map((item: Note, idx) => {
             return (
@@ -16,7 +16,7 @@ function Mailbox() {
             );
           })
         : "받은 쪽지가 없습니다."}
-    </List>
+    </Box>
   );
 }
 

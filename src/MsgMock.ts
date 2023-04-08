@@ -37,3 +37,110 @@ export const msgMock: Note[] = [
     date: new Date("2023-03-31"),
   },
 ];
+
+export interface MockUser {
+  name: string;
+  avatar: string;
+  isMe: boolean;
+}
+
+export interface MockCont {
+  id: number;
+  user: MockUser;
+  content: string;
+  time: string;
+}
+
+export const mockMsgCont: MockCont[] = [
+  {
+    id: 1,
+    user: {
+      name: "Alice",
+      avatar: "https://picsum.photos/id/237/200/300",
+      isMe: false,
+    },
+    content: "Hello!",
+    time: "10:00 AM",
+  },
+  {
+    id: 2,
+    user: {
+      name: "Bob",
+      avatar: "https://picsum.photos/id/238/200/300",
+      isMe: true,
+    },
+    content: "Hi, Alice!",
+    time: "10:01 AM",
+  },
+  {
+    id: 3,
+    user: {
+      name: "Alice",
+      avatar: "https://picsum.photos/id/237/200/300",
+      isMe: false,
+    },
+    content: "How are you?",
+    time: "10:02 AM",
+  },
+  {
+    id: 4,
+    user: {
+      name: "Bob",
+      avatar: "https://picsum.photos/id/238/200/300",
+      isMe: true,
+    },
+    content: "I'm good, thanks! How about you?",
+    time: "10:03 AM",
+  },
+  {
+    id: 5,
+    user: {
+      name: "Alice",
+      avatar: "https://picsum.photos/id/237/200/300",
+      isMe: false,
+    },
+    content: "I'm doing well too, thanks!",
+    time: "10:04 AM",
+  },
+
+  {
+    id: 2,
+    user: {
+      name: "Bob",
+      avatar: "https://picsum.photos/id/238/200/300",
+      isMe: true,
+    },
+    content: "Hi, Alice!",
+    time: "10:01 AM",
+  },
+  {
+    id: 3,
+    user: {
+      name: "Alice",
+      avatar: "https://picsum.photos/id/237/200/300",
+      isMe: false,
+    },
+    content: "How are you?",
+    time: "10:02 AM",
+  },
+  {
+    id: 4,
+    user: {
+      name: "Bob",
+      avatar: "https://picsum.photos/id/238/200/300",
+      isMe: true,
+    },
+    content: "I'm good, thanks! How about you?",
+    time: "10:03 AM",
+  },
+  {
+    id: 5,
+    user: {
+      name: "Alice",
+      avatar: "https://picsum.photos/id/237/200/300",
+      isMe: false,
+    },
+    content: "I'm doing well too, thanks!",
+    time: "10:04 AM",
+  },
+];
