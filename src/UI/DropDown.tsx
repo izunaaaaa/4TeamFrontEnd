@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./DropDown.module.scss";
+
 interface ListItem {
   id: number;
   title: string;
+}
+
+interface DropDownProps {
+  dropDown: boolean;
+  setDropDown: (dropDown: boolean) => void;
 }
 
 const list: ListItem[] = [
@@ -13,13 +19,27 @@ const list: ListItem[] = [
   { id: 4, title: "로그인" },
 ];
 
-function DropDown() {
-  const outside = useRef<any>();
+function DropDown({ dropDown, setDropDown }: DropDownProps) {
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
 
-  const handleOnClick = () => {};
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setDropDown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <>
-      <ul className={styles.drop_list}>
+      <ul ref={dropdownRef} className={styles.drop_list}>
         {list.map((item) => (
           <li className={styles.drop_listItem} key={item.id}>
             <Link to={"/"}>
