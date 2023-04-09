@@ -38,3 +38,7 @@ export interface Message {
 export interface SidebarProps {
   sidebar: boolean;
 }
+
+export interface LayoutProps {
+  children: React.ReactNode;
+}
