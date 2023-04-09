@@ -56,10 +56,10 @@ function Feed() {
     <>
       {feedData?.map((data, index) => (
         <div key={data.id} className={styles.feedDiv}>
-          <h2 className={styles.feedUser}>
+          <div className={styles.feedUser}>
             <Avatar name={data.user} size="xs" />
-            {data.user}
-          </h2>
+            <h1>{data.user}</h1>
+          </div>
           <div className={styles.feedMenu}>
             <button
               className={styles.dropDownBtn}
