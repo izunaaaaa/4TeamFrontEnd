@@ -41,6 +41,7 @@ const UploadFeed = () => {
   /**제출하기 */
   const submitHandler = (data: any) => {
     console.log(data);
+    return;
   };
 
   return (
