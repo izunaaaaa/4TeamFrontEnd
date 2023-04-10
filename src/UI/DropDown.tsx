@@ -1,16 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./DropDown.module.scss";
-
-interface ListItem {
-  id: number;
-  title: string;
-}
-
-interface DropDownProps {
-  dropDown: boolean;
-  setDropDown: (dropDown: boolean) => void;
-}
+import { ListItem, DropDownProps } from "../interface/Interface";
 
 const list: ListItem[] = [
   { id: 1, title: "마이페이지" },

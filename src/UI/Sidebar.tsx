@@ -40,7 +40,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       setSidebar(false);
     }
   };
-
+  // 조건  클릭 이벤트의 대상을 포함하고 있지 않고, 클릭 이벤트 대상이 sidebarRef.current 요소 내부에 있는지 확인하는 함수
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -49,6 +49,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   }, []);
   return (
     <>
+      {/* handleClickOutside 함수에서 클릭 대상과 사이드바 요소 간의 포함 관계를 비교하여 외부 클릭을 감지 */}
       <nav
         ref={sidebarRef}
         className={
