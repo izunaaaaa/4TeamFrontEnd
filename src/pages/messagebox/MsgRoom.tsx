@@ -1,43 +1,54 @@
 import React, { useState } from "react";
-import MsgComment from "../../components/message/MsgComment";
 import { MockCont } from "../../MsgMock";
 import { mockMsgCont } from "../../MsgMock";
-import { Box, Button } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  Textarea,
+} from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
-import MsgModal from "../../components/message/MsgModal";
+import MsgDetail from "../../components/message/MsgComment";
 
 export default function MsgRoom() {
-  const [isOpenMsg, setIsOpenMsg] = useState(false);
-  const handleOpenMsg = () => {
-    setIsOpenMsg(true);
-    console.log("!!!!");
-  };
-
-  const hanleCloseMsg = () => {
-    setIsOpenMsg(false);
-    console.log("????");
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       {mockMsgCont?.map((msg: MockCont, idx) => {
         return (
-          <Box
-            key={idx}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <MsgComment {...msg} />
-          </Box>
+          <Flex key={idx} justify={"space-around"}>
+            <MsgDetail {...msg} />
+          </Flex>
         );
       })}
-      <Button onClick={handleOpenMsg}>
+      <Button onClick={onOpen}>
         <FontAwesomeIcon icon={faPaperPlane} size="2x" />
-        <MsgModal />
       </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>쪽지</ModalHeader>
+          <ModalBody>
+            <Textarea placeholder="보내실 내용을 입력해주세요" />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Send
+            </Button>
+            <Button color="black" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }
