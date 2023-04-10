@@ -1,9 +1,8 @@
 import React from "react";
 import { Stack, Text, Box, Avatar } from "@chakra-ui/react";
-import { styled } from "@mui/material/styles";
 import { MockCont } from "../../MsgMock";
 
-export default function MsgComment(props: MockCont) {
+export default function MsgDetail(props: MockCont) {
   return (
     <>
       {" "}
@@ -14,7 +13,6 @@ export default function MsgComment(props: MockCont) {
       <Box
         sx={{
           width: "15rem",
-          textAlign: "end",
           my: 1,
           p: 2,
         }}

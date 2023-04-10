@@ -5,6 +5,7 @@ import { msgMock } from "../../MsgMock";
 import { Note } from "../../MsgMock";
 
 function Mailbox() {
+  //받은 쪽지함
   return (
     <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
       {msgMock?.length
