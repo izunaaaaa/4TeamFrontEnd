@@ -5,11 +5,10 @@ import {
   SliderTrack,
 } from "@chakra-ui/react";
 import { Box, DialogActions, DialogContent } from "@mui/material";
-
 import React, { useCallback, useState } from "react";
-import Cropper from "react-easy-crop";
 import styles from "./CropUploadImg.module.scss";
 import { croppedImg } from "./hook/GetCroppedImg";
+import Cropper from "react-easy-crop";
 
 const CropUploadImg = (props: any) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });

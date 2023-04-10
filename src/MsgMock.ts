@@ -56,7 +56,7 @@ export const mockMsgCont: MockCont[] = [
     id: 1,
     user: {
       name: "Alice",
-      avatar: "https://picsum.photos/id/237/200/300",
+      avatar: "",
       isMe: false,
     },
     content: "Hello!",
@@ -66,7 +66,7 @@ export const mockMsgCont: MockCont[] = [
     id: 2,
     user: {
       name: "Bob",
-      avatar: "https://picsum.photos/id/238/200/300",
+      avatar: "",
       isMe: true,
     },
     content: "Hi, Alice!",
@@ -76,7 +76,7 @@ export const mockMsgCont: MockCont[] = [
     id: 3,
     user: {
       name: "Alice",
-      avatar: "https://picsum.photos/id/237/200/300",
+      avatar: "",
       isMe: false,
     },
     content: "How are you?",
@@ -86,7 +86,7 @@ export const mockMsgCont: MockCont[] = [
     id: 4,
     user: {
       name: "Bob",
-      avatar: "https://picsum.photos/id/238/200/300",
+      avatar: "",
       isMe: true,
     },
     content: "I'm good, thanks! How about you?",
@@ -96,7 +96,7 @@ export const mockMsgCont: MockCont[] = [
     id: 5,
     user: {
       name: "Alice",
-      avatar: "https://picsum.photos/id/237/200/300",
+      avatar: "",
       isMe: false,
     },
     content: "I'm doing well too, thanks!",
@@ -107,7 +107,7 @@ export const mockMsgCont: MockCont[] = [
     id: 2,
     user: {
       name: "Bob",
-      avatar: "https://picsum.photos/id/238/200/300",
+      avatar: "",
       isMe: true,
     },
     content: "Hi, Alice!",
@@ -117,7 +117,7 @@ export const mockMsgCont: MockCont[] = [
     id: 3,
     user: {
       name: "Alice",
-      avatar: "https://picsum.photos/id/237/200/300",
+      avatar: "",
       isMe: false,
     },
     content: "How are you?",
@@ -127,7 +127,7 @@ export const mockMsgCont: MockCont[] = [
     id: 4,
     user: {
       name: "Bob",
-      avatar: "https://picsum.photos/id/238/200/300",
+      avatar: "",
       isMe: true,
     },
     content: "I'm good, thanks! How about you?",
@@ -137,7 +137,7 @@ export const mockMsgCont: MockCont[] = [
     id: 5,
     user: {
       name: "Alice",
-      avatar: "https://picsum.photos/id/237/200/300",
+      avatar: "",
       isMe: false,
     },
     content: "I'm doing well too, thanks!",
