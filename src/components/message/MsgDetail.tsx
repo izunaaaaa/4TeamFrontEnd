@@ -1,0 +1,28 @@
+import React from "react";
+import { Stack, Text, Box, Avatar } from "@chakra-ui/react";
+import { MockCont } from "../../MsgMock";
+
+export default function MsgDetail(props: MockCont) {
+  return (
+    <>
+      {" "}
+      <Stack>
+        {" "}
+        <Text>{props.time}</Text>
+      </Stack>
+      <Box
+        sx={{
+          width: "15rem",
+          my: 1,
+          p: 2,
+        }}
+      >
+        {" "}
+        <Stack spacing={2} direction="row">
+          <Avatar>{props.user.avatar}</Avatar>
+          <Text>{props.content}</Text>
+        </Stack>
+      </Box>
+    </>
+  );
+}

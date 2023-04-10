@@ -1,10 +1,3 @@
-/**example */
-// export interface data {
-//   id: Number;
-//   name: string;
-//   content: string;
-// }
-
 export interface Feed {
   id: number;
   user: string;
@@ -32,4 +25,31 @@ export interface FormValue {
   gender: string;
   group: number;
   is_coach: boolean;
+}
+
+export interface UplaodFeedValue {}
+
+export interface Message {
+  title: string;
+  content: string;
+  date: Date;
+}
+
+export interface SidebarProps {
+  sidebar: boolean;
+  setSidebar: (dropDown: boolean) => void;
+}
+
+export interface ListItem {
+  id: number;
+  title: string;
+}
+
+export interface DropDownProps {
+  dropDown: boolean;
+  setDropDown: (dropDown: boolean) => void;
+}
+
+export interface LayoutProps {
+  children: React.ReactNode;
 }

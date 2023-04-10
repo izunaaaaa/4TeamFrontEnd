@@ -4,7 +4,6 @@ import Feed from "./Feed";
 function Main(): ReactElement {
   return (
     <>
-      <div>Main</div>
       <Feed />
     </>
   );

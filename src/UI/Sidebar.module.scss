@@ -1,0 +1,80 @@
+.nav_menu {
+  width: 15rem;
+  position: fixed;
+  top: 5em;
+  left: -100%;
+  height: 100%;
+  transition: 850ms;
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .nav_menu {
+    top: 8.5em;
+  }
+}
+@media (max-width: 376px) {
+  .nav_menu {
+    top: 8.5em;
+  }
+}
+
+// @media screen and (max-width: 991px) {
+
+// }
+.nav_menu.active {
+  left: 0;
+  transition: 350ms;
+}
+.nav_text {
+  padding: 8px 0px 8px 16px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  span {
+    text-decoration: none;
+    color: #000;
+  }
+}
+.nav_text:hover {
+  background: #000;
+  transition: 150ms;
+  //border-radius: 8px;
+  span {
+    color: #fff;
+  }
+}
+.navmenu_items {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  list-style: none;
+  padding: 12px;
+  border-right: 1px solid rgb(219, 219, 219);
+  //width: 15vw;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

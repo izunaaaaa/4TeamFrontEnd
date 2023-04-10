@@ -17,6 +17,42 @@
   .signUpImg {
     width: 170px;
   }
+  label {
+    line-height: 2;
+    text-align: left;
+    display: block;
+    color: black;
+    font-size: 1rem;
+    font-weight: bold;
+    &::after {
+      content: "*";
+      color: red;
+    }
+  }
+  .genderTypeDiv {
+    display: flex;
+    flex-direction: row;
+    h3 {
+      margin: 0;
+      line-height: 2;
+    }
+    .genderRadio {
+      width: 20px;
+      margin: 0 10px 0 0;
+    }
+  }
+
+  input {
+    display: block;
+    box-sizing: border-box;
+    width: 60%;
+    height: 35px;
+    border-radius: 4px;
+    border: 1px solid black;
+    padding: 10px 15px;
+    margin-bottom: 1px;
+    font-size: 0.8rem;
+  }
   h2 {
     margin-left: 30px;
     font-size: 1.3rem;
@@ -60,34 +96,6 @@
   height: 35px;
 }
 
-.signUp {
-  label {
-    line-height: 2;
-    text-align: left;
-    display: block;
-    margin-bottom: 10px;
-    color: black;
-    font-size: 1rem;
-    font-weight: bold;
-    &::after {
-      content: "*";
-      color: red;
-    }
-  }
-
-  input {
-    display: block;
-    box-sizing: border-box;
-    width: 60%;
-    height: 35px;
-    border-radius: 4px;
-    border: 1px solid black;
-    padding: 10px 15px;
-    margin-bottom: 1px;
-    font-size: 0.8rem;
-  }
-}
-
 select {
   width: 60%;
   font-size: 0.4rem;
@@ -102,10 +110,10 @@ select {
     &:nth-child(1) {
       background-color: #a7a8b1;
     }
-    background-color: #4856ff;
+    background-color: rgb(255, 64, 76);
     color: white;
     border: 0px;
-    margin: 70px 20px 0 10px;
+    margin: 10px 20px 0 10px;
     border-radius: 30px;
     width: 150px;
     height: 50px;
