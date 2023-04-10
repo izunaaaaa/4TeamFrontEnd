@@ -1,6 +1,7 @@
 import React from "react";
 import { Stack, Text, Box, Avatar } from "@chakra-ui/react";
 import { MockCont } from "../../MsgMock";
+import { Card, Checkbox } from "@chakra-ui/react";
 
 export default function MsgDetail(props: MockCont) {
   return (
@@ -8,21 +9,26 @@ export default function MsgDetail(props: MockCont) {
       {" "}
       <Stack>
         {" "}
-        <Text>{props.time}</Text>
+        <Text mt={"3rem"}>{props.time}</Text>
       </Stack>
-      <Box
+      <Card
         sx={{
-          width: "15rem",
-          my: 1,
-          p: 2,
+          width: "22rem",
+          my: 4,
+          p: 5,
+          pb: 10,
+          // border: "1px solid red",
+          borderRadius: "5%",
         }}
       >
         {" "}
         <Stack spacing={2} direction="row">
-          <Avatar>{props.user.avatar}</Avatar>
+          <Checkbox size="sm" colorScheme="blue" mr={3} />
+
+          <Avatar mr={0}>{props.user.avatar}</Avatar>
           <Text>{props.content}</Text>
         </Stack>
-      </Box>
+      </Card>
     </>
   );
 }
