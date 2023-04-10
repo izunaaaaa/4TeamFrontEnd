@@ -1,3 +1,5 @@
+import { RefObject } from "react";
+
 export interface Feed {
   id: number;
   user: string;
@@ -51,10 +53,16 @@ export interface ListItem {
   title: string;
 }
 
-export interface DropDownProps {
-  dropDown: boolean;
-  setDropDown: (dropDown: boolean) => void;
-}
+// export interface DropDownProps {
+//   dropDown: boolean;
+//   setDropDown: (dropDown: boolean) => void;
+//   handleClickOutside: (event: MouseEvent) => void;
+// }
+// export interface SidebarProps {
+//   sidebarRef: RefObject<HTMLDivElement>;
+//   sidebar: boolean;
+//   setSidebar: (sidebar: boolean) => void;
+// }
 
 export interface LayoutProps {
   children: React.ReactNode;
