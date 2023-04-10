@@ -4,3 +4,10 @@ path {
 svg {
   pointer-events: none;
 }
+
+html,
+body,
+#app,
+#app > div {
+  height: 100%;
+}
