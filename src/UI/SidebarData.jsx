@@ -1,10 +1,10 @@
 export const SidebarData = [
   {
-    title: "test1",
+    title: "주말 스터디",
     path: "/",
   },
   {
-    title: "test2",
+    title: "과제 제출",
     path: "/",
   },
 ];

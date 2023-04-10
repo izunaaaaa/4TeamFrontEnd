@@ -5,10 +5,13 @@ import styles from "./Header.module.scss";
 import DropDown from "./DropDown";
 import Sidebar from "./Sidebar";
 
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 function Header(): ReactElement {
   const [mediaWidth, setMediaWidth] = useState<number>(window.innerWidth);
   const [sidebar, setSidebar] = useState<boolean>(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [dropDown, setDropDown] = useState<boolean>(false);
 
   useEffect(() => {
     // 창 크기가 조절될 때마다 mediaWidth 상태를 업데이트
@@ -24,48 +27,80 @@ function Header(): ReactElement {
   }, []);
 
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
+    setDropDown(!dropDown);
   };
 
   return (
     <>
       {mediaWidth > 768 ? (
         <>
-          {/* <div className={styles.logo}>
-            <h1>CurA</h1>
-          </div> */}
-
           <div className={styles.nav_bar}>
-            <h1>CurA</h1>
-            <div className={styles.fofile_box}>
-              <div className={styles.myFrofile} onClick={toggleDropdown}>
-                <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
+            <h1>CurB</h1>
+            <div className={styles.rightWrapper}>
+              <div className={styles.searchWrapper}>
+                <input
+                  className={styles.searchInput}
+                  type="text"
+                  placeholder="Search text"
+                />
+                <FontAwesomeIcon
+                  className={styles.searchIcon}
+                  icon={faMagnifyingGlass}
+                />
               </div>
-              {showDropdown && (
-                <div className={styles.dropList}>
-                  <DropDown />
+              <div className={styles.fofile_box}>
+                <div className={styles.myFrofile} onClick={toggleDropdown}>
+                  <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
                 </div>
-              )}
+                {dropDown && (
+                  <div className={styles.dropList}>
+                    <DropDown dropDown={dropDown} setDropDown={setDropDown} />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          <Sidebar sidebar={true} />
-          <div className={styles.main}></div>
+          <Sidebar sidebar={true} setSidebar={setSidebar} />
         </>
       ) : (
         <>
-          <div className={styles.nav_bar}>
-            <div className={styles.sidebar_btn}>
-              <CgMenuLeft onClick={() => setSidebar(!sidebar)} />
+          <div className={styles.nav_barMobile}>
+            <div className={styles.sidebar_top}>
+              <div className={styles.sidebar_btn}>
+                <CgMenuLeft onClick={() => setSidebar(!sidebar)} />
+              </div>
+              <h1>CurB</h1>
+              <div className={styles.fofile_box}>
+                <div className={styles.myFrofile} onClick={toggleDropdown}>
+                  <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
+                </div>
+                {dropDown && (
+                  <div className={styles.dropList}>
+                    <DropDown dropDown={dropDown} setDropDown={setDropDown} />
+                  </div>
+                )}
+              </div>
             </div>
-            <h1>CurB</h1>
-            <div className={styles.myFrofile}>
-              <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
+            <div className={styles.sidebar_bottom}>
+              <div className={styles.searchWrapper_mobile}>
+                <input
+                  className={styles.searchInput}
+                  type="text"
+                  placeholder="Search text"
+                />
+                <FontAwesomeIcon
+                  className={styles.searchIcon}
+                  icon={faMagnifyingGlass}
+                />
+              </div>
             </div>
           </div>
-          <div className={sidebar ? "nav_menu active" : "nav_menu"}>
-            <Sidebar sidebar={sidebar} />
-          </div>
+          {sidebar && (
+            <div className={sidebar ? "nav_menu active" : "nav_menu"}>
+              <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
+            </div>
+          )}
         </>
       )}
     </>

@@ -10,13 +10,13 @@
 
 @media (max-width: 768px) {
   .nav_menu {
-    height: 100%;
-  }
-  .navmenu_items {
-    height: 100%;
+    top: 8.5em;
   }
 }
 @media (max-width: 376px) {
+  .nav_menu {
+    top: 8.5em;
+  }
 }
 
 // @media screen and (max-width: 991px) {
@@ -34,17 +34,16 @@
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
-  a {
+  span {
     text-decoration: none;
     color: #000;
   }
 }
-
 .nav_text:hover {
   background: #000;
   transition: 150ms;
   //border-radius: 8px;
-  a {
+  span {
     color: #fff;
   }
 }
@@ -56,4 +55,26 @@
   padding: 12px;
   border-right: 1px solid rgb(219, 219, 219);
   //width: 15vw;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
