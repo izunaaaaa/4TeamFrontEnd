@@ -62,9 +62,8 @@ export function useFeed(): Feed[] {
   // ];
 
   const fallBack: [] = [];
-  const { data: feedData = fallBack } = useQuery(Querykey.feedData, getFeeds, {
-    onError: () => console.log("fewa"),
-  });
+
+  const { data: feedData = fallBack } = useQuery(Querykey.feedData, getFeeds);
 
   return feedData;
 }
