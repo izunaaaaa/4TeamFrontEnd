@@ -40,6 +40,16 @@ export interface SidebarProps {
   setSidebar: (dropDown: boolean) => void;
 }
 
+export interface ListItem {
+  id: number;
+  title: string;
+}
+
+export interface DropDownProps {
+  dropDown: boolean;
+  setDropDown: (dropDown: boolean) => void;
+}
+
 export interface LayoutProps {
   children: React.ReactNode;
 }
