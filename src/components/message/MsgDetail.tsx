@@ -13,7 +13,6 @@ export default function MsgDetail(props: MockCont) {
       <Box
         sx={{
           width: "15rem",
-          textAlign: "end",
           my: 1,
           p: 2,
         }}
