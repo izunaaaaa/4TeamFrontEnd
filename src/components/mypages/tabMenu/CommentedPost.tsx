@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import styles from './MyPage.module.scss';
 export default function CommentedPost() {
    type Post = {
       id: number;
@@ -14,41 +14,5 @@ export default function CommentedPost() {
       { id: 2, title: '두 번째 ', date: '2023-03-02', views: 22 },
       { id: 3, title: '세 번째 ', date: '2023-03-03', views: 16 },
    ];
-   return (
-      <>
-         {/* api
-      1. 좋아요 수,
-      2. 조회 수
-      
-      */}
-         <>
-            <div>
-               <table>
-                  <thead>
-                     <tr>
-                        <th>선택</th>
-                        <th>제목</th>
-                        <th>작성일</th>
-                        <th>조회수</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {posts.map(post => (
-                        <tr key={post.id}>
-                           <td>
-                              <input type='checkbox' />
-                           </td>
-                           <td>
-                              <Link to={`/posts/${post.id}`}>{post.title}</Link>
-                           </td>
-                           <td>{post.date}</td>
-                           <td>{post.views}</td>
-                        </tr>
-                     ))}
-                  </tbody>
-               </table>
-            </div>
-         </>
-      </>
-   );
+   return <></>;
 }
