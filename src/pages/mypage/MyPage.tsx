@@ -26,13 +26,17 @@ export default function MyPage() {
          <LikedPost />
       ) : activeTab === 'mydelete' ? (
          <DeletedPost />
+      ) : activeTab === 'profiles' ? (
+         <Profiles />
       ) : null;
 
    return (
       <>
          <div className={styles.container}>
             <div className={styles.user}>
-               <Profiles />
+               <Link to='/mypage/profiles' onClick={() => handleTab('written')} className={activeTab === 'written' ? styles.active : ''}>
+                  <p>내정보</p>
+               </Link>
             </div>
 
             <div className={styles.tabMenu}>
