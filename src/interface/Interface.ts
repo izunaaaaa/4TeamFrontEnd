@@ -59,3 +59,23 @@ export interface DropDownProps {
 export interface LayoutProps {
   children: React.ReactNode;
 }
+
+export type Note = {
+  id: number;
+  title: string;
+  content: string;
+  date: Date;
+};
+
+export interface MockUser {
+  name: string;
+  avatar: string;
+  isMe: boolean;
+}
+
+export interface MockCont {
+  id: number;
+  user: MockUser;
+  content: string;
+  time: string;
+}
