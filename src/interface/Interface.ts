@@ -37,4 +37,9 @@ export interface Message {
 
 export interface SidebarProps {
   sidebar: boolean;
+  setSidebar: (dropDown: boolean) => void;
+}
+
+export interface LayoutProps {
+  children: React.ReactNode;
 }
