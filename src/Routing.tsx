@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignUp from './components/form/SignUp';
@@ -14,22 +15,25 @@ import MyPage from 'pages/mypage/MyPage';
 import WrittenComment from 'components/mypages/tabMenu/WrittenComment';
 import Profile from 'components/mypages/myProfile/Profiles';
 
+
 const Routing = () => {
-   return (
-      <BrowserRouter>
-         <Routes>
-            <Route path='/' element={<MsgRoom />} />
-            <Route path='/main' element={<Main />} />
-            <Route
-               path='/home'
-               element={
-                  <Layout>
-                     <Feed />
-                  </Layout>
-               }
-            />
-            <Route path='/signup' element={<SignUp />} />
-            <Route path='/upload' element={<UploadFeed />} />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MsgRoom />} />
+        <Route path="/mailbox" element={<Mailbox />} />
+        <Route path="/main" element={<Main />} />
+        <Route
+          path="/home"
+          element={
+            <Layout>
+              <Feed />
+            </Layout>
+          }
+        />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/upload" element={<UploadFeed />} />
+
 
             {/* 내정보 */}
 

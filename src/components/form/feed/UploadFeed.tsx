@@ -3,6 +3,7 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
+  Select,
   useDisclosure,
 } from "@chakra-ui/react";
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -84,21 +85,19 @@ const UploadFeed = () => {
           </div>
 
           <div className={styles.postFormDiv}>
+            <Select
+              placeholder="카테고리를 입력해주세요"
+              size="sm"
+              {...register("category", {
+                required: true,
+              })}
+            >
+              <option>1</option>
+            </Select>
             <div className={styles.postFormNickname}>
               <Avatar name="닉네임" size="xs" />
               <p>닉네임</p>
             </div>
-            <input
-              className={styles.title}
-              type="text"
-              placeholder="제목을 입력해주세요..."
-              {...register("title", {
-                required: {
-                  value: true,
-                  message: "제목을 입력해주세요...",
-                },
-              })}
-            />
             <textarea
               className={styles.contents}
               placeholder="내용을 입력해주세요..."

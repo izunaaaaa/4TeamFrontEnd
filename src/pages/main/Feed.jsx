@@ -8,13 +8,9 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
-  Button,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -28,14 +24,12 @@ function Feed() {
   const feedData = useFeed();
   const navigate = useNavigate();
   const [isClickMenu, setIsClickMenu] = useState(false);
-  const [dropDown, setDropDown] = useState("0");
   const [select, setSelect] = useState([]);
+  const [feedOption, setFeedOption] = useState([]);
 
   /**게시글 보기 모달 */
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(<FeedDetail />);
-
-  /**추천 클릭시 이벤트 */
 
   /**feed 드롭다운 메뉴 이벤트 */
   const dropDownMenuEvent = (e) => {
@@ -51,41 +45,44 @@ function Feed() {
 
   return (
     <div className={styles.feeds}>
-      {feedData?.map((data, index) => (
+      {feedData.data?.map((data, index) => (
         <div key={data.id} className={styles.feedDiv}>
           <div className={styles.feedUser}>
-            <Avatar name={data.user} size="xs" />
+            {/* <Avatar name={data.user} size="xs" /> */}
             <h1>{data.user}</h1>
           </div>
           <div className={styles.feedMenu}>
             <button
               className={styles.dropDownBtn}
               value={data.id}
-              onClick={(e) => {
-                setDropDown(e.target.value);
-                setIsClickMenu(!isClickMenu);
+              onClick={() => {
+                !feedOption.includes(data.id)
+                  ? setFeedOption((select) => [...select, data.id])
+                  : setFeedOption(
+                      feedOption.filter((button) => button !== data.id)
+                    );
               }}
             >
               <FontAwesomeIcon icon={faEllipsis} size="2x" />
             </button>
+            {console.log(feedOption)}
             <ul
               className={
-                dropDown === String(index + 1) ? styles.menu : styles.disable
+                feedOption.includes(data.id) ? styles.menu : styles.disable
               }
             >
-              {isClickMenu &&
-                myFeedDropDownMenu.map((menu) => (
-                  <li
-                    className={styles.menuList}
-                    key={menu}
-                    onClick={dropDownMenuEvent}
-                  >
-                    {menu}
-                  </li>
-                ))}
+              {myFeedDropDownMenu.map((menu) => (
+                <li
+                  className={styles.menuList}
+                  key={menu}
+                  onClick={dropDownMenuEvent}
+                >
+                  {menu}
+                </li>
+              ))}
             </ul>
           </div>
-          <img src={data.medias[0]} alt="" />
+          {/* <img src={data?.medias[0]} alt="" /> */}
           <div className={styles.iconDiv}>
             <button
               key={data.id}

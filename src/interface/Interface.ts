@@ -1,10 +1,10 @@
 export interface Feed {
   id: number;
-  user: string;
+  user: number;
   group: string;
   title: String;
   description: String;
-  visited: Number;
+  visited: number;
   medias: any;
   comment: comment[];
 }
