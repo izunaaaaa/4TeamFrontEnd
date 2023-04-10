@@ -34,7 +34,7 @@ const MsgList = (props: Note) => {
                 <Text fontSize="sm">{props.content}</Text>
               </VStack>
             </HStack>
-            {/* <Text fontSize="xs"> {props.content => 시간 데이터 넣기} </Text> */}
+            {/* <Text fontSize="xs"> {props.date} </Text> */}
           </Flex>
           <Divider />
         </Box>

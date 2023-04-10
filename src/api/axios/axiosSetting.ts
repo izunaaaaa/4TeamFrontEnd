@@ -1,5 +1,9 @@
+import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
 
-export const axiosCookie = (axios.defaults.xsrfCookieName = "csrftoken");
-export const axiosHeader = (axios.defaults.xsrfHeaderName = "X-CSRFToken");
-export const axiosCredential = (axios.defaults.withCredentials = true);
+export const instance = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
+
+export const getFeeds = () => instance.get("/feeds/").then((res) => res.data);

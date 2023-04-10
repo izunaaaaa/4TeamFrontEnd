@@ -18,7 +18,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
-import MsgDetail from "components/message/MsgDetail";
+import MsgDetail from "../../components/message/MsgDetail";
 
 export default function MsgRoom() {
   // chakra ui의 모달 컨트롤 훅
@@ -29,9 +29,9 @@ export default function MsgRoom() {
   const onSubmit = (data: any) => {
     const sendmessage = data.message.trim();
     if (sendmessage === "") {
+      onClose();
     } else {
       console.log(data);
-      onClose();
     }
   };
 

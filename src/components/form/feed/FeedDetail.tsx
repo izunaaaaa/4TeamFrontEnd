@@ -12,7 +12,7 @@ const FeedDetail = (props: any) => {
         <Avatar name="닉네임" size="xs" />
         <p>{props.feedData.user}</p>
       </div>
-      <img alt="" src={props.feedData.medias[0]} />
+      {/* <img alt="" src={props.feedData?.medias[0]} /> */}
       <div className={styles.commentDiv}>
         {props.feedData.comment.map((comment: any) => {
           return (

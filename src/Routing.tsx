@@ -10,15 +10,16 @@ import Feed from "./pages/main/Feed";
 import WrittenPost from "components/mypages/tabMenu/WrittenPost";
 import CommentedPost from "components/mypages/tabMenu/CommentedPost";
 import LikedPost from "components/mypages/tabMenu/LikedPost";
-import DeletedPost from "components/mypages/tabMenu/DeletedPost";
 import MyPage from "pages/mypage/MyPage";
 import WrittenComment from "components/mypages/tabMenu/WrittenComment";
+import Profile from "components/mypages/myProfile/Profiles";
 
 const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Mailbox />} />
+        <Route path="/" element={<Feed />} />
+        <Route path="/mailbox" element={<Mailbox />} />
         <Route path="/main" element={<Main />} />
         <Route
           path="/home"
@@ -32,13 +33,21 @@ const Routing = () => {
         <Route path="/upload" element={<UploadFeed />} />
 
         {/* 내정보 */}
-        <Route path="/mypage" element={<MyPage />}>
+
+        <Route
+          path="/mypage"
+          element={
+            <Layout>
+              <MyPage />
+            </Layout>
+          }
+        >
           {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
           <Route path="written" element={<WrittenPost />} />
           <Route path="writtencomment" element={<WrittenComment />} />
           <Route path="comments" element={<CommentedPost />} />
           <Route path="likes" element={<LikedPost />} />
-          <Route path="writtendelete" element={<DeletedPost />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>

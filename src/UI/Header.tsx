@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 
 import { CgMenuLeft } from "react-icons/cg";
 import styles from "./Header.module.scss";
@@ -7,14 +7,24 @@ import Sidebar from "./Sidebar";
 
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useClickOutside from "./useClickOutside";
 
 function Header(): ReactElement {
   const [mediaWidth, setMediaWidth] = useState<number>(window.innerWidth);
   const [sidebar, setSidebar] = useState<boolean>(false);
   const [dropDown, setDropDown] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+
+  useClickOutside(dropdownRef, () => {
+    setDropDown(false);
+  });
+
+  useClickOutside(sidebarRef, () => {
+    setSidebar(false);
+  });
 
   useEffect(() => {
-    // 창 크기가 조절될 때마다 mediaWidth 상태를 업데이트
     const handleResize = () => {
       setMediaWidth(window.innerWidth);
     };
@@ -29,6 +39,12 @@ function Header(): ReactElement {
   const toggleDropdown = () => {
     setDropDown(!dropDown);
   };
+
+  const toggleSidebar = () => {
+    setSidebar((prevState) => !prevState);
+  };
+
+  // 창 크기가 조절될 때마다 mediaWidth 상태를 업데이트
 
   return (
     <>
@@ -48,13 +64,13 @@ function Header(): ReactElement {
                   icon={faMagnifyingGlass}
                 />
               </div>
-              <div className={styles.fofile_box}>
+              <div className={styles.fofile_box} ref={dropdownRef}>
                 <div className={styles.myFrofile} onClick={toggleDropdown}>
                   <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
                 </div>
                 {dropDown && (
                   <div className={styles.dropList}>
-                    <DropDown dropDown={dropDown} setDropDown={setDropDown} />
+                    <DropDown />
                   </div>
                 )}
               </div>
@@ -68,16 +84,16 @@ function Header(): ReactElement {
           <div className={styles.nav_barMobile}>
             <div className={styles.sidebar_top}>
               <div className={styles.sidebar_btn}>
-                <CgMenuLeft onClick={() => setSidebar(!sidebar)} />
+                <CgMenuLeft onClick={toggleSidebar} />
               </div>
               <h1>CurB</h1>
-              <div className={styles.fofile_box}>
+              <div className={styles.fofile_box} ref={dropdownRef}>
                 <div className={styles.myFrofile} onClick={toggleDropdown}>
                   <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
                 </div>
                 {dropDown && (
                   <div className={styles.dropList}>
-                    <DropDown dropDown={dropDown} setDropDown={setDropDown} />
+                    <DropDown />
                   </div>
                 )}
               </div>
@@ -97,7 +113,14 @@ function Header(): ReactElement {
             </div>
           </div>
           {sidebar && (
-            <div className={sidebar ? "nav_menu active" : "nav_menu"}>
+            <div
+              className={
+                sidebar
+                  ? `${styles.nav_menu} ${styles.active}`
+                  : styles.nav_menu
+              }
+              ref={sidebarRef}
+            >
               <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
             </div>
           )}
