@@ -27,22 +27,19 @@ const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 function Feed() {
   const feedData = useFeed();
   const navigate = useNavigate();
-  const [isClickLike, setIsClickLike] = useState(false);
   const [isClickMenu, setIsClickMenu] = useState(false);
   const [dropDown, setDropDown] = useState("0");
+  const [select, setSelect] = useState([]);
 
   /**게시글 보기 모달 */
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(<FeedDetail />);
 
   /**추천 클릭시 이벤트 */
-  const thumbClickHandler = (e: React.MouseEvent) => {
-    setIsClickLike(!isClickLike);
-  };
 
   /**feed 드롭다운 메뉴 이벤트 */
-  const dropDownMenuEvent = (e: React.MouseEvent) => {
-    const eventTarget = e.target as HTMLElement;
+  const dropDownMenuEvent = (e) => {
+    const eventTarget = e.target;
     const menuType = eventTarget.innerText;
     setIsClickMenu(!isClickMenu);
     if (menuType === "수정하기") return navigate("/upload");
@@ -53,7 +50,7 @@ function Feed() {
   };
 
   return (
-    <>
+    <div className={styles.feeds}>
       {feedData?.map((data, index) => (
         <div key={data.id} className={styles.feedDiv}>
           <div className={styles.feedUser}>
@@ -64,9 +61,8 @@ function Feed() {
             <button
               className={styles.dropDownBtn}
               value={data.id}
-              onClick={(e: any) => {
+              onClick={(e) => {
                 setDropDown(e.target.value);
-                console.log(e.target);
                 setIsClickMenu(!isClickMenu);
               }}
             >
@@ -91,20 +87,28 @@ function Feed() {
           </div>
           <img src={data.medias[0]} alt="" />
           <div className={styles.iconDiv}>
-            <button key={data.id} onClick={thumbClickHandler}>
-              {!isClickLike ? (
-                <FontAwesomeIcon icon={faThumbsUp} size="2x" />
-              ) : (
+            <button
+              key={data.id}
+              value={data.id}
+              onClick={() => {
+                !select.includes(data.id)
+                  ? setSelect((select) => [...select, data.id])
+                  : setSelect(select.filter((button) => button !== data.id));
+              }}
+            >
+              {select.includes(data.id) ? (
                 <FontAwesomeIcon
                   icon={faThumbsUp}
-                  size="2x"
+                  size="lg"
                   style={{ color: "red" }}
                 />
+              ) : (
+                <FontAwesomeIcon icon={faThumbsUp} size="lg" />
               )}
             </button>
             <p>12</p>
             <button>
-              <FontAwesomeIcon icon={faMessage} size="2x" />
+              <FontAwesomeIcon icon={faMessage} size="lg" />
             </button>
             <p>3</p>
           </div>
@@ -112,7 +116,7 @@ function Feed() {
           <p>{data.description}</p>
           <div
             onClick={() => {
-              setModalType(<FeedDetail />);
+              setModalType(<FeedDetail feedData={data} />);
               onOpen();
             }}
           >
@@ -128,7 +132,7 @@ function Feed() {
         </ModalContent>
       </Modal>
       <Comment />
-    </>
+    </div>
   );
 }
 

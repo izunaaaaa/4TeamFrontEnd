@@ -9,7 +9,14 @@ export const croppedImg = (img, cropped) => {
   // console.log(dep);
 
   // console.log(ctx?.drawImage(dep, 3, 100, cropped.width, cropped.height));
-  ctx?.drawImage(dep, -cropped.x / 2, -cropped.y / 2, 400, 800);
+  ctx?.drawImage(dep, -cropped.x / 2, -cropped.y / 2, 400, 2000);
+  // const getData = ctx.getImageData(
+  //   dep,
+  //   cropped.x,
+  //   cropped.y,
+  //   cropped.width,
+  //   cropped.height
+  // );
   document.body.appendChild(canvas);
 
   return <img alt="" />;

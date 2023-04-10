@@ -1,7 +1,7 @@
 .postForm {
   padding: 5px 0px 0px 0px;
-  border-radius: 10px;
-  width: 70%;
+  border-radius: 30px;
+  max-width: 800px;
   background-color: beige;
 
   .postFormHeader {
@@ -27,7 +27,7 @@
   .postFormMain {
     border-top: 1px solid bisque;
     display: flex;
-    height: 500px;
+    height: 400px;
     .fileForm {
       display: flex;
       flex-direction: column;
@@ -47,11 +47,15 @@
         border: 0;
         background-color: transparent;
       }
+      .previewImg {
+        height: 100%;
+      }
     }
 
     .postFormDiv {
       background-color: beige;
       width: 50%;
+      height: 80%;
       padding: 20px;
 
       p {
@@ -85,6 +89,31 @@
     border-radius: 10px;
     width: 100%;
     background-color: beige;
+    height: 100vh;
+    .postFormMain {
+      height: 300px;
+      flex-direction: column;
+      .fileForm {
+        height: 100%;
+        align-self: center;
+        aspect-ratio: 3/ 4;
+      }
+      .postFormDiv {
+        width: 100%;
+        padding: 30px;
+        .postFormNickname {
+          width: 100%;
+        }
+        .contents {
+          border: 0;
+          background-color: transparent;
+          resize: none;
+          width: 80%;
+          margin-top: 30px;
+          height: 30%;
+        }
+      }
+    }
   }
 }
 

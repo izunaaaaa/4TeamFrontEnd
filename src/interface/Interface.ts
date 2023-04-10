@@ -6,6 +6,12 @@ export interface Feed {
   description: String;
   visited: Number;
   medias: any;
+  comment: comment[];
+}
+export interface comment {
+  id: number;
+  user: string;
+  description: string;
 }
 
 export interface Comment {
