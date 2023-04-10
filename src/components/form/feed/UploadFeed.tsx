@@ -32,9 +32,12 @@ const UploadFeed = () => {
 
     reader.readAsDataURL(file);
 
-    reader.onloadend = () => {
-      setPreviewImg(reader.result);
-    };
+    const data: any = URL.createObjectURL(file);
+
+    // reader.onloadend = () => {
+    //   setPreviewImg(reader.result);
+    // };
+    setPreviewImg(data);
     onOpen();
   };
 
