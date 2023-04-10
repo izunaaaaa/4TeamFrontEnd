@@ -1,16 +1,11 @@
 import {
   Avatar,
   Modal,
-  ModalBody,
   ModalContent,
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import {
-  faBackspace,
-  faCloudArrowUp,
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -52,7 +47,7 @@ const UploadFeed = () => {
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>
-          <CropUploadImg previewImg={previewImg} data="fqwe" />
+          <CropUploadImg previewImg={previewImg} />
         </ModalContent>
       </Modal>
 
@@ -84,7 +79,7 @@ const UploadFeed = () => {
                 </button>
               </>
             ) : (
-              <img alt=" " src={previewImg} />
+              <img alt=" " className={styles.previewImg} src={previewImg} />
             )}
           </div>
 
