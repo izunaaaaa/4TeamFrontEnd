@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faMessage, faThumbsUp, faUser } from '@fortawesome/free-regular-svg-icons';
 import styles from './MyPage.module.scss';
 import WrittenPost from '../../components/mypages/tabMenu/WrittenPost';
 import WrittenComment from '../../components/mypages/tabMenu/WrittenComment';
 import CommentedPost from '../../components/mypages/tabMenu/CommentedPost';
 import LikedPost from '../../components/mypages/tabMenu/LikedPost';
-import DeletedPost from '../../components/mypages/tabMenu/DeletedPost';
-import Profiles from '../../components/mypages/myProfile/Profiles';
+
+import Profile from '../../components/mypages/myProfile/Profiles';
 
 export default function MyPage() {
-   const [activeTab, setActiveTab] = useState('written');
+   const [activeTab, setActiveTab] = useState('');
 
    const handleTab = (tab: string) => {
       setActiveTab(tab);
@@ -24,50 +26,37 @@ export default function MyPage() {
          <CommentedPost />
       ) : activeTab === 'myLikes' ? (
          <LikedPost />
-      ) : activeTab === 'mydelete' ? (
-         <DeletedPost />
-      ) : activeTab === 'profiles' ? (
-         <Profiles />
+      ) : activeTab === 'profile' ? (
+         <Profile />
       ) : null;
 
    return (
       <>
          <div className={styles.container}>
-            <div className={styles.user}>
-               <Link to='/mypage/profiles' onClick={() => handleTab('written')} className={activeTab === 'written' ? styles.active : ''}>
-                  <p>내정보</p>
-               </Link>
-            </div>
-
             <div className={styles.tabMenu}>
                <ul className={styles.list}>
                   <li className={styles.item}>
                      <Link to='/mypage/written' onClick={() => handleTab('written')} className={activeTab === 'written' ? styles.active : ''}>
+                        <FontAwesomeIcon icon={faPenToSquare} />
                         <p>작성 글</p>
                      </Link>
                   </li>
                   <li className={styles.item}>
-                     <Link
-                        to='/mypage/writtencomment'
-                        onClick={() => handleTab('writtencomment')}
-                        className={activeTab === 'writtencomment' ? styles.active : ''}
-                     >
-                        <p>작성단 글</p>
-                     </Link>
-                  </li>
-                  <li className={styles.item}>
                      <Link to='/mypage/comments' onClick={() => handleTab('myComments')} className={activeTab === 'myComments' ? styles.active : ''}>
+                        <FontAwesomeIcon icon={faMessage} size='lg' />
                         <p>댓글단 글</p>
                      </Link>
                   </li>
                   <li className={styles.item}>
                      <Link to='/mypage/likes' onClick={() => handleTab('myLikes')} className={activeTab === 'myLikes' ? styles.active : ''}>
+                        <FontAwesomeIcon icon={faThumbsUp} size='lg' />
                         <p>좋아요한 글</p>
                      </Link>
                   </li>
                   <li className={styles.item}>
-                     <Link to='/mypage/writtendelete' onClick={() => handleTab('mydelete')} className={activeTab === 'mydelete' ? styles.active : ''}>
-                        <p>삭제한 글</p>
+                     <Link to='/mypage/profile' onClick={() => handleTab('profile')} className={activeTab === 'profile' ? styles.active : ''}>
+                        <FontAwesomeIcon icon={faUser} size='lg' />
+                        <p>내정보</p>
                      </Link>
                   </li>
                </ul>
