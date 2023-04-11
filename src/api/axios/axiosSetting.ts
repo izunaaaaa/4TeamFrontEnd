@@ -7,3 +7,4 @@ export const instance = axios.create({
 });
 
 export const getFeeds = () => instance.get("/feeds/").then((res) => res.data);
+import { BASE_URL } from "api/URL/BaseURL";
