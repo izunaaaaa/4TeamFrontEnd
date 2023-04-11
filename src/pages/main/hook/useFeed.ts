@@ -1,10 +1,11 @@
 import { Feed } from "../../../interface/Interface";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import { getFeeds } from "api/axios/axiosSetting";
+import { BASE_URL } from "api/URL/BaseURL";
 
-export function useFeed(): Feed[] {
+export function useFeed() {
   // const feedData = [
   //   {
   //     id: 1,
@@ -63,7 +64,23 @@ export function useFeed(): Feed[] {
 
   const fallBack: [] = [];
 
-  const { data: feedData = fallBack } = useQuery(Querykey.feedData, getFeeds);
+  const {
+    data: feedData = fallBack,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useInfiniteQuery(
+    Querykey.feedData,
+    ({ pageParam = `${BASE_URL}/feeds/` }) => {
+      return getFeeds(pageParam);
+    },
+    {
+      getNextPageParam: (lastpage, allPage) => {
+        console.log(allPage);
+        return `${BASE_URL}/feeds/?page=${lastpage.now_page + 1}` || undefined;
+      },
+    }
+  );
 
-  return feedData;
+  return { feedData, fetchNextPage, hasNextPage, isFetching };
 }
