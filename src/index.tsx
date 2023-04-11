@@ -9,7 +9,7 @@ import { theme } from "UI/toast/Toast";
 
 const toast = createStandaloneToast({ theme });
 
-function queryErrorHandler(error: unknown): void {
+export function queryErrorHandler(error: unknown): void {
   const title =
     error instanceof Error ? error.message : "error connecting to server";
 

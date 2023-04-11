@@ -1,6 +1,6 @@
 import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
-import { Url } from "url";
+import { queryErrorHandler } from "index";
 
 export const instance = axios.create({
   baseURL: BASE_URL,

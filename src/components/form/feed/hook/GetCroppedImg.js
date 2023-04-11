@@ -6,10 +6,19 @@ export const croppedImg = (img, cropped) => {
 
   console.log(cropped.x, cropped.y, cropped.width, cropped.height);
 
+  canvas.width = 800;
+  canvas.height = 600;
+
   // console.log(dep);
 
   // console.log(ctx?.drawImage(dep, 3, 100, cropped.width, cropped.height));
-  ctx?.drawImage(dep, -cropped.x / 2, -cropped.y / 2, 400, 2000);
+  ctx?.drawImage(
+    dep,
+    -cropped.x / 2,
+    -cropped.y / 2,
+    cropped.width,
+    cropped.height
+  );
   // const getData = ctx.getImageData(
   //   dep,
   //   cropped.x,

@@ -8,14 +8,14 @@ import {
 } from "@chakra-ui/react";
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import CropUploadImg from "./CropUploadImg";
 import styles from "./UploadFeed.module.scss";
 
 const UploadFeed = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, getValues } = useForm();
   const [previewImg, setPreviewImg] = useState();
   const navigate = useNavigate();
 
@@ -92,7 +92,7 @@ const UploadFeed = () => {
                 required: true,
               })}
             >
-              <option>1</option>
+              <option>스펙평가 A vs B</option>
             </Select>
             <div className={styles.postFormNickname}>
               <Avatar name="닉네임" size="xs" />
