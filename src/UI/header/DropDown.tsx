@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./DropDown.module.scss";
-import { ListItem } from "../interface/Interface";
+import { ListItem } from "interface/Interface";
 
 const list: ListItem[] = [
   { id: 1, title: "마이페이지" },
@@ -27,5 +27,3 @@ function DropDown() {
 }
 
 export default DropDown;
-
-// 추가
