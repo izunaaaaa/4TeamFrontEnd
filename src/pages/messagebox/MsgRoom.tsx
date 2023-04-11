@@ -14,49 +14,47 @@ import {
   ModalBody,
   Textarea,
   FormControl,
+  Box,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 export default function MsgRoom() {
   // chakra ui의 모달 컨트롤 훅
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //쪽지 내용 폼 관리
+  //쪽지 모달 창 관리
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data: any) => {
     const sendmessage = data.message.trim();
     if (sendmessage === "") {
-      onClose();
     } else {
       console.log(data);
+      onClose();
     }
   };
+
+  // 대화방 나가기
+  // const handleDeleteRoom = (idx: number) => {
+
+  // }
 
   return (
     <>
       {/* 주고받은 쪽지내역 */}
-      <Flex justify={"space-evenly"}>
-        <Text>TIME</Text>
-        <Text>TEXT</Text>
-      </Flex>
-
       {mockMsgCont?.map((msg: MockCont, idx) => {
         return (
-          <Flex key={idx} justify={"space-around"}>
+          <Box key={idx}>
             <MsgDetail {...msg} />
-          </Flex>
+          </Box>
         );
       })}
-      <Flex justify={"space-around"} mb={"20px"}>
-        <Button onClick={onOpen}>
-          <FontAwesomeIcon icon={faPaperPlane} size="2x" />
-        </Button>
-        <Button>
-          <FontAwesomeIcon icon={faTrashCan} size="2x" />
-        </Button>
+      <Flex justify={"space-around"}>
+        <FontAwesomeIcon icon={faPaperPlane} size="xl" onClick={onOpen} />
+        <FontAwesomeIcon icon={faRightFromBracket} size="xl" />
       </Flex>
 
       {/* 모달 */}

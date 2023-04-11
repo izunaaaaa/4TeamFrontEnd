@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Divider,
   Text,
   Avatar,
   Box,
   Flex,
-  Grid,
-  GridItem,
-  List,
-  ListItem,
   HStack,
   VStack,
 } from "@chakra-ui/react";
 import { Note } from "../../MsgMock";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 const MsgList = (props: Note) => {
+  const [isHovering, setIsHovering] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+
+  const handleDeleteClick = () => {
+    setIsDeleted(true);
+  };
+
+  if (isDeleted) {
+    return null;
+  }
+
   return (
     <>
       <VStack spacing={2} w="100%" maxW="768px">
@@ -26,6 +35,8 @@ const MsgList = (props: Note) => {
             px={2}
             py={1}
             _hover={{ bg: "gray.100", cursor: "pointer" }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
           >
             <HStack>
               <Avatar src={props.avatar} />
@@ -34,7 +45,9 @@ const MsgList = (props: Note) => {
                 <Text fontSize="sm">{props.content}</Text>
               </VStack>
             </HStack>
-            {/* <Text fontSize="xs"> {props.date} </Text> */}
+            {isHovering && (
+              <FontAwesomeIcon icon={faTrashCan} onClick={handleDeleteClick} />
+            )}
           </Flex>
           <Divider />
         </Box>

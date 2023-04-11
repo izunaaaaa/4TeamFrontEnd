@@ -7,17 +7,19 @@ import { Note } from "../../MsgMock";
 function Mailbox() {
   //받은 쪽지함
   return (
-    <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-      {msgMock?.length
-        ? msgMock?.map((item: Note, idx) => {
-            return (
-              <div key={idx}>
-                <MsgList {...item} />
-              </div>
-            );
-          })
-        : "받은 쪽지가 없습니다."}
-    </Box>
+    <div>
+      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+        {msgMock?.length
+          ? msgMock?.map((item: Note, idx) => {
+              return (
+                <div key={idx}>
+                  <MsgList {...item} />
+                </div>
+              );
+            })
+          : "받은 쪽지가 없습니다."}
+      </Box>
+    </div>
   );
 }
 
