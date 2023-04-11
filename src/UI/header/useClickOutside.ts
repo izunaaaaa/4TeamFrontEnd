@@ -24,5 +24,3 @@ const useClickOutside = (
 };
 
 export default useClickOutside;
-
-// 추가
