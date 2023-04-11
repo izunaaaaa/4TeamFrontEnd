@@ -18,12 +18,15 @@ import {
 import InfiniteScroll from "react-infinite-scroller";
 import FeedDetail from "../../components/form/feed/FeedDetail";
 import DeleteConfirm from "../../UI/DeleteConfirm";
+import FeedSkeleton from "UI/FeedSkeleton";
+import { breakpoints } from "UI/ChakraResponsive/ChakraResponsive";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 // const otherFeedDropDownMenu = ["쪽지 보내기"];
 
 function Feed() {
-  const { feedData, fetchNextPage, hasNextPage, isFetching } = useFeed();
+  const { feedData, fetchNextPage, hasNextPage, isFetching, isLoading } =
+    useFeed();
   const navigate = useNavigate();
   const [isClickMenu, setIsClickMenu] = useState(false);
   const [select, setSelect] = useState([]);
@@ -50,7 +53,7 @@ function Feed() {
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
         <div className={styles.feeds}>
           {feedData.pages?.map((pageData) =>
-            pageData.data?.map((data, index) => (
+            pageData.results?.map((data, index) => (
               <div key={data.id} className={styles.feedDiv}>
                 <div className={styles.feedUser}>
                   <Avatar
@@ -58,6 +61,7 @@ function Feed() {
                     size="sm"
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                   />
+
                   <h1>익명</h1>
                 </div>
                 <div className={styles.feedMenu}>
@@ -92,7 +96,9 @@ function Feed() {
                     ))}
                   </ul>
                 </div>
+
                 {/* <img src={data?.medias[0]} alt="" /> */}
+                <p>{data.description}</p>
                 <div className={styles.iconDiv}>
                   <button
                     key={data.id}
@@ -122,7 +128,6 @@ function Feed() {
                   <p>3</p>
                 </div>
 
-                <p>{data.description}</p>
                 <div
                   onClick={() => {
                     setModalType(<FeedDetail feedData={data} />);
@@ -136,13 +141,14 @@ function Feed() {
           )}
           {isFetching && (
             <Spinner
-              thickness="4px"
-              speed="0.65s"
+              thickness="5px"
+              speed="0.75s"
               emptyColor="gray.200"
-              color="blue.500"
-              size="xl"
+              color="pink.100"
+              size={{ lg: "xl", md: "lg", base: "lg" }}
             />
           )}
+          {isLoading && <FeedSkeleton />}
         </div>
       </InfiniteScroll>
       <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>

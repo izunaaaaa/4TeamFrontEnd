@@ -2,8 +2,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 100px;
-  margin-bottom: 10px;
+  margin: 100px 0 10px 50px;
 }
 
 .feedDiv {
@@ -88,7 +87,9 @@
   .feeds {
     display: flex;
     align-items: center;
-    margin-top: 100px;
+
+    margin: 150px 0 10px 0px;
+
     flex-direction: column;
   }
   .feedDiv {
