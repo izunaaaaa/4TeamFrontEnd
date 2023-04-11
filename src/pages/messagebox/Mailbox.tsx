@@ -8,7 +8,7 @@ function Mailbox() {
   //받은 쪽지함
   return (
     <div>
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <Box sx={{ width: "100%", bg: "#F2F2F2" }}>
         {msgMock?.length
           ? msgMock?.map((item: Note, idx) => {
               return (

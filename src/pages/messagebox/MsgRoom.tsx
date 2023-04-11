@@ -53,8 +53,17 @@ export default function MsgRoom() {
         );
       })}
       <Flex justify={"space-around"}>
-        <FontAwesomeIcon icon={faPaperPlane} size="xl" onClick={onOpen} />
-        <FontAwesomeIcon icon={faRightFromBracket} size="xl" />
+        <FontAwesomeIcon
+          icon={faPaperPlane}
+          size="xl"
+          onClick={onOpen}
+          cursor={"pointer"}
+        />
+        <FontAwesomeIcon
+          icon={faRightFromBracket}
+          size="xl"
+          cursor={"pointer"}
+        />
       </Flex>
 
       {/* 모달 */}

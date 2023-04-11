@@ -34,7 +34,7 @@ export default function MsgDetail(props: MockCont) {
       </Stack>
       <Stack
         borderWidth="1px"
-        borderColor="navy"
+        borderColor="gray.200"
         ref={timeRef}
         mr="9rem"
       ></Stack>
@@ -51,8 +51,9 @@ export default function MsgDetail(props: MockCont) {
             p: 5,
             pb: 10,
             borderRadius: "7%",
-            bg: props.user.isMe === true ? "blue.200" : "gray.200",
-            _hover: { bg: "gray.100", cursor: "pointer" },
+            color: props.user.isMe === true ? "#FAFAFA" : "black",
+            bg: props.user.isMe === true ? "#5882FA" : "gray.200",
+            _hover: { bg: "#2EFEF7", cursor: "pointer" },
           }}
         >
           <HStack spacing={2} direction="row">

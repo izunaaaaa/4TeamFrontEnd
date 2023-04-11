@@ -26,15 +26,15 @@ const MsgList = (props: Note) => {
 
   return (
     <>
-      <VStack spacing={2} w="100%" maxW="768px">
+      <VStack spacing={2} w="100%" h="5rem">
         <Box w="100%">
           <Flex
             alignItems="center"
             justifyContent="space-between"
             w="100%"
-            px={2}
-            py={1}
-            _hover={{ bg: "gray.100", cursor: "pointer" }}
+            px={10}
+            py={4}
+            _hover={{ bg: "#848484", cursor: "pointer" }}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
