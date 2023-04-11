@@ -17,10 +17,13 @@
     display: flex;
     margin: 0 0 20px 0;
     h1 {
+      font-size: 0.6rem;
+
       margin-left: 5px;
-      font-size: 1rem;
-      line-height: 2;
-      font-weight: bold;
+      p {
+        font-size: 1rem;
+        font-weight: bold;
+      }
     }
   }
 

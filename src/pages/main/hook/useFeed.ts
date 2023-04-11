@@ -71,20 +71,18 @@ export function useFeed() {
     isLoading,
   } = useInfiniteQuery(
     Querykey.feedData,
-    ({ pageParam = `${BASE_URL}/feeds/` }) => {
-      console.log(pageParam);
-      return getFeeds(pageParam);
-    },
+    ({ pageParam = `${BASE_URL}/feeds/` }) => getFeeds(pageParam),
     {
       getNextPageParam: (lastpage) => {
-        if (lastpage.total_pages - lastpage.now_page <= 0)
+        if (lastpage.total_pages - lastpage.now_page > 0)
           return `${BASE_URL}/feeds/?page=${lastpage.now_page + 1}`;
         else {
-          return null;
+          return undefined;
         }
       },
     }
   );
+
   console.log(feedData);
 
   return { feedData, fetchNextPage, hasNextPage, isFetching, isLoading };

@@ -1,8 +1,8 @@
 import { Box, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import React from "react";
-import styles from "./FeedSkeleton.module.scss";
+import styles from "./Skeleton.module.scss";
 
-const FeedSkeleton = () => {
+const SkeletonUI = () => {
   return (
     <Box
       padding="6"
@@ -22,4 +22,4 @@ const FeedSkeleton = () => {
   );
 };
 
-export default FeedSkeleton;
+export default SkeletonUI;

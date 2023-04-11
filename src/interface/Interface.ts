@@ -35,6 +35,13 @@ export interface FormValue {
 
 export interface UplaodFeedValue {}
 
+export interface CropAttribute {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface Message {
   title: string;
   content: string;

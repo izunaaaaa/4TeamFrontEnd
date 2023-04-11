@@ -8,39 +8,44 @@ import {
 } from "@chakra-ui/react";
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import CropUploadImg from "./CropUploadImg";
 import styles from "./UploadFeed.module.scss";
 
 const UploadFeed = () => {
-  const { register, handleSubmit, getValues } = useForm();
+  const { register, handleSubmit } = useForm();
   const [previewImg, setPreviewImg] = useState();
+  const [cropImg, setCropImg] = useState("");
   const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   /**썸네일 보기 */
-  const changeImg = async (e: any) => {
+  const changeImg = async (e: React.ChangeEvent) => {
     const reader: any = new FileReader();
-    const file = e.target.files[0];
+
+    const target = e.currentTarget as HTMLInputElement;
+
+    const file = target.files?.[0];
+    if (!file) return;
 
     reader.readAsDataURL(file);
-
     const data: any = URL.createObjectURL(file);
 
-    // reader.onloadend = () => {
-    //   setPreviewImg(reader.result);
-    // };
     setPreviewImg(data);
     onOpen();
   };
 
   /**제출하기 */
   const submitHandler = (data: any) => {
-    console.log(data);
     return;
+  };
+
+  /**이미지 크롭하기 */
+  const getCroppedImg = (img: string) => {
+    setCropImg(img);
   };
 
   return (
@@ -48,7 +53,11 @@ const UploadFeed = () => {
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>
-          <CropUploadImg previewImg={previewImg} />
+          <CropUploadImg
+            previewImg={previewImg}
+            getCroppedImg={getCroppedImg}
+            onClose={onClose}
+          />
         </ModalContent>
       </Modal>
 
@@ -63,7 +72,7 @@ const UploadFeed = () => {
 
         <div className={styles.postFormMain}>
           <div className={styles.fileForm}>
-            {!previewImg ? (
+            {!cropImg ? (
               <>
                 <input
                   type="file"
@@ -80,7 +89,7 @@ const UploadFeed = () => {
                 </button>
               </>
             ) : (
-              <img alt=" " className={styles.previewImg} src={previewImg} />
+              <img alt=" " className={styles.previewImg} src={cropImg} />
             )}
           </div>
 
