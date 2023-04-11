@@ -1,3 +1,5 @@
+import { RefObject } from "react";
+
 export interface Feed {
   id: number;
   user: number;
@@ -33,6 +35,13 @@ export interface FormValue {
 
 export interface UplaodFeedValue {}
 
+export interface CropAttribute {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface Message {
   title: string;
   content: string;
@@ -49,11 +58,26 @@ export interface ListItem {
   title: string;
 }
 
-export interface DropDownProps {
-  dropDown: boolean;
-  setDropDown: (dropDown: boolean) => void;
-}
-
 export interface LayoutProps {
   children: React.ReactNode;
+}
+
+export type Note = {
+  id: number;
+  title: string;
+  content: string;
+  date: Date;
+};
+
+export interface MockUser {
+  name: string;
+  avatar: string;
+  isMe: boolean;
+}
+
+export interface MockCont {
+  id: number;
+  user: MockUser;
+  content: string;
+  time: string;
 }

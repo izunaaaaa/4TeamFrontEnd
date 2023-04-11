@@ -4,6 +4,7 @@ import { mockMsgCont } from "../../MsgMock";
 import {
   Button,
   Flex,
+  Text,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -15,7 +16,7 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import { faPaperPlane, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
 
@@ -36,7 +37,12 @@ export default function MsgRoom() {
 
   return (
     <>
-      {/* 쪽지내역 */}
+      {/* 주고받은 쪽지내역 */}
+      <Flex justify={"space-evenly"}>
+        <Text>TIME</Text>
+        <Text>TEXT</Text>
+      </Flex>
+
       {mockMsgCont?.map((msg: MockCont, idx) => {
         return (
           <Flex key={idx} justify={"space-around"}>
@@ -44,27 +50,41 @@ export default function MsgRoom() {
           </Flex>
         );
       })}
-      <Button onClick={onOpen}>
-        <FontAwesomeIcon icon={faPaperPlane} size="2x" />
-      </Button>
+      <Flex justify={"space-around"} mb={"20px"}>
+        <Button onClick={onOpen}>
+          <FontAwesomeIcon icon={faPaperPlane} size="2x" />
+        </Button>
+        <Button>
+          <FontAwesomeIcon icon={faTrashCan} size="2x" />
+        </Button>
+      </Flex>
+
       {/* 모달 */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>쪽지</ModalHeader>
-          <ModalBody>
-            <FormControl>
-              <Textarea placeholder="보내실 내용을 입력해주세요" />
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmit(onSubmit)}>
-              Send
-            </Button>
-            <Button color="black" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
+          <FormControl>
+            <ModalBody>
+              <Textarea
+                placeholder="보내실 내용을 입력해주세요"
+                {...register("message")}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                type="submit"
+                colorScheme="blue"
+                mr={3}
+                onClick={handleSubmit(onSubmit)}
+              >
+                Send
+              </Button>
+              <Button color="black" onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </FormControl>
         </ModalContent>
       </Modal>
     </>

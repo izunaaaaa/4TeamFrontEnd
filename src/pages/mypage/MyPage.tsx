@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faMessage, faThumbsUp, faUser } from '@fortawesome/free-regular-svg-icons';
 import styles from './MyPage.module.scss';
+import TabMenuItem from 'components/mypages/tabMenu/TabMenuItem';
 import WrittenPost from '../../components/mypages/tabMenu/WrittenPost';
 import WrittenComment from '../../components/mypages/tabMenu/WrittenComment';
 import CommentedPost from '../../components/mypages/tabMenu/CommentedPost';
 import LikedPost from '../../components/mypages/tabMenu/LikedPost';
-
 import Profile from '../../components/mypages/myProfile/Profiles';
 
 export default function MyPage() {
@@ -35,30 +35,10 @@ export default function MyPage() {
          <div className={styles.container}>
             <div className={styles.tabMenu}>
                <ul className={styles.list}>
-                  <li className={styles.item}>
-                     <Link to='/mypage/written' onClick={() => handleTab('written')} className={activeTab === 'written' ? styles.active : ''}>
-                        <FontAwesomeIcon icon={faPenToSquare} />
-                        <p>작성 글</p>
-                     </Link>
-                  </li>
-                  <li className={styles.item}>
-                     <Link to='/mypage/comments' onClick={() => handleTab('myComments')} className={activeTab === 'myComments' ? styles.active : ''}>
-                        <FontAwesomeIcon icon={faMessage} size='lg' />
-                        <p>댓글단 글</p>
-                     </Link>
-                  </li>
-                  <li className={styles.item}>
-                     <Link to='/mypage/likes' onClick={() => handleTab('myLikes')} className={activeTab === 'myLikes' ? styles.active : ''}>
-                        <FontAwesomeIcon icon={faThumbsUp} size='lg' />
-                        <p>좋아요한 글</p>
-                     </Link>
-                  </li>
-                  <li className={styles.item}>
-                     <Link to='/mypage/profile' onClick={() => handleTab('profile')} className={activeTab === 'profile' ? styles.active : ''}>
-                        <FontAwesomeIcon icon={faUser} size='lg' />
-                        <p>내정보</p>
-                     </Link>
-                  </li>
+                  <TabMenuItem icon={faPenToSquare} size='lg' text='작성 글' tabName='written' activeTab={activeTab} onClick={handleTab} />
+                  <TabMenuItem icon={faMessage} size='lg' text='댓글단 글' tabName='writtencomment' activeTab={activeTab} onClick={handleTab} />
+                  <TabMenuItem icon={faThumbsUp} size='lg' text='좋아요한 글' tabName='myLikes' activeTab={activeTab} onClick={handleTab} />
+                  <TabMenuItem icon={faUser} size='lg' text='내정보' tabName='profile' activeTab={activeTab} onClick={handleTab} />
                </ul>
             </div>
             {activeContent}

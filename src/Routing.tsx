@@ -18,7 +18,7 @@ const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MsgRoom />} />
+        <Route path="/" element={<Feed />} />
         <Route path="/mailbox" element={<Mailbox />} />
         <Route path="/main" element={<Main />} />
         <Route
