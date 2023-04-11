@@ -13,12 +13,11 @@
 }
 .sidebar_top {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 }
 .sidebar_bottom {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-top: 10px;
 }
 .nav_barMobile {
@@ -48,7 +47,7 @@
   display: flex;
 }
 .searchWrapper_mobile {
-  width: 950%;
+  width: 80%;
   height: 50px;
   background-color: #fff;
   //border: 1px solid black;
@@ -111,3 +110,5 @@
 }
 @media (max-width: 376px) {
 }
+
+// 추가
