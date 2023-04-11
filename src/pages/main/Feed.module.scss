@@ -3,6 +3,7 @@
   align-items: center;
   flex-direction: column;
   margin-top: 100px;
+  margin-bottom: 10px;
 }
 
 .feedDiv {
@@ -19,6 +20,8 @@
     h1 {
       margin-left: 5px;
       font-size: 1rem;
+      line-height: 2;
+      font-weight: bold;
     }
   }
 

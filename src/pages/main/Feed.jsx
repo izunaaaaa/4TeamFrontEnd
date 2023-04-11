@@ -12,8 +12,10 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
+  Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
+import InfiniteScroll from "react-infinite-scroller";
 import FeedDetail from "../../components/form/feed/FeedDetail";
 import DeleteConfirm from "../../UI/DeleteConfirm";
 
@@ -21,7 +23,7 @@ const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 // const otherFeedDropDownMenu = ["쪽지 보내기"];
 
 function Feed() {
-  const feedData = useFeed();
+  const { feedData, fetchNextPage, hasNextPage, isFetching } = useFeed();
   const navigate = useNavigate();
   const [isClickMenu, setIsClickMenu] = useState(false);
   const [select, setSelect] = useState([]);
@@ -44,84 +46,105 @@ function Feed() {
   };
 
   return (
-    <div className={styles.feeds}>
-      {feedData.data?.map((data, index) => (
-        <div key={data.id} className={styles.feedDiv}>
-          <div className={styles.feedUser}>
-            {/* <Avatar name={data.user} size="xs" /> */}
-            <h1>{data.user}</h1>
-          </div>
-          <div className={styles.feedMenu}>
-            <button
-              className={styles.dropDownBtn}
-              value={data.id}
-              onClick={() => {
-                !feedOption.includes(data.id)
-                  ? setFeedOption((select) => [...select, data.id])
-                  : setFeedOption(
-                      feedOption.filter((button) => button !== data.id)
-                    );
-              }}
-            >
-              <FontAwesomeIcon icon={faEllipsis} size="2x" />
-            </button>
-            {console.log(feedOption)}
-            <ul
-              className={
-                feedOption.includes(data.id) ? styles.menu : styles.disable
-              }
-            >
-              {myFeedDropDownMenu.map((menu) => (
-                <li
-                  className={styles.menuList}
-                  key={menu}
-                  onClick={dropDownMenuEvent}
+    <>
+      <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
+        <div className={styles.feeds}>
+          {feedData.pages?.map((pageData) =>
+            pageData.data?.map((data, index) => (
+              <div key={data.id} className={styles.feedDiv}>
+                <div className={styles.feedUser}>
+                  <Avatar
+                    name="익명"
+                    size="sm"
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                  />
+                  <h1>익명</h1>
+                </div>
+                <div className={styles.feedMenu}>
+                  <button
+                    className={styles.dropDownBtn}
+                    value={data.id}
+                    onClick={() => {
+                      !feedOption.includes(data.id)
+                        ? setFeedOption((select) => [...select, data.id])
+                        : setFeedOption(
+                            feedOption.filter((button) => button !== data.id)
+                          );
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faEllipsis} size="2x" />
+                  </button>
+                  <ul
+                    className={
+                      feedOption.includes(data.id)
+                        ? styles.menu
+                        : styles.disable
+                    }
+                  >
+                    {myFeedDropDownMenu.map((menu) => (
+                      <li
+                        className={styles.menuList}
+                        key={menu}
+                        onClick={dropDownMenuEvent}
+                      >
+                        {menu}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {/* <img src={data?.medias[0]} alt="" /> */}
+                <div className={styles.iconDiv}>
+                  <button
+                    key={data.id}
+                    value={data.id}
+                    onClick={() => {
+                      !select.includes(data.id)
+                        ? setSelect((select) => [...select, data.id])
+                        : setSelect(
+                            select.filter((button) => button !== data.id)
+                          );
+                    }}
+                  >
+                    {select.includes(data.id) ? (
+                      <FontAwesomeIcon
+                        icon={faThumbsUp}
+                        size="lg"
+                        style={{ color: "red" }}
+                      />
+                    ) : (
+                      <FontAwesomeIcon icon={faThumbsUp} size="lg" />
+                    )}
+                  </button>
+                  <p>12</p>
+                  <button>
+                    <FontAwesomeIcon icon={faMessage} size="lg" />
+                  </button>
+                  <p>3</p>
+                </div>
+
+                <p>{data.description}</p>
+                <div
+                  onClick={() => {
+                    setModalType(<FeedDetail feedData={data} />);
+                    onOpen();
+                  }}
                 >
-                  {menu}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* <img src={data?.medias[0]} alt="" /> */}
-          <div className={styles.iconDiv}>
-            <button
-              key={data.id}
-              value={data.id}
-              onClick={() => {
-                !select.includes(data.id)
-                  ? setSelect((select) => [...select, data.id])
-                  : setSelect(select.filter((button) => button !== data.id));
-              }}
-            >
-              {select.includes(data.id) ? (
-                <FontAwesomeIcon
-                  icon={faThumbsUp}
-                  size="lg"
-                  style={{ color: "red" }}
-                />
-              ) : (
-                <FontAwesomeIcon icon={faThumbsUp} size="lg" />
-              )}
-            </button>
-            <p>12</p>
-            <button>
-              <FontAwesomeIcon icon={faMessage} size="lg" />
-            </button>
-            <p>3</p>
-          </div>
-
-          <p>{data.description}</p>
-          <div
-            onClick={() => {
-              setModalType(<FeedDetail feedData={data} />);
-              onOpen();
-            }}
-          >
-            댓글모두 보기
-          </div>
+                  댓글모두 보기
+                </div>
+              </div>
+            ))
+          )}
+          {isFetching && (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          )}
         </div>
-      ))}
-
+      </InfiniteScroll>
       <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
         <ModalOverlay />
         <ModalContent>
@@ -129,7 +152,7 @@ function Feed() {
         </ModalContent>
       </Modal>
       <Comment />
-    </div>
+    </>
   );
 }
 
