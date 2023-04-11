@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { SidebarData } from "./SidebarData";
 import styles from "./Sidebar.module.scss";
-import { SidebarProps } from "../interface/Interface";
+import { SidebarProps } from "../../interface/Interface";
 import { Link } from "react-router-dom";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useClickOutside from "./useClickOutside";
 
 function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   // 새로운 채널의 이름을 저장하는 상태 변수
@@ -14,7 +13,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const [sidebarData, setSidebarData] = useState(SidebarData);
   // 관리자 여부를 나타내는 상태
   const [isAdmin, setIsAdmin] = useState(true);
-  const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const handleAddChannel = () => {
     // 공백이 아닐 때
@@ -37,10 +35,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     setShowModal(false);
   };
 
-  useClickOutside(sidebarRef, () => {
-    setSidebar(false);
-  });
-
   return (
     <>
       {/* handleClickOutside 함수에서 클릭 대상과 사이드바 요소 간의 포함 관계를 비교하여 외부 클릭을 감지 */}
@@ -48,7 +42,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
         className={
           sidebar ? `${styles.nav_menu} ${styles.active}` : styles.nav_menu
         }
-        ref={sidebarRef}
       >
         <ul className={styles.navmenu_items}>
           {sidebarData.map((item, index) => {
@@ -94,5 +87,3 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   );
 }
 export default Sidebar;
-
-//추가
