@@ -18,8 +18,9 @@ import {
 import InfiniteScroll from "react-infinite-scroller";
 import FeedDetail from "../../components/form/feed/FeedDetail";
 import DeleteConfirm from "../../UI/DeleteConfirm";
-import FeedSkeleton from "UI/FeedSkeleton";
-import { breakpoints } from "UI/ChakraResponsive/ChakraResponsive";
+import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
+import moment from "moment";
+import "moment/locale/ko";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 // const otherFeedDropDownMenu = ["쪽지 보내기"];
@@ -53,7 +54,7 @@ function Feed() {
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
         <div className={styles.feeds}>
           {feedData.pages?.map((pageData) =>
-            pageData.results?.map((data, index) => (
+            pageData.results?.map((data) => (
               <div key={data.id} className={styles.feedDiv}>
                 <div className={styles.feedUser}>
                   <Avatar
@@ -61,8 +62,10 @@ function Feed() {
                     size="sm"
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                   />
-
-                  <h1>익명</h1>
+                  <h1>
+                    <p>익명</p>
+                    {moment(data.created_at).fromNow()}
+                  </h1>
                 </div>
                 <div className={styles.feedMenu}>
                   <button
@@ -130,6 +133,7 @@ function Feed() {
 
                 <div
                   onClick={() => {
+                    console.log(data);
                     setModalType(<FeedDetail feedData={data} />);
                     onOpen();
                   }}
@@ -151,7 +155,7 @@ function Feed() {
           {isLoading && <FeedSkeleton />}
         </div>
       </InfiniteScroll>
-      <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalBody>{modalType}</ModalBody>

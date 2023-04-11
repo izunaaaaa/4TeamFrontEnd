@@ -12,6 +12,7 @@ const SignUp = () => {
     handleSubmit,
     getValues,
   } = useForm<FormValue>();
+
   /**링크 네비게이트 */
   const navigate = useNavigate();
 
