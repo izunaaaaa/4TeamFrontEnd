@@ -1,6 +1,5 @@
 import { Feed } from "../../../interface/Interface";
-import axios from "axios";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import { getFeeds } from "api/axios/axiosSetting";
 import { BASE_URL } from "api/URL/BaseURL";
@@ -69,18 +68,24 @@ export function useFeed() {
     fetchNextPage,
     hasNextPage,
     isFetching,
+    isLoading,
   } = useInfiniteQuery(
     Querykey.feedData,
     ({ pageParam = `${BASE_URL}/feeds/` }) => {
+      console.log(pageParam);
       return getFeeds(pageParam);
     },
     {
-      getNextPageParam: (lastpage, allPage) => {
-        console.log(allPage);
-        return `${BASE_URL}/feeds/?page=${lastpage.now_page + 1}` || undefined;
+      getNextPageParam: (lastpage) => {
+        if (lastpage.total_pages - lastpage.now_page <= 0)
+          return `${BASE_URL}/feeds/?page=${lastpage.now_page + 1}`;
+        else {
+          return null;
+        }
       },
     }
   );
+  console.log(feedData);
 
-  return { feedData, fetchNextPage, hasNextPage, isFetching };
+  return { feedData, fetchNextPage, hasNextPage, isFetching, isLoading };
 }

@@ -1,24 +1,22 @@
 export interface Feed {
   id: number;
   user: number;
-  group: string;
+  group: number;
   title: String;
   description: String;
   visited: number;
   medias: any;
+  created_at: string;
+  updated_at: string;
   comment: comment[];
+  category: string | null;
 }
 export interface comment {
   id: number;
+  created_at: string;
+  description: string;
   user: string;
-  description: string;
-}
-
-export interface Comment {
-  id: number;
-  user: number;
-  feed: number;
-  description: string;
+  feed: string;
 }
 
 export interface FormValue {
