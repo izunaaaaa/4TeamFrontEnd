@@ -15,3 +15,7 @@ export const getFeeds = async (url: string) =>
 export const getLetterlists = (): Promise<Letterlists[]> => {
   return instance.get(`letterlists/`).then((res) => res.data);
 };
+export const getFeedDetail = async (feedID: number, group: string) =>
+  await instance.get(`${BASE_URL}/feeds/${group}/${feedID}/`).then((res) => {
+    return res.data;
+  });

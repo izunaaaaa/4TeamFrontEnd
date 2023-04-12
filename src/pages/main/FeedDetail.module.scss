@@ -1,0 +1,46 @@
+.feedDetailDiv {
+  padding: 25px 0px 0px 0px;
+
+  height: 600px;
+  overflow-y: scroll;
+
+  /* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  img {
+    width: 100%;
+  }
+  .writerName {
+    display: flex;
+    margin-bottom: 5px;
+    h1 {
+      font-size: 0.6rem;
+      margin-left: 5px;
+    }
+    p {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+  }
+  .commentName {
+    font-weight: bold;
+  }
+  .commentTime {
+    font-size: 0.76rem;
+    margin-right: 6px;
+  }
+}
+
+.commentInput {
+  border-top: 1.5px solid grey;
+  opacity: 0.8;
+  display: flex;
+  padding: 10px;
+  justify-content: space-around;
+  textarea {
+    width: 80%;
+    resize: none;
+  }
+}
