@@ -112,45 +112,4 @@ export const mockMsgCont: MockCont[] = [
     content: "I'm doing well too, thanks!",
     time: "10:04 AM",
   },
-
-  {
-    id: 2,
-    user: {
-      name: "Bob",
-      avatar: "",
-      isMe: true,
-    },
-    content: "Hi, Alice!",
-    time: "10:01 AM",
-  },
-  {
-    id: 3,
-    user: {
-      name: "Alice",
-      avatar: "",
-      isMe: false,
-    },
-    content: "How are you?",
-    time: "10:02 AM",
-  },
-  {
-    id: 4,
-    user: {
-      name: "Bob",
-      avatar: "",
-      isMe: true,
-    },
-    content: "I'm good, thanks! How about you?",
-    time: "10:03 AM",
-  },
-  {
-    id: 5,
-    user: {
-      name: "Alice",
-      avatar: "",
-      isMe: false,
-    },
-    content: "I'm doing well too, thanks!",
-    time: "10:04 AM",
-  },
 ];
