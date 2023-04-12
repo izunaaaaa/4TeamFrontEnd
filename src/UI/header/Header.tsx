@@ -88,16 +88,8 @@ function Header(): ReactElement {
                 <CgMenuLeft onClick={handleSidebarToggle} />
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
               </div>
-              <div className={styles.searchWrapper_mobile}>
-                <input
-                  className={styles.searchInput}
-                  type="text"
-                  placeholder="Search text"
-                />
-                <FontAwesomeIcon
-                  className={styles.searchIcon}
-                  icon={faMagnifyingGlass}
-                />
+              <div className={styles.searchWrapper}>
+                <SearchBar />
               </div>
               <div className={styles.fofile_box} ref={dropdownRef}>
                 <div className={styles.myFrofile} onClick={toggleDropdown}>

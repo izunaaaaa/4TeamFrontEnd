@@ -1,34 +1,70 @@
-import React from "react";
-import { Stack, Text, Box, Avatar } from "@chakra-ui/react";
+import React, { useState, useRef } from "react";
+import {
+  Stack,
+  Text,
+  Box,
+  Avatar,
+  Flex,
+  HStack,
+  Progress,
+} from "@chakra-ui/react";
 import { MockCont } from "../../MsgMock";
-import { Card, Checkbox } from "@chakra-ui/react";
+import { Card } from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { BsChatSquareHeart } from "react-icons/bs";
 
 export default function MsgDetail(props: MockCont) {
+  const [isHovering, setIsHovering] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+  const timeRef = useRef(null);
+
+  const handleDeleteClick = () => {
+    setIsDeleted(true);
+  };
+
+  if (isDeleted) {
+    return null;
+  }
+
   return (
-    <>
-      {" "}
+    <Flex justify={"space-evenly"}>
       <Stack>
-        {" "}
-        <Text mt={"3rem"}>{props.time}</Text>
+        <Text mt={"4rem"}>{props.time}</Text>
       </Stack>
-      <Card
-        sx={{
-          width: "22rem",
-          my: 4,
-          p: 5,
-          pb: 10,
-          // border: "1px solid red",
-          borderRadius: "5%",
-        }}
+      <Stack
+        borderWidth="1px"
+        borderColor="gray.200"
+        ref={timeRef}
+        mr="9rem"
+      ></Stack>
+      <Box
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
         {" "}
-        <Stack spacing={2} direction="row">
-          <Checkbox size="sm" colorScheme="blue" mr={3} />
-
-          <Avatar mr={0}>{props.user.avatar}</Avatar>
-          <Text>{props.content}</Text>
-        </Stack>
-      </Card>
-    </>
+        <BsChatSquareHeart color="red" />{" "}
+        <Card
+          sx={{
+            width: "25rem",
+            my: 4,
+            p: 5,
+            pb: 10,
+            borderRadius: "7%",
+            color: props.user.isMe === true ? "#FAFAFA" : "black",
+            bg: props.user.isMe === true ? "#5882FA" : "gray.200",
+            _hover: { bg: "#2EFEF7", cursor: "pointer" },
+          }}
+        >
+          <HStack spacing={2} direction="row">
+            <Avatar mr={0}>{props.user.avatar}</Avatar>
+            <Text>{props.content}</Text>
+            {isHovering && (
+              <FontAwesomeIcon icon={faTrashCan} onClick={handleDeleteClick} />
+            )}
+          </HStack>
+        </Card>
+      </Box>
+    </Flex>
   );
 }

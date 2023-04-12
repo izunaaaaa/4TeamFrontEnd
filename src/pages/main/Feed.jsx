@@ -8,6 +8,8 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
+  Box,
+  Flex,
   Modal,
   ModalBody,
   ModalContent,
@@ -16,10 +18,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
-import FeedDetail from "../../components/form/feed/FeedDetail";
+import FeedDetail from "./FeedDetail";
 import DeleteConfirm from "../../UI/DeleteConfirm";
-import FeedSkeleton from "UI/FeedSkeleton";
-import { breakpoints } from "UI/ChakraResponsive/ChakraResponsive";
+import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
+import moment from "moment";
+import "moment/locale/ko";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 // const otherFeedDropDownMenu = ["쪽지 보내기"];
@@ -33,6 +36,7 @@ function Feed() {
   const [feedOption, setFeedOption] = useState([]);
 
   /**게시글 보기 모달 */
+  // const [feedId, setFeedId] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(<FeedDetail />);
 
@@ -53,7 +57,7 @@ function Feed() {
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
         <div className={styles.feeds}>
           {feedData.pages?.map((pageData) =>
-            pageData.results?.map((data, index) => (
+            pageData.results?.map((data) => (
               <div key={data.id} className={styles.feedDiv}>
                 <div className={styles.feedUser}>
                   <Avatar
@@ -61,8 +65,10 @@ function Feed() {
                     size="sm"
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                   />
-
-                  <h1>익명</h1>
+                  <h1>
+                    <p>익명의 개발자</p>
+                    {moment(data.created_at).fromNow()}
+                  </h1>
                 </div>
                 <div className={styles.feedMenu}>
                   <button
@@ -121,12 +127,29 @@ function Feed() {
                       <FontAwesomeIcon icon={faThumbsUp} size="lg" />
                     )}
                   </button>
-                  <p>12</p>
+                  <p>{data.like_count}</p>
                   <button>
                     <FontAwesomeIcon icon={faMessage} size="lg" />
                   </button>
-                  <p>3</p>
+                  <p>{data.comments_count}</p>
                 </div>
+                {data.highest_like_comments[0] ? (
+                  <Flex>
+                    <Box margin="10px 0 5px 5px">
+                      <Avatar
+                        name="익명"
+                        size="xs"
+                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                      />
+                    </Box>
+                    <Box padding="10px" lineHeight="5">
+                      <p className={styles.commentName}>
+                        익명{data.highest_like_comments[0].id}
+                      </p>
+                      {data.highest_like_comments[0].description}
+                    </Box>
+                  </Flex>
+                ) : null}
 
                 <div
                   onClick={() => {
@@ -151,7 +174,7 @@ function Feed() {
           {isLoading && <FeedSkeleton />}
         </div>
       </InfiniteScroll>
-      <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalBody>{modalType}</ModalBody>

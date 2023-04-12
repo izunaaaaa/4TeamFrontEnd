@@ -1,18 +1,73 @@
 import { RefObject } from 'react';
 import { IconDefinition, SizeProp } from '@fortawesome/fontawesome-svg-core';
 
+export interface User {
+  avatar: any;
+  email: string;
+  is_coach: boolean;
+  name: string;
+  username: string;
+}
+
 export interface Feed {
-   id: number;
-   user: number;
-   group: number;
-   title: String;
-   description: String;
-   visited: number;
-   medias: any;
-   created_at: string;
-   updated_at: string;
-   comment: comment[];
-   category: string | null;
+  id: number;
+  user: User;
+  group: { pk: number; name: string; members_count: number };
+  title: string;
+  description: string;
+  visited: number;
+  created_at: string;
+  comments_count: number;
+  highest_like_comments: [
+    {
+      id: number;
+      description: string;
+      created_at: string;
+      commentlikeCount: number;
+    }
+  ];
+  is_liked: boolean;
+  like_count: number;
+  thumbnail: any;
+  category: { id: number; name: string };
+}
+export interface FeedDetail {
+  id: number;
+  user: User;
+  group: { pk: number; name: string; members_count: number };
+  category: { id: number; name: string };
+  title: string;
+  description: string;
+  visited: number;
+  created_at: string;
+  like_count: number;
+  comments_count: number;
+  comment: [
+    {
+      id: number;
+      description: number;
+      created_at: string;
+      commentlikeCount: number;
+    }
+  ];
+  highest_like_comments: [
+    {
+      id: number;
+      user: {
+        username: string;
+        name: any;
+        email: string;
+        avatar: any;
+        is_coach: boolean;
+      };
+      description: string;
+      created_at: string;
+      commentlikeCount: number;
+    }
+  ];
+
+  is_like: boolean;
+  thumbnail: any;
 }
 export interface comment {
    id: number;
@@ -35,6 +90,13 @@ export interface FormValue {
 }
 
 export interface UplaodFeedValue {}
+
+export interface CropAttribute {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 export interface Message {
    title: string;
