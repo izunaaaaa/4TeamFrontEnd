@@ -1,74 +1,129 @@
+import React, { useCallback, useRef, useState } from "react";
+import styles from "./CropUploadImg.module.scss";
+import croppedImg from "./hook/GetCroppedImg";
+import Cropper from "react-easy-crop";
+import { CropAttribute } from "interface/Interface";
 import {
+  Button,
+  ButtonGroup,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
 } from "@chakra-ui/react";
-import { Box, DialogActions, DialogContent } from "@mui/material";
-import React, { useCallback, useState } from "react";
-import styles from "./CropUploadImg.module.scss";
-import { croppedImg } from "./hook/GetCroppedImg";
-import Cropper from "react-easy-crop";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBackward,
+  faCrop,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 
 const CropUploadImg = (props: any) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedArea, setCroppedArea] = useState(null);
+  const [croppedArea, setCroppedArea] = useState<CropAttribute>({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  });
 
+  /**이미지 */
+  const previewImg = useRef("");
+
+  /**crop한 속성값 */
   const onCropComplete = useCallback(
-    (croppedArea: any, croppedAreaPixels: any) => {
-      //   console.log(croppedArea, croppedAreaPixels);
+    (croppedArea: CropAttribute, croppedAreaPixels: CropAttribute) => {
+      setCroppedArea(croppedAreaPixels);
     },
     []
   );
 
-  console.log(props.previewImg);
+  /**이미지 크롭하기 */
+  const generateDownload = async (imageSrc: string, crop: CropAttribute) => {
+    if (!crop || !imageSrc) {
+      return;
+    }
+    const canvas = await croppedImg(imageSrc, crop);
+
+    canvas?.toBlob((blob: any) => {
+      const previewUrl = window.URL.createObjectURL(blob);
+
+      previewImg.current = previewUrl;
+      props.getCroppedImg(previewImg.current);
+    }, "image/jpeg");
+  };
 
   return (
     <>
       <div className={styles.cropImg}>
-        <DialogContent
-          sx={{
-            backgroundColor: "#333",
-            height: "200px",
+        <Cropper
+          image={props.previewImg}
+          aspect={6 / 7}
+          crop={crop}
+          zoom={zoom}
+          onCropChange={setCrop}
+          onZoomChange={setZoom}
+          onCropComplete={onCropComplete}
+          style={{
+            containerStyle: {
+              width: "100%",
+              height: "83%",
+              backgroundColor: "black",
+            },
           }}
-        >
-          <Cropper
-            image={props.previewImg}
-            crop={crop}
-            zoom={zoom}
-            aspect={3 / 4}
-            onCropChange={setCrop}
-            onCropComplete={onCropComplete}
-            onZoomChange={setZoom}
-            onCropAreaChange={(croppedArea: any) => {
-              setCroppedArea(croppedArea);
-            }}
-          />
-        </DialogContent>
+        />
       </div>
-      <DialogActions>
-        <div className={styles.sliderDiv}>
-          <input
-            type="range"
-            value={zoom}
+
+      <div className={styles.sliderDiv}>
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          size="lg"
+          style={{ color: "skyblue" }}
+        />
+        <div className={styles.slider}>
+          <Slider
+            aria-label="Zoom"
             min={1}
             max={3}
             step={0.1}
-            aria-labelledby="Zoom"
             onChange={(e: any) => {
-              setZoom(e.target.value);
+              setZoom(e);
             }}
-          />
+            defaultValue={0}
+          >
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+            <SliderThumb />
+          </Slider>
         </div>
-      </DialogActions>
-      <button
-        onClick={() => {
-          croppedImg(props.previewImg, croppedArea);
-        }}
+      </div>
+      <ButtonGroup
+        textAlign={"center"}
+        alignItems="center"
+        display="flex"
+        justifyContent="center"
+        paddingBottom={3}
       >
-        확인
-      </button>
+        <Button
+          leftIcon={<FontAwesomeIcon icon={faBackward} />}
+          colorScheme="red"
+          onClick={() => window.location.reload()}
+        >
+          취소
+        </Button>
+        <Button
+          colorScheme="twitter"
+          leftIcon={<FontAwesomeIcon icon={faCrop} />}
+          onClick={() => {
+            generateDownload(props.previewImg, croppedArea);
+            props.onClose();
+          }}
+        >
+          <p>크롭</p>
+        </Button>
+      </ButtonGroup>
     </>
   );
 };
