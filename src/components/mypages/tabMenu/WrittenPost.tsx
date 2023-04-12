@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useFeed } from '../../../pages/main/hook/useFeed';
 import styles from './WrittenPost.module.scss';
-import FeedDetail from 'components/form/feed/FeedDetail';
 
 type Post = {
    id: number;
@@ -23,29 +22,23 @@ type FeedData = {
       avatar: string;
    };
    title?: string;
+   results?: Post[];
 };
 
 export default function WrittenPost() {
    const { feedData } = useFeed();
    const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-   if (Array.isArray(feedData) || !feedData.pages || feedData.pages.length === 0) {
-      return <div>데이터가 없습니다.</div>;
-   }
+   if (!feedData?.pages?.length) return <div>데이터가 없습니다.</div>;
 
-   const handlePostClick = (post: Post) => {
-      setSelectedPost(post);
-   };
-
-   const handleCloseModal = () => {
-      setSelectedPost(null);
-   };
+   const handlePostClick = (post: Post) => setSelectedPost(post);
+   const handleCloseModal = () => setSelectedPost(null);
 
    return (
       <>
          <div className={styles.post}>
-            {feedData.pages.map(page =>
-               page.results.map((post: Post) => (
+            {feedData.pages.map((page: FeedData) =>
+               page.results?.slice(0, 3).map((post: Post) => (
                   <div className={styles.post__info} key={post.id}>
                      <div className={styles.post__content} onClick={() => handlePostClick(post)}>
                         {post.title}
@@ -54,11 +47,7 @@ export default function WrittenPost() {
                )),
             )}
          </div>
-         {selectedPost && (
-            <div className={styles.modal}>
-               <FeedDetail post={selectedPost} onClose={handleCloseModal} />
-            </div>
-         )}
+         {selectedPost && <div className={styles.modal}></div>}
       </>
    );
 }
