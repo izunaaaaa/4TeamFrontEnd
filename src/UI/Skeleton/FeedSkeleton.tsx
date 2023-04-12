@@ -3,10 +3,9 @@ import SkeletonUI from "./SkeletonUI";
 
 const FeedSkeleton = () => {
   return (
-    <div>
+    <>
       <SkeletonUI />
-      <SkeletonUI />
-    </div>
+    </>
   );
 };
 
