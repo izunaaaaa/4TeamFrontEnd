@@ -8,6 +8,8 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
+  Box,
+  Flex,
   Modal,
   ModalBody,
   ModalContent,
@@ -16,7 +18,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
-import FeedDetail from "../../components/form/feed/FeedDetail";
+import FeedDetail from "./FeedDetail";
 import DeleteConfirm from "../../UI/DeleteConfirm";
 import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
 import moment from "moment";
@@ -34,6 +36,7 @@ function Feed() {
   const [feedOption, setFeedOption] = useState([]);
 
   /**게시글 보기 모달 */
+  // const [feedId, setFeedId] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(<FeedDetail />);
 
@@ -63,7 +66,7 @@ function Feed() {
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                   />
                   <h1>
-                    <p>익명</p>
+                    <p>익명의 개발자</p>
                     {moment(data.created_at).fromNow()}
                   </h1>
                 </div>
@@ -124,16 +127,32 @@ function Feed() {
                       <FontAwesomeIcon icon={faThumbsUp} size="lg" />
                     )}
                   </button>
-                  <p>12</p>
+                  <p>{data.like_count}</p>
                   <button>
                     <FontAwesomeIcon icon={faMessage} size="lg" />
                   </button>
-                  <p>3</p>
+                  <p>{data.comments_count}</p>
                 </div>
+                {data.highest_like_comments[0] ? (
+                  <Flex>
+                    <Box margin="10px 0 5px 5px">
+                      <Avatar
+                        name="익명"
+                        size="xs"
+                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                      />
+                    </Box>
+                    <Box padding="10px" lineHeight="5">
+                      <p className={styles.commentName}>
+                        익명{data.highest_like_comments[0].id}
+                      </p>
+                      {data.highest_like_comments[0].description}
+                    </Box>
+                  </Flex>
+                ) : null}
 
                 <div
                   onClick={() => {
-                    console.log(data);
                     setModalType(<FeedDetail feedData={data} />);
                     onOpen();
                   }}

@@ -63,7 +63,7 @@ const UploadFeed = () => {
 
       <form onSubmit={handleSubmit(submitHandler)} className={styles.postForm}>
         <div className={styles.postFormHeader}>
-          <button onClick={() => navigate("/main")}>
+          <button onClick={() => navigate("/home")}>
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
           <h3>새 게시물 작성하기</h3>
