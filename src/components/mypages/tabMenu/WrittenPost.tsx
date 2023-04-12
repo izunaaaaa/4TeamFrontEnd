@@ -1,19 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useFeed } from '../../../pages/main/hook/useFeed';
+import styles from './WrittenPost.module.scss';
+
+type Post = {
+   id: number;
+   user: string;
+   content: string;
+   title: string;
+};
+
+type FeedData = {
+   pages?: {
+      results: Post[];
+   }[];
+   id?: number;
+   content?: string;
+   user?: {
+      username: string;
+      name: string;
+      email: string;
+      avatar: string;
+   };
+   title?: string;
+   results?: Post[];
+};
 
 export default function WrittenPost() {
-   // 게시글 데이터 타입 정의
-   type Post = {
-      id: number;
-      title: string;
-      date: string;
-      views: number;
-   };
+   const { feedData } = useFeed();
+   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-   const posts: Post[] = [
-      { id: 1, title: '첫 번째 게시글', date: '2023-03-01', views: 10 },
-      { id: 2, title: '두 번째 게시글', date: '2023-03-02', views: 22 },
-      { id: 3, title: '세 번째 게시글', date: '2023-03-03', views: 16 },
-   ];
+   if (!feedData?.pages?.length) return <div>데이터가 없습니다.</div>;
 
-   return <></>;
+   const handlePostClick = (post: Post) => setSelectedPost(post);
+   const handleCloseModal = () => setSelectedPost(null);
+
+   return (
+      <>
+         <div className={styles.post}>
+            {feedData.pages.map((page: FeedData) =>
+               page.results?.slice(0, 3).map((post: Post) => (
+                  <div className={styles.post__info} key={post.id}>
+                     <div className={styles.post__content} onClick={() => handlePostClick(post)}>
+                        {post.title}
+                     </div>
+                  </div>
+               )),
+            )}
+         </div>
+         {selectedPost && <div className={styles.modal}></div>}
+      </>
+   );
 }
