@@ -2,8 +2,20 @@ import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormValue } from "../../interface/Interface";
-
-const genderType = ["남", "여"];
+import {
+  Box,
+  Checkbox,
+  Flex,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Radio,
+  RadioGroup,
+  Select,
+  Stack,
+} from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
 const SignUp = () => {
   const {
@@ -18,12 +30,21 @@ const SignUp = () => {
 
   /**회원가입 form 제출시 */
   const onSubmit = (data: FormValue) => {
-    console.log(data);
+    const signUpData = {
+      id: data.id,
+      password: data.password,
+      name: data.name,
+      phone_number: "010" + data.phone_number,
+      email: data.email,
+      gender: data.gender,
+      group: data.group,
+      is_coach: data.is_coach,
+    };
+    console.log(signUpData);
   };
 
   return (
     <>
-      <h1 className={styles.signUpTitle}>회원가입</h1>
       <div className={styles.signUp}>
         <img
           className={styles.signUpImg}
@@ -32,10 +53,11 @@ const SignUp = () => {
         />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.typeDiv}>
-            <label>Id</label>
-            <input
+            <label htmlFor="id">ID</label>
+            <Input
+              id="id"
               placeholder="Id를 입력하세요."
-              {...register("Id", {
+              {...register("id", {
                 required: {
                   value: true,
                   message: "필수 정보입니다.",
@@ -54,14 +76,13 @@ const SignUp = () => {
                 },
               })}
             />
-          </div>
-          <div className={styles.errorMessage}>
-            {errors.Id && <p>{errors.Id.message}</p>}
+            {errors.id && <p>{errors.id.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
-            <label>비밀번호</label>
-            <input
+            <label htmlFor="password">비밀번호</label>
+            <Input
+              id="password"
               type="password"
               placeholder="비밀번호"
               autoComplete="off"
@@ -91,14 +112,13 @@ const SignUp = () => {
                 },
               })}
             />
-          </div>
-          <div className={styles.errorMessage}>
             {errors.password && <p>{errors.password.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
-            <label>비밀번호 확인</label>
-            <input
+            <label htmlFor="passwordConfirm">비밀번호 확인</label>
+            <Input
+              id="passwordConfirm"
               type="password"
               placeholder="비밀번호 확인"
               autoComplete="off"
@@ -116,14 +136,13 @@ const SignUp = () => {
                 },
               })}
             />
-          </div>
-          <div className={styles.errorMessage}>
             {errors.passwordConfirm && <p>{errors.passwordConfirm.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
-            <label>성명</label>
-            <input
+            <label htmlFor="name">성명</label>
+            <Input
+              id="name"
               placeholder="이름을 입력하세요"
               {...register("name", {
                 required: {
@@ -141,28 +160,32 @@ const SignUp = () => {
                 },
               })}
             />
-          </div>
-          <div className={styles.errorMessage}>
             {errors.name && <p>{errors.name.message}</p>}
           </div>
-
           <div className={styles.typeDiv}>
-            <label>전화번호</label>
-            <input
-              type="number"
-              placeholder="전화번호를 입력하세요."
-              {...register("phone_number", {
-                required: "필수 정보입니다.",
-              })}
-            />
-          </div>
-          <div className={styles.errorMessage}>
+            <label htmlFor="number">전화번호</label>
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<FontAwesomeIcon icon={faPhone} />}
+                height="50px"
+              />
+              <Input
+                id="number"
+                type="number"
+                placeholder="전화번호를 입력하세요."
+                {...register("phone_number", {
+                  required: "필수 정보입니다.",
+                })}
+              />
+            </InputGroup>
             {errors?.email && <p>{errors.phone_number?.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
-            <label>Email</label>
-            <input
+            <label htmlFor="email">Email</label>
+            <Input
+              id="email"
               placeholder="이메일을 입력하세요"
               {...register("email", {
                 required: "필수 정보입니다.",
@@ -178,32 +201,58 @@ const SignUp = () => {
                 },
               })}
             />
-          </div>
-          <div className={styles.errorMessage}>
             {errors?.email && <p>{errors.email.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
-            <label>성별</label>
-            {genderType.map((gender) => (
-              <div key={gender} className={styles.genderTypeDiv}>
-                <input
-                  className={styles.genderRadio}
-                  key={Math.random()}
-                  type="radio"
-                  value={gender}
-                  {...register("gender", {
-                    required: "필수 정보입니다.",
-                  })}
-                />
-                <h3 key={Math.random()}>{gender}</h3>
-              </div>
-            ))}
-          </div>
-          <div className={styles.errorMessage}>
-            {errors?.gender && <p>{errors.gender.message}</p>}
+            <label htmlFor="group">부트캠프</label>
+            <Select
+              id="group"
+              height="50px"
+              placeholder="부트캠프를 선택해주세요"
+              {...register("group", {
+                required: "필수 정보입니다.",
+              })}
+            >
+              <option>oz코딩스쿨</option>
+              <option>싸피(Ssafy)</option>
+              <option>라피신(서울42)</option>
+            </Select>
+            {errors?.group && <p>{errors.group?.message}</p>}
           </div>
 
+          <Box display="flex" width="87%" justifyContent="center">
+            <RadioGroup>
+              <Stack spacing={5} direction="row">
+                <Radio
+                  colorScheme="twitter"
+                  value="남"
+                  {...register("gender", {
+                    required: "성별을 입력해주세요.",
+                  })}
+                >
+                  남
+                </Radio>
+                <Radio
+                  colorScheme="red"
+                  value="여"
+                  {...register("gender", {
+                    required: "성별을 입력해주세요.",
+                  })}
+                >
+                  여
+                </Radio>
+              </Stack>
+            </RadioGroup>
+            <Flex>
+              <Checkbox {...register("is_coach")} marginLeft="20px">
+                코치
+              </Checkbox>
+            </Flex>
+          </Box>
+          {errors?.gender && (
+            <p className={styles.error}>{errors.gender?.message}</p>
+          )}
           <div className={styles.buttonDiv}>
             <button
               type="button"
