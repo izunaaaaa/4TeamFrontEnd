@@ -19,3 +19,7 @@ export const getFeedDetail = async (feedID: number, group: string) =>
   await instance.get(`${BASE_URL}/feeds/${group}/${feedID}/`).then((res) => {
     return res.data;
   });
+
+export const login = async () => {
+  // await instance.post().then(res => )
+};

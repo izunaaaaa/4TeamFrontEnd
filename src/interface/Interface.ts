@@ -1,5 +1,3 @@
-import { RefObject } from 'react';
-import { IconDefinition, SizeProp } from '@fortawesome/fontawesome-svg-core';
 
 export interface User {
   avatar: any;
@@ -9,47 +7,52 @@ export interface User {
   username: string;
 }
 
-export interface Feed {
+export interface LoginData {
+  id: string;
+  password: string;
+}
+
+export interface DefaultValue {
   id: number;
+  description: string;
+}
+
+export interface CommentData extends DefaultValue {
+  created_at: string;
+  commentlikeCount: number;
+}
+
+export interface FeedData extends DefaultValue {
   user: User;
   group: { pk: number; name: string; members_count: number };
   title: string;
-  description: string;
   visited: number;
   created_at: string;
   comments_count: number;
-  highest_like_comments: [
-    {
-      id: number;
-      description: string;
-      created_at: string;
-      commentlikeCount: number;
-    }
-  ];
+  // highest_like_comments: [
+  //   {
+  //     id: number;
+  //     description: string;
+  //     created_at: string;
+  //     commentlikeCount: number;
+  //   }
+  // ];
+  highest_like_comments: [CommentData];
   is_liked: boolean;
   like_count: number;
   thumbnail: any;
   category: { id: number; name: string };
 }
-export interface FeedDetail {
-  id: number;
+export interface FeedDetail extends CommentData {
   user: User;
   group: { pk: number; name: string; members_count: number };
   category: { id: number; name: string };
   title: string;
-  description: string;
   visited: number;
   created_at: string;
   like_count: number;
   comments_count: number;
-  comment: [
-    {
-      id: number;
-      description: number;
-      created_at: string;
-      commentlikeCount: number;
-    }
-  ];
+  comment: [CommentData];
   highest_like_comments: [
     {
       id: number;
@@ -65,10 +68,10 @@ export interface FeedDetail {
       commentlikeCount: number;
     }
   ];
-
   is_like: boolean;
   thumbnail: any;
 }
+
 export interface comment {
    id: number;
    created_at: string;
@@ -87,6 +90,7 @@ export interface FormValue {
    gender: string;
    group: number;
    is_coach: boolean;
+
 }
 
 export interface UplaodFeedValue {}

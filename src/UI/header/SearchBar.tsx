@@ -33,6 +33,7 @@ function SearchBar() {
     includes(data: string): boolean;
     city?: any;
   }
+
   const updateData = async () => {
     const res = await fetchData();
     let b = res
@@ -43,6 +44,7 @@ function SearchBar() {
       .slice(0, 10);
     setKeyItems(b);
   };
+
   useEffect(() => {
     const debounce = setTimeout(() => {
       if (keyword) updateData();
