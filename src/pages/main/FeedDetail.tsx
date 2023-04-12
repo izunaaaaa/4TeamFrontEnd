@@ -8,8 +8,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./FeedDetail.module.scss";
 import moment from "moment";
-import "moment/locale/ko";
 import useFeedDetail from "./hook/useFeedDetail";
+import Comment from "./Comment";
+import "moment/locale/ko";
 
 const FeedDetail = (props: any) => {
   const { feedDetail } = useFeedDetail(
@@ -56,10 +57,10 @@ const FeedDetail = (props: any) => {
           </Button>
         </ButtonGroup>
         <Box margin="5px 2px 40px 2px">{feedDetail.description}</Box>
-        <div className={styles.commentDiv}>
+        <Comment feedComment={feedDetail.comment} />
+        {/* <div className={styles.commentDiv}>
           {feedDetail.comment?.map((comment) => {
             const commentWriteTime = moment(comment.created_at).fromNow();
-
             return (
               <Flex key={comment.id}>
                 <Box margin="10px 0 5px 5px">
@@ -102,7 +103,7 @@ const FeedDetail = (props: any) => {
               </Flex>
             );
           })}
-        </div>
+        </div> */}
       </div>
       <div className={styles.commentInput}>
         <textarea placeholder="댓글달기" />
