@@ -146,3 +146,11 @@ export interface TabMenu {
    activeTab: string;
    onClick: (tabName: string) => void;
 }
+
+export interface Letterlists {
+  id: number;
+  create_at: any;
+  update_at: any;
+  sender: number;
+  receiver: number;
+}
