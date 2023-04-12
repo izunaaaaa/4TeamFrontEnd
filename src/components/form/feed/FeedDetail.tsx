@@ -7,8 +7,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styles from "./FeedDetail.module.scss";
-import moment from "moment";
 import "moment/locale/ko";
+import moment from "moment";
 
 const FeedDetail = (props: any) => {
   const writeTime = moment(props.feedData.created_at).fromNow();

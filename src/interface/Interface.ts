@@ -81,3 +81,11 @@ export interface MockCont {
   content: string;
   time: string;
 }
+
+export interface Letterlists {
+  id: number;
+  create_at: any;
+  update_at: any;
+  sender: number;
+  receiver: number;
+}
