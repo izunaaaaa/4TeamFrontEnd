@@ -4,13 +4,13 @@
     align-items: center;
     height: 100%;
     padding: 40px;
+    margin: 0 0 0 15rem;
 
     form {
         display: flex;
         flex-direction: column;
         width: 100%;
         max-width: 500px;
-        margin: 0 auto;
 
         .form__group {
             display: flex;

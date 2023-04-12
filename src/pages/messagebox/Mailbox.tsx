@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
 import { useQuery } from "react-query";
 import { getLetterlists } from "api/axios/axiosSetting";
@@ -13,8 +13,8 @@ function Mailbox() {
 
   //받은 쪽지함
   return (
-    <div>
-      <Box sx={{ width: "100%", bg: "#F2F2F2" }}>
+    <Flex>
+      <Box sx={{ width: "100%", bg: "#F2F2F2", maxW: "479px" }}>
         {data?.length
           ? data?.map((item, idx) => {
               return (
@@ -25,7 +25,10 @@ function Mailbox() {
             })
           : "받은 쪽지가 없습니다."}
       </Box>
-    </div>
+      <Box>
+        <Text>"펼쳐볼 쪽지를 선택해주세요."</Text>
+      </Box>
+    </Flex>
   );
 }
 

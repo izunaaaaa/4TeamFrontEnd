@@ -48,7 +48,7 @@ export default function WrittenPost() {
   return (
     <>
       <div className={styles.post}>
-        {feedData.pages.map((page: { results: Post[] }) =>
+        {feedData.pages.map((page: any) =>
           page.results.map((post: Post) => (
             <div className={styles.post__info} key={post.id}>
               <div

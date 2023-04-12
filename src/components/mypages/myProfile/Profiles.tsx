@@ -21,12 +21,6 @@ const Profile = () => {
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      try {
-         const res = await axios.post('/api/user', userInfo);
-         console.log(res.data);
-      } catch (err) {
-         console.error(err);
-      }
    };
 
    return (
