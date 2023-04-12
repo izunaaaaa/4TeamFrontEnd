@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Stack,
   Text,
@@ -17,7 +17,6 @@ import { BsChatSquareHeart } from "react-icons/bs";
 export default function MsgDetail(props: MockCont) {
   const [isHovering, setIsHovering] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
-  const timeRef = useRef(null);
 
   const handleDeleteClick = () => {
     setIsDeleted(true);
@@ -32,12 +31,7 @@ export default function MsgDetail(props: MockCont) {
       <Stack>
         <Text mt={"4rem"}>{props.time}</Text>
       </Stack>
-      <Stack
-        borderWidth="1px"
-        borderColor="gray.200"
-        ref={timeRef}
-        mr="9rem"
-      ></Stack>
+      <Stack borderWidth="1px" borderColor="gray.200" mr="9rem"></Stack>
       <Box
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}

@@ -13,13 +13,15 @@ import LikedPost from "components/mypages/tabMenu/LikedPost";
 import MyPage from "pages/mypage/MyPage";
 import WrittenComment from "components/mypages/tabMenu/WrittenComment";
 import Profile from "components/mypages/myProfile/Profiles";
+import Login from "components/form/Login";
 
 const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MsgRoom />} />
+        <Route path="/" element={<Login />} />
         <Route path="/mailbox" element={<Mailbox />} />
+        <Route path="/maildetail" element={<MsgRoom />} />
         <Route path="/main" element={<Main />} />
         <Route
           path="/home"
