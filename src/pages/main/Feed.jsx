@@ -133,7 +133,7 @@ function Feed() {
                   </button>
                   <p>{data.comments_count}</p>
                 </div>
-                {data.highest_like_comments[0] ? (
+                {/* {data.highest_like_comments[0] ? (
                   <Flex>
                     <Box margin="10px 0 5px 5px">
                       <Avatar
@@ -149,7 +149,7 @@ function Feed() {
                       {data.highest_like_comments[0].description}
                     </Box>
                   </Flex>
-                ) : null}
+                ) : null} */}
 
                 <div
                   onClick={() => {
