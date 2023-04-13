@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function WrittenComment() {
-   return <>1</>;
+   return <>ㅁ</>;
 }
