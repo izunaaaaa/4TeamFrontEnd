@@ -1,21 +1,50 @@
 .my__profile {
+    margin-top: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
-    padding: 40px;
-    margin: 0 0 0 15rem;
+
+
 
     form {
         display: flex;
         flex-direction: column;
         width: 100%;
         max-width: 500px;
+        padding: 3rem;
 
         .form__group {
             display: flex;
             flex-direction: column;
             margin-bottom: 20px;
+
+            .profile__img__label {
+                .profile__img__wrapper {
+                    cursor: pointer;
+
+                    .profile__img__preview {
+                        img {
+                            width: 100px;
+                            height: 100px;
+                            padding: 0.5rem;
+                            border-radius: 50%;
+                            background-color: #f0f0f0;
+                        }
+
+                        .profile__img__empty {
+                            width: 100px;
+                            height: 100px;
+                            border-radius: 50%;
+                            background-color: #f0f0f0;
+                        }
+                    }
+
+                    .profile__img__change {
+                        color: #0095f6;
+                    }
+                }
+            }
 
             label {
                 font-size: 14px;
@@ -23,9 +52,14 @@
                 margin-bottom: 8px;
             }
 
+            .email__input {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
             input[type='text'],
             input[type='date'],
-            input[type='email'],
             input[type='tel'],
             input[type='password'],
             textarea,
@@ -40,12 +74,6 @@
                 &:focus {
                     border-color: #b2dffc;
                 }
-            }
-
-            input[type='file'] {
-                border: none;
-                background-color: transparent;
-                font-size: 14px;
             }
 
             textarea {
