@@ -24,10 +24,15 @@ function Mailbox() {
   const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   //받은 쪽지함
-  //받은 쪽지가 없을 경우, 스켈레톤이 나옴
+  //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
   return (
     <Flex justify={"center"} mt={"1rem"}>
-      <Box minH={"600px"} w="500px" border={"1px solid lightgray"}>
+      <Box
+        minH={"600px"}
+        w="500px"
+        border={"1px solid lightgray"}
+        bg={"lightgray"}
+      >
         {data?.length ? (
           data?.map((item, idx) => {
             return (
