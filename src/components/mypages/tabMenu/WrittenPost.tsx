@@ -52,4 +52,5 @@ export default function WrittenPost(): JSX.Element {
          ))}
       </div>
    );
+
 }
