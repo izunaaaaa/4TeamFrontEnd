@@ -220,8 +220,8 @@ const SignUp = () => {
             </Select>
             {errors?.group && <p>{errors.group?.message}</p>}
           </div>
-          <Box>
-            <Box display="flex" width="87%" justifyContent="center">
+          <Box width="87%">
+            <Box display="flex" justifyContent="center">
               <RadioGroup>
                 <Stack spacing={5} direction="row">
                   <Radio
@@ -245,11 +245,7 @@ const SignUp = () => {
                 </Stack>
               </RadioGroup>
               <Flex>
-                <Checkbox
-                  {...register("is_coach")}
-                  marginLeft="20px"
-                  width="20px"
-                >
+                <Checkbox {...register("is_coach")} marginLeft="20px">
                   코치
                 </Checkbox>
               </Flex>

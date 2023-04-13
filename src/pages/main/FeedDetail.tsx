@@ -11,12 +11,15 @@ import moment from "moment";
 import useFeedDetail from "./hook/useFeedDetail";
 import Comment from "./Comment";
 import "moment/locale/ko";
+import { useState } from "react";
 
 const FeedDetail = (props: any) => {
   const { feedDetail } = useFeedDetail(
     props.feedData.id,
     props.feedData.group.name
   );
+
+  const [recommentId, setRecommentId] = useState("");
 
   /**중복되는 username을 가진 comment 객체의 id 값을 저장할 Map 생성 */
   const idMap = new Map();
@@ -33,11 +36,11 @@ const FeedDetail = (props: any) => {
 
   /**작성시간 */
   const writeTime = moment(feedDetail.created_at).fromNow();
-
   /**대댓글 */
   const recomment = (data: any) => {
-    console.log(data);
+    setRecommentId(data[0].id);
   };
+
   return (
     <>
       <div className={styles.feedDetailDiv}>
@@ -78,7 +81,10 @@ const FeedDetail = (props: any) => {
         <Comment feedComment={uniqueComments} recomment={recomment} />
       </div>
       <div className={styles.commentInput}>
-        <textarea placeholder="댓글달기" />
+        <textarea
+          placeholder="댓글달기"
+          defaultValue={recommentId ? `익명${recommentId}` : ""}
+        />
         <button>게시</button>
       </div>
     </>
