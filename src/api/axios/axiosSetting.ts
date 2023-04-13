@@ -5,6 +5,8 @@ import { Letterlists } from "interface/Interface";
 export const instance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
+  xsrfCookieName: "csrftoken",
+  xsrfHeaderName: "X-CSRFToken",
 });
 
 export const getFeeds = async (url: string) =>

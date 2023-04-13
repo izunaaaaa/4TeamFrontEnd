@@ -18,8 +18,26 @@ const FeedDetail = (props: any) => {
     props.feedData.group.name
   );
 
+  /**중복되는 username을 가진 comment 객체의 id 값을 저장할 Map 생성 */
+  const idMap = new Map();
+  const uniqueComments = feedDetail?.comment?.map((comment: any) => {
+    if (!idMap.has(comment.user.username)) {
+      /**username이 Map에 없으면 id를 부여하고 Map에 추가*/
+      idMap.set(comment.user.username, comment.id);
+      return comment;
+    } else {
+      /**username이 Map에 있으면 이미 부여된 id를 사용 */
+      return { ...comment, id: idMap.get(comment.user.username) };
+    }
+  });
+
   /**작성시간 */
   const writeTime = moment(feedDetail.created_at).fromNow();
+
+  /**대댓글 */
+  const recomment = (data: any) => {
+    console.log(data);
+  };
   return (
     <>
       <div className={styles.feedDetailDiv}>
@@ -57,53 +75,7 @@ const FeedDetail = (props: any) => {
           </Button>
         </ButtonGroup>
         <Box margin="5px 2px 40px 2px">{feedDetail.description}</Box>
-        <Comment feedComment={feedDetail.comment} />
-        {/* <div className={styles.commentDiv}>
-          {feedDetail.comment?.map((comment) => {
-            const commentWriteTime = moment(comment.created_at).fromNow();
-            return (
-              <Flex key={comment.id}>
-                <Box margin="10px 0 5px 5px">
-                  <Avatar
-                    name="익명"
-                    size="xs"
-                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                  />
-                </Box>
-                <Box padding="10px" lineHeight="5">
-                  <p className={styles.commentName}>익명{comment.id}</p>
-                  {comment.description}
-
-                  <Flex margin="4px 0 0 0">
-                    <p className={styles.commentTime}>{commentWriteTime}</p>
-                    <Button
-                      backgroundColor={"transparent"}
-                      height="20px"
-                      padding="0 4px"
-                      leftIcon={<FontAwesomeIcon icon={faThumbsUp} />}
-                    >
-                      {comment.commentlikeCount}
-                    </Button>
-                    <Button
-                      backgroundColor={"transparent"}
-                      height="20px"
-                      padding="0 1px"
-                    >
-                      <FontAwesomeIcon icon={faMessage} />
-                    </Button>
-                    <Button
-                      backgroundColor={"transparent"}
-                      height="20px"
-                      padding="0 1px"
-                    >
-                      <FontAwesomeIcon icon={faPaperPlane} />
-                    </Button>
-                  </Flex>
-                </Box>
-              </Flex>
-            );
-          })}
-        </div> */}
+        <Comment feedComment={uniqueComments} recomment={recomment} />
       </div>
       <div className={styles.commentInput}>
         <textarea placeholder="댓글달기" />

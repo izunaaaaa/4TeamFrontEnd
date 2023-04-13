@@ -220,39 +220,44 @@ const SignUp = () => {
             </Select>
             {errors?.group && <p>{errors.group?.message}</p>}
           </div>
-
-          <Box display="flex" width="87%" justifyContent="center">
-            <RadioGroup>
-              <Stack spacing={5} direction="row">
-                <Radio
-                  colorScheme="twitter"
-                  value="남"
-                  {...register("gender", {
-                    required: "성별을 입력해주세요.",
-                  })}
+          <Box>
+            <Box display="flex" width="87%" justifyContent="center">
+              <RadioGroup>
+                <Stack spacing={5} direction="row">
+                  <Radio
+                    colorScheme="twitter"
+                    value="남"
+                    {...register("gender", {
+                      required: "성별을 입력해주세요.",
+                    })}
+                  >
+                    남
+                  </Radio>
+                  <Radio
+                    colorScheme="red"
+                    value="여"
+                    {...register("gender", {
+                      required: "성별을 입력해주세요.",
+                    })}
+                  >
+                    여
+                  </Radio>
+                </Stack>
+              </RadioGroup>
+              <Flex>
+                <Checkbox
+                  {...register("is_coach")}
+                  marginLeft="20px"
+                  width="20px"
                 >
-                  남
-                </Radio>
-                <Radio
-                  colorScheme="red"
-                  value="여"
-                  {...register("gender", {
-                    required: "성별을 입력해주세요.",
-                  })}
-                >
-                  여
-                </Radio>
-              </Stack>
-            </RadioGroup>
-            <Flex>
-              <Checkbox {...register("is_coach")} marginLeft="20px">
-                코치
-              </Checkbox>
-            </Flex>
+                  코치
+                </Checkbox>
+              </Flex>
+            </Box>
+            {errors?.gender && (
+              <p className={styles.error}>{errors.gender?.message}</p>
+            )}
           </Box>
-          {errors?.gender && (
-            <p className={styles.error}>{errors.gender?.message}</p>
-          )}
           <div className={styles.buttonDiv}>
             <button
               type="button"
