@@ -6,7 +6,7 @@ import {
   Avatar,
   Flex,
   HStack,
-  Progress,
+  Badge,
 } from "@chakra-ui/react";
 import { MockCont } from "../../MsgMock";
 import { Card } from "@chakra-ui/react";
@@ -27,11 +27,12 @@ export default function MsgDetail(props: MockCont) {
   }
 
   return (
-    <Flex justify={"space-evenly"}>
-      <Stack>
-        <Text mt={"4rem"}>{props.time}</Text>
+    <Flex justify={"space-between"}>
+      <Stack ml="40rem">
+        <Badge>{props.time}</Badge>
       </Stack>
-      <Stack borderWidth="1px" borderColor="gray.200" mr="9rem"></Stack>
+      <Stack borderWidth="2px" borderColor="gray.200"></Stack>
+
       <Box
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -40,7 +41,7 @@ export default function MsgDetail(props: MockCont) {
         <BsChatSquareHeart color="red" />{" "}
         <Card
           sx={{
-            width: "25rem",
+            width: "20rem",
             my: 4,
             p: 5,
             pb: 10,

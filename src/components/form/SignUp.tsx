@@ -31,7 +31,7 @@ const SignUp = () => {
   /**회원가입 form 제출시 */
   const onSubmit = (data: FormValue) => {
     const signUpData = {
-      id: data.id,
+      id: data.Id,
       password: data.password,
       name: data.name,
       phone_number: "010" + data.phone_number,
@@ -57,7 +57,7 @@ const SignUp = () => {
             <Input
               id="id"
               placeholder="Id를 입력하세요."
-              {...register("id", {
+              {...register("Id", {
                 required: {
                   value: true,
                   message: "필수 정보입니다.",
@@ -76,7 +76,7 @@ const SignUp = () => {
                 },
               })}
             />
-            {errors.id && <p>{errors.id.message}</p>}
+            {errors.Id && <p>{errors.Id.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
