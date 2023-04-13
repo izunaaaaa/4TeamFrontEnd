@@ -12,6 +12,7 @@ function Main(): ReactElement {
   return (
     <>
       <button onClick={() => onLoginOpen()}>로그인</button>
+      {/* <button onClick={() =>}></button> */}
       <Login isOpen={isLoginOpen} onClose={onLoginClose} />
       <Feed />
     </>

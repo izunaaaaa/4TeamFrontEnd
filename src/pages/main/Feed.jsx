@@ -104,7 +104,7 @@ function Feed() {
                 </div>
 
                 {/* <img src={data?.medias[0]} alt="" /> */}
-                <p>{data.description}</p>
+                <p>{data.title}</p>
                 <div className={styles.iconDiv}>
                   <button
                     key={data.id}

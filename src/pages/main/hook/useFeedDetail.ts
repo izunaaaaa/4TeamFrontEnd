@@ -15,8 +15,6 @@ const useFeedDetail = (feedID: number, group: string): UseFeedDetail => {
     () => getFeedDetail(feedID, group)
   );
 
-  console.log(feedDetail);
-
   return { feedDetail };
 };
 

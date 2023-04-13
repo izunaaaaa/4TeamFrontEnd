@@ -33,7 +33,6 @@ export const useFeed = (): UseFeed => {
       },
     }
   );
-  console.log(feedData);
 
   return { feedData, fetchNextPage, hasNextPage, isFetching, isLoading };
 };
