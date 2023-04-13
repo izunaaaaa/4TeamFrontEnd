@@ -8,11 +8,11 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
-import { Note } from "../../MsgMock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { Letterlists } from "interface/Interface";
 
-const MsgList = (props: Note) => {
+const MsgList = (props: Letterlists) => {
   const [isHovering, setIsHovering] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -39,12 +39,13 @@ const MsgList = (props: Note) => {
             onMouseLeave={() => setIsHovering(false)}
           >
             <HStack>
-              <Avatar src={props.avatar} />
+              <Avatar />
               <VStack alignItems="start" spacing={0} ml={2}>
-                <Text fontWeight="bold">{props.title}</Text>
-                <Text fontSize="sm">{props.content}</Text>
+                <Text fontWeight="bold">{props.sender}</Text>
+                <Text fontSize="sm">{props.receiver}</Text>
               </VStack>
             </HStack>
+            <Text>{props.update_at}</Text>
             {isHovering && (
               <FontAwesomeIcon icon={faTrashCan} onClick={handleDeleteClick} />
             )}

@@ -1,16 +1,22 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
-import { msgMock } from "../../MsgMock";
-import { Note } from "../../MsgMock";
+import { useQuery } from "react-query";
+import { getLetterlists } from "api/axios/axiosSetting";
+import { Letterlists } from "interface/Interface";
 
 function Mailbox() {
+  const { isLoading, error, data } = useQuery<Letterlists[]>(
+    "Letterlists",
+    getLetterlists
+  );
+
   //받은 쪽지함
   return (
     <div>
       <Box sx={{ width: "100%", bg: "#F2F2F2" }}>
-        {msgMock?.length
-          ? msgMock?.map((item: Note, idx) => {
+        {data?.length
+          ? data?.map((item, idx) => {
               return (
                 <div key={idx}>
                   <MsgList {...item} />
