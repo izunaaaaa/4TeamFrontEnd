@@ -3,8 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./components/form/SignUp";
 import Main from "./pages/main/Main";
 import UploadFeed from "./components/form/feed/UploadFeed";
-import MsgRoom from "./pages/messagebox/MsgRoom";
-import Mailbox from "./pages/messagebox/Mailbox";
+import MsgRoom from "./pages/sendletters/MsgRoom";
+import Mailbox from "./pages/sendletters/Mailbox";
 import Layout from "./UI/Layout";
 import Feed from "./pages/main/Feed";
 import WrittenPost from "components/mypages/tabMenu/WrittenPost";
@@ -13,13 +13,15 @@ import LikedPost from "components/mypages/tabMenu/LikedPost";
 import MyPage from "pages/mypage/MyPage";
 import WrittenComment from "components/mypages/tabMenu/WrittenComment";
 import Profile from "components/mypages/myProfile/Profiles";
+import Login from "components/form/Login";
 
 const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MsgRoom />} />
+        <Route path="/" element={<Login />} />
         <Route path="/mailbox" element={<Mailbox />} />
+        <Route path="/maildetail" element={<MsgRoom />} />
         <Route path="/main" element={<Main />} />
         <Route
           path="/home"

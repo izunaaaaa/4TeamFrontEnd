@@ -10,8 +10,6 @@ export const instance = axios.create({
   xsrfCookieName: "csrftoken",
   xsrfHeaderName: "X-CSRFToken",
   withCredentials: true,
-  xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFToken",
 });
 
 export const getFeeds = async (url: string) =>
@@ -40,7 +38,3 @@ export const deleteCategory = async (group: string, id: number) =>
   await instance.delete(`/categories/${group}/${id}`).then((res) => {
     return res.data;
   });
-
-
-
-
