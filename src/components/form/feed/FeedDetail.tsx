@@ -11,6 +11,7 @@ import "moment/locale/ko";
 import moment from "moment";
 
 const FeedDetail = (props: any) => {
+  /**작성시간 */
   const writeTime = moment(props.feedData.created_at).fromNow();
   return (
     <div className={styles.feedDetailDiv}>

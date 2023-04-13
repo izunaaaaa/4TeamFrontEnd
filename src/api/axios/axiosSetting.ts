@@ -4,6 +4,11 @@ import { Letterlists } from "interface/Interface";
 
 export const instance = axios.create({
   baseURL: BASE_URL,
+  // headers: {
+  //   "X-CSRFToken": Cookie.get("csrftoken") || "",
+  // },
+  xsrfCookieName: "csrftoken",
+  xsrfHeaderName: "X-CSRFToken",
   withCredentials: true,
 });
 
@@ -23,3 +28,13 @@ export const getFeedDetail = async (feedID: number, group: string) =>
 export const login = async () => {
   // await instance.post().then(res => )
 };
+
+export const postCategory = async (name: string, group: string) =>
+  await instance.post(`/categories/${group}`, { name }).then((res) => {
+    return res.data;
+  });
+
+export const deleteCategory = async (group: string, id: number) =>
+  await instance.delete(`/categories/${group}/${id}`).then((res) => {
+    return res.data;
+  });

@@ -31,7 +31,7 @@ const SignUp = () => {
   /**회원가입 form 제출시 */
   const onSubmit = (data: FormValue) => {
     const signUpData = {
-      id: data.Id,
+      id: data.id,
       password: data.password,
       name: data.name,
       phone_number: "010" + data.phone_number,
@@ -57,7 +57,7 @@ const SignUp = () => {
             <Input
               id="id"
               placeholder="Id를 입력하세요."
-              {...register("Id", {
+              {...register("id", {
                 required: {
                   value: true,
                   message: "필수 정보입니다.",
@@ -76,7 +76,7 @@ const SignUp = () => {
                 },
               })}
             />
-            {errors.Id && <p>{errors.Id.message}</p>}
+            {errors.id && <p>{errors.id.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
@@ -220,39 +220,44 @@ const SignUp = () => {
             </Select>
             {errors?.group && <p>{errors.group?.message}</p>}
           </div>
-
-          <Box display="flex" width="87%" justifyContent="center">
-            <RadioGroup>
-              <Stack spacing={5} direction="row">
-                <Radio
-                  colorScheme="twitter"
-                  value="남"
-                  {...register("gender", {
-                    required: "성별을 입력해주세요.",
-                  })}
+          <Box>
+            <Box display="flex" width="87%" justifyContent="center">
+              <RadioGroup>
+                <Stack spacing={5} direction="row">
+                  <Radio
+                    colorScheme="twitter"
+                    value="남"
+                    {...register("gender", {
+                      required: "성별을 입력해주세요.",
+                    })}
+                  >
+                    남
+                  </Radio>
+                  <Radio
+                    colorScheme="red"
+                    value="여"
+                    {...register("gender", {
+                      required: "성별을 입력해주세요.",
+                    })}
+                  >
+                    여
+                  </Radio>
+                </Stack>
+              </RadioGroup>
+              <Flex>
+                <Checkbox
+                  {...register("is_coach")}
+                  marginLeft="20px"
+                  width="20px"
                 >
-                  남
-                </Radio>
-                <Radio
-                  colorScheme="red"
-                  value="여"
-                  {...register("gender", {
-                    required: "성별을 입력해주세요.",
-                  })}
-                >
-                  여
-                </Radio>
-              </Stack>
-            </RadioGroup>
-            <Flex>
-              <Checkbox {...register("is_coach")} marginLeft="20px">
-                코치
-              </Checkbox>
-            </Flex>
+                  코치
+                </Checkbox>
+              </Flex>
+            </Box>
+            {errors?.gender && (
+              <p className={styles.error}>{errors.gender?.message}</p>
+            )}
           </Box>
-          {errors?.gender && (
-            <p className={styles.error}>{errors.gender?.message}</p>
-          )}
           <div className={styles.buttonDiv}>
             <button
               type="button"

@@ -82,7 +82,7 @@ export interface comment {
 }
 
 export interface FormValue {
-  Id: string;
+  id: string;
   password: string;
   passwordConfirm: string;
   name: string;

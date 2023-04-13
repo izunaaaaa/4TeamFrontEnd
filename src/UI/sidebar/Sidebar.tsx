@@ -3,45 +3,51 @@ import { SidebarData } from "./SidebarData";
 import styles from "./Sidebar.module.scss";
 import { SidebarProps } from "../../interface/Interface";
 import { Link } from "react-router-dom";
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCirclePlus,
+  faPen,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import { instance } from "api/axios/axiosSetting";
+import { postCategory, deleteCategory } from "api/axios/axiosSetting";
+import { useMutation, useQuery } from "react-query";
+import { useFeed } from "./hook/useFeed";
+import { Category } from "./hook/useFeed";
 
-interface Category {
-  id: number;
-  name: string;
-}
+// useQuery : 데이터를 가져올 때
+// useMutation : 데이터를 변경, 추가 또는 삭제
 
 function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   // 새로운 채널의 이름을 저장하는 상태 변수
   const [newChannelName, setNewChannelName] = useState("");
   const [showModal, setShowModal] = useState(false);
   //const [sidebarData, setSidebarData] = useState(SidebarData);
-  const [sidebarData, setSidebarData] = useState<Category[]>([]);
+  //const [sidebarData, setSidebarData] = useState<Category[]>([]);
   // 관리자 여부를 나타내는 상태
   const [isAdmin, setIsAdmin] = useState(true);
+  const { categories, refetch } = useFeed();
 
   useEffect(() => {
-    fetchCategories();
+    if (!categories) {
+      refetch();
+    }
   }, []);
 
-  const fetchCategories = async () => {
-    try {
-      const response = await instance.get("/categories/?group=oz");
-      setSidebarData(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
+  // 새로 추가되는 카테고리
+  const addCategoryMutation = useMutation(
+    async (name: string) => await postCategory(name, "oz"),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: (error: Error) => {
+        console.error("Error adding category:", error);
+      },
     }
-  };
+  );
 
   const addCategory = async (name: string) => {
-    try {
-      const response = await instance.post("/categories/?group=oz", { name });
-      setSidebarData((prevData) => [...prevData, response.data]);
-    } catch (error) {
-      console.error("Error adding category:", error);
-    }
+    addCategoryMutation.mutate(name);
   };
 
   const handleAddChannel = () => {
@@ -49,17 +55,43 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       addCategory(newChannelName);
       setNewChannelName("");
       closeModal();
+      console.log(newChannelName);
     }
   };
 
+  // 카테고리 삭제
+  const deleteCategoryMutation = useMutation(
+    async ({ group, id }: { group: string; id: number }) =>
+      await deleteCategory(group, id),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: (error: Error) => {
+        console.error("Error deleting category:", error);
+      },
+    }
+  );
+
+  const deleteCategoryItem = (group: string, id: number) => {
+    deleteCategoryMutation.mutate({ group, id });
+  };
+
+  // 모달창 여부
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
   const renderSidebarData = () =>
-    sidebarData?.map((item, index) => (
+    categories?.map((item: Category, index: number) => (
       <li key={index} className={styles.nav_text}>
         <Link to={"#"}>
-          <span>{item.name}</span>
+          <span>
+            {item.name} <FontAwesomeIcon icon={faPen} />
+            <FontAwesomeIcon
+              onClick={() => deleteCategoryItem("oz", item.id)}
+              icon={faTrash}
+            />
+          </span>
         </Link>
       </li>
     ));

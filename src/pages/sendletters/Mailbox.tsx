@@ -1,16 +1,11 @@
 import React from "react";
 import {
   Flex,
-  Center,
-  VStack,
-  HStack,
   Box,
   Text,
-  Skeleton,
   SkeletonCircle,
   SkeletonText,
-  Grid,
-  GridItem,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
 import { useQuery } from "react-query";
@@ -25,7 +20,11 @@ function Mailbox() {
     getLetterlists
   );
 
+  // 브라우저 화면 크기 설정하는 chakra 내장함수
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
+
   //받은 쪽지함
+  //받은 쪽지가 없을 경우, 스켈레톤이 나옴
   return (
     <Flex justify={"center"} mt={"1rem"}>
       <Box minH={"600px"} w="500px" border={"1px solid lightgray"}>
@@ -60,16 +59,19 @@ function Mailbox() {
           </Box>
         )}
       </Box>
-      <Flex
-        border={"1px solid lightgray"}
-        flexDir={"column"}
-        align={"center"}
-        justify={"center"}
-        p={"40"}
-      >
-        <FontAwesomeIcon icon={faEnvelopeOpenText} size="2xl" />
-        <Text fontSize="3xl">도착한 쪽지를 열어보세요.</Text>
-      </Flex>
+      {/* 모바일 화면일 경우, 아래 박스를 숨기는 조건식 (480px 넘어가는 화면에서만 렌더링 됨) */}
+      {isMobile ? null : (
+        <Flex
+          border={"1px solid lightgray"}
+          flexDir={"column"}
+          align={"center"}
+          justify={"center"}
+          p={"40"}
+        >
+          <FontAwesomeIcon icon={faEnvelopeOpenText} size="2xl" />
+          <Text fontSize="3xl">도착한 쪽지를 열어보세요.</Text>
+        </Flex>
+      )}
     </Flex>
   );
 }

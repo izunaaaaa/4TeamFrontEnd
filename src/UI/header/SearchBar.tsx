@@ -6,6 +6,7 @@ import styles from "./SearchBar.module.scss";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
+import { useQuery } from "react-query";
 
 interface autoDatas {
   city: string;
@@ -16,43 +17,51 @@ interface autoDatas {
   rank: string;
   state: string;
 }
+
+const fetchData = async () => {
+  const response = await fetch(
+    `https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json`
+  );
+  const data = await response.json();
+  return data.slice(0, 100);
+};
+
+interface Tag {
+  includes(data: string): boolean;
+  city?: any;
+}
+
 function SearchBar() {
   const [keyword, setKeyword] = useState<string>("");
   const [keyItems, setKeyItems] = useState<autoDatas[]>([]);
   const onChangeData = (e: React.FormEvent<HTMLInputElement>) => {
     setKeyword(e.currentTarget.value);
   };
-  const fetchData = () => {
-    return fetch(
-      `https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json`
-    )
-      .then((res) => res.json())
-      .then((data) => data.slice(0, 100));
-  };
-  interface Tag {
-    includes(data: string): boolean;
-    city?: any;
-  }
-
-  const updateData = async () => {
-    const res = await fetchData();
-    let b = res
-      .filter(
-        (list: Tag) =>
-          list.city.toLowerCase().includes(keyword.toLowerCase()) === true
-      )
-      .slice(0, 10);
-    setKeyItems(b);
-  };
+  const { data, refetch } = useQuery("cities", fetchData, {
+    enabled: false,
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      if (keyword) updateData();
+      if (keyword) refetch();
     }, 200);
     return () => {
       clearTimeout(debounce);
     };
-  }, [keyword]); //키워드가 변경되면 api를 호출
+  }, [keyword, refetch]);
+
+  useEffect(() => {
+    if (data) {
+      const filteredCities = data
+        .filter(
+          (list: Tag) =>
+            list.city.toLowerCase().includes(keyword.toLowerCase()) === true
+        )
+        .slice(0, 10);
+      setKeyItems(filteredCities);
+    }
+  }, [data, keyword]);
 
   const searchbarRef = useRef<HTMLDivElement | null>(null);
 
@@ -65,7 +74,7 @@ function SearchBar() {
   useEffect(() => {
     if (keyword) {
       setSearchbarVisible(true);
-      updateData();
+      refetch();
     } else {
       setSearchbarVisible(false);
     }

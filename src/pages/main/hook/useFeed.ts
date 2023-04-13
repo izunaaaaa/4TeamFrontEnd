@@ -2,6 +2,7 @@ import { useInfiniteQuery } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import { getFeeds } from "api/axios/axiosSetting";
 import { BASE_URL } from "api/URL/BaseURL";
+import { FeedData } from "interface/Interface";
 
 interface UseFeed {
   feedData: any;
