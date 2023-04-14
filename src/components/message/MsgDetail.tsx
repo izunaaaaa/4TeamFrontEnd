@@ -5,31 +5,22 @@ import {
   Box,
   Avatar,
   Flex,
-  HStack,
   Badge,
+  HStack,
 } from "@chakra-ui/react";
 import { MockCont } from "../../MsgMock";
-import { Card } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
-import { BsChatSquareHeart } from "react-icons/bs";
+import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
 
 export default function MsgDetail(props: MockCont) {
   const [isHovering, setIsHovering] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
 
-  const handleDeleteClick = () => {
-    setIsDeleted(true);
-  };
-
-  if (isDeleted) {
-    return null;
-  }
+  const handleDeleteClick = () => {};
 
   return (
-    <Flex justify={"space-between"}>
-      <Stack ml="40rem">
-        <Badge>{props.time}</Badge>
+    <Flex justify={"space-evenly"}>
+      <Stack my={10}>
+        <Badge bgColor="#819FF7">{props.time}</Badge>
       </Stack>
       <Stack borderWidth="2px" borderColor="gray.200"></Stack>
 
@@ -37,28 +28,36 @@ export default function MsgDetail(props: MockCont) {
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        {" "}
-        <BsChatSquareHeart color="red" />{" "}
-        <Card
-          sx={{
-            width: "20rem",
-            my: 4,
-            p: 5,
-            pb: 10,
-            borderRadius: "7%",
-            color: props.user.isMe === true ? "#FAFAFA" : "black",
-            bg: props.user.isMe === true ? "#5882FA" : "gray.200",
-            _hover: { bg: "#2EFEF7", cursor: "pointer" },
-          }}
+        <Box
+          padding="6"
+          boxShadow="xl"
+          mb="5"
+          bgColor={props.user.isMe ? "#F7FE2E" : "white"}
+          width={"50vmin"}
         >
-          <HStack spacing={2} direction="row">
-            <Avatar mr={0}>{props.user.avatar}</Avatar>
-            <Text>{props.content}</Text>
-            {isHovering && (
-              <FontAwesomeIcon icon={faTrashCan} onClick={handleDeleteClick} />
-            )}
-          </HStack>
-        </Card>
+          <Stack spacing={2}>
+            <HStack>
+              {" "}
+              <FontAwesomeIcon icon={faPaperclip} />
+            </HStack>
+
+            <HStack>
+              <Text as="b" color={props.user.isMe ? "#FF0080" : "#58ACFA"}>
+                {props.user.isMe ? "From. " : "To. "}{" "}
+              </Text>
+              <Avatar size="xs">{props.user.avatar}</Avatar>{" "}
+            </HStack>
+            <HStack>
+              {isHovering && (
+                <FontAwesomeIcon
+                  icon={faScissors}
+                  onClick={handleDeleteClick}
+                />
+              )}{" "}
+              <Text as="ins">{props.content}</Text>
+            </HStack>
+          </Stack>
+        </Box>
       </Box>
     </Flex>
   );

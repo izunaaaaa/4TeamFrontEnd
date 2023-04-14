@@ -3,8 +3,6 @@ import { MockCont } from "../../MsgMock";
 import { mockMsgCont } from "../../MsgMock";
 import {
   Button,
-  Flex,
-  Text,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -15,12 +13,12 @@ import {
   Textarea,
   FormControl,
   Box,
+  HStack,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 export default function MsgRoom() {
   // chakra ui의 모달 컨트롤 훅
@@ -37,41 +35,31 @@ export default function MsgRoom() {
     }
   };
 
-  // 대화방 나가기
-  // const handleDeleteRoom = (idx: number) => {
-
-  // }
-
   return (
     <>
       {/* 주고받은 쪽지내역 */}
       {mockMsgCont?.map((msg: MockCont, idx) => {
         return (
-          <Box key={idx}>
+          <Box key={idx} mt={"5"}>
             <MsgDetail {...msg} />
           </Box>
         );
       })}
-      <Flex justify={"space-around"}>
-        <FontAwesomeIcon
-          icon={faPaperPlane}
-          size="xl"
-          onClick={onOpen}
-          cursor={"pointer"}
-        />
-        <FontAwesomeIcon
-          icon={faRightFromBracket}
-          size="xl"
-          cursor={"pointer"}
-        />
-      </Flex>
+      <HStack
+        onClick={onOpen}
+        cursor="pointer"
+        margin="2rem"
+        justify={"space-evenly"}
+      >
+        <FontAwesomeIcon icon={faPaperPlane} size="xl" />
+      </HStack>
 
       {/* 모달 */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>쪽지</ModalHeader>
-          <FormControl>
+          <FormControl onClick={handleSubmit(onSubmit)}>
             <ModalBody>
               <Textarea
                 placeholder="보내실 내용을 입력해주세요"
@@ -79,12 +67,7 @@ export default function MsgRoom() {
               />
             </ModalBody>
             <ModalFooter>
-              <Button
-                type="submit"
-                colorScheme="blue"
-                mr={3}
-                onClick={handleSubmit(onSubmit)}
-              >
+              <Button type="submit" colorScheme="blue" mr={3}>
                 Send
               </Button>
               <Button color="black" onClick={onClose}>
