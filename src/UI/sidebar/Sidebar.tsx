@@ -85,8 +85,10 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     categories?.map((item: Category, index: number) => (
       <li key={index} className={styles.nav_text}>
         <Link to={"#"}>
-          <span>
-            {item.name} <FontAwesomeIcon icon={faPen} />
+          <span>{item.name}</span>
+          <span className={styles.navfaIcon}>
+            {" "}
+            <FontAwesomeIcon icon={faPen} />
             <FontAwesomeIcon
               onClick={() => deleteCategoryItem("oz", item.id)}
               icon={faTrash}
