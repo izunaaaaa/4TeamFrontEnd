@@ -1,7 +1,7 @@
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { FormValue } from "../../interface/Interface";
+import { FormValue } from "../../../interface/Interface";
 import {
   Box,
   Button,
@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { send_message } from "api/axios/phoneAuthentication";
+import { send_message } from "../../../api/axios/phoneAuthentication";
 
 const SignUp = () => {
   const {

@@ -17,6 +17,7 @@ import {
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { login } from "api/axios/axiosSetting";
+import axios from "axios";
 import { LoginData } from "interface/Interface";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -34,7 +35,8 @@ const Login = (props: any) => {
     };
 
     console.log(loginData);
-    login(loginData);
+    axios.post("/users/login/", loginData);
+    // login(loginData);
   };
   return (
     <Modal

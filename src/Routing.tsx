@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUp from "./components/form/SignUp";
+import SignUp from "./components/form/User/SignUp";
 import Main from "./pages/main/Main";
 import UploadFeed from "./components/form/feed/UploadFeed";
 import MsgRoom from "./pages/sendletters/MsgRoom";
@@ -12,7 +12,8 @@ import LikedPost from "components/mypages/tabMenu/LikedPost";
 import MyPage from "pages/mypage/MyPage";
 import WrittenComment from "components/mypages/tabMenu/WrittenComment";
 import Profile from "components/mypages/myProfile/Profiles";
-import Login from "components/form/Login";
+import Login from "components/form/User/Login";
+import UploadUser from "components/form/User/UploadUser";
 
 const Routing = () => {
   return (
@@ -22,6 +23,7 @@ const Routing = () => {
         <Route path="/main" element={<Main />} />
         <Route path="/mailbox" element={<Mailbox />} />
         <Route path="/maildetail" element={<MsgRoom />} />
+
         <Route
           path="/home"
           element={
@@ -30,8 +32,10 @@ const Routing = () => {
             </Layout>
           }
         />
+
         <Route path="/signup" element={<SignUp />} />
         <Route path="/upload" element={<UploadFeed />} />
+        <Route path="/uploadUser" element={<UploadUser />} />
 
         {/* 내정보 */}
 

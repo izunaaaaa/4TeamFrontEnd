@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/react";
-import Login from "components/form/Login";
+import Login from "components/form/User/Login";
 import React, { ReactElement } from "react";
 import Feed from "./Feed";
 
