@@ -28,15 +28,16 @@ const Login = (props: any) => {
   const { handleSubmit, register } = useForm<LoginData>();
 
   const onSubmit = (data: LoginData) => {
-    console.log(data);
     const loginData = {
       username: data.id,
       password: data.password,
     };
 
     console.log(loginData);
-    axios.post("/users/login/", loginData);
-    // login(loginData);
+    // axios.post("api/v1/users/login/", loginData, {
+    //   withCredentials: true,
+    // });
+    login(loginData);
   };
   return (
     <Modal

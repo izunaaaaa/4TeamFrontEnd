@@ -31,7 +31,7 @@ function UploadUser() {
       const sheet = workbook.Sheets[sheetName];
 
       /**필드 확인 */
-      const expectedFields = ["name", "age", "number"];
+      const expectedFields = ["name", "email", "phone_number"];
       const actualFields = [];
 
       for (let i = 65; i <= 67; i++) {
@@ -52,16 +52,20 @@ function UploadUser() {
         setFilename(file.name);
         for (let i = 2; ; i++) {
           const name = sheet["A" + i]?.v;
-          const age = sheet["B" + i]?.v;
+          const email = sheet["B" + i]?.v;
           const number = sheet["C" + i]?.v;
 
           /**다음 열 값이 없으면 중단 */
-          if (!name && !age && !number) {
+          if (!name && !email && !number) {
             break;
           }
 
           /**빈값이 존재할때 */
-          if (name === undefined || age === undefined || number === undefined) {
+          if (
+            name === undefined ||
+            email === undefined ||
+            number === undefined
+          ) {
             setFileData([]);
             return toast({
               title: "데이터가 비었습니다.",
@@ -72,7 +76,7 @@ function UploadUser() {
             });
           }
 
-          const userData = { name: name, age: age, number: number };
+          const userData = { name: name, email: email, phone_number: number };
           data.push(userData);
         }
 
