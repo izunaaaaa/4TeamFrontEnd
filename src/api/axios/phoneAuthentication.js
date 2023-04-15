@@ -145,62 +145,31 @@ export function send_message(phone) {
   const hash = hmac.finalize();
   const signature = hash.toString(CryptoJS.enc.Base64);
 
-  // fetch(url, {
-  //   method: "POST",
-  // headers: {
-  //   "Contenc-type": "application/json; charset=utf-8",
-  //   "x-ncp-iam-access-key": accessKey,
-  //   "x-ncp-apigw-timestamp": date,
-  //   "x-ncp-apigw-signature-v2": signature,
-  // },
-  //   body: JSON.stringify({
-  //     type: "SMS",
-  //     countryCode: "82",
-  //     from: "0000",
-  //     content: `인증번호 ${user_auth_number} 입니다.`,
-  //     messages: [
-  //       {
-  //         to: `${user_phone_number}`,
-  //       },
-  //     ],
-  //   }),
-  // }).then((data) => console.log(data));
-
-  // axios(`/${uri}/messages`).then((data) => console.log(data));
-  axios(url, {
-    headers: {
-      "Contenc-type": "application/json; charset=utf-8",
-      "x-ncp-iam-access-key": accessKey,
-      "x-ncp-apigw-timestamp": date,
-      "x-ncp-apigw-signature-v2": signature,
-    },
-  }).then((data) => console.log(data));
-
-  // axios
-  //   .post(
-  //     `/${uri}/messages`,
-  //     {
-  //       type: "SMS",
-  //       countryCode: "82",
-  //       from: "0000",
-  //       content: `인증번호 ${user_auth_number} 입니다.`,
-  //       messages: [
-  //         {
-  //           to: `${user_phone_number}`,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       headers: {
-  //         "Contenc-type": "application/json; charset=utf-8",
-  //         "x-ncp-iam-access-key": accessKey,
-  //         "x-ncp-apigw-timestamp": date,
-  //         "x-ncp-apigw-signature-v2": signature,
-  //       },
-  //       withCredentials: true,
-  //     }
-  //   )
-  //   .then((data) => console.log(data))
-  //   .catch((err) => console.log(err));
+  axios
+    .post(
+      `/sms/v2/services/${uri}/messages`,
+      {
+        type: "SMS",
+        countryCode: "82",
+        from: "0000",
+        content: `인증번호 ${user_auth_number} 입니다.`,
+        messages: [
+          {
+            to: `${user_phone_number}`,
+          },
+        ],
+      },
+      {
+        headers: {
+          "Contenc-type": "application/json; charset=utf-8",
+          "x-ncp-iam-access-key": accessKey,
+          "x-ncp-apigw-timestamp": Number(date),
+          "x-ncp-apigw-signature-v2": signature,
+        },
+        // withCredentials: true,
+      }
+    )
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err));
   return resultCode;
 }
