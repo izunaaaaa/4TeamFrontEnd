@@ -17,6 +17,7 @@ import {
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { login } from "api/axios/axiosSetting";
+import axios from "axios";
 import { LoginData } from "interface/Interface";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -27,13 +28,15 @@ const Login = (props: any) => {
   const { handleSubmit, register } = useForm<LoginData>();
 
   const onSubmit = (data: LoginData) => {
-    console.log(data);
     const loginData = {
       username: data.id,
       password: data.password,
     };
 
     console.log(loginData);
+    // axios.post("api/v1/users/login/", loginData, {
+    //   withCredentials: true,
+    // });
     login(loginData);
   };
   return (

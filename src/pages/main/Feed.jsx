@@ -3,13 +3,11 @@ import { useFeed } from "./hook/useFeed";
 import styles from "./Feed.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
-  Box,
-  Flex,
   Modal,
   ModalBody,
   ModalContent,
@@ -21,6 +19,8 @@ import InfiniteScroll from "react-infinite-scroller";
 import FeedDetail from "./FeedDetail";
 import DeleteConfirm from "../../UI/DeleteConfirm";
 import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
+import useClickOutside from "UI/header/useClickOutside";
+
 import moment from "moment";
 import "moment/locale/ko";
 
@@ -31,7 +31,7 @@ function Feed() {
   const { feedData, fetchNextPage, hasNextPage, isFetching, isLoading } =
     useFeed();
   const navigate = useNavigate();
-  const [isClickMenu, setIsClickMenu] = useState(false);
+  const dropdownRef = useRef(null);
   const [select, setSelect] = useState([]);
   const [feedOption, setFeedOption] = useState([]);
 
@@ -44,7 +44,6 @@ function Feed() {
   const dropDownMenuEvent = (e) => {
     const eventTarget = e.target;
     const menuType = eventTarget.innerText;
-    setIsClickMenu(!isClickMenu);
     if (menuType === "수정하기") return navigate("/upload");
     if (menuType === "삭제하기") {
       onOpen();
@@ -52,10 +51,14 @@ function Feed() {
     }
   };
 
+  useClickOutside(dropdownRef, () => {
+    setFeedOption([]);
+  });
+
   return (
     <>
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
-        <div className={styles.feeds}>
+        <div className={styles.feeds} ref={dropdownRef}>
           {feedData.pages?.map((pageData) =>
             pageData.results?.map((data) => (
               <div key={data.id} className={styles.feedDiv}>
@@ -133,23 +136,6 @@ function Feed() {
                   </button>
                   <p>{data.comments_count}</p>
                 </div>
-                {/* {data.highest_like_comments[0] ? (
-                  <Flex>
-                    <Box margin="10px 0 5px 5px">
-                      <Avatar
-                        name="익명"
-                        size="xs"
-                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                      />
-                    </Box>
-                    <Box padding="10px" lineHeight="5">
-                      <p className={styles.commentName}>
-                        익명{data.highest_like_comments[0].id}
-                      </p>
-                      {data.highest_like_comments[0].description}
-                    </Box>
-                  </Flex>
-                ) : null} */}
 
                 <div
                   onClick={() => {
