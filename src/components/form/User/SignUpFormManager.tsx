@@ -1,11 +1,10 @@
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { FormValue } from "../../../interface/Interface";
+import { FormValue, userValue } from "../../../interface/Interface";
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   Input,
   InputGroup,
@@ -14,18 +13,24 @@ import {
   RadioGroup,
   Select,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { send_message } from "../../../api/axios/phoneAuthentication";
 
-const SignUp = () => {
+import * as XLSX from "xlsx";
+import { useCallback, useRef, useState } from "react";
+
+const SignUpFormManager = () => {
   const {
     register,
     formState: { errors },
     handleSubmit,
     getValues,
   } = useForm<FormValue>();
+
+  const toast = useToast();
 
   /**링크 네비게이트 */
   const navigate = useNavigate();
@@ -40,10 +45,102 @@ const SignUp = () => {
       email: data.email,
       gender: data.gender,
       group: data.group,
-      is_coach: data.is_coach,
+      groupFile: fileDataRef.current,
     };
     console.log(signUpData);
   };
+
+  /**액셀 파일 넣기 */
+  const fileDataRef = useRef<userValue[]>([]);
+  const [fileName, setFileName] = useState("");
+
+  const handleFileUpload = useCallback(
+    (acceptedFiles: any) => {
+      const file = acceptedFiles.target.files[0];
+
+      const reader = new FileReader();
+
+      reader.onload = (event: any) => {
+        const binaryString = event.target.result;
+        const workbook = XLSX.read(binaryString, { type: "binary" });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+        /**필드 확인 */
+        const expectedFields = ["name", "email", "phone_number"];
+        const actualFields: any = [];
+
+        for (let i = 65; i <= 67; i++) {
+          const cell = String.fromCharCode(i) + "1";
+          if (sheet[cell]) {
+            actualFields.push(sheet[cell].v.toLowerCase());
+          }
+        }
+
+        const missingFields = expectedFields.filter(
+          (field) => !actualFields.includes(field)
+        );
+
+        const data = [];
+
+        /**필드값이 모두 존재하면 */
+        if (missingFields.length === 0) {
+          for (let i = 2; ; i++) {
+            const name = sheet["A" + i]?.v;
+            const email = sheet["B" + i]?.v;
+            const number = sheet["C" + i]?.v;
+
+            /**다음 열 값이 없으면 중단 */
+            if (!name && !email && !number) {
+              break;
+            }
+
+            /**빈값이 존재할때 */
+            if (
+              name === undefined ||
+              email === undefined ||
+              number === undefined
+            ) {
+              fileDataRef.current = [];
+              return toast({
+                title: "데이터가 비었습니다.",
+                description: "Data is invalid",
+                status: "warning",
+                duration: 4000,
+                isClosable: true,
+              });
+            }
+
+            const userData = { name: name, email: email, phone_number: number };
+            data.push(userData);
+          }
+
+          toast({
+            title: "성공적으로 확인되었습니다.",
+            description: "Data is confirmed!!",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+          });
+          setFileName(file.name);
+          fileDataRef.current = data;
+        } else {
+          /**업로드 실패했을때 */
+          toast({
+            title: "필드가 비었습니다.",
+            description: `Missing fields: ${missingFields.join(", ")}`,
+            status: "error",
+            duration: 4000,
+            isClosable: true,
+          });
+          setFileName("수강생 목록을 넣어 인증해주세요.");
+          fileDataRef.current = [];
+        }
+      };
+
+      reader.readAsBinaryString(file);
+    },
+    [toast]
+  );
 
   return (
     <>
@@ -102,13 +199,9 @@ const SignUp = () => {
                   message: "16자까지 입력가능합니다.",
                 },
                 pattern: {
-                  // eslint-disable-next-line
-                  // value: /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g,
-
                   value:
                     // eslint-disable-next-line
                     /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,20}$/,
-                  // eslint-disable-next-line
 
                   message: "특수문자 1개 이상 넣어주세요.",
                 },
@@ -164,6 +257,7 @@ const SignUp = () => {
             />
             {errors.name && <p>{errors.name.message}</p>}
           </div>
+
           <div className={styles.typeDiv}>
             <label htmlFor="number">전화번호</label>
             <InputGroup>
@@ -180,11 +274,14 @@ const SignUp = () => {
                   required: "필수 정보입니다.",
                 })}
               />
-              <Button onClick={() => send_message(getValues("phone_number"))}>
+              <Button
+                onClick={() => send_message(getValues("phone_number"))}
+                h="50px"
+              >
                 인증하기
               </Button>
             </InputGroup>
-            {errors?.email && <p>{errors.phone_number?.message}</p>}
+            {errors?.phone_number && <p>{errors.phone_number?.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
@@ -225,6 +322,43 @@ const SignUp = () => {
             </Select>
             {errors?.group && <p>{errors.group?.message}</p>}
           </div>
+
+          <div className={styles.typeDiv}>
+            <label>수강생 목록</label>
+            <InputGroup>
+              <InputLeftAddon
+                children={<FontAwesomeIcon icon={faFile} />}
+                h="50px"
+              />
+              <Input
+                placeholder="수강생 목록을 넣어 인증해주세요."
+                defaultValue={fileName}
+              />
+              <Input
+                id="groupFile"
+                type="file"
+                accept=".xlsx, .xls"
+                {...register("groupFile", {
+                  required: "필수입니다.",
+                  onChange: (e) => {
+                    handleFileUpload(e);
+                  },
+                  validate: {
+                    check: () => {
+                      if (fileDataRef.current.length === 0) {
+                        return "데이터가 부정확합니다.";
+                      }
+                    },
+                  },
+                })}
+              />
+              <label className={styles.uploadFile} htmlFor="groupFile">
+                업로드
+              </label>
+            </InputGroup>
+            {errors?.groupFile && <p>{errors.groupFile?.message}</p>}
+          </div>
+
           <Box width="87%">
             <Box display="flex" justifyContent="center">
               <RadioGroup>
@@ -249,15 +383,12 @@ const SignUp = () => {
                   </Radio>
                 </Stack>
               </RadioGroup>
-              <Flex>
-                <Checkbox {...register("is_coach")} marginLeft="20px">
-                  코치
-                </Checkbox>
-              </Flex>
             </Box>
-            {errors?.gender && (
-              <p className={styles.error}>{errors.gender?.message}</p>
-            )}
+            <Flex justifyContent="center">
+              {errors?.gender && (
+                <p className={styles.error}>{errors.gender?.message}</p>
+              )}
+            </Flex>
           </Box>
           <div className={styles.buttonDiv}>
             <button
@@ -276,4 +407,4 @@ const SignUp = () => {
     </>
   );
 };
-export default SignUp;
+export default SignUpFormManager;

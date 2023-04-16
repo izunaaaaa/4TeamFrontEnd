@@ -103,7 +103,7 @@ const Login = (props: any) => {
                 비밀번호 찾기
               </Link>
               <Text>|</Text>
-              <Link to={"/signup"} onClick={() => props.onClose()}>
+              <Link to={"/signup/main"} onClick={() => props.onClose()}>
                 회원가입
               </Link>
             </HStack>

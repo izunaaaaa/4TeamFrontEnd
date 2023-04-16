@@ -81,6 +81,12 @@ export interface comment {
   feed: string;
 }
 
+export interface userValue {
+  name: string;
+  email: string;
+  phone_number: string;
+}
+
 export interface FormValue {
   id: string;
   password: string;
@@ -90,10 +96,8 @@ export interface FormValue {
   email: string;
   gender: string;
   group: number;
-  is_coach: boolean;
+  groupFile: [];
 }
-
-export interface UplaodFeedValue {}
 
 export interface CropAttribute {
   x: number;

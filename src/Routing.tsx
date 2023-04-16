@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUp from "./components/form/User/SignUp";
+import SignUp from "pages/SignUp/SignUp";
 import Main from "./pages/main/Main";
 import UploadFeed from "./components/form/feed/UploadFeed";
 import MsgRoom from "./pages/sendletters/MsgRoom";
@@ -13,7 +13,9 @@ import MyPage from "pages/mypage/MyPage";
 import WrittenComment from "components/mypages/tabMenu/WrittenComment";
 import Profile from "components/mypages/myProfile/Profiles";
 import Login from "components/form/User/Login";
-import UploadUser from "components/form/User/UploadUser";
+import SignUpForm from "components/form/User/SignUpForm";
+import SignUpMain from "pages/SignUp/SignUpMain";
+import SignUpFormManager from "components/form/User/SignUpFormManager";
 
 const Routing = () => {
   return (
@@ -33,9 +35,12 @@ const Routing = () => {
           }
         />
 
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup/" element={<SignUp />}>
+          <Route path="main" element={<SignUpMain />} />
+          <Route path="student" element={<SignUpForm />} />
+          <Route path="manager" element={<SignUpFormManager />} />
+        </Route>
         <Route path="/upload" element={<UploadFeed />} />
-        <Route path="/uploadUser" element={<UploadUser />} />
 
         {/* 내정보 */}
 
