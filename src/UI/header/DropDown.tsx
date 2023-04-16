@@ -7,9 +7,9 @@ import Login from "components/form/User/Login";
 
 const list: ListItem[] = [
   { id: 1, title: "마이페이지", link: "/mypage" },
-  { id: 2, title: "쪽지", link: "/mypage" },
-  { id: 3, title: "글등록", link: "/mypage" },
-  { id: 4, title: "로그인", link: "/mypage" },
+  { id: 2, title: "쪽지", link: "#" },
+  { id: 3, title: "글등록", link: "#" },
+  { id: 4, title: "로그인", link: "#" },
 ];
 
 function DropDown() {
