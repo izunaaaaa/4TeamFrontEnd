@@ -116,6 +116,8 @@ export interface SidebarProps {
 export interface ListItem {
   id: number;
   title: string;
+  link: string;
+  onClick?: () => void;
 }
 
 export interface LayoutProps {
