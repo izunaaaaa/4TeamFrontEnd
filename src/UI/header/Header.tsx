@@ -27,6 +27,7 @@ function Header(): ReactElement {
 
   const handleSidebarToggle = () => {
     setSidebar(!sidebar);
+    console.log(sidebar);
   };
 
   useClickOutside(dropdownRef, () => {
@@ -85,7 +86,9 @@ function Header(): ReactElement {
             </div>
             <div className={styles.sidebar_bottom}>
               <div className={styles.sidebar_btn} ref={sidebarRef}>
-                <CgMenuLeft onClick={handleSidebarToggle} />
+                <div onClick={handleSidebarToggle}>
+                  <CgMenuLeft />
+                </div>
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
               </div>
               <div className={styles.searchWrapper}>

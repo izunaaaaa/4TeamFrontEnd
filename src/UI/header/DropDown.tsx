@@ -1,44 +1,36 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./DropDown.module.scss";
-import { ListItem } from "interface/Interface";
-import { useDisclosure } from "@chakra-ui/react";
 import Login from "components/form/User/Login";
 
-const list: ListItem[] = [
+const list = [
   { id: 1, title: "마이페이지", link: "/mypage" },
-  { id: 2, title: "쪽지", link: "#" },
-  { id: 3, title: "글등록", link: "#" },
-  { id: 4, title: "로그인", link: "#" },
+  { id: 2, title: "쪽지", link: "/mypage" },
+  { id: 3, title: "글등록", link: "/mypage" },
 ];
 
 function DropDown() {
-  const {
-    isOpen: isLoginOpen,
-    onClose: onLoginClose,
-    onOpen: onLoginOpen,
-  } = useDisclosure();
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
-  const handleLoginClick = () => {
-    onLoginOpen();
+  const handleLogin = () => {
+    setIsLoginOpen(!isLoginOpen);
   };
 
   return (
     <>
       <ul className={styles.drop_list}>
         {list.map((item) => (
-          <li
-            className={styles.drop_listItem}
-            key={item.id}
-            onClick={item.title === "로그인" ? handleLoginClick : undefined}
-          >
-            <Link to={"#"}>
+          <li className={styles.drop_listItem} key={item.id}>
+            <Link to={item.link}>
               <span>{item.title}</span>
             </Link>
           </li>
         ))}
+        <li className={styles.drop_listItem} onClick={handleLogin}>
+          <span>로그인</span>
+        </li>
       </ul>
-      <Login isOpen={isLoginOpen} onClose={onLoginClose} />
+      <Login isOpen={isLoginOpen} onClose={handleLogin} />
     </>
   );
 }

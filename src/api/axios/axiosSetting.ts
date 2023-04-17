@@ -39,3 +39,14 @@ export const deleteCategory = async (group: string, id: number) =>
   await instance.delete(`/categories/${group}/${id}`).then((res) => {
     return res.data;
   });
+
+export const updateCategory = async (
+  group: string,
+  id: number,
+  newName: string
+) =>
+  await instance
+    .put(`/categories/${group}/${id}`, { name: newName })
+    .then((res) => {
+      return res.data;
+    });
