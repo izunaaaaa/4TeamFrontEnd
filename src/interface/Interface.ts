@@ -114,7 +114,7 @@ export interface Message {
 
 export interface SidebarProps {
   sidebar: boolean;
-  setSidebar: (dropDown: boolean) => void;
+  setSidebar: (sidebar: boolean) => void;
 }
 
 export interface ListItem {
