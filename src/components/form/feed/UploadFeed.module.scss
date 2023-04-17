@@ -1,8 +1,9 @@
 .postForm {
   padding: 5px 0px 0px 0px;
   border-radius: 30px;
-  max-width: 800px;
+  width: 50%;
   background-color: beige;
+  margin-top: 100px;
 
   .postFormHeader {
     padding: 15px 15px 10px 15px;
@@ -89,6 +90,7 @@
     padding: 5px 0px 0px 0px;
     border-radius: 10px;
     width: 100%;
+    margin: 120px 0 0 0;
     background-color: beige;
     height: 100vh;
     .postFormMain {
