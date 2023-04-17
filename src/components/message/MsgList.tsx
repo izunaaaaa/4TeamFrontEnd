@@ -16,10 +16,10 @@ const MsgList = (props: Letterlists) => {
   const [isHovering, setIsHovering] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
 
+  // 클라이언트 단에서만 쪽지 리스트 삭제 (서버에 전송 x)
   const handleDeleteClick = () => {
     setIsDeleted(true);
   };
-
   if (isDeleted) {
     return null;
   }
@@ -47,7 +47,9 @@ const MsgList = (props: Letterlists) => {
             </HStack>
             <Text>{props.update_at}</Text>
             {isHovering && (
-              <FontAwesomeIcon icon={faTrashCan} onClick={handleDeleteClick} />
+              <button onClick={handleDeleteClick} style={{ cursor: "pointer" }}>
+                <FontAwesomeIcon icon={faTrashCan} />
+              </button>
             )}
           </Flex>
           <Divider />
