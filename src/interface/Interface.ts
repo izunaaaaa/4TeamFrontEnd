@@ -1,5 +1,40 @@
 import { RefObject } from "react";
 import { IconDefinition, SizeProp } from "@fortawesome/fontawesome-svg-core";
+
+export interface DefaultValue {
+  id: number;
+  description: string;
+}
+
+export interface DefaultSignUpData {
+  username: string;
+  name: string;
+  password: string;
+  phone_number: string;
+  email: string;
+  gender: string;
+  is_coach: boolean;
+  group: number;
+}
+export interface SignUpData extends DefaultSignUpData {
+  passwordConfirm: string;
+}
+
+/**coach인증 user데이터 */
+export interface userValue {
+  name: string;
+  email: string;
+  phone_number: string;
+}
+export interface CoachDefaultData extends DefaultSignUpData {
+  groupFile: userValue[];
+}
+
+export interface CoachSignUpData extends DefaultSignUpData {
+  passwordConfirm: string;
+  groupFile: [];
+}
+
 export interface User {
   avatar: any;
   email: string;
@@ -9,13 +44,8 @@ export interface User {
 }
 
 export interface LoginData {
-  id: string;
+  username: string;
   password: string;
-}
-
-export interface DefaultValue {
-  id: number;
-  description: string;
 }
 
 export interface CommentData extends DefaultValue {
@@ -79,12 +109,6 @@ export interface comment {
   description: string;
   user: string;
   feed: string;
-}
-
-export interface userValue {
-  name: string;
-  email: string;
-  phone_number: string;
 }
 
 export interface FormValue {

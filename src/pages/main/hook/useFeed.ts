@@ -1,7 +1,6 @@
 import { useInfiniteQuery } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import { getFeeds } from "api/axios/axiosSetting";
-import { FeedData } from "interface/Interface";
 
 interface UseFeed {
   feedData: any;
@@ -21,11 +20,11 @@ export const useFeed = (): UseFeed => {
     isLoading,
   } = useInfiniteQuery(
     Querykey.feedData,
-    ({ pageParam = `/feeds/oz/` }) => getFeeds(pageParam),
+    ({ pageParam = `/feeds/1` }) => getFeeds(pageParam),
     {
       getNextPageParam: (lastpage) => {
         if (lastpage.total_pages - lastpage.now_page > 0)
-          return `/feeds/oz/?page=${lastpage.now_page + 1}`;
+          return `/feeds/1/?page=${lastpage.now_page + 1}`;
         else {
           return undefined;
         }

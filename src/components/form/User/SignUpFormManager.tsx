@@ -1,7 +1,12 @@
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { FormValue, userValue } from "../../../interface/Interface";
+import {
+  CoachDefaultData,
+  CoachSignUpData,
+  SignUpData,
+  userValue,
+} from "../../../interface/Interface";
 import {
   Box,
   Button,
@@ -21,6 +26,9 @@ import { send_message } from "../../../api/axios/phoneAuthentication";
 
 import * as XLSX from "xlsx";
 import { useCallback, useRef, useState } from "react";
+import { useMutation } from "react-query";
+import { signUp } from "api/axios/axiosSetting";
+import useSignUpGroup from "./Hook/useSignUpGroup";
 
 const SignUpFormManager = () => {
   const {
@@ -28,26 +36,46 @@ const SignUpFormManager = () => {
     formState: { errors },
     handleSubmit,
     getValues,
-  } = useForm<FormValue>();
+  } = useForm<CoachSignUpData>();
 
   const toast = useToast();
+  const { group } = useSignUpGroup();
 
   /**링크 네비게이트 */
   const navigate = useNavigate();
 
   /**회원가입 form 제출시 */
-  const onSubmit = (data: FormValue) => {
-    const signUpData = {
-      id: data.id,
-      password: data.password,
+  const { mutate: signUpHandler } = useMutation(
+    (signUpData: any) => signUp(signUpData),
+    {
+      onError: (error: any) => {
+        const detail_error = Object.values(error.response.data);
+        toast({
+          title: "회원가입 실패",
+          description: `${detail_error[0]}`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+    }
+  );
+
+  const onSubmit = (data: SignUpData) => {
+    const newSignUpData: CoachDefaultData = {
+      username: data.username,
       name: data.name,
-      phone_number: "010" + data.phone_number,
+      password: data.password,
+      phone_number: data.phone_number,
       email: data.email,
       gender: data.gender,
-      group: data.group,
+      group: 1,
+      is_coach: true,
       groupFile: fileDataRef.current,
     };
-    console.log(signUpData);
+
+    console.log(newSignUpData);
+    signUpHandler(newSignUpData);
   };
 
   /**액셀 파일 넣기 */
@@ -60,14 +88,17 @@ const SignUpFormManager = () => {
 
       const reader = new FileReader();
 
-      reader.onload = (event: any) => {
+      reader.onload = (event) => {
+        if (!event.target) {
+          return;
+        }
         const binaryString = event.target.result;
         const workbook = XLSX.read(binaryString, { type: "binary" });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
         /**필드 확인 */
         const expectedFields = ["name", "email", "phone_number"];
-        const actualFields: any = [];
+        const actualFields: any[] = [];
 
         for (let i = 65; i <= 67; i++) {
           const cell = String.fromCharCode(i) + "1";
@@ -152,11 +183,11 @@ const SignUpFormManager = () => {
         />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.typeDiv}>
-            <label htmlFor="id">ID</label>
+            <label htmlFor="username">ID</label>
             <Input
-              id="id"
+              id="username"
               placeholder="Id를 입력하세요."
-              {...register("id", {
+              {...register("username", {
                 required: {
                   value: true,
                   message: "필수 정보입니다.",
@@ -175,7 +206,7 @@ const SignUpFormManager = () => {
                 },
               })}
             />
-            {errors.id && <p>{errors.id.message}</p>}
+            {errors.username && <p>{errors.username.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
@@ -271,7 +302,7 @@ const SignUpFormManager = () => {
                 type="number"
                 placeholder="전화번호를 입력하세요."
                 {...register("phone_number", {
-                  required: "필수 정보입니다.",
+                  required: "필수 정보입니다.(-는 제외하고 입력해주세요).",
                 })}
               />
               <Button
@@ -316,9 +347,13 @@ const SignUpFormManager = () => {
                 required: "필수 정보입니다.",
               })}
             >
-              <option>oz코딩스쿨</option>
-              <option>싸피(Ssafy)</option>
-              <option>라피신(서울42)</option>
+              {group?.map((data: any) => {
+                return (
+                  <option key={data.pk} value={data.pk}>
+                    {data.name}
+                  </option>
+                );
+              })}
             </Select>
             {errors?.group && <p>{errors.group?.message}</p>}
           </div>
@@ -365,7 +400,7 @@ const SignUpFormManager = () => {
                 <Stack spacing={5} direction="row">
                   <Radio
                     colorScheme="twitter"
-                    value="남"
+                    value="male"
                     {...register("gender", {
                       required: "성별을 입력해주세요.",
                     })}
@@ -374,7 +409,7 @@ const SignUpFormManager = () => {
                   </Radio>
                   <Radio
                     colorScheme="red"
-                    value="여"
+                    value="female"
                     {...register("gender", {
                       required: "성별을 입력해주세요.",
                     })}
