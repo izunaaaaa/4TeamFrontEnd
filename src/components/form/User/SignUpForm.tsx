@@ -1,7 +1,7 @@
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { FormValue } from "../../../interface/Interface";
+import { SignUpData, DefaultSignUpData } from "../../../interface/Interface";
 import {
   Box,
   Button,
@@ -12,10 +12,14 @@ import {
   RadioGroup,
   Select,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { send_message } from "../../../api/axios/phoneAuthentication";
+import { useMutation } from "react-query";
+import { signUp } from "api/axios/axiosSetting";
+import useSignUpGroup from "./Hook/useSignUpGroup";
 
 const SignUpForm = () => {
   const {
@@ -23,23 +27,44 @@ const SignUpForm = () => {
     formState: { errors },
     handleSubmit,
     getValues,
-  } = useForm<FormValue>();
+  } = useForm<SignUpData>();
 
   /**링크 네비게이트 */
   const navigate = useNavigate();
+  const toast = useToast();
+  const { group } = useSignUpGroup();
 
   /**회원가입 form 제출시 */
-  const onSubmit = (data: FormValue) => {
-    const signUpData = {
-      id: data.id,
-      password: data.password,
+
+  const { mutate: signUpHandler } = useMutation(
+    (signUpData: any) => signUp(signUpData),
+    {
+      onError: (error: any) => {
+        const detail_error = Object.values(error.response.data);
+        toast({
+          title: "회원가입 실패",
+          description: `${detail_error[0]}`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+    }
+  );
+
+  const onSubmit = (data: SignUpData) => {
+    const newSignUpData: DefaultSignUpData = {
+      username: data.username,
       name: data.name,
-      phone_number: "010" + data.phone_number,
+      password: data.password,
+      phone_number: data.phone_number,
       email: data.email,
       gender: data.gender,
-      group: data.group,
+      group: 1,
+      is_coach: false,
     };
-    console.log(signUpData);
+    console.log(newSignUpData);
+    signUpHandler(newSignUpData);
   };
 
   return (
@@ -52,11 +77,11 @@ const SignUpForm = () => {
         />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.typeDiv}>
-            <label htmlFor="id">ID</label>
+            <label htmlFor="username">ID</label>
             <Input
-              id="id"
+              id="username"
               placeholder="Id를 입력하세요."
-              {...register("id", {
+              {...register("username", {
                 required: {
                   value: true,
                   message: "필수 정보입니다.",
@@ -69,13 +94,9 @@ const SignUpForm = () => {
                   value: 3,
                   message: "2자 이상 입력하세요.",
                 },
-                pattern: {
-                  value: /^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/,
-                  message: "공백을 제거해 주세요.",
-                },
               })}
             />
-            {errors.id && <p>{errors.id.message}</p>}
+            {errors.username && <p>{errors.username.message}</p>}
           </div>
 
           <div className={styles.typeDiv}>
@@ -99,9 +120,6 @@ const SignUpForm = () => {
                   message: "16자까지 입력가능합니다.",
                 },
                 pattern: {
-                  // eslint-disable-next-line
-                  // value: /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g,
-
                   value:
                     // eslint-disable-next-line
                     /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{8,20}$/,
@@ -174,7 +192,7 @@ const SignUpForm = () => {
                 type="number"
                 placeholder="전화번호를 입력하세요."
                 {...register("phone_number", {
-                  required: "필수 정보입니다.",
+                  required: "필수 정보입니다.(-는 제외하고 입력해주세요).",
                 })}
               />
               <Button onClick={() => send_message(getValues("phone_number"))}>
@@ -216,9 +234,13 @@ const SignUpForm = () => {
                 required: "필수 정보입니다.",
               })}
             >
-              <option>oz코딩스쿨</option>
-              <option>싸피(Ssafy)</option>
-              <option>라피신(서울42)</option>
+              {group?.map((data: any) => {
+                return (
+                  <option key={data.pk} value={data.pk}>
+                    {data.name}
+                  </option>
+                );
+              })}
             </Select>
             {errors?.group && <p>{errors.group?.message}</p>}
           </div>
@@ -228,7 +250,7 @@ const SignUpForm = () => {
                 <Stack spacing={5} direction="row">
                   <Radio
                     colorScheme="twitter"
-                    value="남"
+                    value="male"
                     {...register("gender", {
                       required: "성별을 입력해주세요.",
                     })}
@@ -237,7 +259,7 @@ const SignUpForm = () => {
                   </Radio>
                   <Radio
                     colorScheme="red"
-                    value="여"
+                    value="female"
                     {...register("gender", {
                       required: "성별을 입력해주세요.",
                     })}

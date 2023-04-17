@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   HStack,
   Input,
@@ -30,14 +29,6 @@ const Login = (props: any) => {
 
   const toast = useToast();
 
-  // const loginHandler = useMutation(
-  //   {
-  //     mutationFn: (loginData: LoginData) => login(loginData),
-  //   },
-  //   {
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
   const { mutate: loginHandler } = useMutation(
     (loginData: LoginData) => login(loginData),
     {

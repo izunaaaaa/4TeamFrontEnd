@@ -1,18 +1,21 @@
 import { getFeedDetail } from "api/axios/axiosSetting";
 import { Querykey } from "api/react-query/QueryKey";
 import { FeedDetail } from "interface/Interface";
-import React from "react";
 import { useQuery } from "react-query";
 
 interface UseFeedDetail {
   feedDetail: FeedDetail;
 }
 
-const useFeedDetail = (feedID: number, group: string): UseFeedDetail => {
+const useFeedDetail = (
+  groupPk: number,
+  category: string,
+  feedID: number
+): UseFeedDetail => {
   const fallBack: [] = [];
   const { data: feedDetail = fallBack } = useQuery(
-    [Querykey.feedDetail, feedID, group],
-    () => getFeedDetail(feedID, group)
+    [Querykey.feedDetail, groupPk, category, feedID],
+    () => getFeedDetail(groupPk, category, feedID)
   );
 
   return { feedDetail };
