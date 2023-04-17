@@ -7,6 +7,8 @@ import {
   Flex,
   Badge,
   HStack,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import { MockCont } from "../../MsgMock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,8 +16,18 @@ import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
 
 export default function MsgDetail(props: MockCont) {
   const [isHovering, setIsHovering] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
-  const handleDeleteClick = () => {};
+  // 클라이언트 단에서만 쪽지 내역 삭제 (서버에 전송 x)
+  const handleDeleteClick = () => {
+    setIsDeleted(true);
+  };
+  if (isDeleted) {
+    alert(
+      "이 쪽지를 삭제하시겠습니까? \n (삭제한 쪽지는 상대의 쪽지 창에서 삭제되지 않습니다.)"
+    );
+    return null;
+  }
 
   return (
     <Flex justify={"space-evenly"}>
@@ -49,10 +61,12 @@ export default function MsgDetail(props: MockCont) {
             </HStack>
             <HStack>
               {isHovering && (
-                <FontAwesomeIcon
-                  icon={faScissors}
+                <button
                   onClick={handleDeleteClick}
-                />
+                  style={{ cursor: "pointer" }}
+                >
+                  <FontAwesomeIcon icon={faScissors} />
+                </button>
               )}{" "}
               <Text as="ins">{props.content}</Text>
             </HStack>
