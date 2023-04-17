@@ -60,14 +60,17 @@ const SignUpFormManager = () => {
 
       const reader = new FileReader();
 
-      reader.onload = (event: any) => {
+      reader.onload = (event) => {
+        if (!event.target) {
+          return;
+        }
         const binaryString = event.target.result;
         const workbook = XLSX.read(binaryString, { type: "binary" });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
         /**필드 확인 */
         const expectedFields = ["name", "email", "phone_number"];
-        const actualFields: any = [];
+        const actualFields: any[] = [];
 
         for (let i = 65; i <= 67; i++) {
           const cell = String.fromCharCode(i) + "1";

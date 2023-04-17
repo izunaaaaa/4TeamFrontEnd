@@ -9,7 +9,7 @@ export interface User {
 }
 
 export interface LoginData {
-  id: string;
+  username: string;
   password: string;
 }
 

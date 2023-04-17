@@ -1,6 +1,6 @@
 import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
-import { Letterlists, LoginData } from "interface/Interface";
+import { Letterlists } from "interface/Interface";
 import Cookie from "js-cookie";
 export const instance = axios.create({
   // baseURL: BASE_URL,
@@ -18,7 +18,6 @@ export const getFeeds = async (url: string) =>
 
 export const login = async (data: any) =>
   await instance.post(`/users/login/`, data).then((res) => {
-    console.log(res.data);
     return res.data;
   });
 
