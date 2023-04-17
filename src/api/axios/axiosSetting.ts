@@ -25,6 +25,13 @@ export const login = async (data: any) =>
 export const getLetterlists = (): Promise<Letterlists[]> => {
   return instance.get(`letterlists/`).then((res) => res.data);
 };
+
+export const getLetters = async () =>
+  await instance.get(`letters/`).then((res) => res.data);
+
+export const postLetters = async () =>
+  await instance.post(`letters/`).then((res) => res.data);
+
 export const getFeedDetail = async (feedID: number, group: string) =>
   await instance.get(`/feeds/${group}/${feedID}/`).then((res) => {
     return res.data;

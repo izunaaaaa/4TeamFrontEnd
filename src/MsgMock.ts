@@ -59,6 +59,7 @@ export interface MockCont {
   user: MockUser;
   content: string;
   time: string;
+  onClick: any;
 }
 
 export const mockMsgCont: MockCont[] = [
@@ -71,6 +72,7 @@ export const mockMsgCont: MockCont[] = [
     },
     content: "Hello!",
     time: "10:00 AM",
+    onClick: "",
   },
   {
     id: 2,
@@ -81,6 +83,7 @@ export const mockMsgCont: MockCont[] = [
     },
     content: "Hi, Alice!",
     time: "10:01 AM",
+    onClick: "",
   },
   {
     id: 3,
@@ -91,6 +94,7 @@ export const mockMsgCont: MockCont[] = [
     },
     content: "How are you?",
     time: "10:02 AM",
+    onClick: "",
   },
   {
     id: 4,
@@ -101,6 +105,7 @@ export const mockMsgCont: MockCont[] = [
     },
     content: "I'm good, thanks! How about you?",
     time: "10:03 AM",
+    onClick: "",
   },
   {
     id: 5,
@@ -111,5 +116,6 @@ export const mockMsgCont: MockCont[] = [
     },
     content: "I'm doing well too, thanks!",
     time: "10:04 AM",
+    onClick: "",
   },
 ];

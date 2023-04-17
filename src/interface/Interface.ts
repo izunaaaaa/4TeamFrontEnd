@@ -146,6 +146,7 @@ export interface MockCont {
   user: MockUser;
   content: string;
   time: string;
+  state: boolean;
 }
 
 export interface TabMenu {
@@ -159,8 +160,8 @@ export interface TabMenu {
 
 export interface Letterlists {
   id: number;
-  create_at: any;
-  update_at: any;
+  created_at: any;
+  updated_at: any;
   sender: number;
   receiver: number;
 }

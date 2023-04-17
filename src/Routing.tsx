@@ -23,7 +23,14 @@ const Routing = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/letterlists" element={<Mailbox />} />
+        <Route
+          path="/letterlists"
+          element={
+            <Layout>
+              <Mailbox />
+            </Layout>
+          }
+        />
         <Route path="/letters" element={<MsgRoom />} />
 
         <Route

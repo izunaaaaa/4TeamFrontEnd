@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { MockCont } from "../../MsgMock";
-import { mockMsgCont } from "../../MsgMock";
 import {
   Button,
+  Flex,
+  Text,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -19,8 +19,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { useQuery } from "react-query";
+import { getLetters } from "api/axios/axiosSetting";
 
 export default function MsgRoom() {
+  const { isLoading, error, data } = useQuery("Letters", getLetters);
+
   // chakra ui의 모달 컨트롤 훅
   const { isOpen, onOpen, onClose } = useDisclosure();
   //쪽지 모달 창 관리
@@ -35,25 +40,27 @@ export default function MsgRoom() {
     }
   };
 
+  const handleDeleteLetter = () => {
+    data.splice(0, 1);
+  };
+
   return (
     <>
-      {/* 주고받은 쪽지내역 */}
-      {mockMsgCont?.map((msg: MockCont, idx) => {
-        return (
-          <Box key={idx} mt={"5"}>
-            <MsgDetail {...msg} />
-          </Box>
-        );
-      })}
-      <HStack
-        onClick={onOpen}
-        cursor="pointer"
-        margin="2rem"
-        justify={"space-evenly"}
-      >
-        <FontAwesomeIcon icon={faPaperPlane} size="xl" />
-      </HStack>
+      <Box>
+        {/* 주고받은 쪽지내역 */}
+        {data?.map((letter: any, idx: any) => {
+          return (
+            <Box key={idx} mt={"5"}>
+              <MsgDetail {...letter} onClick={handleDeleteLetter} />
+            </Box>
+          );
+        })}
+      </Box>
 
+      <HStack onClick={onOpen} cursor="pointer" margin="2rem">
+        <FontAwesomeIcon icon={faPaperPlane} size="xl" />
+        <FontAwesomeIcon icon={faTrashCan} size="xl" />
+      </HStack>
       {/* 모달 */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
