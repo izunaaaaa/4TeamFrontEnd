@@ -15,9 +15,9 @@ export default function WrittenPost(): JSX.Element {
    const [page, setPage] = useState<number>(1);
    const [posts, setPosts] = useState<Post[]>([]);
 
+   // 더미테스트
    useEffect(() => {
       const fetchPosts = async () => {
-         // API를 호출하여 새로운 페이지의 게시글 데이터를 가져옴
          const newPosts = await fetch(`https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=${PAGE_SIZE}`).then(res => res.json());
 
          setPosts(prevPosts => [...prevPosts, ...newPosts]);
@@ -27,17 +27,14 @@ export default function WrittenPost(): JSX.Element {
    }, [page]);
 
    const handleScroll = () => {
-      // 스크롤이 바닥에 닿으면 다음 페이지의 게시글을 가져옴
       if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
          setPage(prevPage => prevPage + 1);
       }
    };
 
    useEffect(() => {
-      // 스크롤 이벤트 리스너 등록
       window.addEventListener('scroll', handleScroll);
 
-      // 언마운트 시 스크롤 이벤트 리스너 해제
       return () => {
          window.removeEventListener('scroll', handleScroll);
       };
@@ -52,5 +49,4 @@ export default function WrittenPost(): JSX.Element {
          ))}
       </div>
    );
-
 }
