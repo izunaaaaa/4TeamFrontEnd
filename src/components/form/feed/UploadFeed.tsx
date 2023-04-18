@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import CropUploadImg from "./CropUploadImg";
+import useFeedCategory from "./hook/useFeedCategory";
 import styles from "./UploadFeed.module.scss";
 
 const UploadFeed = () => {
@@ -21,6 +22,8 @@ const UploadFeed = () => {
   const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { feedCategory } = useFeedCategory("oz");
 
   /**썸네일 보기 */
   const changeImg = async (e: React.ChangeEvent) => {
@@ -101,7 +104,9 @@ const UploadFeed = () => {
                 required: true,
               })}
             >
-              <option>스펙평가 A vs B</option>
+              {feedCategory.map((category: any) => {
+                return <option key={category.id}>{category.name}</option>;
+              })}
             </Select>
             <div className={styles.postFormNickname}>
               <Avatar name="닉네임" size="xs" />

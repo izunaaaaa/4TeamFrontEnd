@@ -2,9 +2,6 @@ import React, { ReactElement, useEffect, useRef, useState } from "react";
 
 import { CgMenuLeft } from "react-icons/cg";
 import styles from "./Header.module.scss";
-
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
 import Sidebar from "UI/sidebar/Sidebar";
 import DropDown from "./DropDown";

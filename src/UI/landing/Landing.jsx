@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Main.module.scss";
+import styles from "./Landing.module.scss";
 
 export default function Landing() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -7,7 +7,7 @@ export default function Landing() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % 4);
-    }, 1000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -44,6 +44,7 @@ export default function Landing() {
             }`}
           />
         </div>
+
         <div className={styles.mobile}>
           <img
             alt="Slide1"
@@ -75,6 +76,19 @@ export default function Landing() {
           />
         </div>
       </div>
+      <footer className={styles.footer}>
+        <div className={styles.footerContent}>
+          <h3>CurB 팀프로젝트</h3>
+          <ul>
+            <li>김두홍</li>
+            <li>박현지</li>
+            <li>송가연</li>
+            <li>이풍현</li>
+            <li>임창섭</li>
+            <li>최현우</li>
+          </ul>
+        </div>
+      </footer>
     </div>
   );
 }

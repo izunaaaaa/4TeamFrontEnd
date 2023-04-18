@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./DropDown.module.scss";
 import Login from "components/form/User/Login";
+import useClickOutside from "./useClickOutside";
 
 const list = [
   { id: 1, title: "마이페이지", link: "/mypage" },
@@ -11,6 +12,7 @@ const list = [
 
 function DropDown() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const loginRef = useRef(null);
 
   const handleLogin = () => {
     setIsLoginOpen(!isLoginOpen);
@@ -30,7 +32,9 @@ function DropDown() {
           <span>로그인</span>
         </li>
       </ul>
-      <Login isOpen={isLoginOpen} onClose={handleLogin} />
+      <div ref={loginRef}>
+        <Login isOpen={isLoginOpen} onClose={handleLogin} />
+      </div>
     </>
   );
 }
