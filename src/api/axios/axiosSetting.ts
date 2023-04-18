@@ -72,23 +72,26 @@ export const getLetterlists = (): Promise<Letterlists[]> => {
   return instance.get(`letterlists/`).then((res) => res.data);
 };
 
-export const postCategory = async (name: string, group: string) =>
-  await instance.post(`/categories/${group}`, { name }).then((res) => {
+export const getCategories = async (groupPk: number) => {
+  const result = await instance.get(`/categories/${groupPk}`);
+  return result.data;
+};
+
+export const postCategory = async (name: string, groupPk: number) =>
+  await instance.post(`/categories/${groupPk}`, { name }).then((res) => {
     return res.data;
   });
 
-export const deleteCategory = async (group: string, id: number) =>
-  await instance.delete(`/categories/${group}/${id}`).then((res) => {
+export const deleteCategory = async (groupPk: number, id: number) =>
+  await instance.delete(`/categories/${groupPk}/${id}`).then((res) => {
     return res.data;
   });
 
 export const updateCategory = async (
-  group: string,
+  groupPk: number,
   id: number,
-  newName: string
+  name: string
 ) =>
-  await instance
-    .put(`/categories/${group}/${id}`, { name: newName })
-    .then((res) => {
-      return res.data;
-    });
+  await instance.put(`/categories/${groupPk}/${id}`, { name }).then((res) => {
+    return res.data;
+  });
