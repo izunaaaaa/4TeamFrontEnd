@@ -28,7 +28,7 @@ const Routing = () => {
         <Route path="/letters" element={<MsgRoom />} />
 
         <Route
-          path="/home"
+          path="/category/:id"
           element={
             <Layout>
               <Feed />

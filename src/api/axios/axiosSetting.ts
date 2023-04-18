@@ -31,27 +31,42 @@ export const getFeeds = async (url: string) =>
     return res.data;
   });
 
-export const getFeedDetail = async (
-  groupPk: number,
-  category: string,
-  feedID: number
-) =>
-  await instance
-    .get(
-      `/feeds/group/category/detail?group_id=${groupPk}&category_id=${category}&detail_id=${feedID}`
-    )
-    .then((res) => {
-      return res.data;
-    });
+export const postFeedLike = async (feedId: string) =>
+  await instance.post(`/users/me/feedlike/`, feedId).then((res) => res.data);
 
+export const getFeedDetail = async (feedId: number) =>
+  await instance.get(`/feeds/${feedId}/`).then((res) => {
+    return res.data;
+  });
+
+/**feed post form */
 export const getFeedCategory = async (group: string) =>
   await instance.get(`/categories/${group}`).then((res) => res.data);
 
-export const postUploadUrl = async () =>
-  await instance.post(`/media/uploadURL`).then((res) => console.log(res));
+export const postUploadUrl = async (imgFile: File) =>
+  await instance.post(`/media/uploadURL`).then((res) => {
+    const url = res.data.uploadURL;
+    const form = new FormData();
 
-export const postFeed = async () =>
-  await instance.post(`/feeds/`).then((res) => res.data);
+    form.append("file", imgFile, "image.jpeg");
+    // console.log(img);
+
+    console.log(form, imgFile);
+
+    axios
+      .post(url, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        return res.data.result;
+      });
+  });
+
+export const postFeed = async (postData: any) =>
+  await instance.post(`/feeds/`, postData).then((res) => res.data);
 
 export const getLetterlists = (): Promise<Letterlists[]> => {
   return instance.get(`letterlists/`).then((res) => res.data);

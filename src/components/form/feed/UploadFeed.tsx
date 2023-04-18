@@ -12,10 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { postUploadUrl } from "api/axios/axiosSetting";
+import { postFeed } from "api/axios/axiosSetting";
 import { PostFeed } from "interface/Interface";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import CropUploadImg from "./CropUploadImg";
 import useFeedCategory from "./hook/useFeedCategory";
@@ -37,6 +38,17 @@ const UploadFeed = () => {
 
   const { feedCategory } = useFeedCategory("oz");
 
+  const { mutate: postFeedHandler } = useMutation(
+    (postData) => postFeed(postData),
+    {
+      onSuccess: () => {
+        toast({
+          title: "게시글을 업로드했습니다.",
+        });
+      },
+    }
+  );
+
   /**썸네일 보기 */
   const changeImg = async (e: React.ChangeEvent) => {
     const reader: any = new FileReader();
@@ -54,9 +66,14 @@ const UploadFeed = () => {
   };
 
   /**제출하기 */
-  const submitHandler = (data: any) => {
-    console.log(data);
-    postUploadUrl();
+  const submitHandler = (data: PostFeed) => {
+    const postData: any = {
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      image: null,
+    };
+    postFeedHandler(postData);
   };
 
   /**이미지 크롭하기 */
