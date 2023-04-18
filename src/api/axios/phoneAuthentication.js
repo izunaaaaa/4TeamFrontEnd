@@ -3,8 +3,6 @@
 
 // import CryptoJS from "crypto-js";
 
-// const Cache = require("memory-cache");
-
 // // const date = Date.now().toString();
 // // const uri = secret_key.NCP_serviceID;
 // // const secretKey = secret_key.NCP_secretKey;
@@ -59,7 +57,7 @@
 //   const signature = makeSignitureForSMS();
 
 //   //인증번호 생성
-//   const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+// const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
 //   Cache.put(phoneNumber, verifyCode.toString());
 
 //   const headers = {
@@ -111,6 +109,8 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
 
+const Cache = require("memory-cache");
+
 const secret_key = {
   NCP_serviceID: "ncp:sms:kr:306207594347:curb-dev",
   NCP_accessKey: "B1EaHVNUwRPkQ3PTspyn",
@@ -118,8 +118,10 @@ const secret_key = {
 };
 
 export function send_message(phone) {
+  console.log(phone);
   var user_phone_number = phone;
-  var user_auth_number = Math.random().toString(36).slice(2);
+  const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+  Cache.put(phone, verifyCode.toString());
   var resultCode = 404;
 
   const date = Date.now().toString();
@@ -151,8 +153,8 @@ export function send_message(phone) {
       {
         type: "SMS",
         countryCode: "82",
-        from: "0000",
-        content: `인증번호 ${user_auth_number} 입니다.`,
+        from: "01062848167",
+        content: `인증번호 ${verifyCode} 입니다.`,
         messages: [
           {
             to: `${user_phone_number}`,
@@ -173,3 +175,20 @@ export function send_message(phone) {
     .catch((err) => console.log(err));
   return resultCode;
 }
+
+export const verify = async function (req, res) {
+  const phoneNumber = req.phoneNumber;
+  const verifyCode = req.verifyCode;
+
+  const CacheData = Cache.get(phoneNumber);
+
+  console.log(CacheData, verifyCode);
+  if (!CacheData) {
+    return console.log("1");
+  } else if (CacheData !== verifyCode) {
+    return console.log("2");
+  } else {
+    Cache.del(phoneNumber);
+    return console.log("3");
+  }
+};

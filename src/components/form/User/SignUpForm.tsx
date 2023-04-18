@@ -5,21 +5,31 @@ import { SignUpData, DefaultSignUpData } from "../../../interface/Interface";
 import {
   Box,
   Button,
+  Flex,
   Input,
   InputGroup,
   InputLeftAddon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Radio,
   RadioGroup,
   Select,
   Stack,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { send_message } from "../../../api/axios/phoneAuthentication";
+import { send_message, verify } from "../../../api/axios/phoneAuthentication";
 import { useMutation } from "react-query";
 import { signUp } from "api/axios/axiosSetting";
 import useSignUpGroup from "./Hook/useSignUpGroup";
+import { useRef } from "react";
 
 const SignUpForm = () => {
   const {
@@ -28,6 +38,10 @@ const SignUpForm = () => {
     handleSubmit,
     getValues,
   } = useForm<SignUpData>();
+
+  /**휴대폰인증 */
+  const phoneRef = useRef<any>();
+  const verifyCode = useRef<any>();
 
   /**링크 네비게이트 */
   const navigate = useNavigate();
@@ -67,8 +81,64 @@ const SignUpForm = () => {
     signUpHandler(newSignUpData);
   };
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <label htmlFor="phoneVerification">휴대폰인증</label>
+            <Flex>
+              <Input
+                id="phoneVerification"
+                placeholder="번호를 입력해주세요."
+                onChange={(e) => {
+                  phoneRef.current = e.target.value;
+                }}
+              />
+              <Button
+                onClick={() => {
+                  console.log(phoneRef);
+                  send_message(Number(phoneRef.current));
+                }}
+              >
+                인증번호보내기
+              </Button>
+            </Flex>
+            <label htmlFor="phoneVerification">인증번호</label>
+            <Flex>
+              <Input
+                id="phoneVerification"
+                placeholder="인증번호를 입력해주세요."
+                onChange={(e) => {
+                  verifyCode.current = e.target.value;
+                }}
+              />
+              <Button
+                onClick={() => {
+                  const reqData = {
+                    phoneNumber: Number(phoneRef.current),
+                    verifyCode: verifyCode.current,
+                  };
+                  verify(reqData);
+                }}
+              >
+                인증확인
+              </Button>
+            </Flex>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <div className={styles.signUp}>
         <img
           className={styles.signUpImg}
@@ -195,7 +265,11 @@ const SignUpForm = () => {
                   required: "필수 정보입니다.(-는 제외하고 입력해주세요).",
                 })}
               />
-              <Button onClick={() => send_message(getValues("phone_number"))}>
+              <Button
+                onClick={() => {
+                  onOpen();
+                }}
+              >
                 인증하기
               </Button>
             </InputGroup>
