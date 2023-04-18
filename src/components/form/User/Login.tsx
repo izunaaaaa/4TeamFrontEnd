@@ -19,18 +19,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { login } from "api/axios/axiosSetting";
 import { AxiosError } from "axios";
 import { LoginData } from "interface/Interface";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userState } from "recoil/user";
 
 const Login = (props: any) => {
   const { handleSubmit, register } = useForm<LoginData>();
-
   const toast = useToast();
+  const [user, setUser] = useRecoilState(userState);
 
   const { mutate: loginHandler } = useMutation(
-    (loginData: LoginData) => login(loginData),
+    (loginData: LoginData) => login(loginData).then((res) => setUser(res)),
     {
       onError: (error: AxiosError) => {
         toast({
@@ -39,7 +40,7 @@ const Login = (props: any) => {
           isClosable: true,
         });
       },
-      onSuccess: () => {
+      onSuccess: (res) => {
         toast({
           title: `로그인 성공!!`,
           status: "success",

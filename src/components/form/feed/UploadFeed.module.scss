@@ -1,8 +1,9 @@
 .postForm {
   padding: 5px 0px 0px 0px;
   border-radius: 30px;
-  max-width: 800px;
+  width: 50%;
   background-color: beige;
+  margin-top: 100px;
 
   .postFormHeader {
     padding: 15px 15px 10px 15px;
@@ -28,6 +29,14 @@
     border-top: 1px solid bisque;
     display: flex;
     height: 400px;
+    p {
+      color: red;
+      font-size: 0.8rem;
+      &:before {
+        display: inline;
+        content: "⚠ ";
+      }
+    }
     .fileForm {
       display: flex;
       flex-direction: column;
@@ -58,27 +67,9 @@
       height: 80%;
       padding: 20px;
 
-      p {
-        margin-left: 10px;
-      }
       .postFormNickname {
         display: flex;
         margin-top: 10px;
-      }
-
-      .title {
-        border: 0;
-        width: 80%;
-        margin-top: 30px;
-        background-color: transparent;
-      }
-      .contents {
-        border: 0;
-        background-color: transparent;
-        resize: none;
-        width: 80%;
-        margin-top: 30px;
-        height: 50%;
       }
     }
   }
@@ -89,6 +80,7 @@
     padding: 5px 0px 0px 0px;
     border-radius: 10px;
     width: 100%;
+    margin: 120px 0 0 0;
     background-color: beige;
     height: 100vh;
     .postFormMain {
