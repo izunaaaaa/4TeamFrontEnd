@@ -130,6 +130,13 @@ export interface CropAttribute {
   height: number;
 }
 
+export interface PostFeed {
+  title: string;
+  description: string;
+  category: number;
+  file: File[];
+}
+
 export interface Message {
   title: string;
   content: string;

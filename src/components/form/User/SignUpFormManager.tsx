@@ -18,17 +18,17 @@ import {
   RadioGroup,
   Select,
   Stack,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faPhone } from "@fortawesome/free-solid-svg-icons";
-import { send_message } from "../../../api/axios/phoneAuthentication";
-
 import * as XLSX from "xlsx";
 import { useCallback, useRef, useState } from "react";
 import { useMutation } from "react-query";
 import { signUp } from "api/axios/axiosSetting";
 import useSignUpGroup from "./Hook/useSignUpGroup";
+import PhoneVerifyModal from "./PhoneVerifyModal";
 
 const SignUpFormManager = () => {
   const {
@@ -41,10 +41,15 @@ const SignUpFormManager = () => {
   const toast = useToast();
   const { group } = useSignUpGroup();
 
+  /**폰넘버 */
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const getPhoneNumber = (data: string) => {
+    setPhoneNumber(data);
+  };
+
   /**링크 네비게이트 */
   const navigate = useNavigate();
 
-  /**회원가입 form 제출시 */
   const { mutate: signUpHandler } = useMutation(
     (signUpData: any) => signUp(signUpData),
     {
@@ -61,12 +66,13 @@ const SignUpFormManager = () => {
     }
   );
 
+  /**회원가입 form 제출시 */
   const onSubmit = (data: SignUpData) => {
     const newSignUpData: CoachDefaultData = {
       username: data.username,
       name: data.name,
       password: data.password,
-      phone_number: data.phone_number,
+      phone_number: phoneNumber,
       email: data.email,
       gender: data.gender,
       group: 1,
@@ -74,7 +80,15 @@ const SignUpFormManager = () => {
       groupFile: fileDataRef.current,
     };
 
-    console.log(newSignUpData);
+    if (!phoneNumber)
+      return toast({
+        title: "회원가입 실패",
+        description: "휴대폰인증을 해주세요.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+
     signUpHandler(newSignUpData);
   };
 
@@ -173,8 +187,14 @@ const SignUpFormManager = () => {
     [toast]
   );
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
+      <PhoneVerifyModal
+        isOpen={isOpen}
+        onClose={onClose}
+        getPhoneNumber={getPhoneNumber}
+      />
       <div className={styles.signUp}>
         <img
           className={styles.signUpImg}
@@ -301,13 +321,15 @@ const SignUpFormManager = () => {
                 id="number"
                 type="number"
                 placeholder="전화번호를 입력하세요."
-                {...register("phone_number", {
-                  required: "필수 정보입니다.(-는 제외하고 입력해주세요).",
-                })}
+                readOnly
+                value={phoneNumber}
+                {...register("phone_number", {})}
               />
               <Button
-                onClick={() => send_message(getValues("phone_number"))}
-                h="50px"
+                height="50px"
+                onClick={() => {
+                  onOpen();
+                }}
               >
                 인증하기
               </Button>

@@ -7,15 +7,11 @@ interface UseFeedDetail {
   feedDetail: FeedDetail;
 }
 
-const useFeedDetail = (
-  groupPk: number,
-  category: string,
-  feedID: number
-): UseFeedDetail => {
+const useFeedDetail = (feedID: number): UseFeedDetail => {
   const fallBack: [] = [];
   const { data: feedDetail = fallBack } = useQuery(
-    [Querykey.feedDetail, groupPk, category, feedID],
-    () => getFeedDetail(groupPk, category, feedID)
+    [Querykey.feedDetail, feedID],
+    () => getFeedDetail(feedID)
   );
 
   return { feedDetail };
