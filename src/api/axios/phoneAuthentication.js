@@ -176,19 +176,18 @@ export function send_message(phone) {
   return resultCode;
 }
 
-export const verify = async function (req, res) {
+export const verify = function (req, res) {
   const phoneNumber = req.phoneNumber;
   const verifyCode = req.verifyCode;
 
   const CacheData = Cache.get(phoneNumber);
 
-  console.log(CacheData, verifyCode);
   if (!CacheData) {
-    return console.log("1");
+    return "try";
   } else if (CacheData !== verifyCode) {
-    return console.log("2");
+    return "different";
   } else {
     Cache.del(phoneNumber);
-    return console.log("3");
+    return "success";
   }
 };

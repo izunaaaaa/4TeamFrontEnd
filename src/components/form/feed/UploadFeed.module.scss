@@ -29,6 +29,14 @@
     border-top: 1px solid bisque;
     display: flex;
     height: 400px;
+    p {
+      color: red;
+      font-size: 0.8rem;
+      &:before {
+        display: inline;
+        content: "⚠ ";
+      }
+    }
     .fileForm {
       display: flex;
       flex-direction: column;
@@ -59,27 +67,9 @@
       height: 80%;
       padding: 20px;
 
-      p {
-        margin-left: 10px;
-      }
       .postFormNickname {
         display: flex;
         margin-top: 10px;
-      }
-
-      .title {
-        border: 0;
-        width: 80%;
-        margin-top: 30px;
-        background-color: transparent;
-      }
-      .contents {
-        border: 0;
-        background-color: transparent;
-        resize: none;
-        width: 80%;
-        margin-top: 30px;
-        height: 50%;
       }
     }
   }

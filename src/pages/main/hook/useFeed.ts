@@ -19,8 +19,10 @@ export const useFeed = (): UseFeed => {
     isFetching,
     isLoading,
   } = useInfiniteQuery(
+    // http://115.85.181.9/api/v1/feeds/group/category/?group_id=1&category_id=34
     Querykey.feedData,
-    ({ pageParam = `/feeds/1` }) => getFeeds(pageParam),
+    ({ pageParam = `/feeds/group/category/?group_id=1&category_id=34` }) =>
+      getFeeds(pageParam),
     {
       getNextPageParam: (lastpage) => {
         if (lastpage.total_pages - lastpage.now_page > 0)

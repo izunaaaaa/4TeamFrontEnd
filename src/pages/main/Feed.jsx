@@ -55,6 +55,7 @@ function Feed() {
     setFeedOption([]);
   });
 
+  console.log(feedData.pages);
   return (
     <>
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>

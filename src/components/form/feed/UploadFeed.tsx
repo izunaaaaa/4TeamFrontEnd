@@ -1,14 +1,19 @@
 import {
   Avatar,
   Flex,
+  Input,
   Modal,
   ModalContent,
   ModalOverlay,
   Select,
+  Textarea,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { postUploadUrl } from "api/axios/axiosSetting";
+import { PostFeed } from "interface/Interface";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +22,13 @@ import useFeedCategory from "./hook/useFeedCategory";
 import styles from "./UploadFeed.module.scss";
 
 const UploadFeed = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PostFeed>();
+
+  const toast = useToast();
   const [previewImg, setPreviewImg] = useState();
   const [cropImg, setCropImg] = useState("");
   const navigate = useNavigate();
@@ -44,7 +55,8 @@ const UploadFeed = () => {
 
   /**제출하기 */
   const submitHandler = (data: any) => {
-    return;
+    console.log(data);
+    postUploadUrl();
   };
 
   /**이미지 크롭하기 */
@@ -101,28 +113,45 @@ const UploadFeed = () => {
               )}
             </div>
 
-            <div className={styles.postFormDiv}>
+            <Flex flexDirection="column" w="450px" padding="10px">
               <Select
                 placeholder="카테고리를 입력해주세요"
                 size="sm"
                 {...register("category", {
-                  required: true,
+                  required: {
+                    value: true,
+                    message: "필수 정보입니다.",
+                  },
                 })}
               >
                 {feedCategory.map((category: any) => {
-                  return <option key={category.id}>{category.name}</option>;
+                  return (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  );
                 })}
               </Select>
-              <div className={styles.postFormNickname}>
-                <Avatar name="닉네임" size="xs" />
-                <p>닉네임</p>
-              </div>
-              <textarea
-                className={styles.contents}
-                placeholder="내용을 입력해주세요..."
-                {...register("content")}
+              {errors?.category && <p>{errors.category?.message}</p>}
+
+              <Input
+                placeholder="제목을 입력하세요."
+                marginTop="10px"
+                type="text"
+                {...register("title", {
+                  required: "Title is required",
+                })}
               />
-            </div>
+              {errors?.title && <p>{errors?.title?.message}</p>}
+
+              <Textarea
+                marginTop="10px"
+                placeholder="내용을 입력해주세요..."
+                {...register("description")}
+                resize="none"
+                h={"50%"}
+              />
+            </Flex>
           </div>
         </form>
       </Flex>

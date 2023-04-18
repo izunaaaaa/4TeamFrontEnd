@@ -36,12 +36,22 @@ export const getFeedDetail = async (
   category: string,
   feedID: number
 ) =>
-  await instance.get(`/feeds/${groupPk}/${category}/${feedID}`).then((res) => {
-    return res.data;
-  });
+  await instance
+    .get(
+      `/feeds/group/category/detail?group_id=${groupPk}&category_id=${category}&detail_id=${feedID}`
+    )
+    .then((res) => {
+      return res.data;
+    });
 
 export const getFeedCategory = async (group: string) =>
   await instance.get(`/categories/${group}`).then((res) => res.data);
+
+export const postUploadUrl = async () =>
+  await instance.post(`/media/uploadURL`).then((res) => console.log(res));
+
+export const postFeed = async () =>
+  await instance.post(`/feeds/`).then((res) => res.data);
 
 export const getLetterlists = (): Promise<Letterlists[]> => {
   return instance.get(`letterlists/`).then((res) => res.data);
