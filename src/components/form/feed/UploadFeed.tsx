@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Flex,
   Input,
   Modal,
@@ -12,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { postFeed } from "api/axios/axiosSetting";
-import { PostFeed } from "interface/Interface";
+import { postFeed, postUploadUrl } from "api/axios/axiosSetting";
+import { PostFeed } from "../User/interface/type";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
@@ -38,12 +37,25 @@ const UploadFeed = () => {
 
   const { feedCategory } = useFeedCategory("oz");
 
-  const { mutate: postFeedHandler } = useMutation(
-    (postData) => postFeed(postData),
+  const { mutateAsync: postUploadUrlHandler } = useMutation(
+    async (img: any) => await postUploadUrl(img)
+  );
+
+  const { mutate: postFeedHandler, isLoading } = useMutation(
+    (postData: PostFeed) => postFeed(postData),
     {
       onSuccess: () => {
         toast({
           title: "게시글을 업로드했습니다.",
+        });
+      },
+      onError: (error: any) => {
+        toast({
+          title: "업로드 실패",
+          description: `카테고리와 제목은 필수 입니다.`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
         });
       },
     }
@@ -56,6 +68,7 @@ const UploadFeed = () => {
     const target = e.currentTarget as HTMLInputElement;
 
     const file = target.files?.[0];
+
     if (!file) return;
 
     reader.readAsDataURL(file);
@@ -65,14 +78,34 @@ const UploadFeed = () => {
     onOpen();
   };
 
+  /**이미지url을 blob으로 변환 */
+  function dataURLToBlob(dataURL: any): Blob {
+    const byteString = atob(dataURL.split(",")[1]);
+    const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+  }
+
   /**제출하기 */
-  const submitHandler = (data: PostFeed) => {
-    const postData: any = {
+  const submitHandler = async (data: PostFeed) => {
+    let resUrl = "";
+    if (cropImg) {
+      const blob = dataURLToBlob(cropImg);
+      const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
+      resUrl = await postUploadUrlHandler(file);
+    }
+
+    const postData: PostFeed = {
       title: data.title,
-      description: data.description,
       category: data.category,
-      image: null,
+      ...(data.description && { description: data.description }),
+      ...(resUrl && { image: resUrl }),
     };
+    console.log(postData);
     postFeedHandler(postData);
   };
 
@@ -113,7 +146,7 @@ const UploadFeed = () => {
                 <>
                   <input
                     type="file"
-                    {...register("file")}
+                    {...register("image")}
                     accept="image/*"
                     onChange={changeImg}
                   />
@@ -135,10 +168,10 @@ const UploadFeed = () => {
                 placeholder="카테고리를 입력해주세요"
                 size="sm"
                 {...register("category", {
-                  required: {
-                    value: true,
-                    message: "필수 정보입니다.",
-                  },
+                  // required: {
+                  //   value: true,
+                  //   message: "필수 정보입니다.",
+                  // },
                 })}
               >
                 {feedCategory.map((category: any) => {
@@ -156,7 +189,7 @@ const UploadFeed = () => {
                 marginTop="10px"
                 type="text"
                 {...register("title", {
-                  required: "Title is required",
+                  // required: "Title is required",
                 })}
               />
               {errors?.title && <p>{errors?.title?.message}</p>}

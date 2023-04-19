@@ -22,7 +22,7 @@ export const useFeed = (): UseFeed => {
     refetch,
   } = useInfiniteQuery(
     Querykey.feedData,
-    ({ pageParam = `/feeds/group/category/?group_id=1&category_id=34` }) =>
+    ({ pageParam = `/feeds/group/category/?group_id=1&category_id=133` }) =>
       getFeeds(pageParam),
     {
       getNextPageParam: (lastpage) => {

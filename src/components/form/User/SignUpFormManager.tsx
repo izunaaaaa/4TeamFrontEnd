@@ -1,12 +1,8 @@
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import {
-  CoachDefaultData,
-  CoachSignUpData,
-  SignUpData,
-  userValue,
-} from "../../../interface/Interface";
+import { SignUpData, userValue } from "./interface/type";
+
 import {
   Box,
   Button,
@@ -36,7 +32,7 @@ const SignUpFormManager = () => {
     formState: { errors },
     handleSubmit,
     getValues,
-  } = useForm<CoachSignUpData>();
+  } = useForm<SignUpData>();
 
   const toast = useToast();
   const { group } = useSignUpGroup();
@@ -68,7 +64,7 @@ const SignUpFormManager = () => {
 
   /**회원가입 form 제출시 */
   const onSubmit = (data: SignUpData) => {
-    const newSignUpData: CoachDefaultData = {
+    const newSignUpData = {
       username: data.username,
       name: data.name,
       password: data.password,

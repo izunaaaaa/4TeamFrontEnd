@@ -1,6 +1,6 @@
-import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
-import { Letterlists, LoginData, SignUpData } from "interface/Interface";
+import { LoginData, SignUpData } from "components/form/User/interface/type";
+import { Letterlists } from "interface/Interface";
 import Cookie from "js-cookie";
 export const instance = axios.create({
   // baseURL: BASE_URL,
@@ -8,7 +8,7 @@ export const instance = axios.create({
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 export const signUp = async (data: SignUpData) => {
@@ -25,6 +25,10 @@ export const login = async (data: LoginData) =>
     return res.data;
   });
 
+/**로그인한 유저 정보 받기 */
+export const getUserData = async () =>
+  await instance.get(`/users/me/`).then((res) => res.data);
+
 /**Feed */
 export const getFeeds = async (url: string) =>
   await instance.get(url).then((res) => {
@@ -39,34 +43,55 @@ export const getFeedDetail = async (feedId: number) =>
     return res.data;
   });
 
-/**feed post form */
+export const postComment = async (feedId: number, commentData: object) =>
+  await instance
+    .post(`/feeds/${feedId}/comment/`, commentData)
+    .then((res) => res.data);
+
+export const postRecomment = async (
+  feedId: number,
+  commentId: number,
+  description: object
+) =>
+  await instance
+    .post(`/feeds/${feedId}/comment/${commentId}/recomment/`, description)
+    .then((res) => res.data);
+
+/**Feed 올리기 */
 export const getFeedCategory = async (group: string) =>
   await instance.get(`/categories/${group}`).then((res) => res.data);
 
 export const postUploadUrl = async (imgFile: File) =>
-  await instance.post(`/media/uploadURL`).then((res) => {
+  await instance.post(`/media/uploadURL`).then(async (res) => {
+    let resImgUrl = "";
     const url = res.data.uploadURL;
+
     const form = new FormData();
+    form.append("file", imgFile);
 
-    form.append("file", imgFile, "image.jpeg");
-    // console.log(img);
-
-    console.log(form, imgFile);
-
-    axios
+    await axios
       .post(url, form, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        console.log(res);
-        return res.data.result;
+        resImgUrl = res.data.result.variants[0];
       });
+
+    return resImgUrl;
   });
 
 export const postFeed = async (postData: any) =>
   await instance.post(`/feeds/`, postData).then((res) => res.data);
+
+/**Feed 수정하기 */
+export const updateFeed = async (feedId: number, updateData: any) =>
+  await instance.put(`/feeds/${feedId}`, updateData).then((res) => res.data);
+
+/**Feed 삭제하기 */
+export const deleteFeed = async (feedId: number) =>
+  await instance.delete(`/feeds/${feedId}`).then((res) => res.data);
 
 export const getLetterlists = (): Promise<Letterlists[]> => {
   return instance.get(`letterlists/`).then((res) => res.data);

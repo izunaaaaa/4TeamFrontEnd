@@ -1,7 +1,7 @@
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { SignUpData, DefaultSignUpData } from "../../../interface/Interface";
+import { SignUpData } from "./interface/type";
 import {
   Box,
   Button,
@@ -60,7 +60,7 @@ const SignUpForm = () => {
   );
 
   const onSubmit = (data: SignUpData) => {
-    const newSignUpData: DefaultSignUpData = {
+    const newSignUpData = {
       username: data.username,
       name: data.name,
       password: data.password,
