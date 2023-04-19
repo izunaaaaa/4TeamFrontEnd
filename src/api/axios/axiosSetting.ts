@@ -3,8 +3,8 @@ import { LoginData, SignUpData } from "components/form/User/interface/type";
 import { Letterlists } from "interface/Interface";
 import Cookie from "js-cookie";
 export const instance = axios.create({
-  // baseURL: BASE_URL,
-  baseURL: "/api/v1/",
+  // baseURL: process.env.BASE_URL,
+  baseURL: process.env.BASE_URL || "/api/v1/",
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },
