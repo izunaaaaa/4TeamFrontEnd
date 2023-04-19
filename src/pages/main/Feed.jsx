@@ -2,12 +2,18 @@ import Comment from "./Comment";
 import { useFeed } from "./hook/useFeed";
 import styles from "./Feed.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import {
+  faEnvelope,
+  faMessage,
+  faThumbsUp,
+} from "@fortawesome/free-regular-svg-icons";
 import { useRef, useState } from "react";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Avatar,
+  Button,
+  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -31,8 +37,14 @@ const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 // const otherFeedDropDownMenu = ["쪽지 보내기"];
 
 function Feed() {
-  const { feedData, fetchNextPage, hasNextPage, isFetching, isLoading } =
-    useFeed();
+  const {
+    feedData,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+    refetch,
+  } = useFeed();
   let { id } = useParams();
 
   const navigate = useNavigate();
@@ -48,11 +60,18 @@ function Feed() {
   /**feed 드롭다운 메뉴 이벤트 */
   const dropDownMenuEvent = (e) => {
     const eventTarget = e.target;
+    console.log(eventTarget.value);
     const menuType = eventTarget.innerText;
     if (menuType === "수정하기") return navigate("/upload");
     if (menuType === "삭제하기") {
       onOpen();
-      return setModalType(<DeleteConfirm onClose={onClose} />);
+      return setModalType(
+        <DeleteConfirm
+          onClose={onClose}
+          feedId={eventTarget.value}
+          refetch={refetch}
+        />
+      );
     }
   };
 
@@ -115,6 +134,7 @@ function Feed() {
                       <li
                         className={styles.menuList}
                         key={menu}
+                        value={data.id}
                         onClick={dropDownMenuEvent}
                       >
                         {menu}
@@ -123,12 +143,25 @@ function Feed() {
                   </ul>
                 </div>
 
-                {/* <img src={data?.medias[0]} alt="" /> */}
+                <Image src={data.thumbnail} marginBottom="10px" />
                 <p>{data.title}</p>
                 <div className={styles.iconDiv}>
-                  <button
+                  <Button
+                    padding="5px"
+                    backgroundColor="transparent"
                     key={data.id}
                     value={data.id}
+                    leftIcon={
+                      data.is_like ? (
+                        <FontAwesomeIcon
+                          icon={faThumbsUp}
+                          size="lg"
+                          style={{ color: "red" }}
+                        />
+                      ) : (
+                        <FontAwesomeIcon icon={faThumbsUp} size="lg" />
+                      )
+                    }
                     onClick={() => {
                       !select.includes(data.id)
                         ? setSelect((select) => [...select, data.id])
@@ -141,21 +174,19 @@ function Feed() {
                       likeHandler(feedDataId);
                     }}
                   >
-                    {data.is_like ? (
-                      <FontAwesomeIcon
-                        icon={faThumbsUp}
-                        size="lg"
-                        style={{ color: "red" }}
-                      />
-                    ) : (
-                      <FontAwesomeIcon icon={faThumbsUp} size="lg" />
-                    )}
-                  </button>
-                  <p>{data.like_count}</p>
-                  <button>
-                    <FontAwesomeIcon icon={faMessage} size="lg" />
-                  </button>
-                  <p>{data.comments_count}</p>
+                    {data.like_count}
+                  </Button>
+
+                  <Button
+                    padding="5px"
+                    backgroundColor="transparent"
+                    leftIcon={<FontAwesomeIcon icon={faMessage} size="lg" />}
+                  >
+                    {data.comments_count}
+                  </Button>
+                  <Button padding="5px" backgroundColor="transparent">
+                    <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                  </Button>
                 </div>
 
                 <div
@@ -187,7 +218,6 @@ function Feed() {
           <ModalBody>{modalType}</ModalBody>
         </ModalContent>
       </Modal>
-      <Comment />
     </>
   );
 }

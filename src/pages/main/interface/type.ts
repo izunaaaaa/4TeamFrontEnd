@@ -51,4 +51,5 @@ export interface DefaultFeedData {
   highest_like_comments: [Comment];
   is_like: string;
   comment: [Comment];
+  images: [{ url: string }];
 }

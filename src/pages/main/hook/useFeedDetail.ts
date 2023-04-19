@@ -6,16 +6,19 @@ import { DefaultFeedData } from "../interface/type";
 
 interface UseFeedDetail {
   feedDetail: DefaultFeedData;
+  isLoading: boolean;
+  refetch: any;
 }
 
 const useFeedDetail = (feedID: number): UseFeedDetail => {
   const fallBack: [] = [];
-  const { data: feedDetail = fallBack } = useQuery(
-    [Querykey.feedDetail, feedID],
-    () => getFeedDetail(feedID)
-  );
+  const {
+    data: feedDetail = fallBack,
+    isLoading,
+    refetch,
+  } = useQuery([Querykey.feedDetail, feedID], () => getFeedDetail(feedID));
 
-  return { feedDetail };
+  return { feedDetail, isLoading, refetch };
 };
 
 export default useFeedDetail;

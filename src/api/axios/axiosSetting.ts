@@ -43,6 +43,20 @@ export const getFeedDetail = async (feedId: number) =>
     return res.data;
   });
 
+export const postComment = async (feedId: number, commentData: object) =>
+  await instance
+    .post(`/feeds/${feedId}/comment/`, commentData)
+    .then((res) => res.data);
+
+export const postRecomment = async (
+  feedId: number,
+  commentId: number,
+  description: object
+) =>
+  await instance
+    .post(`/feeds/${feedId}/comment/${commentId}/recomment/`, description)
+    .then((res) => res.data);
+
 /**Feed 올리기 */
 export const getFeedCategory = async (group: string) =>
   await instance.get(`/categories/${group}`).then((res) => res.data);
@@ -70,6 +84,14 @@ export const postUploadUrl = async (imgFile: File) =>
 
 export const postFeed = async (postData: any) =>
   await instance.post(`/feeds/`, postData).then((res) => res.data);
+
+/**Feed 수정하기 */
+export const updateFeed = async (feedId: number, updateData: any) =>
+  await instance.put(`/feeds/${feedId}`, updateData).then((res) => res.data);
+
+/**Feed 삭제하기 */
+export const deleteFeed = async (feedId: number) =>
+  await instance.delete(`/feeds/${feedId}`).then((res) => res.data);
 
 export const getLetterlists = (): Promise<Letterlists[]> => {
   return instance.get(`letterlists/`).then((res) => res.data);

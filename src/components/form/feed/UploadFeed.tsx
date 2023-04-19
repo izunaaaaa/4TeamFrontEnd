@@ -42,11 +42,20 @@ const UploadFeed = () => {
   );
 
   const { mutate: postFeedHandler, isLoading } = useMutation(
-    (postData) => postFeed(postData),
+    (postData: PostFeed) => postFeed(postData),
     {
       onSuccess: () => {
         toast({
           title: "게시글을 업로드했습니다.",
+        });
+      },
+      onError: (error: any) => {
+        toast({
+          title: "업로드 실패",
+          description: `카테고리와 제목은 필수 입니다.`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
         });
       },
     }
@@ -83,20 +92,21 @@ const UploadFeed = () => {
 
   /**제출하기 */
   const submitHandler = async (data: PostFeed) => {
-    const blob = dataURLToBlob(cropImg);
-
-    const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
-
-    const resUrl = await postUploadUrlHandler(file);
+    let resUrl = "";
+    if (cropImg) {
+      const blob = dataURLToBlob(cropImg);
+      const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
+      resUrl = await postUploadUrlHandler(file);
+    }
 
     const postData: PostFeed = {
       title: data.title,
-      description: data.description,
       category: data.category,
-      image: null || resUrl,
+      ...(data.description && { description: data.description }),
+      ...(resUrl && { image: resUrl }),
     };
-
-    // postFeedHandler(postData);
+    console.log(postData);
+    postFeedHandler(postData);
   };
 
   /**이미지 크롭하기 */
@@ -158,10 +168,10 @@ const UploadFeed = () => {
                 placeholder="카테고리를 입력해주세요"
                 size="sm"
                 {...register("category", {
-                  required: {
-                    value: true,
-                    message: "필수 정보입니다.",
-                  },
+                  // required: {
+                  //   value: true,
+                  //   message: "필수 정보입니다.",
+                  // },
                 })}
               >
                 {feedCategory.map((category: any) => {
@@ -179,7 +189,7 @@ const UploadFeed = () => {
                 marginTop="10px"
                 type="text"
                 {...register("title", {
-                  required: "Title is required",
+                  // required: "Title is required",
                 })}
               />
               {errors?.title && <p>{errors?.title?.message}</p>}
