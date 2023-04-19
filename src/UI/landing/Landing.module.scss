@@ -5,130 +5,130 @@ $monitor-img: './monitor.png';
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    flex-direction: column;
+    height: 100vh;
 
     .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
         height: 100%;
-
+        margin: 3rem auto;
 
         .monitor {
             position: relative;
-            background-image: url(#{$monitor-img});
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-            width: 50rem;
-            height: 50rem;
-            z-index: 2;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url(#{$monitor-img});
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+
+            }
 
             .slide {
                 position: absolute;
-                left: 6.2rem;
-                top: 9.7rem;
-                width: 37.5rem;
-                height: 22rem;
-            }
-
-            .active {
+                top: 5%;
+                left: 13%;
+                width: 74%;
+                height: 70%;
+                transition: opacity 0.3s ease-in-out;
+                opacity: 0;
                 z-index: -1;
-                transform: scale(1);
-            }
-        }
 
-        .mobile {
-            position: relative;
-            bottom: 15rem;
-            left: 70%;
-            right: 0;
-            width: 25rem;
-            height: 25rem;
-            background-image: url(#{$mobile-img});
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-position: center;
-            transform: translateY(-60%);
-            z-index: 3;
-
-
-            .slide {
-                position: absolute;
-                top: 2.87rem;
-                left: 7.8rem;
-                width: 9.4rem;
-                height: 19.2rem;
-                border-radius: 1.2rem;
-                z-index: 3;
+                &.active {
+                    opacity: 1;
+                    z-index: -1;
+                }
             }
 
-            .active {
-                z-index: 2;
-            }
+            .mobile {
+                overflow: hidden;
+                position: relative;
+                top: 45%;
+                bottom: 0;
+                left: 60%;
+                width: 100%;
+                height: 20em;
+                z-index: 1;
 
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-image: url(#{$mobile-img});
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                }
+
+                .slide {
+                    position: absolute;
+                    top: 11%;
+                    left: 13.5%;
+                    width: 17%;
+                    height: 78%;
+                    border-radius: 1.2em;
+                    opacity: 0;
+
+                    &.active {
+                        opacity: 1;
+                        z-index: -1;
+                    }
+                }
+            }
         }
     }
 
-}
 
-@media screen and (max-width: 768px) {
-    .container {
+    footer {
+        position: fixed;
+        bottom: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .wrapper {
-        display: flex;
-        margin: auto;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }
-
-    .monitor {
-        width: 18rem;
-        height: 18rem;
-        border-bottom: 1px solid #999;
-
-
-        .slide {
-            position: absolute;
-            top: 41%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 0.1rem;
-            width: 73.33%;
-            height: 43%;
-
-        }
-
-        .active {
-            z-index: 2;
-        }
-    }
-
-    .mobile {
-        position: relative;
-        top: 0;
-        bottom: 50%;
-        left: 50%;
-        transform: translateX(-50%);
         width: 100%;
+        height: 150px;
 
 
-        .slide {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 0.7rem;
-            width: 29%;
-            height: 77.3%;
-            z-index: -1;
-        }
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            gap: 5rem;
 
-        .active {
-            z-index: 2;
+            h3 {
+                font-size: 3rem;
+                font-weight: 700;
+                text-align: center;
+            }
+
+            ul {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                list-style: none;
+
+                li {
+                    padding: 1rem;
+                }
+            }
         }
     }
 }
