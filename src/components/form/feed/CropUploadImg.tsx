@@ -17,6 +17,8 @@ import {
   faCrop,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
+import { postUploadUrl } from "api/axios/axiosSetting";
+import { useMutation } from "react-query";
 
 const CropUploadImg = (props: any) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -28,8 +30,12 @@ const CropUploadImg = (props: any) => {
     height: 0,
   });
 
+  const { mutate: postUploadUrlHandler, data } = useMutation((img: any) =>
+    postUploadUrl(img)
+  );
+
   /**이미지 */
-  const previewImg = useRef<any>("");
+  const previewImg = useRef("");
 
   /**crop한 속성값 */
   const onCropComplete = useCallback(
@@ -46,12 +52,24 @@ const CropUploadImg = (props: any) => {
     }
     const canvas = await croppedImg(imageSrc, crop);
 
+    canvas?.toBlob((blob: any) => {
+      const previewUrl = window.URL.createObjectURL(blob);
+
+      const file = new File([previewUrl], "image.jpeg", { type: "image/jpeg" });
+
+      previewImg.current = previewUrl;
+      props.getCroppedImg(previewImg.current);
+      postUploadUrlHandler(file);
+    }, "image/jpeg");
+
     const jpegFile = canvas?.toDataURL("image/jpeg");
 
-    previewImg.current = jpegFile;
-    props.getCroppedImg(previewImg.current);
+    //   const myFile = new File([myBlob], 'image.jpeg', {
+    //     type: myBlob.type,
+    // });
 
-    props.onClose();
+    // console.log(data, previewImg.current);
+    // props.onClose();
   };
 
   return (

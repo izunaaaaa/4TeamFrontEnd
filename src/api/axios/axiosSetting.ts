@@ -1,6 +1,6 @@
+import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
-import { LoginData, SignUpData } from "components/form/User/interface/type";
-import { Letterlists } from "interface/Interface";
+import { Letterlists, LoginData, SignUpData } from "interface/Interface";
 import Cookie from "js-cookie";
 export const instance = axios.create({
   // baseURL: process.env.BASE_URL,
@@ -8,7 +8,7 @@ export const instance = axios.create({
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },
-  withCredentials: true,
+  // withCredentials: true,
 });
 
 export const signUp = async (data: SignUpData) => {
@@ -25,10 +25,6 @@ export const login = async (data: LoginData) =>
     return res.data;
   });
 
-/**로그인한 유저 정보 받기 */
-export const getUserData = async () =>
-  await instance.get(`/users/me/`).then((res) => res.data);
-
 /**Feed */
 export const getFeeds = async (url: string) =>
   await instance.get(url).then((res) => {
@@ -43,29 +39,30 @@ export const getFeedDetail = async (feedId: number) =>
     return res.data;
   });
 
-/**Feed 올리기 */
+/**feed post form */
 export const getFeedCategory = async (group: string) =>
   await instance.get(`/categories/${group}`).then((res) => res.data);
 
 export const postUploadUrl = async (imgFile: File) =>
-  await instance.post(`/media/uploadURL`).then(async (res) => {
-    let resImgUrl = "";
+  await instance.post(`/media/uploadURL`).then((res) => {
     const url = res.data.uploadURL;
-
     const form = new FormData();
-    form.append("file", imgFile);
 
-    await axios
+    form.append("file", imgFile, "image.jpeg");
+    // console.log(img);
+
+    console.log(form, imgFile);
+
+    axios
       .post(url, form, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        resImgUrl = res.data.result.variants[0];
+        console.log(res);
+        return res.data.result;
       });
-
-    return resImgUrl;
   });
 
 export const postFeed = async (postData: any) =>
