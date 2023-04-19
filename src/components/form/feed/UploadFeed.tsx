@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Flex,
   Input,
   Modal,
@@ -12,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { postFeed } from "api/axios/axiosSetting";
-import { PostFeed } from "interface/Interface";
+import { postFeed, postUploadUrl } from "api/axios/axiosSetting";
+import { PostFeed } from "../User/interface/type";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
@@ -38,7 +37,11 @@ const UploadFeed = () => {
 
   const { feedCategory } = useFeedCategory("oz");
 
-  const { mutate: postFeedHandler } = useMutation(
+  const { mutateAsync: postUploadUrlHandler } = useMutation(
+    async (img: any) => await postUploadUrl(img)
+  );
+
+  const { mutate: postFeedHandler, isLoading } = useMutation(
     (postData) => postFeed(postData),
     {
       onSuccess: () => {
@@ -56,6 +59,7 @@ const UploadFeed = () => {
     const target = e.currentTarget as HTMLInputElement;
 
     const file = target.files?.[0];
+
     if (!file) return;
 
     reader.readAsDataURL(file);
@@ -65,15 +69,34 @@ const UploadFeed = () => {
     onOpen();
   };
 
+  /**이미지url을 blob으로 변환 */
+  function dataURLToBlob(dataURL: any): Blob {
+    const byteString = atob(dataURL.split(",")[1]);
+    const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+  }
+
   /**제출하기 */
-  const submitHandler = (data: PostFeed) => {
-    const postData: any = {
+  const submitHandler = async (data: PostFeed) => {
+    const blob = dataURLToBlob(cropImg);
+
+    const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
+
+    const resUrl = await postUploadUrlHandler(file);
+
+    const postData: PostFeed = {
       title: data.title,
       description: data.description,
       category: data.category,
-      image: null,
+      image: null || resUrl,
     };
-    postFeedHandler(postData);
+
+    // postFeedHandler(postData);
   };
 
   /**이미지 크롭하기 */
@@ -113,7 +136,7 @@ const UploadFeed = () => {
                 <>
                   <input
                     type="file"
-                    {...register("file")}
+                    {...register("image")}
                     accept="image/*"
                     onChange={changeImg}
                   />

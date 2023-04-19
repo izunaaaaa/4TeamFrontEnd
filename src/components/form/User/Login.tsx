@@ -18,7 +18,7 @@ import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { login } from "api/axios/axiosSetting";
 import { AxiosError } from "axios";
-import { LoginData } from "interface/Interface";
+import { LoginData } from "./interface/type";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
