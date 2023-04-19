@@ -20,28 +20,28 @@ import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { useQuery } from "react-query";
-import { getLetters } from "api/axios/axiosSetting";
+import { UseMutationResult, useMutation, useQuery } from "react-query";
+import { getLetters, postLetters } from "api/axios/axiosSetting";
 
 export default function MsgRoom() {
-  const { isLoading, error, data } = useQuery("Letters", getLetters);
+  const { data } = useQuery("Letters", getLetters);
+  const sendLetter: UseMutationResult<any, unknown, any, unknown> =
+    useMutation(postLetters);
 
+  //쪽지 모달 폼 관리
+  const { register, handleSubmit } = useForm();
   // chakra ui의 모달 컨트롤 훅
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //쪽지 모달 창 관리
-  const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data: any) => {
-    const sendmessage = data.message.trim();
-    if (sendmessage === "") {
+  // 쪽지 전송 기능
+  const onSubmit = async (data: any) => {
+    const sendContent = data.description.trim();
+    if (sendContent === "") {
     } else {
-      console.log(data);
+      console.log(sendContent);
+      sendLetter.mutate({ ...sendContent });
       onClose();
     }
-  };
-
-  const handleDeleteLetter = () => {
-    data.splice(0, 1);
   };
 
   return (
@@ -50,8 +50,8 @@ export default function MsgRoom() {
         {/* 주고받은 쪽지내역 */}
         {data?.map((letter: any, idx: any) => {
           return (
-            <Box key={idx} mt={"5"}>
-              <MsgDetail {...letter} onClick={handleDeleteLetter} />
+            <Box key={idx} mt={"5"} maxW={100}>
+              <MsgDetail {...letter} />
             </Box>
           );
         })}
@@ -61,6 +61,7 @@ export default function MsgRoom() {
         <FontAwesomeIcon icon={faPaperPlane} size="xl" />
         <FontAwesomeIcon icon={faTrashCan} size="xl" />
       </HStack>
+
       {/* 모달 */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -70,7 +71,7 @@ export default function MsgRoom() {
             <ModalBody>
               <Textarea
                 placeholder="보내실 내용을 입력해주세요"
-                {...register("message")}
+                {...register("description")}
               />
             </ModalBody>
             <ModalFooter>

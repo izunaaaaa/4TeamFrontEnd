@@ -1,11 +1,22 @@
 import React, { useState } from "react";
 import { Stack, Text, Box, Avatar, HStack } from "@chakra-ui/react";
-import { MockCont } from "../../MsgMock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
 
-export default function MsgDetail(props: any, onClick: () => void) {
-  const [isHovering, setIsHovering] = useState(false);
+export default function MsgDetail(props: any) {
+  const [isHovering, setIsHovering] = useState(true);
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
+
+  // const { data } = props;
+  // const handleDeleteData = () => {
+  //   const newData = [...data];
+  //   newData.splice(0, 1);
+  // };
   return (
     <>
       <Box
@@ -15,6 +26,8 @@ export default function MsgDetail(props: any, onClick: () => void) {
         bgColor={props.sender ? "#F7FE2E" : "white"}
         width={"50vmin"}
         cursor={"pointer"}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <Stack spacing={2}>
           <HStack>
@@ -29,9 +42,11 @@ export default function MsgDetail(props: any, onClick: () => void) {
             <Avatar size="xs"></Avatar>{" "}
           </HStack>
           <HStack>
-            {isHovering && (
-              <FontAwesomeIcon icon={faScissors} onClick={onClick} />
-            )}
+            {/* {isHovering && (
+              <button onClick={handleDeleteData}>
+                <FontAwesomeIcon icon={faScissors} />
+              </button>
+            )} */}
             <Text as="ins">{props.description}</Text>
           </HStack>
         </Stack>

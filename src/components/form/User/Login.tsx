@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   HStack,
   Input,
@@ -12,12 +11,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { login } from "api/axios/axiosSetting";
-import axios from "axios";
+import { AxiosError } from "axios";
 import { LoginData } from "interface/Interface";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -27,17 +27,30 @@ import { Link } from "react-router-dom";
 const Login = (props: any) => {
   const { handleSubmit, register } = useForm<LoginData>();
 
-  const onSubmit = (data: LoginData) => {
-    const loginData = {
-      username: data.id,
-      password: data.password,
-    };
+  const toast = useToast();
 
-    console.log(loginData);
-    // axios.post("api/v1/users/login/", loginData, {
-    //   withCredentials: true,
-    // });
-    login(loginData);
+  const { mutate: loginHandler } = useMutation(
+    (loginData: LoginData) => login(loginData),
+    {
+      onError: (error: AxiosError) => {
+        toast({
+          title: `아이디 혹은 비밀번호가 틀립니다.`,
+          status: "error",
+          isClosable: true,
+        });
+      },
+      onSuccess: () => {
+        toast({
+          title: `로그인 성공!!`,
+          status: "success",
+          isClosable: true,
+        });
+      },
+    }
+  );
+
+  const onSubmit = (data: LoginData) => {
+    loginHandler(data);
   };
   return (
     <Modal
@@ -58,7 +71,7 @@ const Login = (props: any) => {
               <InputLeftElement children={<FontAwesomeIcon icon={faUser} />} />
               <Input
                 required
-                {...register("id", { required: "아이디를 입력하세요." })}
+                {...register("username", { required: "아이디를 입력하세요." })}
                 variant={"outline"}
                 focusBorderColor="gray.300"
                 placeholder="아이디"

@@ -1,6 +1,6 @@
 import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
-import { Letterlists, LoginData } from "interface/Interface";
+import { Letterlists, LoginData, SignUpData } from "interface/Interface";
 import Cookie from "js-cookie";
 export const instance = axios.create({
   // baseURL: BASE_URL,
@@ -11,32 +11,50 @@ export const instance = axios.create({
   // withCredentials: true,
 });
 
+export const signUp = async (data: SignUpData) => {
+  await instance.post(`/users/signup/`, data);
+};
+
+export const getGroup = async () =>
+  await instance.get(`/groups/`).then((res) => {
+    return res.data;
+  });
+
+export const login = async (data: LoginData) =>
+  await instance.post(`/users/login/`, data).then((res) => {
+    return res.data;
+  });
+
+/**Feed */
 export const getFeeds = async (url: string) =>
   await instance.get(url).then((res) => {
     return res.data;
   });
 
-export const login = async (data: any) =>
-  await instance.post(`/users/login/`, data).then((res) => {
-    console.log(res.data);
+export const getFeedDetail = async (
+  groupPk: number,
+  category: string,
+  feedID: number
+) =>
+  await instance.get(`/feeds/${groupPk}/${category}/${feedID}`).then((res) => {
     return res.data;
   });
 
+export const getFeedCategory = async (group: string) =>
+  await instance.get(`/categories/${group}`).then((res) => res.data);
+
+// Letters
 export const getLetterlists = (): Promise<Letterlists[]> => {
-  return instance.get(`letterlists/`).then((res) => res.data);
+  return instance.get(`/letterlists/`).then((res) => res.data);
 };
 
 export const getLetters = async () =>
-  await instance.get(`letters/`).then((res) => res.data);
+  await instance.get(`/letters/`).then((res) => res.data);
 
-export const postLetters = async () =>
-  await instance.post(`letters/`).then((res) => res.data);
+export const postLetters = async (data: string) =>
+  await instance.post(`/letters/`, data).then((res) => res.data);
 
-export const getFeedDetail = async (feedID: number, group: string) =>
-  await instance.get(`/feeds/${group}/${feedID}/`).then((res) => {
-    return res.data;
-  });
-
+// Category
 export const postCategory = async (name: string, group: string) =>
   await instance.post(`/categories/${group}`, { name }).then((res) => {
     return res.data;
@@ -46,3 +64,14 @@ export const deleteCategory = async (group: string, id: number) =>
   await instance.delete(`/categories/${group}/${id}`).then((res) => {
     return res.data;
   });
+
+export const updateCategory = async (
+  group: string,
+  id: number,
+  newName: string
+) =>
+  await instance
+    .put(`/categories/${group}/${id}`, { name: newName })
+    .then((res) => {
+      return res.data;
+    });

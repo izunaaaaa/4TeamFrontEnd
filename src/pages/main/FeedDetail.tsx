@@ -1,10 +1,5 @@
-import { Avatar, Box, Button, ButtonGroup, Flex } from "@chakra-ui/react";
-import {
-  faHeart,
-  faMessage,
-  faPaperPlane,
-  faThumbsUp,
-} from "@fortawesome/free-regular-svg-icons";
+import { Avatar, Box, Button, ButtonGroup } from "@chakra-ui/react";
+import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./FeedDetail.module.scss";
 import moment from "moment";
@@ -15,10 +10,12 @@ import { useState } from "react";
 
 const FeedDetail = (props: any) => {
   const { feedDetail } = useFeedDetail(
-    props.feedData.id,
-    props.feedData.group.name
+    props.feedData.group.pk,
+    props.feedData.category,
+    props.feedData.id
   );
 
+  // console.log(feedDetail[0]);
   const [recommentId, setRecommentId] = useState("");
 
   /**중복되는 username을 가진 comment 객체의 id 값을 저장할 Map 생성 */

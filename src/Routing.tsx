@@ -16,6 +16,7 @@ import Login from "components/form/User/Login";
 import SignUpForm from "components/form/User/SignUpForm";
 import SignUpMain from "pages/SignUp/SignUpMain";
 import SignUpFormManager from "components/form/User/SignUpFormManager";
+import Landing from "UI/landing/Landing";
 
 const Routing = () => {
   return (
@@ -42,6 +43,7 @@ const Routing = () => {
           }
         />
 
+        <Route path="/curb" element={<Landing />} />
         <Route path="/signup/" element={<SignUp />}>
           <Route path="main" element={<SignUpMain />} />
           <Route path="student" element={<SignUpForm />} />
