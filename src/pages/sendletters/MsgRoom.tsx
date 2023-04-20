@@ -23,13 +23,18 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery } from "react-query";
 import { getLetters, postLetters } from "api/axios/axiosSetting";
 import { useParams } from "react-router-dom";
+import { Chattings } from "interface/Interface";
 
 export default function MsgRoom() {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
 
   //api 호출
-  const { data } = useQuery(["letters", id], () => getLetters(Number(id)));
-  const sendLetter = useMutation(["postLetters", id], (data: string) =>
+  const { data } = useQuery<Chattings[]>(["letters", Number(id)], () =>
+    getLetters(Number(id))
+  );
+
+  console.log(data);
+  const sendLetter = useMutation(["postLetters", Number(id)], (data: string) =>
     postLetters(Number(id), data)
   );
 
@@ -51,20 +56,23 @@ export default function MsgRoom() {
 
   return (
     <>
-      <Box>
+      <Flex
+        textAlign={"right"}
+        flexDirection="column"
+        justifyContent="flex-end"
+      >
         {/* 주고받은 쪽지내역 */}
-        {data?.map((letter: any, idx: any) => {
+        {data?.map((item: Chattings, idx: any) => {
           return (
-            <Box key={idx} mt={"5"} maxW={100}>
-              <MsgDetail {...letter} />
-            </Box>
+            <Flex key={idx} mt={"5"} maxW={100} justifyContent="flex-end">
+              <MsgDetail {...item} />
+            </Flex>
           );
         })}
-      </Box>
+      </Flex>
 
       <HStack onClick={onOpen} cursor="pointer" margin="2rem">
         <FontAwesomeIcon icon={faPaperPlane} size="xl" />
-        <FontAwesomeIcon icon={faTrashCan} size="xl" />
       </HStack>
 
       {/* 모달 */}

@@ -1,4 +1,12 @@
-import { Avatar, Box, Button, ButtonGroup } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  ButtonGroup,
+  Center,
+  Image,
+  Spinner,
+} from "@chakra-ui/react";
 import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./FeedDetail.module.scss";
@@ -7,12 +15,28 @@ import useFeedDetail from "./hook/useFeedDetail";
 import Comment from "./Comment";
 import "moment/locale/ko";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { postComment } from "api/axios/axiosSetting";
 
 const FeedDetail = (props: any) => {
   const feedData = props.feedData;
-  const { feedDetail } = useFeedDetail(feedData.id);
+  const { feedDetail, isLoading, refetch } = useFeedDetail(feedData.id);
+  const { register, handleSubmit, reset } = useForm();
 
-  // console.log(feedDetail[0]);
+  /**댓글달기 */
+  const { mutateAsync: commentSubmitHandler, isLoading: commentLoading } =
+    useMutation((comment: any) => postComment(feedData.id, comment), {
+      onSuccess: () => {
+        refetch();
+      },
+    });
+
+  const commentSubmit = async (data: any) => {
+    await commentSubmitHandler(data);
+    reset();
+  };
+
   const [recommentId, setRecommentId] = useState("");
 
   /**중복되는 username을 가진 comment 객체의 id 값을 저장할 Map 생성 */
@@ -35,6 +59,13 @@ const FeedDetail = (props: any) => {
     setRecommentId(data[0].id);
   };
 
+  if (isLoading)
+    return (
+      <Center h="600px">
+        <Spinner size="xl" margin="20px" />
+      </Center>
+    );
+
   return (
     <>
       <div className={styles.feedDetailDiv}>
@@ -49,10 +80,7 @@ const FeedDetail = (props: any) => {
             {writeTime}
           </h1>
         </div>
-        <img
-          alt=""
-          src="https://img.hani.co.kr/imgdb/original/2007/1227/68227042_20071227.jpg"
-        />
+        <Image src={feedDetail?.images[0]?.url} />
         <ButtonGroup margin="5px 0 5px 0">
           <Button
             backgroundColor={"transparent"}
@@ -74,13 +102,26 @@ const FeedDetail = (props: any) => {
         <Box margin="5px 2px 40px 2px">{feedDetail.description}</Box>
         <Comment feedComment={uniqueComments} recomment={recomment} />
       </div>
-      <div className={styles.commentInput}>
+      <form
+        className={styles.commentInput}
+        onSubmit={handleSubmit(commentSubmit)}
+      >
         <textarea
           placeholder="댓글달기"
           defaultValue={recommentId ? `익명${recommentId}` : ""}
+          {...register("description", {
+            required: true,
+          })}
         />
-        <button>게시</button>
-      </div>
+        <Button
+          type="submit"
+          onSubmit={handleSubmit(commentSubmit)}
+          isLoading={commentLoading}
+          h="48px"
+        >
+          게시
+        </Button>
+      </form>
     </>
   );
 };

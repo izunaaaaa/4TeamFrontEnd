@@ -9,12 +9,15 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faScissors, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Chattings } from "interface/Interface";
+import { Link } from "react-router-dom";
 
-const MsgList = (props: Chattings) => {
+const MsgList: React.FC<Chattings> = ({ user, created_at, messages }) => {
+  const avatarUrl = messages.sender?.avatar || "https://bit.ly/broken-link";
+
   return (
-    <>
+    <Link to={`/chattings/${messages.room}`}>
       <VStack spacing={2} h="5rem" maxW={"500px"}>
         <Box>
           <Flex
@@ -24,14 +27,14 @@ const MsgList = (props: Chattings) => {
             py={4}
           >
             <HStack>
-              <VStack alignItems="start" spacing={0} ml={2}>
-                <Text> {props.messages.sender.email}</Text>
-              </VStack>
+              <Avatar src={avatarUrl} />
+              {user.username && <Text>{user.username}</Text>}
+              {created_at && <Text>{created_at}</Text>}
             </HStack>
           </Flex>
         </Box>
       </VStack>
-    </>
+    </Link>
   );
 };
 

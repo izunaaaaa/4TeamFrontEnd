@@ -11,7 +11,7 @@
   padding: 30px;
   border-radius: 20px;
   margin: 30px;
-  width: 450px;
+  width: 500px;
   margin-left: 10%;
 
   .feedUser {
@@ -68,18 +68,6 @@
   }
   .iconDiv {
     display: flex;
-    button {
-      margin: 3px;
-      background-color: transparent;
-      border: 0;
-      margin-right: 5px;
-      svg {
-        pointer-events: none;
-      }
-      path {
-        pointer-events: none;
-      }
-    }
     p {
       line-height: 3;
       margin-right: 5px;

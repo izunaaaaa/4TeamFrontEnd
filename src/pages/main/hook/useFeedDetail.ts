@@ -1,20 +1,24 @@
 import { getFeedDetail } from "api/axios/axiosSetting";
 import { Querykey } from "api/react-query/QueryKey";
-import { FeedDetail } from "interface/Interface";
+
 import { useQuery } from "react-query";
+import { DefaultFeedData } from "../interface/type";
 
 interface UseFeedDetail {
-  feedDetail: FeedDetail;
+  feedDetail: DefaultFeedData;
+  isLoading: boolean;
+  refetch: any;
 }
 
 const useFeedDetail = (feedID: number): UseFeedDetail => {
   const fallBack: [] = [];
-  const { data: feedDetail = fallBack } = useQuery(
-    [Querykey.feedDetail, feedID],
-    () => getFeedDetail(feedID)
-  );
+  const {
+    data: feedDetail = fallBack,
+    isLoading,
+    refetch,
+  } = useQuery([Querykey.feedDetail, feedID], () => getFeedDetail(feedID));
 
-  return { feedDetail };
+  return { feedDetail, isLoading, refetch };
 };
 
 export default useFeedDetail;

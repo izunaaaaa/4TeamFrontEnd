@@ -19,8 +19,9 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
+import { Chattings } from "interface/Interface";
 
-export default function MsgDetail(props: any) {
+const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
   const [isHovering, setIsHovering] = useState(true);
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -37,8 +38,9 @@ export default function MsgDetail(props: any) {
       <Box
         padding="6"
         boxShadow="xl"
+        justifyItems={"end"}
         mb="5"
-        bgColor={props.sender ? "#F7FE2E" : "white"}
+        bgColor={user ? "#F7FE2E" : "white"}
         width={"50vmin"}
         cursor={"pointer"}
         onMouseEnter={handleMouseEnter}
@@ -46,13 +48,10 @@ export default function MsgDetail(props: any) {
       >
         <Stack spacing={2}>
           <HStack>
-            {" "}
             <FontAwesomeIcon icon={faPaperclip} />
           </HStack>
           <HStack>
-            <Text as="b" color={props.receiver ? "#FF0080" : "#58ACFA"}>
-              {props.receiver ? "From. " : "To. "}{" "}
-            </Text>
+            <Text as="b" color={messages.sender ? "#FF0080" : "#58ACFA"}></Text>
             <Avatar size="xs"></Avatar>{" "}
           </HStack>
           <HStack>
@@ -61,7 +60,7 @@ export default function MsgDetail(props: any) {
                 <FontAwesomeIcon icon={faScissors} />
               </button>
             )}
-            <Text as="ins">{props.description}</Text>
+            <Text as="ins">{messages.text}</Text>
           </HStack>
         </Stack>
       </Box>
@@ -86,4 +85,6 @@ export default function MsgDetail(props: any) {
       </Modal>
     </>
   );
-}
+};
+
+export default MsgDetail;

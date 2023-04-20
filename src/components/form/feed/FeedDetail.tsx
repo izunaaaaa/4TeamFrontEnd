@@ -9,8 +9,14 @@ import React from "react";
 import styles from "./FeedDetail.module.scss";
 import "moment/locale/ko";
 import moment from "moment";
+import { useForm } from "react-hook-form";
 
 const FeedDetail = (props: any) => {
+  const { register, handleSubmit } = useForm();
+
+  const commentSubmitHandler = (data: any) => {
+    console.log(data.comment);
+  };
   /**작성시간 */
   const writeTime = moment(props.feedData.created_at).fromNow();
   return (
@@ -73,10 +79,15 @@ const FeedDetail = (props: any) => {
           );
         })}
       </div>
-      <div className={styles.commentInput}>
-        <textarea placeholder="댓글달기" />
-        <button>게시</button>
-      </div>
+      {/* <form
+        className={styles.commentInput}
+        onSubmit={handleSubmit(commentSubmitHandler)}
+      >
+        <input placeholder="댓글달기" {...register("comment")} />
+        <Button type="submit" onSubmit={handleSubmit(commentSubmitHandler)}>
+          게시
+        </Button>
+      </form> */}
     </div>
   );
 };
