@@ -11,7 +11,11 @@ import styles from "./Comment.module.scss";
 import moment from "moment";
 import "moment/locale/ko";
 import { useMutation } from "react-query";
-import { postRecomment } from "api/axios/axiosSetting";
+import {
+  postCommentLike,
+  postRecomment,
+  postRecommentLike,
+} from "api/axios/axiosSetting";
 import useUser from "components/form/User/Hook/useUser";
 import useComment from "./hook/useComment";
 import { useState } from "react";
@@ -25,15 +29,43 @@ const Comment = (props) => {
 
   const [selectComment, setSelectComment] = useState(null);
 
-  /**댓글 버튼 이벤트 */
-  const btnHandler = async (e, id) => {
-    reset();
-    setSelectComment(id);
-    const targetValue = e.target.value;
-    if (targetValue === "recomment") {
-      // setRecommentInput(!recommentInput);
+  /**댓글 좋아요 */
+  const { mutate: commentLikeHandler } = useMutation(
+    (id) => postCommentLike(id),
+    {
+      onSuccess: () => {
+        console.log(1);
+        refetch();
+      },
     }
+  );
+
+  /**대댓글 좋아요. */
+  const { mutate: recommentLikeHandler } = useMutation(
+    (id) => postRecommentLike(id),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
+
+  /**댓글 버튼 이벤트 */
+  const btnHandler = async (e, id, commentType) => {
+    reset();
+    const targetValue = e.target.value;
     if (targetValue === "like") {
+      if (commentType === "comment") {
+        return commentLikeHandler(id);
+      } else {
+        return recommentLikeHandler(id);
+      }
+    }
+
+    if (targetValue === "recomment") {
+      setSelectComment(id);
+    }
+    if (targetValue === "delete") {
     }
   };
 
@@ -49,8 +81,8 @@ const Comment = (props) => {
 
   const submitRecommentHandler = async (description) => {
     await postRecommentHandler(description);
-
     reset();
+    setSelectComment(null);
   };
 
   return (
@@ -69,7 +101,7 @@ const Comment = (props) => {
             <Box padding="10px" lineHeight="5" maxW="500px" w="90%">
               <Flex justifyContent="space-between" marginBottom="2px">
                 <Box fontWeight="bold">익명{index + 1}</Box>
-                <Flex onClick={(e) => btnHandler(e, comment.id)}>
+                <Flex onClick={(e) => btnHandler(e, comment.id, "comment")}>
                   <Button
                     backgroundColor={"transparent"}
                     height="20px"
@@ -100,6 +132,7 @@ const Comment = (props) => {
                       backgroundColor={"transparent"}
                       height="20px"
                       padding="0 1px"
+                      value="delete"
                     >
                       <FontAwesomeIcon icon={faTrashCan} />
                     </Button>
@@ -145,7 +178,7 @@ const Comment = (props) => {
                   </Button>
                 </form>
               ) : null}
-              {comment.recomment.map((recomment, index) => (
+              {comment.recomment?.map((recomment, index) => (
                 <Flex key={index} marginTop="10px">
                   <Box lineHeight={5} margin="10px">
                     <FontAwesomeIcon
@@ -168,10 +201,59 @@ const Comment = (props) => {
                       />
                     </Box>
                     <Box padding="10px" lineHeight="5" width="100%">
-                      <p className={styles.commentName}>익명{comment.id}</p>
+                      <Flex justifyContent="space-between" marginBottom="2px">
+                        <Box fontWeight="bold">익명{recomment.pk}</Box>
+                        <Flex
+                          onClick={(e) =>
+                            btnHandler(e, recomment.pk, "recomment")
+                          }
+                        >
+                          <Button
+                            backgroundColor={"transparent"}
+                            height="20px"
+                            padding="0 4px"
+                            value="like"
+                          >
+                            <FontAwesomeIcon icon={faThumbsUp} />
+                          </Button>
+                          {recomment.user.username !==
+                          LoginUserData.username ? (
+                            <Button
+                              backgroundColor={"transparent"}
+                              height="20px"
+                              padding="0 1px"
+                            >
+                              <FontAwesomeIcon icon={faPaperPlane} />
+                            </Button>
+                          ) : (
+                            <Button
+                              backgroundColor={"transparent"}
+                              height="20px"
+                              padding="0 1px"
+                              value="delete"
+                            >
+                              <FontAwesomeIcon icon={faTrashCan} />
+                            </Button>
+                          )}
+                        </Flex>
+                      </Flex>
                       <Box fontSize="0.9rem">{recomment.description}</Box>
                       <Flex margin="4px 0 0 0">
-                        <Box fontSize="0.8rem">{commentWriteTime}</Box>
+                        <HStack fontSize="0.8rem" spacing="4px">
+                          <Box>{commentWriteTime}</Box>
+                          {recomment.commentlikeCount > 0 && (
+                            <>
+                              <FontAwesomeIcon
+                                icon={faThumbsUp}
+                                size="xs"
+                                style={{ color: "red" }}
+                              />
+                              <Box color="red">
+                                {recomment.commentlikeCount}
+                              </Box>
+                            </>
+                          )}
+                        </HStack>
                       </Flex>
                     </Box>
                   </Flex>

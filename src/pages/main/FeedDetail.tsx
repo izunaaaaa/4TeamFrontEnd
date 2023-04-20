@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Center,
+  HStack,
   Image,
   Spinner,
 } from "@chakra-ui/react";
@@ -21,10 +22,15 @@ import { Querykey } from "api/react-query/QueryKey";
 
 const FeedDetail = (props: any) => {
   const feedData = props.feedData;
-  const { feedDetail, isLoading, refetch } = useFeedDetail(feedData.id);
+  const {
+    feedDetail,
+    isLoading,
+    refetch: refetchFeedDetail,
+  } = useFeedDetail(feedData.id);
   const { register, handleSubmit, reset } = useForm();
 
   const queryClient = useQueryClient();
+
   /**게시물 좋아요 */
   const { mutate: feedLikeHandler } = useMutation(
     (feedId: number) => {
@@ -35,7 +41,7 @@ const FeedDetail = (props: any) => {
     },
     {
       onSuccess: () => {
-        refetch();
+        refetchFeedDetail();
         queryClient.invalidateQueries(Querykey.feedData);
       },
     }
@@ -45,7 +51,8 @@ const FeedDetail = (props: any) => {
   const { mutateAsync: commentSubmitHandler, isLoading: commentLoading } =
     useMutation((comment: any) => postComment(feedData.id, comment), {
       onSuccess: () => {
-        refetch();
+        refetchFeedDetail();
+        queryClient.invalidateQueries([feedData.id, Querykey.feedComment]);
       },
     });
 
@@ -56,7 +63,6 @@ const FeedDetail = (props: any) => {
 
   /**작성시간 */
   const writeTime = moment(feedDetail.created_at).fromNow();
-  /**대댓글 */
 
   if (isLoading)
     return (
@@ -79,7 +85,13 @@ const FeedDetail = (props: any) => {
             {writeTime}
           </h1>
         </div>
-        <Image src={feedDetail?.images[0]?.url} />
+        <HStack display="flex" flexDirection="column" alignItems="flex-start">
+          <Image src={feedDetail?.images[0]?.url} />
+          <Box>
+            <p className={styles.feedTitle}>{feedDetail.title}</p>
+            <p className={styles.feedDescription}>{feedDetail.description}</p>
+          </Box>
+        </HStack>
         <ButtonGroup margin="5px 0 5px 0">
           <Button
             backgroundColor={"transparent"}
@@ -99,7 +111,7 @@ const FeedDetail = (props: any) => {
             {feedDetail.comments_count}
           </Button>
         </ButtonGroup>
-        <Box margin="5px 2px 40px 2px">{feedDetail.description}</Box>
+
         <Comment feedId={feedData.id} />
       </div>
       <form

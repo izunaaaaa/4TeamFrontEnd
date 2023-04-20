@@ -113,7 +113,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       await deleteCategory(groupPk, id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("categories");
+        // queryClient.invalidateQueries(["categories"]);
+        refetch();
         console.log("카테고리 삭제");
       },
       onError: (error: Error) => {
@@ -275,6 +276,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
           {renderAddChannelButton()}
         </ul>
       </nav>
+
       {isAddModalOpen && (
         <div className={styles.modal} onClick={toggleAddModal}>
           <div
