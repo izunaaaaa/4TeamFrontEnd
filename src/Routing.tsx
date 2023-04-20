@@ -44,7 +44,7 @@ const Routing = () => {
         </Route>
 
         <Route
-          path="/home"
+          path="/category/:id"
           element={
             <Layout>
               <Feed />

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./DropDown.module.scss";
 import Login from "components/form/User/Login";
 import useClickOutside from "./useClickOutside";
-
+//import { dropDownProps } from "interface/Interface";
 const list = [
   { id: 1, title: "마이페이지", link: "/mypage" },
   { id: 2, title: "쪽지", link: "/mypage" },

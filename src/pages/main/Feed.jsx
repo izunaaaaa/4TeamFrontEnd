@@ -1,4 +1,3 @@
-import Comment from "./Comment";
 import { useFeed } from "./hook/useFeed";
 import styles from "./Feed.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

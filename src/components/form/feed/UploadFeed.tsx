@@ -1,10 +1,12 @@
 import {
+  Center,
   Flex,
   Input,
   Modal,
   ModalContent,
   ModalOverlay,
   Select,
+  Spinner,
   Textarea,
   useDisclosure,
   useToast,
@@ -47,7 +49,11 @@ const UploadFeed = () => {
       onSuccess: () => {
         toast({
           title: "게시글을 업로드했습니다.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
         });
+        navigate("/category/1");
       },
       onError: (error: any) => {
         toast({
@@ -61,7 +67,7 @@ const UploadFeed = () => {
     }
   );
 
-  /**썸네일 보기 */
+  /**업로드 이미지 크롭 모달창으로 보내기*/
   const changeImg = async (e: React.ChangeEvent) => {
     const reader: any = new FileReader();
 
@@ -76,6 +82,10 @@ const UploadFeed = () => {
 
     setPreviewImg(data);
     onOpen();
+  };
+  /**크롭한 이미지 미리보기 */
+  const getCroppedImg = (img: string) => {
+    setCropImg(img);
   };
 
   /**이미지url을 blob으로 변환 */
@@ -105,13 +115,7 @@ const UploadFeed = () => {
       ...(data.description && { description: data.description }),
       ...(resUrl && { image: resUrl }),
     };
-    console.log(postData);
     postFeedHandler(postData);
-  };
-
-  /**이미지 크롭하기 */
-  const getCroppedImg = (img: string) => {
-    setCropImg(img);
   };
 
   return (
@@ -126,6 +130,21 @@ const UploadFeed = () => {
           />
         </ModalContent>
       </Modal>
+      {isLoading && (
+        <Center
+          zIndex="1000"
+          position="absolute"
+          top="50%"
+          left="50%"
+          height="50%"
+          marginLeft="-50px"
+          marginTop="-50px"
+          display="flex"
+          flexDirection="column"
+        >
+          <Spinner size="xl" thickness="3px" color="blue.500" />
+        </Center>
+      )}
 
       <Flex justifyContent="center" margin="20px">
         <form

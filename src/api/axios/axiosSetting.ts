@@ -34,13 +34,16 @@ export const getFeeds = async (url: string) =>
     return res.data;
   });
 
-export const postFeedLike = async (feedId: string) =>
+export const postFeedLike = async (feedId: object) =>
   await instance.post(`/users/me/feedlike/`, feedId).then((res) => res.data);
 
 export const getFeedDetail = async (feedId: number) =>
   await instance.get(`/feeds/${feedId}/`).then((res) => {
     return res.data;
   });
+
+export const getComment = async (feedId: number) =>
+  await instance.get(`/feeds/${feedId}/comment/`).then((res) => res.data);
 
 export const postComment = async (feedId: number, commentData: object) =>
   await instance
@@ -132,6 +135,6 @@ export const updateCategory = async (
   id: number,
   name: string
 ) =>
-  await instance.put(`/categories/${groupPk}/${id}`, { name }).then((res) => {
+  await instance.put(`/categories/${groupPk}/${id}/`, { name }).then((res) => {
     return res.data;
   });

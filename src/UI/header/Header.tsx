@@ -24,7 +24,6 @@ function Header(): ReactElement {
 
   const handleSidebarToggle = () => {
     setSidebar(!sidebar);
-    console.log(sidebar);
   };
 
   useClickOutside(dropdownRef, () => {
