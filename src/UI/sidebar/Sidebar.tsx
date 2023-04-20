@@ -23,24 +23,27 @@ import { Category } from "./hook/useFeed";
 function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   // 새로운 채널의 이름을 저장하는 상태 변수
   const [newChannelName, setNewChannelName] = useState("");
+  // 수정된 카테고리 상태 변수
+  const [updatedChannelName, setUpdatedChannelName] = useState("");
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false); // 채널 추가 모달 창 상태 변수
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 카테고리 삭제 모달 창 상태 변수
   const [selectedCategory, setSelectedCategory] = useState<{
-    group: string;
+    groupPk: number;
     id: number;
   } | null>(null);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 채널 수정 모달 창 상태 변수
   const [selectedEditCategory, setSelectedEditCategory] = useState<{
-    group: string;
+    groupPk: number;
     id: number;
     name: string;
   } | null>(null);
 
   // 관리자 여부를 나타내는 상태
   const [isAdmin, setIsAdmin] = useState(true);
-  const { categories, refetch } = useFeed();
+  const groupPk = 1; // groupPk 값을 1로 설정
+  const { categories, refetch } = useFeed(groupPk);
 
   useEffect(() => {
     if (!categories) {
@@ -50,13 +53,51 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
 
   // 새로 추가되는 카테고리
   const addCategoryMutation = useMutation(
-    async (name: string) => await postCategory(name, "oz"),
+    async (name: string) => await postCategory(name, groupPk),
     {
       onSuccess: () => {
         refetch();
+        console.log("카테고리 추가");
       },
       onError: (error: Error) => {
         console.error("Error adding category:", error);
+      },
+    }
+  );
+
+  // 카테고리 수정
+  const updateCategoryMutation = useMutation(
+    async ({
+      groupPk,
+      id,
+      newName,
+    }: {
+      groupPk: number;
+      id: number;
+      newName: string;
+    }) => await updateCategory(groupPk, id, newName),
+    {
+      onSuccess: () => {
+        refetch();
+        console.log("카테고리 수정");
+      },
+      onError: (error: Error) => {
+        console.error("Error updating category:", error);
+      },
+    }
+  );
+
+  // 카테고리 삭제
+  const deleteCategoryMutation = useMutation(
+    async ({ groupPk, id }: { groupPk: number; id: number }) =>
+      await deleteCategory(groupPk, id),
+    {
+      onSuccess: () => {
+        refetch();
+        console.log("카테고리 삭제");
+      },
+      onError: (error: Error) => {
+        console.error("Error deleting category:", error);
       },
     }
   );
@@ -70,26 +111,13 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       addCategory(newChannelName);
       setNewChannelName("");
       toggleAddModal(); // 모달 창 닫기
+      //refetch();
       //console.log(newChannelName);
     }
   };
 
-  // 카테고리 삭제
-  const deleteCategoryMutation = useMutation(
-    async ({ group, id }: { group: string; id: number }) =>
-      await deleteCategory(group, id),
-    {
-      onSuccess: () => {
-        refetch();
-      },
-      onError: (error: Error) => {
-        console.error("Error deleting category:", error);
-      },
-    }
-  );
-
-  const deleteCategoryItem = (group: string, id: number) => {
-    setSelectedCategory({ group, id });
+  const deleteCategoryItem = (groupPk: number, id: number) => {
+    setSelectedCategory({ groupPk, id });
     toggleDeleteModal();
   };
 
@@ -105,36 +133,21 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     setIsEditModalOpen(!isEditModalOpen);
   };
 
-  // 카테고리 수정
-  const updateCategoryMutation = useMutation(
-    async ({
-      group,
-      id,
-      newName,
-    }: {
-      group: string;
-      id: number;
-      newName: string;
-    }) => await updateCategory(group, id, newName),
-    {
-      onSuccess: () => {
-        refetch();
-      },
-      onError: (error: Error) => {
-        console.error("Error updating category:", error);
-      },
-    }
-  );
-
-  const openEditModal = (group: string, id: number, name: string) => {
-    setSelectedEditCategory({ group, id, name });
+  const openEditModal = (groupPk: number, id: number, name: string) => {
+    setSelectedEditCategory({ groupPk, id, name });
     toggleEditModal();
   };
 
-  const handleUpdateChannel = (id: number, newName: string) => {
-    updateCategoryMutation.mutate({ group: "oz", id, newName });
-    setNewChannelName("");
-    toggleEditModal(); // 모달 창 닫기
+  const handleUpdateChannel = (newName: string) => {
+    if (selectedEditCategory) {
+      updateCategoryMutation.mutate({
+        groupPk: selectedEditCategory.groupPk,
+        id: selectedEditCategory.id,
+        newName: newName,
+      });
+      setUpdatedChannelName("");
+      toggleEditModal(); // Close modal
+    }
   };
 
   const renderSidebarData = () =>
@@ -144,14 +157,12 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
           <span>{item.name}</span>
         </div>
         <div className={styles.faiconContent}>
-          <div
-            onClick={() => openEditModal(item.group.name, item.id, item.name)}
-          >
+          <div onClick={() => openEditModal(item.group.pk, item.id, item.name)}>
             <span>
               <FontAwesomeIcon icon={faPen} />
             </span>
           </div>
-          <div onClick={() => deleteCategoryItem(item.group.name, item.id)}>
+          <div onClick={() => deleteCategoryItem(item.group.pk, item.id)}>
             <span>
               <FontAwesomeIcon icon={faTrash} />
             </span>
@@ -172,10 +183,12 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     const onDelete = async () => {
       if (selectedCategory) {
         await deleteCategoryMutation.mutate({
-          group: selectedCategory.group,
+          groupPk: selectedCategory.groupPk,
           id: selectedCategory.id,
         });
+        //setSelectedCategory(null);
         toggleDeleteModal();
+        //refetch();
       }
     };
 
@@ -198,8 +211,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
 
   const renderEditModal = () => {
     const onUpdate = () => {
-      if (selectedEditCategory && newChannelName.trim()) {
-        handleUpdateChannel(selectedEditCategory.id, newChannelName);
+      if (selectedEditCategory && updatedChannelName.trim()) {
+        handleUpdateChannel(updatedChannelName);
       }
     };
 
@@ -212,8 +225,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
           <h2>채널 수정</h2>
           <input
             type="text"
-            value={newChannelName}
-            onChange={(e) => setNewChannelName(e.target.value)}
+            value={updatedChannelName}
+            onChange={(e) => setUpdatedChannelName(e.target.value)}
             placeholder="채널 이름 입력"
           />
           <div>

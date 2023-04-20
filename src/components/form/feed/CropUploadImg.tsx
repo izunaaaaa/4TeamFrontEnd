@@ -17,6 +17,8 @@ import {
   faCrop,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
+import { postUploadUrl } from "api/axios/axiosSetting";
+import { useMutation } from "react-query";
 
 const CropUploadImg = (props: any) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -27,6 +29,10 @@ const CropUploadImg = (props: any) => {
     width: 0,
     height: 0,
   });
+
+  const { mutate: postUploadUrlHandler, data } = useMutation((img: any) =>
+    postUploadUrl(img)
+  );
 
   /**이미지 */
   const previewImg = useRef("");
@@ -49,9 +55,21 @@ const CropUploadImg = (props: any) => {
     canvas?.toBlob((blob: any) => {
       const previewUrl = window.URL.createObjectURL(blob);
 
+      const file = new File([previewUrl], "image.jpeg", { type: "image/jpeg" });
+
       previewImg.current = previewUrl;
       props.getCroppedImg(previewImg.current);
+      postUploadUrlHandler(file);
     }, "image/jpeg");
+
+    const jpegFile = canvas?.toDataURL("image/jpeg");
+
+    //   const myFile = new File([myBlob], 'image.jpeg', {
+    //     type: myBlob.type,
+    // });
+
+    // console.log(data, previewImg.current);
+    // props.onClose();
   };
 
   return (
@@ -118,7 +136,6 @@ const CropUploadImg = (props: any) => {
           leftIcon={<FontAwesomeIcon icon={faCrop} />}
           onClick={() => {
             generateDownload(props.previewImg, croppedArea);
-            props.onClose();
           }}
         >
           <p>크롭</p>

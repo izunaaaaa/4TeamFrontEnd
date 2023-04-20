@@ -8,6 +8,7 @@ interface UseFeed {
   isFetching: boolean;
   isLoading: boolean;
   hasNextPage?: boolean;
+  refetch: any;
 }
 
 export const useFeed = (): UseFeed => {
@@ -18,9 +19,11 @@ export const useFeed = (): UseFeed => {
     hasNextPage,
     isFetching,
     isLoading,
+    refetch,
   } = useInfiniteQuery(
     Querykey.feedData,
-    ({ pageParam = `/feeds/1` }) => getFeeds(pageParam),
+    ({ pageParam = `/feeds/group/category/?group_id=1&category_id=34` }) =>
+      getFeeds(pageParam),
     {
       getNextPageParam: (lastpage) => {
         if (lastpage.total_pages - lastpage.now_page > 0)
@@ -32,5 +35,12 @@ export const useFeed = (): UseFeed => {
     }
   );
 
-  return { feedData, fetchNextPage, hasNextPage, isFetching, isLoading };
+  return {
+    feedData,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+    refetch,
+  };
 };

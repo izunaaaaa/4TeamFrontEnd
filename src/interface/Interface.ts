@@ -130,10 +130,11 @@ export interface CropAttribute {
   height: number;
 }
 
-export interface Message {
+export interface PostFeed {
   title: string;
-  content: string;
-  date: Date;
+  description: string;
+  category: number;
+  file: File[];
 }
 
 export interface SidebarProps {
@@ -161,10 +162,14 @@ export interface TabMenu {
   onClick: (tabName: string) => void;
 }
 
-export interface Letterlists {
-  id: number;
+export interface Message {
+  sender: User;
+  room: number;
+  text: string;
+}
+
+export interface Chattings {
+  user: User;
   created_at: any;
-  updated_at: any;
-  sender: number;
-  receiver: number;
+  messages: Message;
 }

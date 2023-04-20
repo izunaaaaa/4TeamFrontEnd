@@ -1,5 +1,22 @@
 import React, { useState } from "react";
-import { Stack, Text, Box, Avatar, HStack } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Box,
+  Avatar,
+  HStack,
+  useDisclosure,
+  Button,
+} from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,13 +29,11 @@ export default function MsgDetail(props: any) {
     setIsHovering(false);
   };
 
-  // const { data } = props;
-  // const handleDeleteData = () => {
-  //   const newData = [...data];
-  //   newData.splice(0, 1);
-  // };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
+      {/* 쪽지 내역 */}
       <Box
         padding="6"
         boxShadow="xl"
@@ -34,7 +49,6 @@ export default function MsgDetail(props: any) {
             {" "}
             <FontAwesomeIcon icon={faPaperclip} />
           </HStack>
-
           <HStack>
             <Text as="b" color={props.receiver ? "#FF0080" : "#58ACFA"}>
               {props.receiver ? "From. " : "To. "}{" "}
@@ -42,15 +56,34 @@ export default function MsgDetail(props: any) {
             <Avatar size="xs"></Avatar>{" "}
           </HStack>
           <HStack>
-            {/* {isHovering && (
-              <button onClick={handleDeleteData}>
+            {isHovering && (
+              <button onClick={onOpen}>
                 <FontAwesomeIcon icon={faScissors} />
               </button>
-            )} */}
+            )}
             <Text as="ins">{props.description}</Text>
           </HStack>
         </Stack>
       </Box>
+
+      {/* 모달 */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>쪽지를 삭제하시겠습니까?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>내용</ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Delete
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

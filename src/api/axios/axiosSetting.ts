@@ -1,6 +1,6 @@
 import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
-import { Letterlists, LoginData, SignUpData } from "interface/Interface";
+import { LoginData, SignUpData } from "interface/Interface";
 import Cookie from "js-cookie";
 export const instance = axios.create({
   // baseURL: BASE_URL,
@@ -31,47 +31,76 @@ export const getFeeds = async (url: string) =>
     return res.data;
   });
 
-export const getFeedDetail = async (
-  groupPk: number,
-  category: string,
-  feedID: number
-) =>
-  await instance.get(`/feeds/${groupPk}/${category}/${feedID}`).then((res) => {
+export const postFeedLike = async (feedId: string) =>
+  await instance.post(`/users/me/feedlike/`, feedId).then((res) => res.data);
+
+export const getFeedDetail = async (feedId: number) =>
+  await instance.get(`/feeds/${feedId}/`).then((res) => {
     return res.data;
   });
 
+/**feed post form */
 export const getFeedCategory = async (group: string) =>
   await instance.get(`/categories/${group}`).then((res) => res.data);
 
-// Letters
-export const getLetterlists = (): Promise<Letterlists[]> => {
-  return instance.get(`/letterlists/`).then((res) => res.data);
+export const postUploadUrl = async (imgFile: File) =>
+  await instance.post(`/media/uploadURL`).then((res) => {
+    const url = res.data.uploadURL;
+    const form = new FormData();
+
+    form.append("file", imgFile, "image.jpeg");
+    // console.log(img);
+
+    console.log(form, imgFile);
+
+    axios
+      .post(url, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        return res.data.result;
+      });
+  });
+
+export const postFeed = async (postData: any) =>
+  await instance.post(`/feeds/`, postData).then((res) => res.data);
+
+// 쪽지
+export const getLetterlists = () => {
+  return instance.get(`/chattings/`).then((res) => res.data);
 };
 
-export const getLetters = async () =>
-  await instance.get(`/letters/`).then((res) => res.data);
+export const getLetters = async (id: number) =>
+  await instance.get(`/chattings/${id}`).then((res) => res.data);
 
-export const postLetters = async (data: string) =>
-  await instance.post(`/letters/`, data).then((res) => res.data);
+export const postLetters = async (id: number, data: string) =>
+  await instance.post(`/chattings/${id}`, data).then((res) => res.data);
 
 // Category
-export const postCategory = async (name: string, group: string) =>
-  await instance.post(`/categories/${group}`, { name }).then((res) => {
+
+export const getCategories = async (groupPk: number) => {
+  const result = await instance.get(`/categories/${groupPk}`);
+  return result.data;
+};
+
+export const postCategory = async (name: string, groupPk: number) =>
+  await instance.post(`/categories/${groupPk}`, { name }).then((res) => {
     return res.data;
   });
 
-export const deleteCategory = async (group: string, id: number) =>
-  await instance.delete(`/categories/${group}/${id}`).then((res) => {
+export const deleteCategory = async (groupPk: number, id: number) =>
+  await instance.delete(`/categories/${groupPk}/${id}`).then((res) => {
     return res.data;
   });
 
 export const updateCategory = async (
-  group: string,
+  groupPk: number,
   id: number,
-  newName: string
+  name: string
 ) =>
-  await instance
-    .put(`/categories/${group}/${id}`, { name: newName })
-    .then((res) => {
-      return res.data;
-    });
+  await instance.put(`/categories/${groupPk}/${id}`, { name }).then((res) => {
+    return res.data;
+  });

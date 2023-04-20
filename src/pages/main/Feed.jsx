@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { useRef, useState } from "react";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Avatar,
   Modal,
@@ -23,6 +23,9 @@ import useClickOutside from "UI/header/useClickOutside";
 
 import moment from "moment";
 import "moment/locale/ko";
+import { postFeedLike } from "api/axios/axiosSetting";
+import { useMutation, useQueryClient } from "react-query";
+import { Querykey } from "api/react-query/QueryKey";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 // const otherFeedDropDownMenu = ["쪽지 보내기"];
@@ -30,6 +33,8 @@ const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 function Feed() {
   const { feedData, fetchNextPage, hasNextPage, isFetching, isLoading } =
     useFeed();
+  let { id } = useParams();
+
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const [select, setSelect] = useState([]);
@@ -55,12 +60,24 @@ function Feed() {
     setFeedOption([]);
   });
 
+  /**좋아요누르기 */
+  const queryClient = useQueryClient();
+
+  const { mutate: likeHandler } = useMutation(
+    (FeedID) => postFeedLike(FeedID),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(Querykey.feedData);
+      },
+    }
+  );
+
   return (
     <>
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
         <div className={styles.feeds} ref={dropdownRef}>
           {feedData.pages?.map((pageData) =>
-            pageData.results?.map((data) => (
+            pageData?.results?.map((data) => (
               <div key={data.id} className={styles.feedDiv}>
                 <div className={styles.feedUser}>
                   <Avatar
@@ -69,7 +86,7 @@ function Feed() {
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                   />
                   <h1>
-                    <p>익명의 개발자</p>
+                    <p>{data.group.name}의 개발자</p>
                     {moment(data.created_at).fromNow()}
                   </h1>
                 </div>
@@ -118,9 +135,13 @@ function Feed() {
                         : setSelect(
                             select.filter((button) => button !== data.id)
                           );
+                      const feedDataId = {
+                        feed: data.id,
+                      };
+                      likeHandler(feedDataId);
                     }}
                   >
-                    {select.includes(data.id) ? (
+                    {data.is_like ? (
                       <FontAwesomeIcon
                         icon={faThumbsUp}
                         size="lg"

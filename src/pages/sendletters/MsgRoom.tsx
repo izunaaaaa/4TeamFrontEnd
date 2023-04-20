@@ -20,13 +20,18 @@ import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { UseMutationResult, useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getLetters, postLetters } from "api/axios/axiosSetting";
+import { useParams } from "react-router-dom";
 
 export default function MsgRoom() {
-  const { data } = useQuery("Letters", getLetters);
-  const sendLetter: UseMutationResult<any, unknown, any, unknown> =
-    useMutation(postLetters);
+  const { id } = useParams<{ id: string }>();
+
+  //api 호출
+  const { data } = useQuery(["letters", id], () => getLetters(Number(id)));
+  const sendLetter = useMutation(["postLetters", id], (data: string) =>
+    postLetters(Number(id), data)
+  );
 
   //쪽지 모달 폼 관리
   const { register, handleSubmit } = useForm();

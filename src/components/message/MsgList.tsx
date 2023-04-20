@@ -8,27 +8,24 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
-import { Letterlists } from "interface/Interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faScissors, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { Chattings } from "interface/Interface";
 
-const MsgList = (props: Letterlists, onClick: () => void) => {
+const MsgList = (props: Chattings) => {
   return (
     <>
-      <VStack spacing={2} w="100%" h="5rem">
-        <Box w="100%">
+      <VStack spacing={2} h="5rem" maxW={"500px"}>
+        <Box>
           <Flex
             alignItems="center"
             justifyContent="space-between"
-            w="100%"
             px={10}
             py={4}
           >
             <HStack>
-              <Avatar />
               <VStack alignItems="start" spacing={0} ml={2}>
-                <Text fontWeight="bold">{props.sender}</Text>
-                <Text fontSize="sm">{props.updated_at}</Text>
+                <Text> {props.messages.sender.email}</Text>
               </VStack>
             </HStack>
           </Flex>

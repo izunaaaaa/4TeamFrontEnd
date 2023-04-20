@@ -9,11 +9,8 @@ import "moment/locale/ko";
 import { useState } from "react";
 
 const FeedDetail = (props: any) => {
-  const { feedDetail } = useFeedDetail(
-    props.feedData.group.pk,
-    props.feedData.category,
-    props.feedData.id
-  );
+  const feedData = props.feedData;
+  const { feedDetail } = useFeedDetail(feedData.id);
 
   // console.log(feedDetail[0]);
   const [recommentId, setRecommentId] = useState("");
