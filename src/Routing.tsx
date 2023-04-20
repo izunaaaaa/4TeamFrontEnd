@@ -58,6 +58,7 @@ const Routing = () => {
           <Route path="student" element={<SignUpForm />} />
           <Route path="manager" element={<SignUpFormManager />} />
         </Route>
+
         <Route path="/upload" element={<UploadFeed />} />
 
         {/* 내정보 */}
