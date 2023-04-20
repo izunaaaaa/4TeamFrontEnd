@@ -13,9 +13,10 @@ import {
   deleteCategory,
   updateCategory,
 } from "api/axios/axiosSetting";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useFeed } from "./hook/useFeed";
 import { Category } from "./hook/useFeed";
+import { Link } from "react-router-dom";
 
 // useQuery : 데이터를 가져올 때
 // useMutation : 데이터를 변경, 추가 또는 삭제
@@ -45,10 +46,15 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const groupPk = 1; // groupPk 값을 1로 설정
   const { categories, refetch } = useFeed(groupPk);
 
+  const queryClient = useQueryClient();
+
+  // useEffect(() => {
+  //   if (!categories) {
+  //     refetch();
+  //   }
+  // }, []);
   useEffect(() => {
-    if (!categories) {
-      refetch();
-    }
+    refetch();
   }, []);
 
   // 새로 추가되는 카테고리
@@ -88,12 +94,26 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   );
 
   // 카테고리 삭제
+  // const deleteCategoryMutation = useMutation(
+  //   async ({ groupPk, id }: { groupPk: number; id: number }) =>
+  //     await deleteCategory(groupPk, id),
+  //   {
+  //     onSuccess: () => {
+  //       refetch();
+  //       console.log("카테고리 삭제");
+  //     },
+  //     onError: (error: Error) => {
+  //       console.error("Error deleting category:", error);
+  //     },
+  //   }
+  // );
+
   const deleteCategoryMutation = useMutation(
     async ({ groupPk, id }: { groupPk: number; id: number }) =>
       await deleteCategory(groupPk, id),
     {
       onSuccess: () => {
-        refetch();
+        queryClient.invalidateQueries("categories");
         console.log("카테고리 삭제");
       },
       onError: (error: Error) => {
@@ -101,6 +121,18 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       },
     }
   );
+
+  const toggleAddModal = () => {
+    setIsAddModalOpen(!isAddModalOpen); // 채널 추가 모달 창 열림/닫힘 상태 변경
+  };
+
+  const toggleDeleteModal = () => {
+    setIsDeleteModalOpen(!isDeleteModalOpen); // 카테고리 삭제 모달 창 열림/닫힘 상태 변경
+  };
+
+  const toggleEditModal = () => {
+    setIsEditModalOpen(!isEditModalOpen);
+  };
 
   const addCategory = async (name: string) => {
     addCategoryMutation.mutate(name);
@@ -116,28 +148,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     }
   };
 
-  const deleteCategoryItem = (groupPk: number, id: number) => {
-    setSelectedCategory({ groupPk, id });
-    toggleDeleteModal();
-  };
-
-  const toggleAddModal = () => {
-    setIsAddModalOpen(!isAddModalOpen); // 채널 추가 모달 창 열림/닫힘 상태 변경
-  };
-
-  const toggleDeleteModal = () => {
-    setIsDeleteModalOpen(!isDeleteModalOpen); // 카테고리 삭제 모달 창 열림/닫힘 상태 변경
-  };
-
-  const toggleEditModal = () => {
-    setIsEditModalOpen(!isEditModalOpen);
-  };
-
-  const openEditModal = (groupPk: number, id: number, name: string) => {
-    setSelectedEditCategory({ groupPk, id, name });
-    toggleEditModal();
-  };
-
   const handleUpdateChannel = (newName: string) => {
     if (selectedEditCategory) {
       updateCategoryMutation.mutate({
@@ -150,19 +160,42 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     }
   };
 
+  const handleDeleteChanner = () => {
+    if (selectedCategory) {
+      deleteCategoryMutation.mutate({
+        groupPk: selectedCategory.groupPk,
+        id: selectedCategory.id,
+      });
+      setSelectedCategory(null);
+      toggleDeleteModal();
+    }
+  };
+
+  const openEditModal = (groupPk: number, id: number, name: string) => {
+    setSelectedEditCategory({ groupPk, id, name });
+    toggleEditModal();
+  };
+
+  const deleteCategorytModal = (groupPk: number, id: number) => {
+    setSelectedCategory({ groupPk, id });
+    toggleDeleteModal();
+  };
+
   const renderSidebarData = () =>
     categories?.map((item: Category, id: number) => (
       <li key={id} className={styles.nav_text}>
-        <div>
-          <span>{item.name}</span>
-        </div>
+        <Link to={`/category/${item.id}`}>
+          <div className={styles.nav_name}>
+            <span>{item.name}</span>
+          </div>
+        </Link>
         <div className={styles.faiconContent}>
           <div onClick={() => openEditModal(item.group.pk, item.id, item.name)}>
             <span>
               <FontAwesomeIcon icon={faPen} />
             </span>
           </div>
-          <div onClick={() => deleteCategoryItem(item.group.pk, item.id)}>
+          <div onClick={() => deleteCategorytModal(item.group.pk, item.id)}>
             <span>
               <FontAwesomeIcon icon={faTrash} />
             </span>
@@ -180,16 +213,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   );
 
   const renderDeleteModal = () => {
-    const onDelete = async () => {
-      if (selectedCategory) {
-        await deleteCategoryMutation.mutate({
-          groupPk: selectedCategory.groupPk,
-          id: selectedCategory.id,
-        });
-        //setSelectedCategory(null);
-        toggleDeleteModal();
-        //refetch();
-      }
+    const onDelete = () => {
+      handleDeleteChanner();
     };
 
     return (

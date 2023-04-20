@@ -18,6 +18,10 @@ export interface SidebarProps {
   setSidebar: (sidebar: boolean) => void;
 }
 
+// export interface dropDownProps {
+//   dropDown: boolean;
+// }
+
 export interface ListItem {
   id: number;
   title: string;

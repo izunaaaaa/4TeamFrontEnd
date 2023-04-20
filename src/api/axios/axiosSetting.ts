@@ -125,6 +125,6 @@ export const updateCategory = async (
   id: number,
   name: string
 ) =>
-  await instance.put(`/categories/${groupPk}/${id}`, { name }).then((res) => {
+  await instance.put(`/categories/${groupPk}/${id}/`, { name }).then((res) => {
     return res.data;
   });
