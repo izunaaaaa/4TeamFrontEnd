@@ -1,81 +1,87 @@
-import React from "react";
-import {
-  Flex,
-  Box,
-  Text,
-  SkeletonCircle,
-  SkeletonText,
-  useMediaQuery,
-} from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Flex, Box, Text, useMediaQuery } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
 import { useQuery } from "react-query";
 import { getLetterlists } from "api/axios/axiosSetting";
-import { Letterlists } from "interface/Interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelopeOpenText,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
+import LetterSkeleton from "UI/Skeleton/LetterSkeleton";
+import { Chattings } from "interface/Interface";
 
 function Mailbox() {
-  const { isLoading, error, data } = useQuery<Letterlists[]>(
+  const [isHovering, setIsHovering] = useState(false);
+  const { isLoading, error, data } = useQuery<Chattings[]>(
     "Letterlists",
     getLetterlists
   );
 
   // 브라우저 화면 크기 설정하는 chakra 내장함수
-  const [isMobile] = useMediaQuery("(max-width: 480px)");
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
 
   //받은 쪽지함
   //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
   return (
-    <Flex justify={"center"} mt={"1rem"}>
-      <Box
-        minH={"600px"}
-        w="500px"
-        border={"1px solid lightgray"}
-        bg={"lightgray"}
-      >
-        {data?.length ? (
-          data?.map((item, idx) => {
-            return (
-              <div key={idx}>
-                <MsgList {...item} />
-              </div>
-            );
-          })
-        ) : (
-          <Box padding="6">
-            <Box padding="6" boxShadow="md" bg="white" mb="5">
-              <SkeletonCircle size="10" />
-              <SkeletonText
-                mt="4"
-                noOfLines={4}
-                spacing="4"
-                skeletonHeight="2"
-              />
-            </Box>
-            <Box padding="6" boxShadow="md" bg="white" mt="10">
-              <SkeletonCircle size="10" />
-              <SkeletonText
-                mt="4"
-                noOfLines={4}
-                spacing="4"
-                skeletonHeight="2"
-              />
-            </Box>
-          </Box>
-        )}
-      </Box>
-      {/* 모바일 화면일 경우, 아래 박스를 숨기는 조건식 (480px 넘어가는 화면에서만 렌더링 됨) */}
-      {isMobile ? null : (
-        <Flex
+    <Flex mt={"5rem"}>
+      {isMobile ? (
+        <Box
+          w="100vw"
+          maxW={"100vmax"}
           border={"1px solid lightgray"}
-          flexDir={"column"}
-          align={"center"}
-          justify={"center"}
-          p={"40"}
+          bg={"lightgray"}
         >
-          <FontAwesomeIcon icon={faEnvelopeOpenText} size="2xl" />
-          <Text fontSize="3xl">도착한 쪽지를 열어보세요.</Text>
-        </Flex>
+          {data?.length ? (
+            data?.map((item: Chattings, idx: number) => {
+              return (
+                <Flex
+                  key={idx}
+                  bg={"#FAFAFA"}
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
+                  mt="3rem"
+                  _hover={{ bg: "#848484", cursor: "pointer" }}
+                >
+                  <MsgList {...item} />
+                </Flex>
+              );
+            })
+          ) : (
+            <div>
+              <LetterSkeleton />
+              <LetterSkeleton />
+            </div>
+          )}
+        </Box>
+      ) : (
+        <Box
+          minW="400px"
+          border={"1px solid lightgray"}
+          bg={"lightgray"}
+          ml={"14rem"}
+        >
+          {data?.length ? (
+            data?.map((item: Chattings, idx: number) => {
+              return (
+                <Flex
+                  key={idx}
+                  bg={"#FAFAFA"}
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
+                  _hover={{ bg: "#848484", cursor: "pointer" }}
+                >
+                  <MsgList {...item} />
+                </Flex>
+              );
+            })
+          ) : (
+            <div>
+              <LetterSkeleton />
+              <LetterSkeleton />
+            </div>
+          )}
+        </Box>
       )}
     </Flex>
   );

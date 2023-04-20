@@ -13,12 +13,6 @@ export interface CropAttribute {
   height: number;
 }
 
-export interface Message {
-  title: string;
-  content: string;
-  date: Date;
-}
-
 export interface SidebarProps {
   sidebar: boolean;
   setSidebar: (sidebar: boolean) => void;
@@ -35,26 +29,6 @@ export interface LayoutProps {
   children: React.ReactNode;
 }
 
-export type Note = {
-  id: number;
-  title: string;
-  content: string;
-  date: Date;
-};
-
-export interface MockUser {
-  name: string;
-  avatar: string;
-  isMe: boolean;
-}
-
-export interface MockCont {
-  id: number;
-  user: MockUser;
-  content: string;
-  time: string;
-}
-
 export interface TabMenu {
   icon: IconDefinition;
   size: SizeProp;
@@ -64,10 +38,24 @@ export interface TabMenu {
   onClick: (tabName: string) => void;
 }
 
-export interface Letterlists {
-  id: number;
-  create_at: any;
-  update_at: any;
-  sender: number;
-  receiver: number;
+export interface User {
+  username: string;
+  name: string;
+  email: string;
+  avatar: string | null;
+  is_coach: boolean;
+}
+
+export interface Sender extends User {}
+
+export interface Messages {
+  sender: Sender;
+  room: number;
+  text: string;
+}
+
+export interface Chattings {
+  user: User;
+  created_at: string;
+  messages: Messages;
 }

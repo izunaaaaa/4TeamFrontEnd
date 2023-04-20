@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { MockCont } from "../../MsgMock";
-import { mockMsgCont } from "../../MsgMock";
 import {
   Button,
+  Flex,
+  Text,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -19,38 +19,59 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { useMutation, useQuery } from "react-query";
+import { getLetters, postLetters } from "api/axios/axiosSetting";
+import { useParams } from "react-router-dom";
+import { Chattings } from "interface/Interface";
 
 export default function MsgRoom() {
+  const { id } = useParams();
+
+  //api 호출
+  const { data } = useQuery<Chattings[]>(["letters", Number(id)], () =>
+    getLetters(Number(id))
+  );
+
+  console.log(data);
+  const sendLetter = useMutation(["postLetters", Number(id)], (data: string) =>
+    postLetters(Number(id), data)
+  );
+
+  //쪽지 모달 폼 관리
+  const { register, handleSubmit } = useForm();
   // chakra ui의 모달 컨트롤 훅
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //쪽지 모달 창 관리
-  const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data: any) => {
-    const sendmessage = data.message.trim();
-    if (sendmessage === "") {
+  // 쪽지 전송 기능
+  const onSubmit = async (data: any) => {
+    const sendContent = data.description.trim();
+    if (sendContent === "") {
     } else {
-      console.log(data);
+      console.log(sendContent);
+      sendLetter.mutate({ ...sendContent });
       onClose();
     }
   };
 
   return (
     <>
-      {/* 주고받은 쪽지내역 */}
-      {mockMsgCont?.map((msg: MockCont, idx) => {
-        return (
-          <Box key={idx} mt={"5"}>
-            <MsgDetail {...msg} />
-          </Box>
-        );
-      })}
-      <HStack
-        onClick={onOpen}
-        cursor="pointer"
-        margin="2rem"
-        justify={"space-evenly"}
+      <Flex
+        textAlign={"right"}
+        flexDirection="column"
+        justifyContent="flex-end"
       >
+        {/* 주고받은 쪽지내역 */}
+        {data?.map((item: Chattings, idx: any) => {
+          return (
+            <Flex key={idx} mt={"5"} maxW={100} justifyContent="flex-end">
+              <MsgDetail {...item} />
+            </Flex>
+          );
+        })}
+      </Flex>
+
+      <HStack onClick={onOpen} cursor="pointer" margin="2rem">
         <FontAwesomeIcon icon={faPaperPlane} size="xl" />
       </HStack>
 
@@ -63,7 +84,7 @@ export default function MsgRoom() {
             <ModalBody>
               <Textarea
                 placeholder="보내실 내용을 입력해주세요"
-                {...register("message")}
+                {...register("description")}
               />
             </ModalBody>
             <ModalFooter>

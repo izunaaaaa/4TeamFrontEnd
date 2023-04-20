@@ -1,6 +1,5 @@
 import axios from "axios";
 import { LoginData, SignUpData } from "components/form/User/interface/type";
-import { Letterlists } from "interface/Interface";
 import Cookie from "js-cookie";
 export const instance = axios.create({
   // baseURL: BASE_URL,
@@ -93,9 +92,18 @@ export const updateFeed = async (feedId: number, updateData: any) =>
 export const deleteFeed = async (feedId: number) =>
   await instance.delete(`/feeds/${feedId}`).then((res) => res.data);
 
-export const getLetterlists = (): Promise<Letterlists[]> => {
-  return instance.get(`letterlists/`).then((res) => res.data);
+export const getLetterlists = async () => {
+  const res = await instance.get(`chattings/`);
+  return res.data;
 };
+
+export const getLetters = async (id: number) =>
+  await instance.get(`/chattings/${id}`).then((res) => res.data);
+
+export const postLetters = async (id: number, data: string) =>
+  await instance.post(`/chattings/${id}`, data).then((res) => res.data);
+
+// Category
 
 export const getCategories = async (groupPk: number) => {
   const result = await instance.get(`/categories/${groupPk}`);

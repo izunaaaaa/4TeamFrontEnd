@@ -24,11 +24,27 @@ const Routing = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/letterlists" element={<Mailbox />} />
-        <Route path="/letters" element={<MsgRoom />} />
+        <Route
+          path="/chattings/"
+          element={
+            <Layout>
+              <Mailbox />
+            </Layout>
+          }
+        >
+          <Route
+            path={":id/"}
+            element={
+              <Layout>
+                <Mailbox />
+                <MsgRoom />
+              </Layout>
+            }
+          />
+        </Route>
 
         <Route
-          path="/category/:id"
+          path="/home"
           element={
             <Layout>
               <Feed />
@@ -42,16 +58,7 @@ const Routing = () => {
           <Route path="student" element={<SignUpForm />} />
           <Route path="manager" element={<SignUpFormManager />} />
         </Route>
-
-        {/* 피드 업로드 */}
-        <Route
-          path="/upload"
-          element={
-            <Layout>
-              <UploadFeed />
-            </Layout>
-          }
-        />
+        <Route path="/upload" element={<UploadFeed />} />
 
         {/* 내정보 */}
 

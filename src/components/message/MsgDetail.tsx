@@ -4,75 +4,87 @@ import {
   Text,
   Box,
   Avatar,
-  Flex,
-  Badge,
   HStack,
-  Alert,
-  AlertIcon,
+  useDisclosure,
+  Button,
 } from "@chakra-ui/react";
-import { MockCont } from "../../MsgMock";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
+import { Chattings } from "interface/Interface";
 
-export default function MsgDetail(props: MockCont) {
-  const [isHovering, setIsHovering] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
-
-  // 클라이언트 단에서만 쪽지 내역 삭제 (서버에 전송 x)
-  const handleDeleteClick = () => {
-    setIsDeleted(true);
+const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
+  const [isHovering, setIsHovering] = useState(true);
+  const handleMouseEnter = () => {
+    setIsHovering(true);
   };
-  if (isDeleted) {
-    alert(
-      "이 쪽지를 삭제하시겠습니까? \n (삭제한 쪽지는 상대의 쪽지 창에서 삭제되지 않습니다.)"
-    );
-    return null;
-  }
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Flex justify={"space-evenly"}>
-      <Stack my={10}>
-        <Badge bgColor="#819FF7">{props.time}</Badge>
-      </Stack>
-      <Stack borderWidth="2px" borderColor="gray.200"></Stack>
-
+    <>
+      {/* 쪽지 내역 */}
       <Box
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        padding="6"
+        boxShadow="xl"
+        justifyItems={"end"}
+        mb="5"
+        bgColor={user ? "#F7FE2E" : "white"}
+        width={"50vmin"}
+        cursor={"pointer"}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <Box
-          padding="6"
-          boxShadow="xl"
-          mb="5"
-          bgColor={props.user.isMe ? "#F7FE2E" : "white"}
-          width={"50vmin"}
-        >
-          <Stack spacing={2}>
-            <HStack>
-              {" "}
-              <FontAwesomeIcon icon={faPaperclip} />
-            </HStack>
-
-            <HStack>
-              <Text as="b" color={props.user.isMe ? "#FF0080" : "#58ACFA"}>
-                {props.user.isMe ? "From. " : "To. "}{" "}
-              </Text>
-              <Avatar size="xs">{props.user.avatar}</Avatar>{" "}
-            </HStack>
-            <HStack>
-              {isHovering && (
-                <button
-                  onClick={handleDeleteClick}
-                  style={{ cursor: "pointer" }}
-                >
-                  <FontAwesomeIcon icon={faScissors} />
-                </button>
-              )}{" "}
-              <Text as="ins">{props.content}</Text>
-            </HStack>
-          </Stack>
-        </Box>
+        <Stack spacing={2}>
+          <HStack>
+            <FontAwesomeIcon icon={faPaperclip} />
+          </HStack>
+          <HStack>
+            <Text as="b" color={messages.sender ? "#FF0080" : "#58ACFA"}></Text>
+            <Avatar size="xs"></Avatar>{" "}
+          </HStack>
+          <HStack>
+            {isHovering && (
+              <button onClick={onOpen}>
+                <FontAwesomeIcon icon={faScissors} />
+              </button>
+            )}
+            <Text as="ins">{messages.text}</Text>
+          </HStack>
+        </Stack>
       </Box>
-    </Flex>
+
+      {/* 모달 */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>쪽지를 삭제하시겠습니까?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>내용</ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Delete
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
-}
+};
+
+export default MsgDetail;
