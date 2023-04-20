@@ -1,31 +1,57 @@
-import { Avatar, Box, Button, Flex, HStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, HStack, Input } from "@chakra-ui/react";
 import {
   faArrowTurnUp,
-  faEllipsis,
   faMessage,
   faPaperPlane,
   faThumbsUp,
-  faTrash,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef } from "react";
 import styles from "./Comment.module.scss";
 import moment from "moment";
 import "moment/locale/ko";
 import { useMutation } from "react-query";
 import { postRecomment } from "api/axios/axiosSetting";
 import useUser from "components/form/User/Hook/useUser";
+import useComment from "./hook/useComment";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Comment = (props) => {
-  const feedComment = props.feedComment;
+  const feedId = props.feedId;
+  const { register, handleSubmit, reset } = useForm();
   const { LoginUserData } = useUser();
-  const selectCommentRef = useRef([]);
+  const { feedComment, refetch } = useComment(feedId);
 
-  // console.log(selectCommentRef.current);
+  const [selectComment, setSelectComment] = useState(null);
 
-  console.log(LoginUserData.username, feedComment);
-  const { mutation: postRecommentHandler } = useMutation(() => postRecomment());
+  /**댓글 버튼 이벤트 */
+  const btnHandler = async (e, id) => {
+    reset();
+    setSelectComment(id);
+    const targetValue = e.target.value;
+    if (targetValue === "recomment") {
+      // setRecommentInput(!recommentInput);
+    }
+    if (targetValue === "like") {
+    }
+  };
+
+  /**대댓글 달기 */
+  const { mutateAsync: postRecommentHandler, isLoading } = useMutation(
+    (description) => postRecomment(feedId, selectComment, description),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
+
+  const submitRecommentHandler = async (description) => {
+    await postRecommentHandler(description);
+
+    reset();
+  };
 
   return (
     <>
@@ -43,11 +69,12 @@ const Comment = (props) => {
             <Box padding="10px" lineHeight="5" maxW="500px" w="90%">
               <Flex justifyContent="space-between" marginBottom="2px">
                 <Box fontWeight="bold">익명{index + 1}</Box>
-                <Flex>
+                <Flex onClick={(e) => btnHandler(e, comment.id)}>
                   <Button
                     backgroundColor={"transparent"}
                     height="20px"
                     padding="0 4px"
+                    value="like"
                   >
                     <FontAwesomeIcon icon={faThumbsUp} />
                   </Button>
@@ -55,14 +82,7 @@ const Comment = (props) => {
                     backgroundColor={"transparent"}
                     height="20px"
                     padding="0 1px"
-                    onClick={() => {
-                      !selectCommentRef?.current.includes(comment.id)
-                        ? (selectCommentRef.current = [comment])
-                        : selectCommentRef.current.filter(
-                            (button) => button !== [comment]
-                          );
-                      props.recomment(selectCommentRef.current);
-                    }}
+                    value="recomment"
                   >
                     <FontAwesomeIcon icon={faMessage} />
                   </Button>
@@ -87,15 +107,44 @@ const Comment = (props) => {
                 </Flex>
               </Flex>
               <Box fontSize="0.9rem">{comment.description}</Box>
-              <HStack marginTop="2px" fontSize="0.8rem" spacing="2px">
+              <HStack marginTop="2px" fontSize="0.8rem" spacing="4px">
                 <Box>{commentWriteTime}</Box>
                 {comment.commentlikeCount > 0 && (
                   <>
-                    <FontAwesomeIcon icon={faThumbsUp} size="xs" />
-                    <Box>{comment.commentlikeCount}</Box>
+                    <FontAwesomeIcon
+                      icon={faThumbsUp}
+                      size="xs"
+                      style={{ color: "red" }}
+                    />
+                    <Box color="red">{comment.commentlikeCount}</Box>
                   </>
                 )}
               </HStack>
+              {comment.id === selectComment ? (
+                <form
+                  className={styles.recommentForm}
+                  h={"30px"}
+                  display="flex"
+                  onSubmit={handleSubmit(submitRecommentHandler)}
+                >
+                  <Input
+                    h="100%"
+                    w="100%"
+                    placeholder="댓글을 입력해주세요."
+                    {...register("description", {
+                      required: true,
+                    })}
+                  />
+                  <Button
+                    h={"100%"}
+                    type="submit"
+                    isLoading={isLoading}
+                    onSubmit={handleSubmit(submitRecommentHandler)}
+                  >
+                    답글
+                  </Button>
+                </form>
+              ) : null}
               {comment.recomment.map((recomment, index) => (
                 <Flex key={index} marginTop="10px">
                   <Box lineHeight={5} margin="10px">
@@ -120,9 +169,9 @@ const Comment = (props) => {
                     </Box>
                     <Box padding="10px" lineHeight="5" width="100%">
                       <p className={styles.commentName}>익명{comment.id}</p>
-                      {recomment.description}
+                      <Box fontSize="0.9rem">{recomment.description}</Box>
                       <Flex margin="4px 0 0 0">
-                        <p className={styles.commentTime}>{commentWriteTime}</p>
+                        <Box fontSize="0.8rem">{commentWriteTime}</Box>
                       </Flex>
                     </Box>
                   </Flex>

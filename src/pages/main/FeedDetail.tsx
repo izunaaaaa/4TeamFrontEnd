@@ -14,15 +14,32 @@ import moment from "moment";
 import useFeedDetail from "./hook/useFeedDetail";
 import Comment from "./Comment";
 import "moment/locale/ko";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
-import { postComment } from "api/axios/axiosSetting";
+import { useMutation, useQueryClient } from "react-query";
+import { postComment, postFeedLike } from "api/axios/axiosSetting";
+import { Querykey } from "api/react-query/QueryKey";
 
 const FeedDetail = (props: any) => {
   const feedData = props.feedData;
   const { feedDetail, isLoading, refetch } = useFeedDetail(feedData.id);
   const { register, handleSubmit, reset } = useForm();
+
+  const queryClient = useQueryClient();
+  /**게시물 좋아요 */
+  const { mutate: feedLikeHandler } = useMutation(
+    (feedId: number) => {
+      const data = {
+        feed: feedId,
+      };
+      return postFeedLike(data);
+    },
+    {
+      onSuccess: () => {
+        refetch();
+        queryClient.invalidateQueries(Querykey.feedData);
+      },
+    }
+  );
 
   /**댓글달기 */
   const { mutateAsync: commentSubmitHandler, isLoading: commentLoading } =
@@ -37,27 +54,9 @@ const FeedDetail = (props: any) => {
     reset();
   };
 
-  const [recommentId, setRecommentId] = useState("");
-
-  /**중복되는 username을 가진 comment 객체의 id 값을 저장할 Map 생성 */
-  const idMap = new Map();
-  const uniqueComments = feedDetail?.comment?.map((comment: any) => {
-    if (!idMap.has(comment.user.username)) {
-      /**username이 Map에 없으면 id를 부여하고 Map에 추가*/
-      idMap.set(comment.user.username, comment.id);
-      return comment;
-    } else {
-      /**username이 Map에 있으면 이미 부여된 id를 사용 */
-      return { ...comment, id: idMap.get(comment.user.username) };
-    }
-  });
-
   /**작성시간 */
   const writeTime = moment(feedDetail.created_at).fromNow();
   /**대댓글 */
-  const recomment = (data: any) => {
-    setRecommentId(data[0].id);
-  };
 
   if (isLoading)
     return (
@@ -87,6 +86,7 @@ const FeedDetail = (props: any) => {
             margin={0}
             padding={2}
             leftIcon={<FontAwesomeIcon icon={faThumbsUp} size="lg" />}
+            onClick={() => feedLikeHandler(feedData.id)}
           >
             {feedDetail.like_count}
           </Button>
@@ -100,7 +100,7 @@ const FeedDetail = (props: any) => {
           </Button>
         </ButtonGroup>
         <Box margin="5px 2px 40px 2px">{feedDetail.description}</Box>
-        <Comment feedComment={uniqueComments} recomment={recomment} />
+        <Comment feedId={feedData.id} />
       </div>
       <form
         className={styles.commentInput}
@@ -108,7 +108,6 @@ const FeedDetail = (props: any) => {
       >
         <textarea
           placeholder="댓글달기"
-          defaultValue={recommentId ? `익명${recommentId}` : ""}
           {...register("description", {
             required: true,
           })}
