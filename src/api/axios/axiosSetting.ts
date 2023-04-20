@@ -92,16 +92,23 @@ export const updateFeed = async (feedId: number, updateData: any) =>
 export const deleteFeed = async (feedId: number) =>
   await instance.delete(`/feeds/${feedId}`).then((res) => res.data);
 
+//쪽지 리스트 받아오기
 export const getLetterlists = async () => {
   const res = await instance.get(`chattings/`);
   return res.data;
 };
 
+//쪽지 내역 받아오기
 export const getLetters = async (id: number) =>
   await instance.get(`/chattings/${id}`).then((res) => res.data);
 
+// 쪽지 보내기
 export const postLetters = async (id: number, data: string) =>
   await instance.post(`/chattings/${id}`, data).then((res) => res.data);
+
+// 쪽지 내역 지우기
+export const deleteLetters = async (id: number) =>
+  await instance.delete(`/chattings/${id}`).then((res) => res.data);
 
 // Category
 

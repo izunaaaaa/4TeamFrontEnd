@@ -33,7 +33,7 @@ const Routing = () => {
           }
         >
           <Route
-            path={":id/"}
+            path={":id"}
             element={
               <Layout>
                 <Mailbox />

@@ -27,13 +27,12 @@ import { Chattings } from "interface/Interface";
 
 export default function MsgRoom() {
   const { id } = useParams();
+  console.log("id", id);
 
   //api 호출
   const { data } = useQuery<Chattings[]>(["letters", Number(id)], () =>
     getLetters(Number(id))
   );
-
-  console.log(data);
   const sendLetter = useMutation(["postLetters", Number(id)], (data: string) =>
     postLetters(Number(id), data)
   );
