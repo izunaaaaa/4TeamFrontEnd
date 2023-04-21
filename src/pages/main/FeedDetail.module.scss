@@ -25,12 +25,13 @@
       font-weight: bold;
     }
   }
-  .commentName {
+  .feedTitle {
+    margin: 10px 0 0 0;
     font-weight: bold;
+    font-size: 1.4rem;
   }
-  .commentTime {
-    font-size: 0.76rem;
-    margin-right: 6px;
+  .feedDescription {
+    margin: 5px 0 0 0;
   }
 }
 .commentInput {

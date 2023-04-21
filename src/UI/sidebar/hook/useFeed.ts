@@ -50,7 +50,7 @@ export type Category = {
 
 export const useFeed = (groupPk: number) => {
   const { data: categories, refetch } = useQuery<Category[]>(
-    ["categories", groupPk],
+    ["categories"],
     () => getCategories(groupPk)
   );
 

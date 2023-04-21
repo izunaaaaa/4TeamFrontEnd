@@ -31,9 +31,9 @@ import "moment/locale/ko";
 import { postFeedLike } from "api/axios/axiosSetting";
 import { useMutation, useQueryClient } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
+import useUser from "components/form/User/Hook/useUser";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
-// const otherFeedDropDownMenu = ["쪽지 보내기"];
 
 function Feed() {
   const {
@@ -44,24 +44,23 @@ function Feed() {
     isLoading,
     refetch,
   } = useFeed();
-  let { id } = useParams();
+  // let { id } = useParams();
 
+  const { LoginUserData } = useUser();
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const [select, setSelect] = useState([]);
   const [feedOption, setFeedOption] = useState([]);
 
   /**게시글 보기 모달 */
-  // const [feedId, setFeedId] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(<FeedDetail />);
 
   /**feed 드롭다운 메뉴 이벤트 */
-  const dropDownMenuEvent = (e) => {
+  const dropDownMenuEvent = (e, data) => {
     const eventTarget = e.target;
-    console.log(eventTarget.value);
     const menuType = eventTarget.innerText;
-    if (menuType === "수정하기") return navigate("/upload");
+    if (menuType === "수정하기") return navigate("/upload", { state: data });
     if (menuType === "삭제하기") {
       onOpen();
       return setModalType(
@@ -109,19 +108,21 @@ function Feed() {
                   </h1>
                 </div>
                 <div className={styles.feedMenu}>
-                  <button
-                    className={styles.dropDownBtn}
-                    value={data.id}
-                    onClick={() => {
-                      !feedOption.includes(data.id)
-                        ? setFeedOption((select) => [...select, data.id])
-                        : setFeedOption(
-                            feedOption.filter((button) => button !== data.id)
-                          );
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faEllipsis} size="2x" />
-                  </button>
+                  {LoginUserData?.username === data.user?.username && (
+                    <button
+                      className={styles.dropDownBtn}
+                      value={data.id}
+                      onClick={() => {
+                        !feedOption.includes(data.id)
+                          ? setFeedOption((select) => [...select, data.id])
+                          : setFeedOption(
+                              feedOption.filter((button) => button !== data.id)
+                            );
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faEllipsis} size="2x" />
+                    </button>
+                  )}
                   <ul
                     className={
                       feedOption.includes(data.id)
@@ -134,7 +135,7 @@ function Feed() {
                         className={styles.menuList}
                         key={menu}
                         value={data.id}
-                        onClick={dropDownMenuEvent}
+                        onClick={(e) => dropDownMenuEvent(e, data)}
                       >
                         {menu}
                       </li>

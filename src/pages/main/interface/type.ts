@@ -36,6 +36,7 @@ interface Comment {
 export interface DefaultFeedData {
   id: number;
   user: User;
+  title: string;
   group: {
     pk: number;
     name: string;

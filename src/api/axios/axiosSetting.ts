@@ -42,6 +42,7 @@ export const getFeedDetail = async (feedId: number) =>
     return res.data;
   });
 
+/**comment */
 export const getComment = async (feedId: number) =>
   await instance.get(`/feeds/${feedId}/comment/`).then((res) => res.data);
 
@@ -50,6 +51,9 @@ export const postComment = async (feedId: number, commentData: object) =>
     .post(`/feeds/${feedId}/comment/`, commentData)
     .then((res) => res.data);
 
+export const postCommentLike = async (commentId: number) =>
+  await instance.post(`likes/commentlike/${commentId}`).then((res) => res.data);
+
 export const postRecomment = async (
   feedId: number,
   commentId: number,
@@ -57,6 +61,11 @@ export const postRecomment = async (
 ) =>
   await instance
     .post(`/feeds/${feedId}/comment/${commentId}/recomment/`, description)
+    .then((res) => res.data);
+
+export const postRecommentLike = async (recommentId: number) =>
+  await instance
+    .post(`likes/recommentlike/${recommentId}`)
     .then((res) => res.data);
 
 /**Feed 올리기 */
@@ -89,7 +98,7 @@ export const postFeed = async (postData: any) =>
 
 /**Feed 수정하기 */
 export const updateFeed = async (feedId: number, updateData: any) =>
-  await instance.put(`/feeds/${feedId}`, updateData).then((res) => res.data);
+  await instance.put(`/feeds/${feedId}/`, updateData).then((res) => res.data);
 
 /**Feed 삭제하기 */
 export const deleteFeed = async (feedId: number) =>
@@ -130,9 +139,9 @@ export const postCategory = async (name: string, groupPk: number) =>
   });
 
 export const deleteCategory = async (groupPk: number, id: number) =>
-  await instance.delete(`/categories/${groupPk}/${id}`).then((res) => {
-    return res.data;
-  });
+  await instance
+    .delete(`/categories/${groupPk}/${id}/`)
+    .then((res) => res.data);
 
 export const updateCategory = async (
   groupPk: number,
