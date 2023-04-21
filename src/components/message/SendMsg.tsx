@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {
   Button,
-  Flex,
-  Text,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -12,19 +10,16 @@ import {
   ModalBody,
   Textarea,
   FormControl,
-  Box,
-  HStack,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { postLetters } from "api/axios/axiosSetting";
 
-const SendChat = () => {
+const SendMsg = (props: any) => {
   const sendLetter = useMutation(["postLetters"], postLetters);
 
   //쪽지 모달 폼 관리
   const { register, handleSubmit } = useForm();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // 쪽지 전송 기능
   const onSubmit = async (data: any) => {
@@ -33,12 +28,12 @@ const SendChat = () => {
     } else {
       console.log(sendContent);
       sendLetter.mutate({ ...sendContent });
-      onClose();
+      props.onClose();
     }
   };
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={props.isOpen} onClose={props.onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>쪽지</ModalHeader>
@@ -53,7 +48,7 @@ const SendChat = () => {
               <Button type="submit" colorScheme="blue" mr={3}>
                 Send
               </Button>
-              <Button color="black" onClick={onClose}>
+              <Button color="black" onClick={props.onClose}>
                 Close
               </Button>
             </ModalFooter>
@@ -64,4 +59,4 @@ const SendChat = () => {
   );
 };
 
-export default SendChat;
+export default SendMsg;

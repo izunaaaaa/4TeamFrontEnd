@@ -106,25 +106,25 @@ export const deleteFeed = async (feedId: number) =>
 
 //쪽지 목록 조회
 export const getLetterlists = async () => {
-  const res = await instance.get(`chattings/me/`);
+  const res = await instance.get(`letterlist/me/`);
   return res.data;
 };
 
 // 쪽지 보내기
 export const postLetters = async (data: string) =>
-  await instance.post(`/chattings/message/`, data).then((res) => res.data);
+  await instance.post(`/letterlist/message/`, data).then((res) => res.data);
 
 // 쪽지 삭제
 export const deleteLetters = async (id: number) =>
-  await instance.delete(`/chattings/message/${id}`).then((res) => res.data);
+  await instance.delete(`/letterlist/message/${id}`).then((res) => res.data);
 
 //쪽지 조회
 export const getLetters = async (id: number) =>
-  await instance.get(`/chattings/message/${id}`).then((res) => res.data);
+  await instance.get(`/letterlist/message/${id}`).then((res) => res.data);
 
 // 쪽지 목록 지우기
 export const deleteLetterList = async (id: number) =>
-  await instance.delete(`/chattings/${id}`).then((res) => res.data);
+  await instance.delete(`/letterlist/${id}`).then((res) => res.data);
 
 // Category
 

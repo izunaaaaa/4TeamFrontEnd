@@ -41,27 +41,6 @@ function Mailbox() {
         text: "hello",
       },
     },
-    {
-      user: {
-        username: "xxx",
-        name: "xx",
-        email: "def@gmail.com",
-        avatar: "",
-        is_coach: false,
-      },
-      created_at: "2023-04-21",
-      messages: {
-        sender: {
-          username: "ddd",
-          name: "dd",
-          email: "abc@gmail.com",
-          avatar: "",
-          is_coach: false,
-        },
-        room: 1,
-        text: "me too",
-      },
-    },
   ];
 
   // 브라우저 화면 크기 설정하는 chakra 내장함수

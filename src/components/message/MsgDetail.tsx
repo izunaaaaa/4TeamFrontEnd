@@ -7,6 +7,9 @@ import {
   HStack,
   useDisclosure,
   Button,
+  Badge,
+  Flex,
+  VStack,
 } from "@chakra-ui/react";
 import {
   Modal,
@@ -33,14 +36,15 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <>
+    <Flex>
       {/* 쪽지 내역 */}
       <Box
+        mt={10}
         padding="6"
         boxShadow="xl"
-        mb="5"
         bgColor={user ? "#F7FE2E" : "white"}
-        w={"50vmin"}
+        w={"20vw"}
+        h={"25vh"}
         cursor={"pointer"}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -72,7 +76,7 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
           <ModalBody>내용</ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button colorScheme="red" mr={3}>
               Delete
             </Button>
             <Button variant="ghost" onClick={onClose}>
@@ -81,7 +85,7 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </Flex>
   );
 };
 
