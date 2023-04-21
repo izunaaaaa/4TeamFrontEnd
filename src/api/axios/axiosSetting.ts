@@ -19,6 +19,9 @@ export const getGroup = async () =>
     return res.data;
   });
 
+export const postAccessList = async (accessData: any) =>
+  await instance.post(`/access/`, accessData).then((res) => res.data);
+
 export const login = async (data: LoginData) =>
   await instance.post(`/users/login/`, data).then((res) => {
     return res.data;
@@ -34,8 +37,10 @@ export const getFeeds = async (url: string) =>
     return res.data;
   });
 
-export const postFeedLike = async (feedId: object) =>
-  await instance.post(`/users/me/feedlike/`, feedId).then((res) => res.data);
+export const postFeedLike = async (feedId: any) =>
+  await instance
+    .post(`/likes/feedlike/${feedId?.id}`, feedId)
+    .then((res) => res.data);
 
 export const getFeedDetail = async (feedId: number) =>
   await instance.get(`/feeds/${feedId}/`).then((res) => {
@@ -51,9 +56,13 @@ export const postComment = async (feedId: number, commentData: object) =>
     .post(`/feeds/${feedId}/comment/`, commentData)
     .then((res) => res.data);
 
+export const deleteComment = async (commentId: number) =>
+  await instance.delete(`/comments/${commentId}`);
+
 export const postCommentLike = async (commentId: number) =>
   await instance.post(`likes/commentlike/${commentId}`).then((res) => res.data);
 
+/**recomment */
 export const postRecomment = async (
   feedId: number,
   commentId: number,
@@ -62,6 +71,8 @@ export const postRecomment = async (
   await instance
     .post(`/feeds/${feedId}/comment/${commentId}/recomment/`, description)
     .then((res) => res.data);
+
+// export const deleteRecomment = async(comment)s
 
 export const postRecommentLike = async (recommentId: number) =>
   await instance
@@ -125,6 +136,10 @@ export const getLetters = async (id: number) =>
 // 쪽지 목록 지우기
 export const deleteLetterList = async (id: number) =>
   await instance.delete(`/letterlist/${id}`).then((res) => res.data);
+
+/**MyPage  */
+export const getMyFeed = async (url: string) =>
+  await instance.get(url).then((res) => res.data);
 
 // Category
 

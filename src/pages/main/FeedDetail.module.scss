@@ -45,3 +45,24 @@
     resize: none;
   }
 }
+
+.menu {
+  z-index: 100;
+  list-style: none;
+  position: absolute;
+  background-color: aliceblue;
+  border-radius: 20px;
+  width: 200px;
+  right: 10px;
+}
+.disable {
+  display: none;
+}
+.menuList {
+  padding: 10px 8px;
+  &:hover {
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+  }
+}

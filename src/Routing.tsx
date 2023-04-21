@@ -6,7 +6,7 @@ import UploadFeed from "./components/form/feed/UploadFeed";
 import MsgRoom from "./pages/sendletters/MsgRoom";
 import Mailbox from "./pages/sendletters/Mailbox";
 import Layout from "./UI/Layout";
-import Feed from "./pages/main/Feed";
+import Feed from "pages/main/Feed";
 import WrittenPost from "components/mypages/tabMenu/WrittenPost";
 import LikedPost from "components/mypages/tabMenu/LikedPost";
 import MyPage from "pages/mypage/MyPage";
@@ -65,7 +65,7 @@ const Routing = () => {
           }
         >
           {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
-          <Route path="written" element={<WrittenPost />} />
+          <Route path="feedlist" element={<WrittenPost />} />
           <Route path="writtencomment" element={<WrittenComment />} />
           <Route path="likes" element={<LikedPost />} />
           <Route path="profile" element={<Profile />} />
