@@ -1,4 +1,12 @@
-import { Avatar, Box, Button, Flex, HStack, Input } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Input,
+  useToast,
+} from "@chakra-ui/react";
 import {
   faArrowTurnUp,
   faMessage,
@@ -10,8 +18,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./Comment.module.scss";
 import moment from "moment";
 import "moment/locale/ko";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import {
+  deleteComment,
   postCommentLike,
   postRecomment,
   postRecommentLike,
@@ -20,40 +29,55 @@ import useUser from "components/form/User/Hook/useUser";
 import useComment from "./hook/useComment";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Querykey } from "api/react-query/QueryKey";
 
 const Comment = (props) => {
   const feedId = props.feedId;
   const { register, handleSubmit, reset } = useForm();
+  const toast = useToast();
   const { LoginUserData } = useUser();
-  const { feedComment, refetch } = useComment(feedId);
+  const { feedComment, refetch: refetchComment } = useComment(feedId);
 
   const [selectComment, setSelectComment] = useState(null);
 
-  /**댓글 좋아요 */
-  const { mutate: commentLikeHandler } = useMutation(
-    (id) => postCommentLike(id),
+  const queryClient = useQueryClient();
+
+  const successRefetch = {
+    onSuccess: () => {
+      refetchComment();
+    },
+  };
+
+  const successPost = () => {
+    queryClient.invalidateQueries([Querykey.feedData]);
+    queryClient.invalidateQueries([Querykey.feedDetail, feedId]);
+    refetchComment();
+  };
+
+  /**댓글 삭제 */
+  const { mutate: deleteCommentHandler } = useMutation(
+    (id) => deleteComment(id),
     {
       onSuccess: () => {
-        console.log(1);
-        refetch();
+        successPost();
+        toast({ title: "댓글이 삭제되었습니다.", status: "success" });
       },
     }
   );
 
-  /**대댓글 좋아요. */
-  const { mutate: recommentLikeHandler } = useMutation(
-    (id) => postRecommentLike(id),
-    {
-      onSuccess: () => {
-        refetch();
-      },
-    }
+  /**대댓글 삭제 */
+
+  /**댓글 좋아요 */
+  const { mutate: commentLikeHandler } = useMutation(
+    (id) => postCommentLike(id),
+    successRefetch
   );
 
   /**댓글 버튼 이벤트 */
   const btnHandler = async (e, id, commentType) => {
     reset();
     const targetValue = e.target.value;
+
     if (targetValue === "like") {
       if (commentType === "comment") {
         return commentLikeHandler(id);
@@ -61,24 +85,27 @@ const Comment = (props) => {
         return recommentLikeHandler(id);
       }
     }
-
-    if (targetValue === "recomment") {
-      setSelectComment(id);
-    }
-    if (targetValue === "delete") {
-    }
+    if (targetValue === "recomment") return setSelectComment(id);
+    if (targetValue === "delete") return deleteCommentHandler(id);
   };
+
+  /**대댓글 좋아요. */
+  const { mutate: recommentLikeHandler } = useMutation(
+    (id) => postRecommentLike(id),
+    successRefetch
+  );
 
   /**대댓글 달기 */
   const { mutateAsync: postRecommentHandler, isLoading } = useMutation(
     (description) => postRecomment(feedId, selectComment, description),
     {
       onSuccess: () => {
-        refetch();
+        successPost();
       },
     }
   );
 
+  /**대댓글달기 */
   const submitRecommentHandler = async (description) => {
     await postRecommentHandler(description);
     reset();
@@ -119,7 +146,7 @@ const Comment = (props) => {
                     <FontAwesomeIcon icon={faMessage} />
                   </Button>
 
-                  {comment.user.username !== LoginUserData.username ? (
+                  {comment.user.pk !== LoginUserData.id ? (
                     <Button
                       backgroundColor={"transparent"}
                       height="20px"
@@ -216,8 +243,7 @@ const Comment = (props) => {
                           >
                             <FontAwesomeIcon icon={faThumbsUp} />
                           </Button>
-                          {recomment.user.username !==
-                          LoginUserData.username ? (
+                          {recomment.user.pk !== LoginUserData.id ? (
                             <Button
                               backgroundColor={"transparent"}
                               height="20px"

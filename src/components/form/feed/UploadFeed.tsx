@@ -22,6 +22,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CropUploadImg from "./CropUploadImg";
 import useFeedCategory from "./hook/useFeedCategory";
 import styles from "./UploadFeed.module.scss";
+import useUser from "../User/Hook/useUser";
 
 const UploadFeed = () => {
   const { register, handleSubmit } = useForm<PostFeed>();
@@ -30,13 +31,15 @@ const UploadFeed = () => {
   const toast = useToast();
 
   const { state: feedDetail } = useLocation();
+  const { LoginUserData } = useUser();
 
   const [previewImg, setPreviewImg] = useState();
   const [cropImg, setCropImg] = useState("");
 
   /**카테고리 가져오기 */
-  const { feedCategory } = useFeedCategory("oz");
+  const { feedCategory } = useFeedCategory(LoginUserData?.group?.name);
 
+  /**이미지를 담을 url 요청 */
   const { mutateAsync: postUploadUrlHandler } = useMutation(
     async (img: any) => await postUploadUrl(img)
   );
@@ -51,7 +54,7 @@ const UploadFeed = () => {
       });
       navigate("/category/1");
     },
-    onError: (error: any) => {
+    onError: () => {
       toast({
         title: "업로드 실패",
         description: `카테고리와 제목은 필수 입니다.`,
@@ -62,11 +65,13 @@ const UploadFeed = () => {
     },
   };
 
+  /**게시글 post */
   const { mutate: postFeedHandler, isLoading } = useMutation(
     (postData: PostFeed) => postFeed(postData),
     postState
   );
 
+  /**게시글 put */
   const { mutate: updateFeedHandler } = useMutation(
     (updateData: PostFeed) => updateFeed(feedDetail.id, updateData),
     postState
@@ -106,7 +111,7 @@ const UploadFeed = () => {
     return new Blob([ab], { type: mimeString });
   }
 
-  /**제출하기 */
+  /**양식 제출하기 */
   const submitHandler = async (data: PostFeed) => {
     if (feedDetail) {
       const postData: PostFeed = {

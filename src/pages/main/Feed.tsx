@@ -32,6 +32,7 @@ import { postFeedLike } from "api/axios/axiosSetting";
 import { useMutation, useQueryClient } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import useUser from "components/form/User/Hook/useUser";
+import { DefaultFeedData } from "./interface/type";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 
@@ -45,20 +46,20 @@ function Feed() {
     refetch,
   } = useFeed();
   // let { id } = useParams();
-
-  const { LoginUserData } = useUser();
   const navigate = useNavigate();
+  const { LoginUserData } = useUser();
+
   const dropdownRef = useRef(null);
-  const [select, setSelect] = useState([]);
-  const [feedOption, setFeedOption] = useState([]);
+  const [select, setSelect] = useState<number[]>([]);
+  const [feedOption, setFeedOption] = useState<number[]>([]);
 
   /**게시글 보기 모달 */
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(<FeedDetail />);
 
   /**feed 드롭다운 메뉴 이벤트 */
-  const dropDownMenuEvent = (e, data) => {
-    const eventTarget = e.target;
+  const dropDownMenuEvent = (e: React.MouseEvent, data: any) => {
+    const eventTarget = e.target as HTMLInputElement;
     const menuType = eventTarget.innerText;
     if (menuType === "수정하기") return navigate("/upload", { state: data });
     if (menuType === "삭제하기") {
@@ -81,7 +82,7 @@ function Feed() {
   const queryClient = useQueryClient();
 
   const { mutate: likeHandler } = useMutation(
-    (FeedID) => postFeedLike(FeedID),
+    (feedID: object) => postFeedLike(feedID),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(Querykey.feedData);
@@ -93,8 +94,8 @@ function Feed() {
     <>
       <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
         <div className={styles.feeds} ref={dropdownRef}>
-          {feedData.pages?.map((pageData) =>
-            pageData?.results?.map((data) => (
+          {feedData.pages?.map((pageData: any) =>
+            pageData?.results?.map((data: DefaultFeedData) => (
               <div key={data.id} className={styles.feedDiv}>
                 <div className={styles.feedUser}>
                   <Avatar
@@ -108,7 +109,7 @@ function Feed() {
                   </h1>
                 </div>
                 <div className={styles.feedMenu}>
-                  {LoginUserData?.username === data.user?.username && (
+                  {LoginUserData?.id === data.user?.pk && (
                     <button
                       className={styles.dropDownBtn}
                       value={data.id}
@@ -168,10 +169,11 @@ function Feed() {
                         : setSelect(
                             select.filter((button) => button !== data.id)
                           );
-                      const feedDataId = {
-                        feed: data.id,
+
+                      const feedId = {
+                        id: data.id,
                       };
-                      likeHandler(feedDataId);
+                      likeHandler(feedId);
                     }}
                   >
                     {data.like_count}
@@ -184,9 +186,11 @@ function Feed() {
                   >
                     {data.comments_count}
                   </Button>
-                  <Button padding="5px" backgroundColor="transparent">
-                    <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                  </Button>
+                  {LoginUserData?.id !== data.user?.pk && (
+                    <Button padding="5px" backgroundColor="transparent">
+                      <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                    </Button>
+                  )}
                 </div>
 
                 <div
