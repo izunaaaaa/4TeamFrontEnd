@@ -38,10 +38,9 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
       <Box
         padding="6"
         boxShadow="xl"
-        justifyItems={"end"}
         mb="5"
         bgColor={user ? "#F7FE2E" : "white"}
-        width={"50vmin"}
+        w={"50vmin"}
         cursor={"pointer"}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -51,8 +50,7 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
             <FontAwesomeIcon icon={faPaperclip} />
           </HStack>
           <HStack>
-            <Text as="b" color={messages.sender ? "#FF0080" : "#58ACFA"}></Text>
-            <Avatar size="xs"></Avatar>{" "}
+            <Avatar size="xs">{user.avatar}</Avatar>{" "}
           </HStack>
           <HStack>
             {isHovering && (

@@ -26,16 +26,38 @@ import { useParams } from "react-router-dom";
 import { Chattings } from "interface/Interface";
 
 export default function MsgRoom() {
-  const { id } = useParams();
-  console.log("id", id);
+  // const { id } = useParams();
+  // console.log("id", id);
 
-  //api 호출
-  const { data } = useQuery<Chattings[]>(["letters", Number(id)], () =>
-    getLetters(Number(id))
-  );
-  const sendLetter = useMutation(["postLetters", Number(id)], (data: string) =>
-    postLetters(Number(id), data)
-  );
+  // //api 호출
+  // const { data } = useQuery<Chattings[]>(["letters", Number(id)], () =>
+  //   getLetters(Number(id))
+  // );
+
+  const data = [
+    {
+      user: {
+        username: "ddd",
+        name: "dd",
+        email: "abc@gmail.com",
+        avatar: "",
+        is_coach: false,
+      },
+      created_at: "2023-04-21",
+      messages: {
+        sender: {
+          username: "xxx",
+          name: "xx",
+          email: "def@gmail.com",
+          avatar: "",
+          is_coach: false,
+        },
+        room: 1,
+        text: "hello",
+      },
+    },
+  ];
+  const sendLetter = useMutation(["postLetters"], postLetters);
 
   //쪽지 모달 폼 관리
   const { register, handleSubmit } = useForm();
@@ -44,7 +66,7 @@ export default function MsgRoom() {
 
   // 쪽지 전송 기능
   const onSubmit = async (data: any) => {
-    const sendContent = data.description.trim();
+    const sendContent = data.text.trim();
     if (sendContent === "") {
     } else {
       console.log(sendContent);
@@ -55,27 +77,26 @@ export default function MsgRoom() {
 
   return (
     <>
-      <Flex
-        textAlign={"right"}
-        flexDirection="column"
-        justifyContent="flex-end"
-      >
+      <Box>
         {/* 주고받은 쪽지내역 */}
         {data?.map((item: Chattings, idx: any) => {
           return (
-            <Flex key={idx} mt={"5"} maxW={100} justifyContent="flex-end">
+            <Flex
+              key={idx}
+              mr={"10"}
+              flexDir={"column"}
+              alignItems={"flex-end"}
+            >
               <MsgDetail {...item} />
             </Flex>
           );
         })}
-      </Flex>
-
-      <HStack onClick={onOpen} cursor="pointer" margin="2rem">
-        <FontAwesomeIcon icon={faPaperPlane} size="xl" />
-      </HStack>
-
+        <HStack onClick={onOpen} cursor="pointer" margin="2rem">
+          <FontAwesomeIcon icon={faPaperPlane} size="xl" />
+        </HStack>
+      </Box>
       {/* 모달 */}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      {/* <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>쪽지</ModalHeader>
@@ -83,7 +104,7 @@ export default function MsgRoom() {
             <ModalBody>
               <Textarea
                 placeholder="보내실 내용을 입력해주세요"
-                {...register("description")}
+                {...register("text")}
               />
             </ModalBody>
             <ModalFooter>
@@ -96,7 +117,7 @@ export default function MsgRoom() {
             </ModalFooter>
           </FormControl>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
