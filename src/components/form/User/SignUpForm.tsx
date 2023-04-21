@@ -188,11 +188,6 @@ const SignUpForm = () => {
                   value: 10,
                   message: "20자까지 입력 가능합니다.",
                 },
-                pattern: {
-                  value: /^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/,
-                  message:
-                    "한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)",
-                },
               })}
             />
             {errors.name && <p>{errors.name.message}</p>}

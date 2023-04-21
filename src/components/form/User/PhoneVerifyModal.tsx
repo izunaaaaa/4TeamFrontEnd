@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Flex,
@@ -22,7 +22,9 @@ const PhoneVerifyModal = (props: any) => {
   const phoneRef = useRef<any>();
   const verifyCode = useRef<any>();
 
-  props.getPhoneNumber(number);
+  useEffect(() => {
+    props.getPhoneNumber(number);
+  }, [number, props]);
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
@@ -42,7 +44,6 @@ const PhoneVerifyModal = (props: any) => {
             />
             <Button
               onClick={() => {
-                console.log(phoneRef);
                 send_message(phoneRef.current);
               }}
             >

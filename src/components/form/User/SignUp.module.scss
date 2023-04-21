@@ -13,6 +13,11 @@
     align-items: center;
     justify-content: center;
   }
+  .bootCampinput {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+  }
   .signUpImg {
     width: 200px;
     margin: auto;
