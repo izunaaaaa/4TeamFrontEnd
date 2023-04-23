@@ -6,7 +6,6 @@ import {
   faUser,
 } from "@fortawesome/free-regular-svg-icons";
 import TabMenuItem from "../../components/mypages/tabMenu/TabMenuItem";
-import useMyFeed from "components/mypages/Hook/useMyFeed";
 import {
   Center,
   Flex,
@@ -17,8 +16,11 @@ import {
   useDisclosure,
   Modal,
   ModalBody,
+  Box,
+  AspectRatio,
 } from "@chakra-ui/react";
 import FeedDetail from "pages/main/FeedDetail";
+import useMyFeed from "components/mypages/Hook/useMyFeed";
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("feedlist");
@@ -70,7 +72,7 @@ export default function MyPage() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Center flexDirection="column" margin="100px 0 20px 150px">
+      <Center flexDirection="column" margin="150px 0 20px 0">
         <HStack listStyleType="none" display="flex" spacing="10">
           <TabMenuItem
             icon={faPenToSquare}
@@ -84,7 +86,7 @@ export default function MyPage() {
             icon={faMessage}
             size="lg"
             text="작성 댓글"
-            tabName="writtencomment"
+            tabName="commentlist"
             activeTab={activeTab}
             onClick={handleTab}
           />
@@ -92,7 +94,7 @@ export default function MyPage() {
             icon={faThumbsUp}
             size="lg"
             text="좋아요한 글"
-            tabName="likes"
+            tabName="feedlike"
             activeTab={activeTab}
             onClick={handleTab}
           />
@@ -105,21 +107,16 @@ export default function MyPage() {
             onClick={handleTab}
           />
         </HStack>
-        <Flex
-          border="1px solid black "
-          width="80%"
-          flexWrap="wrap"
-          justifyContent="center"
-        >
+        <Flex border="1px solid black " width="80%" flexWrap="wrap">
           {data?.pages?.map((feedData: any) =>
             feedData.results?.map((data: any) => (
-              <Flex
-                key={data.id}
-                width="30%"
-                height="300px"
+              <AspectRatio
+                key={data.id ? data.id : data.pk}
+                width="33%"
                 padding="5px"
                 justifyContent="center"
                 alignItems="center"
+                ratio={9 / 10}
                 onClick={() => {
                   setFeedData(data);
                   onOpen();
@@ -135,7 +132,7 @@ export default function MyPage() {
                 ) : (
                   <p>{data.title}</p>
                 )}
-              </Flex>
+              </AspectRatio>
             ))
           )}
         </Flex>

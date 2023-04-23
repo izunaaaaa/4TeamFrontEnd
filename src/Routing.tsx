@@ -48,6 +48,7 @@ const Routing = () => {
               <Route path={":chatId/"} element={<MsgRoom />} />
             </Route>
 
+
             {/* 내정보 */}
             <Route
               path="/mypage"
@@ -58,10 +59,10 @@ const Routing = () => {
               }
             >
               {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
-              <Route path="feedlist" element={<WrittenPost />} />
-              <Route path="writtencomment" element={<WrittenComment />} />
-              <Route path="likes" element={<LikedPost />} />
-              <Route path="profile" element={<Profile />} />
+                <Route path="feedlist" element={<WrittenPost />} />
+          <Route path="commentlist" element={<WrittenComment />} />
+          <Route path="feedlike" element={<LikedPost />} />
+          <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="/upload" element={<UploadFeed />} />
           </>
@@ -75,6 +76,7 @@ const Routing = () => {
             </Route>
           </>
         )}
+
       </Routes>
     </BrowserRouter>
   );
