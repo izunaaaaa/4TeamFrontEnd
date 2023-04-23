@@ -6,29 +6,16 @@ import useClickOutside from "./useClickOutside";
 import Sidebar from "UI/sidebar/Sidebar";
 import DropDown from "./DropDown";
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 function Header(): ReactElement {
   const [mediaWidth, setMediaWidth] = useState<number>(window.innerWidth);
   const [sidebar, setSidebar] = useState<boolean>(false);
-  const [dropDown, setDropDown] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
-
-  // 연관 검색어와 관련된 state
-  const [searchText, setSearchText] = useState<string>("");
-  const [relatedTags, setRelatedTags] = useState<string[]>([]);
-
-  const toggleDropdown = () => {
-    setDropDown(!dropDown);
-  };
 
   const handleSidebarToggle = () => {
     setSidebar(!sidebar);
   };
-
-  useClickOutside(dropdownRef, () => {
-    setDropDown(false);
-  });
 
   useClickOutside(sidebarRef, () => {
     setSidebar(false);
@@ -52,24 +39,14 @@ function Header(): ReactElement {
       {mediaWidth > 768 ? (
         <>
           <div className={styles.nav_bar}>
-            <h1>CurB</h1>
+            <Link to={"/category/133"}>
+              <h1>CurB</h1>
+            </Link>
             <div className={styles.rightWrapper}>
               <div className={styles.searchWrapper}>
                 <SearchBar />
               </div>
-              <div className={styles.fofile_box} ref={dropdownRef}>
-                <div className={styles.myFrofile} onClick={toggleDropdown}>
-                  <img
-                    src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"
-                    alt="fofile"
-                  ></img>
-                </div>
-                {dropDown && (
-                  <div className={styles.dropList}>
-                    <DropDown />
-                  </div>
-                )}
-              </div>
+              <DropDown />
             </div>
           </div>
           <Sidebar sidebar={true} setSidebar={setSidebar} />
@@ -90,16 +67,7 @@ function Header(): ReactElement {
               <div className={styles.searchWrapper}>
                 <SearchBar />
               </div>
-              <div className={styles.fofile_box} ref={dropdownRef}>
-                <div className={styles.myFrofile} onClick={toggleDropdown}>
-                  <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"></img>
-                </div>
-                {dropDown && (
-                  <div className={styles.dropList}>
-                    <DropDown />
-                  </div>
-                )}
-              </div>
+              <DropDown />
             </div>
           </div>
         </>

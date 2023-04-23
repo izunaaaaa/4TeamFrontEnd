@@ -17,7 +17,6 @@ function Mailbox() {
     "Letterlists",
     getLetterlists
   );
-
   const [isHovering, setIsHovering] = useState(false);
 
   // 브라우저 화면 크기 설정하는 chakra 내장함수
@@ -27,63 +26,30 @@ function Mailbox() {
   //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
   return (
     <Flex mt={"5rem"} minH={"100vmax"}>
-      {isMobile ? (
-        <Box
-          minW="400px"
-          maxW={"100vmax"}
-          border={"1px solid lightgray"}
-          bg={"lightgray"}
-        >
-          {data?.length ? (
-            data?.map((item: ChatList, idx: number) => {
-              return (
-                <Box
-                  key={idx}
-                  bg={"#FAFAFA"}
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
-                  _hover={{ bg: "#848484", cursor: "pointer" }}
-                >
-                  <MsgList {...item} />
-                </Box>
-              );
-            })
-          ) : (
-            <div>
-              <LetterSkeleton />
-              <LetterSkeleton />
-            </div>
-          )}
-        </Box>
-      ) : (
-        <Box
-          minW="400px"
-          border={"1px solid lightgray"}
-          bg={"lightgray"}
-          ml={"14rem"}
-        >
-          {data?.length ? (
-            data?.map((item: ChatList, idx: number) => {
-              return (
-                <Box
-                  key={idx}
-                  bg={"#FAFAFA"}
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
-                  _hover={{ bg: "#848484", cursor: "pointer" }}
-                >
-                  <MsgList {...item} />
-                </Box>
-              );
-            })
-          ) : (
-            <div>
-              <LetterSkeleton />
-              <LetterSkeleton />
-            </div>
-          )}
-        </Box>
-      )}
+      <Box minW="500px" border={"1px solid lightgray"} bg={"lightgray"}>
+        {data?.length ? (
+          data?.map((item: ChatList, idx: number) => {
+            return (
+              <Box
+                key={idx}
+                bg={"#FAFAFA"}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+                _hover={{ bg: "#848484", cursor: "pointer" }}
+                ml={isMobile ? 0 : "15.5rem"}
+                minW="400px"
+              >
+                <MsgList {...item} />
+              </Box>
+            );
+          })
+        ) : (
+          <div>
+            <LetterSkeleton />
+            <LetterSkeleton />
+          </div>
+        )}
+      </Box>
       <Outlet />
     </Flex>
   );

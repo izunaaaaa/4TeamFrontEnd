@@ -23,18 +23,36 @@
   }
 }
 .autoSearchData {
-  padding: 10px 8px;
+  padding: 0px 8px;
   width: 100%;
+  height: 50px;
   font-size: 14px;
   font-weight: bold;
   z-index: 4;
   letter-spacing: 2px;
+  position: relative;
+  display: flex;
+
   &:hover {
     background-color: #edf5f5;
     cursor: pointer;
   }
-  position: relative;
+
+  span {
+    width: 100%;
+    height: 100%;
+    //border: 1px solid black;
+    display: flex;
+    align-items: center;
+  }
+
+  a {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+  }
 }
+
 @media (max-width: 768px) {
   .autoSearchContainer {
     z-index: 3;

@@ -6,7 +6,7 @@ import UploadFeed from "./components/form/feed/UploadFeed";
 import MsgRoom from "./pages/sendletters/MsgRoom";
 import Mailbox from "./pages/sendletters/Mailbox";
 import Layout from "./UI/Layout";
-import Feed from "pages/main/Feed";
+import Feed from "./pages/main/Feed";
 import WrittenPost from "components/mypages/tabMenu/WrittenPost";
 import LikedPost from "components/mypages/tabMenu/LikedPost";
 import MyPage from "pages/mypage/MyPage";
@@ -17,59 +17,64 @@ import SignUpForm from "components/form/User/SignUpForm";
 import SignUpMain from "pages/SignUp/SignUpMain";
 import SignUpFormManager from "components/form/User/SignUpFormManager";
 import Landing from "UI/landing/Landing";
+import useUser from "components/form/User/Hook/useUser";
 
 const Routing = () => {
+  const { LoginUserData } = useUser();
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/main" element={<Main />} />
-        <Route path="/message" element={<MsgRoom />} />
-        <Route
-          path="/chattings/"
-          element={
-            <Layout>
-              <Mailbox />
-            </Layout>
-          }
-        >
-          <Route path="me" element={<MsgRoom />} />
-        </Route>
+        <Route path="/" element={<Landing />} />
+        {LoginUserData ? (
+          <>
+            <Route path="/main" element={<Main />} />
+            <Route
+              path="/category/:id"
+              element={
+                <Layout>
+                  <Feed />
+                </Layout>
+              }
+            />
+            <Route
+              path="/letterlist/"
+              element={
+                <Layout>
+                  <Mailbox />
+                </Layout>
+              }
+            >
+              <Route path={":chatId/"} element={<MsgRoom />} />
+            </Route>
 
-        <Route
-          path="/category/:id"
-          element={
-            <Layout>
-              <Feed />
-            </Layout>
-          }
-        />
-
-        <Route path="/curb" element={<Landing />} />
-        <Route path="/signup/" element={<SignUp />}>
-          <Route path="main" element={<SignUpMain />} />
-          <Route path="student" element={<SignUpForm />} />
-          <Route path="manager" element={<SignUpFormManager />} />
-        </Route>
-
-        <Route path="/upload" element={<UploadFeed />} />
-
-        {/* 내정보 */}
-
-        <Route
-          path="/mypage"
-          element={
-            <Layout>
-              <MyPage />
-            </Layout>
-          }
-        >
-          {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
-          <Route path="feedlist" element={<WrittenPost />} />
-          <Route path="writtencomment" element={<WrittenComment />} />
-          <Route path="likes" element={<LikedPost />} />
-          <Route path="profile" element={<Profile />} />
-        </Route>
+            {/* 내정보 */}
+            <Route
+              path="/mypage"
+              element={
+                <Layout>
+                  <MyPage />
+                </Layout>
+              }
+            >
+              {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
+              <Route path="feedlist" element={<WrittenPost />} />
+              <Route path="writtencomment" element={<WrittenComment />} />
+              <Route path="likes" element={<LikedPost />} />
+              <Route path="profile" element={<Profile />} />
+            </Route>
+            <Route path="/upload" element={<UploadFeed />} />
+          </>
+        ) : (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup/" element={<SignUp />}>
+              <Route path="main" element={<SignUpMain />} />
+              <Route path="student" element={<SignUpForm />} />
+              <Route path="manager" element={<SignUpFormManager />} />
+            </Route>
+          </>
+        )}
       </Routes>
     </BrowserRouter>
   );

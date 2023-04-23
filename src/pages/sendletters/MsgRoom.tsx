@@ -29,9 +29,18 @@ import TimeStepper from "components/message/TimeStepper";
 import { ChatId } from "interface/Interface";
 
 export default function MsgRoom() {
-  const chatId = 9;
-  const { data } = useQuery<ChatId[]>(["letters", chatId], () =>
-    getLetters(chatId)
+  const { chatId: chatIdString } = useParams<{ chatId: string }>();
+  const chatId = chatIdString ? parseInt(chatIdString) : undefined;
+
+  const { data } = useQuery<ChatId[]>(
+    ["letters", chatId],
+    () => {
+      if (chatId === undefined) {
+        throw new Error("Invalid chatId");
+      }
+      return getLetters(chatId);
+    },
+    { enabled: chatId !== undefined }
   );
 
   // chakra ui의 모달 컨트롤 훅
@@ -41,7 +50,7 @@ export default function MsgRoom() {
 
   return (
     <>
-      <Box bgColor={"#F5F6CE"} w="100vmax" h="100vmax">
+      <Box bgColor={"#F5F6CE"} w="60vw" h="100vmax">
         {/* 주고받은 쪽지내역 */}
         {data?.map((item: ChatId, idx: number) => {
           const nextData = idx < data.length - 1;

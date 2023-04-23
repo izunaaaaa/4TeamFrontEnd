@@ -56,6 +56,7 @@ export interface Sender {
 }
 
 export interface ChatList {
+  pk: number;
   receiver: string;
   created_at: string;
 }
