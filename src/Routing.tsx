@@ -30,7 +30,7 @@ const Routing = () => {
           <>
             <Route path="/main" element={<Main />} />
             <Route
-              path="/category/:id"
+              path="/:pk/category/:id"
               element={
                 <Layout>
                   <Feed />
