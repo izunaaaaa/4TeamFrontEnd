@@ -19,7 +19,6 @@ import SignUpFormManager from "components/form/User/SignUpFormManager";
 import Landing from "UI/landing/Landing";
 import useUser from "components/form/User/Hook/useUser";
 
-
 const Routing = () => {
   const { LoginUserData } = useUser();
 
@@ -39,22 +38,14 @@ const Routing = () => {
               }
             />
             <Route
-              path="/chattings/"
+              path="/letterlist/"
               element={
                 <Layout>
                   <Mailbox />
                 </Layout>
               }
             >
-              <Route
-                path={":id/"}
-                element={
-                  <Layout>
-                    <Mailbox />
-                    <MsgRoom />
-                  </Layout>
-                }
-              />
+              <Route path={":chatId/"} element={<MsgRoom />} />
             </Route>
 
             {/* 내정보 */}
