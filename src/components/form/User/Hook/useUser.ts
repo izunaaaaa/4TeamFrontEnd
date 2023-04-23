@@ -7,7 +7,8 @@ interface GetUseUser {
   LoginUserData: UserData;
 }
 const useUser = (): GetUseUser => {
-  const { data: LoginUserData } = useQuery(Querykey.userData, () =>
+  const fallback: [] = [];
+  const { data: LoginUserData = fallback } = useQuery(Querykey.userData, () =>
     getUserData()
   );
 
