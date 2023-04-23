@@ -1,5 +1,6 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
+import { NCP_accessKey, NCP_secretKey, NCP_serviceID } from "env";
 
 const Cache = require("memory-cache");
 
@@ -9,15 +10,14 @@ export function send_message(phone) {
   const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
   Cache.put(phone, verifyCode.toString());
   var resultCode = 404;
-
   const date = Date.now().toString();
-  const uri = process.env.NCP_serviceID;
-  const secretKey = process.env.NCP_secretKey;
-  const accessKey = process.env.NCP_accessKey;
+  const uri = process.env.NCP_serviceID || NCP_serviceID;
+  const secretKey = process.env.NCP_secretKey || NCP_secretKey;
+  const accessKey = process.env.NCP_accessKey || NCP_accessKey;
   const method = "POST";
   const space = " ";
   const newLine = "\n";
-  const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
+  // const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
   const url2 = `/sms/v2/services/${uri}/messages`;
 
   const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);

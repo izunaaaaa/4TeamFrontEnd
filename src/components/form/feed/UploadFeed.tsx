@@ -1,67 +1,83 @@
 import {
+  Center,
   Flex,
   Input,
   Modal,
   ModalContent,
   ModalOverlay,
   Select,
+  Spinner,
   Textarea,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { postFeed, postUploadUrl } from "api/axios/axiosSetting";
+import { postFeed, postUploadUrl, updateFeed } from "api/axios/axiosSetting";
 import { PostFeed } from "../User/interface/type";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CropUploadImg from "./CropUploadImg";
 import useFeedCategory from "./hook/useFeedCategory";
 import styles from "./UploadFeed.module.scss";
+import useUser from "../User/Hook/useUser";
 
 const UploadFeed = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<PostFeed>();
-
+  const { register, handleSubmit } = useForm<PostFeed>();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
   const toast = useToast();
+
+  const { state: feedDetail } = useLocation();
+  const { LoginUserData } = useUser();
+
   const [previewImg, setPreviewImg] = useState();
   const [cropImg, setCropImg] = useState("");
-  const navigate = useNavigate();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  /**카테고리 가져오기 */
+  const { feedCategory } = useFeedCategory(LoginUserData?.group?.name);
 
-  const { feedCategory } = useFeedCategory("oz");
-
+  /**이미지를 담을 url 요청 */
   const { mutateAsync: postUploadUrlHandler } = useMutation(
     async (img: any) => await postUploadUrl(img)
   );
 
+  const postState = {
+    onSuccess: () => {
+      toast({
+        title: "게시글을 업로드했습니다.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate("/category/1");
+    },
+    onError: () => {
+      toast({
+        title: "업로드 실패",
+        description: `카테고리와 제목은 필수 입니다.`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+  };
+
+  /**게시글 post */
   const { mutate: postFeedHandler, isLoading } = useMutation(
     (postData: PostFeed) => postFeed(postData),
-    {
-      onSuccess: () => {
-        toast({
-          title: "게시글을 업로드했습니다.",
-        });
-      },
-      onError: (error: any) => {
-        toast({
-          title: "업로드 실패",
-          description: `카테고리와 제목은 필수 입니다.`,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      },
-    }
+    postState
   );
 
-  /**썸네일 보기 */
+  /**게시글 put */
+  const { mutate: updateFeedHandler } = useMutation(
+    (updateData: PostFeed) => updateFeed(feedDetail.id, updateData),
+    postState
+  );
+
+  /**업로드 이미지 크롭 모달창으로 보내기*/
   const changeImg = async (e: React.ChangeEvent) => {
     const reader: any = new FileReader();
 
@@ -78,6 +94,11 @@ const UploadFeed = () => {
     onOpen();
   };
 
+  /**크롭한 이미지 미리보기 */
+  const getCroppedImg = (img: string) => {
+    setCropImg(img);
+  };
+
   /**이미지url을 blob으로 변환 */
   function dataURLToBlob(dataURL: any): Blob {
     const byteString = atob(dataURL.split(",")[1]);
@@ -90,28 +111,31 @@ const UploadFeed = () => {
     return new Blob([ab], { type: mimeString });
   }
 
-  /**제출하기 */
+  /**양식 제출하기 */
   const submitHandler = async (data: PostFeed) => {
+    if (feedDetail) {
+      const postData: PostFeed = {
+        title: data.title,
+        category: data.category,
+        ...(data.description && { description: data.description }),
+        ...(feedDetail.thumbnail && { image: feedDetail.thumbnail }),
+      };
+      return updateFeedHandler(postData);
+    }
+
     let resUrl = "";
     if (cropImg) {
       const blob = dataURLToBlob(cropImg);
       const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
       resUrl = await postUploadUrlHandler(file);
     }
-
     const postData: PostFeed = {
       title: data.title,
       category: data.category,
       ...(data.description && { description: data.description }),
       ...(resUrl && { image: resUrl }),
     };
-    console.log(postData);
     postFeedHandler(postData);
-  };
-
-  /**이미지 크롭하기 */
-  const getCroppedImg = (img: string) => {
-    setCropImg(img);
   };
 
   return (
@@ -126,6 +150,21 @@ const UploadFeed = () => {
           />
         </ModalContent>
       </Modal>
+      {isLoading && (
+        <Center
+          zIndex="1000"
+          position="absolute"
+          top="50%"
+          left="50%"
+          height="50%"
+          marginLeft="-50px"
+          marginTop="-50px"
+          display="flex"
+          flexDirection="column"
+        >
+          <Spinner size="xl" thickness="3px" color="blue.500" />
+        </Center>
+      )}
 
       <Flex justifyContent="center" margin="20px">
         <form
@@ -136,13 +175,23 @@ const UploadFeed = () => {
             <button onClick={() => navigate("/home")}>
               <FontAwesomeIcon icon={faArrowLeft} />
             </button>
-            <h3>새 게시물 작성하기</h3>
+            {feedDetail ? (
+              <h3>게시물 수정하기</h3>
+            ) : (
+              <h3>새 게시물 작성하기</h3>
+            )}
             <button onSubmit={handleSubmit(submitHandler)}>업로드하기</button>
           </div>
 
           <div className={styles.postFormMain}>
             <div className={styles.fileForm}>
-              {!cropImg ? (
+              {feedDetail?.thumbnail ? (
+                <img
+                  alt=" "
+                  className={styles.previewImg}
+                  src={feedDetail.thumbnail}
+                />
+              ) : !cropImg ? (
                 <>
                   <input
                     type="file"
@@ -167,12 +216,7 @@ const UploadFeed = () => {
               <Select
                 placeholder="카테고리를 입력해주세요"
                 size="sm"
-                {...register("category", {
-                  // required: {
-                  //   value: true,
-                  //   message: "필수 정보입니다.",
-                  // },
-                })}
+                {...register("category", {})}
               >
                 {feedCategory.map((category: any) => {
                   return (
@@ -182,18 +226,13 @@ const UploadFeed = () => {
                   );
                 })}
               </Select>
-              {errors?.category && <p>{errors.category?.message}</p>}
-
               <Input
                 placeholder="제목을 입력하세요."
                 marginTop="10px"
                 type="text"
-                {...register("title", {
-                  // required: "Title is required",
-                })}
+                defaultValue={feedDetail ? feedDetail.title : null}
+                {...register("title", {})}
               />
-              {errors?.title && <p>{errors?.title?.message}</p>}
-
               <Textarea
                 marginTop="10px"
                 placeholder="내용을 입력해주세요..."

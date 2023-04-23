@@ -22,7 +22,7 @@ import { faFile, faPhone } from "@fortawesome/free-solid-svg-icons";
 import * as XLSX from "xlsx";
 import { useCallback, useRef, useState } from "react";
 import { useMutation } from "react-query";
-import { signUp } from "api/axios/axiosSetting";
+import { postAccessList, signUp } from "api/axios/axiosSetting";
 import useSignUpGroup from "./Hook/useSignUpGroup";
 import PhoneVerifyModal from "./PhoneVerifyModal";
 
@@ -37,6 +37,13 @@ const SignUpFormManager = () => {
   const toast = useToast();
   const { group } = useSignUpGroup();
 
+  const groupNameRef = useRef<string | null>(null);
+  const [newgroup, setNewGroup] = useState<string | null>(null);
+
+  const bootCampHandler = () => {
+    setNewGroup(groupNameRef.current);
+  };
+
   /**폰넘버 */
   const [phoneNumber, setPhoneNumber] = useState("");
   const getPhoneNumber = (data: string) => {
@@ -46,7 +53,13 @@ const SignUpFormManager = () => {
   /**링크 네비게이트 */
   const navigate = useNavigate();
 
-  const { mutate: signUpHandler } = useMutation(
+  /**유저 accesslist 제출 */
+  const { mutateAsync: postAccessListHandler } = useMutation(
+    (accessData: any) => postAccessList(accessData)
+  );
+
+  /**회원가입 요청 */
+  const { mutateAsync: signUpHandler } = useMutation(
     (signUpData: any) => signUp(signUpData),
     {
       onError: (error: any) => {
@@ -63,7 +76,12 @@ const SignUpFormManager = () => {
   );
 
   /**회원가입 form 제출시 */
-  const onSubmit = (data: SignUpData) => {
+  const onSubmit = async (data: SignUpData) => {
+    const accessData = {
+      group: data.group,
+      members: fileDataRef.current,
+    };
+
     const newSignUpData = {
       username: data.username,
       name: data.name,
@@ -71,9 +89,8 @@ const SignUpFormManager = () => {
       phone_number: phoneNumber,
       email: data.email,
       gender: data.gender,
-      group: 1,
+      group: data.group,
       is_coach: true,
-      groupFile: fileDataRef.current,
     };
 
     if (!phoneNumber)
@@ -85,7 +102,8 @@ const SignUpFormManager = () => {
         isClosable: true,
       });
 
-    signUpHandler(newSignUpData);
+    await postAccessListHandler(accessData);
+    await signUpHandler(newSignUpData);
   };
 
   /**액셀 파일 넣기 */
@@ -295,11 +313,6 @@ const SignUpFormManager = () => {
                   value: 10,
                   message: "20자까지 입력 가능합니다.",
                 },
-                pattern: {
-                  value: /^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/,
-                  message:
-                    "한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)",
-                },
               })}
             />
             {errors.name && <p>{errors.name.message}</p>}
@@ -365,17 +378,41 @@ const SignUpFormManager = () => {
                 required: "필수 정보입니다.",
               })}
             >
-              {group?.map((data: any) => {
-                return (
-                  <option key={data.pk} value={data.pk}>
-                    {data.name}
-                  </option>
-                );
-              })}
+              {!newgroup ? (
+                group?.map((data: any) => {
+                  return (
+                    <option key={data.pk} value={data.pk}>
+                      {data.name}
+                    </option>
+                  );
+                })
+              ) : (
+                <option>{newgroup}</option>
+              )}
             </Select>
             {errors?.group && <p>{errors.group?.message}</p>}
           </div>
-
+          <div className={styles.typeDiv}>
+            <Box width="100%" color="red.400">
+              목록에 부트캠프가 없을시에 추가해주세요.
+              <div
+                className={styles.bootCampinput}
+                onSubmit={() => bootCampHandler()}
+              >
+                <Input
+                  color="black"
+                  onChange={(e) => (groupNameRef.current = e.target.value)}
+                />
+                <Button
+                  color="black"
+                  height="50px"
+                  onClick={() => bootCampHandler()}
+                >
+                  추가하기
+                </Button>
+              </div>
+            </Box>
+          </div>
           <div className={styles.typeDiv}>
             <label>수강생 목록</label>
             <InputGroup>

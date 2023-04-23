@@ -25,12 +25,13 @@
       font-weight: bold;
     }
   }
-  .commentName {
+  .feedTitle {
+    margin: 10px 0 0 0;
     font-weight: bold;
+    font-size: 1.4rem;
   }
-  .commentTime {
-    font-size: 0.76rem;
-    margin-right: 6px;
+  .feedDescription {
+    margin: 5px 0 0 0;
   }
 }
 .commentInput {
@@ -42,5 +43,26 @@
   textarea {
     width: 80%;
     resize: none;
+  }
+}
+
+.menu {
+  z-index: 100;
+  list-style: none;
+  position: absolute;
+  background-color: aliceblue;
+  border-radius: 20px;
+  width: 200px;
+  right: 10px;
+}
+.disable {
+  display: none;
+}
+.menuList {
+  padding: 10px 8px;
+  &:hover {
+    background-color: black;
+    color: white;
+    border-radius: 20px;
   }
 }

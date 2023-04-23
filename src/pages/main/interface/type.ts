@@ -1,9 +1,6 @@
 export interface User {
-  avatar: any;
-  email: string;
+  pk: number;
   is_coach: boolean;
-  name: string;
-  username: string;
 }
 interface Comment {
   id: number;
@@ -36,6 +33,7 @@ interface Comment {
 export interface DefaultFeedData {
   id: number;
   user: User;
+  title: string;
   group: {
     pk: number;
     name: string;
@@ -51,5 +49,6 @@ export interface DefaultFeedData {
   highest_like_comments: [Comment];
   is_like: string;
   comment: [Comment];
-  images: [{ url: string }];
+  thumbnail?: string;
+  images?: string;
 }
