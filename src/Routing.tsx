@@ -73,8 +73,8 @@ const Routing = () => {
         >
           {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
           <Route path="feedlist" element={<WrittenPost />} />
-          <Route path="writtencomment" element={<WrittenComment />} />
-          <Route path="likes" element={<LikedPost />} />
+          <Route path="commentlist" element={<WrittenComment />} />
+          <Route path="feedlike" element={<LikedPost />} />
           <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
