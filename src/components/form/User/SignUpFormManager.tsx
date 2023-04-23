@@ -102,8 +102,8 @@ const SignUpFormManager = () => {
         isClosable: true,
       });
 
-    await postAccessListHandler(accessData);
     await signUpHandler(newSignUpData);
+    await postAccessListHandler(accessData);
   };
 
   /**액셀 파일 넣기 */

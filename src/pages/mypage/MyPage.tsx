@@ -111,12 +111,12 @@ export default function MyPage() {
           {data?.pages?.map((feedData: any) =>
             feedData.results?.map((data: any) => (
               <AspectRatio
-                key={data.id}
+                key={data.id ? data.id : data.pk}
                 width="33%"
                 padding="5px"
                 justifyContent="center"
                 alignItems="center"
-                ratio={4 / 5}
+                ratio={9 / 10}
                 onClick={() => {
                   setFeedData(data);
                   onOpen();

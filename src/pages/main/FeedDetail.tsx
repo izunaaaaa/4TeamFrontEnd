@@ -35,6 +35,7 @@ const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 
 const FeedDetail = (props: any) => {
   const feedData = props.feedData;
+
   const {
     feedDetail,
     isLoading,
