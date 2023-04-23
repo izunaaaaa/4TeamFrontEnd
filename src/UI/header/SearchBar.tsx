@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import styled from "styled-components";
 import styles from "./SearchBar.module.scss";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -69,13 +68,8 @@ function SearchBar() {
   const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
   const searchbarRef = useRef<HTMLDivElement | null>(null);
 
-  const toggleSearchbar = () => {
-    if (keyword) {
-      setSearchbarVisible(true);
-      refetch();
-    } else {
-      setSearchbarVisible(false);
-    }
+  const toggleSearchbar = async () => {
+    setSearchbarVisible(!searchbarVisible);
   };
 
   useClickOutside(searchbarRef, () => {
@@ -101,7 +95,7 @@ function SearchBar() {
 
       {searchbarVisible && keyItems.length > 0 && keyword && (
         <div className={styles.autoSearchContainer} ref={searchbarRef}>
-          <ul className={styles.searchBar}>
+          <ul>
             {keyItems.map((search) => (
               <li
                 className={styles.autoSearchData}

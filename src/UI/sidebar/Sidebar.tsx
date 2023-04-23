@@ -14,8 +14,9 @@ import {
   updateCategory,
 } from "api/axios/axiosSetting";
 import { useMutation, useQueryClient } from "react-query";
-import { useFeed } from "./hook/useFeed";
-import { Category } from "./hook/useFeed";
+import { useFeed } from "./hook/useSide";
+import { Category } from "./hook/useSide";
+import SidebarModal from "./SidebarModal";
 import { Link } from "react-router-dom";
 
 // useQuery : 데이터를 가져올 때
@@ -93,13 +94,13 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
 
   // 카테고리 삭제
   const deleteCategoryMutation = useMutation(
-    async ({ groupPk, id }: { groupPk: number; id: number }) =>
-      await deleteCategory(groupPk, id),
-    {
-      onSuccess: () => {
+    async ({ groupPk, id }: { groupPk: number; id: number }) => {
+      setTimeout(() => {
         refetch();
-        console.log("카테고리 삭제");
-      },
+      }, 100);
+      await deleteCategory(groupPk, id);
+    },
+    {
       onError: (error: Error) => {
         console.error("Error deleting category:", error);
       },
@@ -111,7 +112,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   //     await deleteCategory(groupPk, id),
   //   {
   //     onSuccess: () => {
-  //       queryClient.invalidateQueries("categories");
+  //       refetch();
+  // //       queryClient.invalidateQueries("categories");
   //       console.log("카테고리 삭제");
   //     },
   //     onError: (error: Error) => {
@@ -174,7 +176,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const renderSidebarData = () =>
     categories?.map((item: Category, id: number) => (
       <li key={id} className={styles.nav_text}>
-        <Link to={`/category/${item.id}`}>
+        <Link to={`/${item.group.pk}/category/${item.id}`}>
           <div className={styles.nav_name}>
             <span>{item.name}</span>
           </div>

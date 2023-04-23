@@ -19,7 +19,6 @@ import SignUpFormManager from "components/form/User/SignUpFormManager";
 import Landing from "UI/landing/Landing";
 import useUser from "components/form/User/Hook/useUser";
 
-
 const Routing = () => {
   const { LoginUserData } = useUser();
 
@@ -31,7 +30,7 @@ const Routing = () => {
           <>
             <Route path="/main" element={<Main />} />
             <Route
-              path="/category/:id"
+              path="/:pk/category/:id"
               element={
                 <Layout>
                   <Feed />
