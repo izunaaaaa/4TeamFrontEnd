@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Flex, Box, Text, useMediaQuery } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
 import { useQuery } from "react-query";
@@ -9,39 +9,16 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import LetterSkeleton from "UI/Skeleton/LetterSkeleton";
-import { Chattings } from "interface/Interface";
+import { ChatList } from "interface/Interface";
 import { Outlet } from "react-router-dom";
 
 function Mailbox() {
-  const [isHovering, setIsHovering] = useState(false);
-  // const { isLoading, error, data } = useQuery<Chattings[]>(
-  //   "Letterlists",
-  //   getLetterlists
-  // );
+  const { isLoading, error, data } = useQuery<ChatList[]>(
+    "Letterlists",
+    getLetterlists
+  );
 
-  const data = [
-    {
-      user: {
-        username: "ddd",
-        name: "dd",
-        email: "abc@gmail.com",
-        avatar: "",
-        is_coach: false,
-      },
-      created_at: "2023-04-21",
-      messages: {
-        sender: {
-          username: "xxx",
-          name: "xx",
-          email: "def@gmail.com",
-          avatar: "",
-          is_coach: false,
-        },
-        room: 1,
-        text: "hello",
-      },
-    },
-  ];
+  const [isHovering, setIsHovering] = useState(false);
 
   // 브라우저 화면 크기 설정하는 chakra 내장함수
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -58,7 +35,7 @@ function Mailbox() {
           bg={"lightgray"}
         >
           {data?.length ? (
-            data?.map((item: Chattings, idx: number) => {
+            data?.map((item: ChatList, idx: number) => {
               return (
                 <Box
                   key={idx}
@@ -86,7 +63,7 @@ function Mailbox() {
           ml={"14rem"}
         >
           {data?.length ? (
-            data?.map((item: Chattings, idx: number) => {
+            data?.map((item: ChatList, idx: number) => {
               return (
                 <Box
                   key={idx}

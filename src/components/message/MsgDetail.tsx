@@ -22,9 +22,11 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
-import { Chattings } from "interface/Interface";
+import { useMutation } from "react-query";
+import { deleteLetters } from "api/axios/axiosSetting";
+import { ChatId } from "interface/Interface";
 
-const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
+const MsgDetail = ({ sender, room, text, is_sender }: ChatId) => {
   const [isHovering, setIsHovering] = useState(true);
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -35,6 +37,8 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // const deleteChat = useMutation(["deleteLetters"], deleteLetters)
+
   return (
     <Flex>
       {/* 쪽지 내역 */}
@@ -42,7 +46,7 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
         mt={10}
         padding="6"
         boxShadow="xl"
-        bgColor={user ? "#F7FE2E" : "white"}
+        bgColor={is_sender ? "#F7FE2E" : "white"}
         w={"20vw"}
         h={"25vh"}
         cursor={"pointer"}
@@ -54,7 +58,11 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
             <FontAwesomeIcon icon={faPaperclip} />
           </HStack>
           <HStack>
-            <Avatar size="xs">{user.avatar}</Avatar>{" "}
+            <Avatar size="xs" />
+
+            <Text fontWeight={600} color={is_sender ? "blue" : "red"}>
+              {is_sender ? "To. " : "From. "}
+            </Text>
           </HStack>
           <HStack>
             {isHovering && (
@@ -62,7 +70,7 @@ const MsgDetail: React.FC<Chattings> = ({ user, created_at, messages }) => {
                 <FontAwesomeIcon icon={faScissors} />
               </button>
             )}
-            <Text as="ins">{messages.text}</Text>
+            <Text as="ins">{text}</Text>
           </HStack>
         </Stack>
       </Box>

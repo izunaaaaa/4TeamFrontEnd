@@ -121,21 +121,21 @@ export const getLetterlists = async () => {
   return res.data;
 };
 
+//쪽지 조회
+export const getLetters = async (chatId: number) =>
+  await instance.get(`/letterlist/${chatId}`).then((res) => res.data);
+
 // 쪽지 보내기
-export const postLetters = async (data: string) =>
-  await instance.post(`/letterlist/message/`, data).then((res) => res.data);
+export const postLetters = async (receiver: number, text: string) =>
+  await instance
+    .post(`/letterlist/message/`, { receiver, text })
+    .then((res) => res.data);
 
 // 쪽지 삭제
-export const deleteLetters = async (id: number) =>
-  await instance.delete(`/letterlist/message/${id}`).then((res) => res.data);
-
-//쪽지 조회
-export const getLetters = async (id: number) =>
-  await instance.get(`/letterlist/message/${id}`).then((res) => res.data);
-
-// 쪽지 목록 지우기
-export const deleteLetterList = async (id: number) =>
-  await instance.delete(`/letterlist/${id}`).then((res) => res.data);
+export const deleteLetters = async (chatId: number) =>
+  await instance
+    .delete(`/letterlist/message/${chatId}`)
+    .then((res) => res.data);
 
 /**MyPage  */
 export const getMyFeed = async (url: string) =>

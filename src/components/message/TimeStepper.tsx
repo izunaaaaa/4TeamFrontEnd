@@ -1,15 +1,23 @@
 import React from "react";
 import { VStack, HStack, Circle, Box, Badge } from "@chakra-ui/react";
-import { Chattings } from "interface/Interface";
+import { ChatId } from "interface/Interface";
 
-function TimeStepper({ user, created_at, messages }: Chattings) {
-  const isLastItem = !created_at; // created_at이 없으면 마지막 아이템으로 처리합니다.
+interface StepperProps extends ChatId {
+  nextData: boolean;
+}
 
+const TimeStepper = ({
+  sender,
+  room,
+  text,
+  is_sender,
+  nextData,
+}: StepperProps) => {
   return (
-    <VStack spacing={7} alignItems="center" mt={10}>
+    <VStack spacing={7} alignItems="center" mt={"5.2rem"}>
       <Circle
         size="30px"
-        bg={isLastItem ? "#3A01DF" : "lightgray"}
+        bg={nextData ? "lightgray" : "blue"}
         color="white"
         fontWeight="bold"
         fontSize="xl"
@@ -19,7 +27,7 @@ function TimeStepper({ user, created_at, messages }: Chattings) {
         border="2px solid white"
       />
 
-      {!isLastItem && (
+      {nextData && (
         <Box
           height="60px"
           borderLeftWidth="2px"
@@ -29,6 +37,6 @@ function TimeStepper({ user, created_at, messages }: Chattings) {
       )}
     </VStack>
   );
-}
+};
 
 export default TimeStepper;

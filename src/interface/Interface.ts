@@ -50,16 +50,19 @@ export interface User {
   is_coach: boolean;
 }
 
-export interface Sender extends User {}
-
-export interface Messages {
-  sender: Sender;
-  room: number;
-  text: string;
+export interface Sender {
+  pk: number;
+  is_coach: boolean;
 }
 
-export interface Chattings {
-  user: User;
+export interface ChatList {
+  receiver: string;
   created_at: string;
-  messages: Messages;
+}
+
+export interface ChatId {
+  sender: Sender;
+  room: ChatList;
+  text: string;
+  is_sender: boolean;
 }
