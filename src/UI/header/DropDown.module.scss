@@ -5,6 +5,7 @@
   height: 100%;
 }
 .drop_listItem {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,8 +20,44 @@
     transition: 150ms;
   }
 
-  a {
-    text-decoration: none;
-    color: #000;
+  span {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  a {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+  }
+}
+
+.fofile_box {
+  display: flex;
+  flex-direction: column;
+}
+.myFrofile {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.dropList {
+  right: 0;
+  width: 180px;
+  position: absolute;
+  top: 80px;
+  transition: 850ms;
+}
+.dropList.active {
+  transition: 350ms;
 }
