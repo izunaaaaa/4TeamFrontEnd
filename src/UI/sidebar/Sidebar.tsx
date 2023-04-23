@@ -41,8 +41,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     name: string;
   } | null>(null);
 
-  // 관리자 여부를 나타내는 상태
-  const [isAdmin, setIsAdmin] = useState(true);
   const groupPk = 1; // groupPk 값을 1로 설정
   const { categories, refetch } = useFeed(groupPk);
 
@@ -94,26 +92,12 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   );
 
   // 카테고리 삭제
-  // const deleteCategoryMutation = useMutation(
-  //   async ({ groupPk, id }: { groupPk: number; id: number }) =>
-  //     await deleteCategory(groupPk, id),
-  //   {
-  //     onSuccess: () => {
-  //       refetch();
-  //       console.log("카테고리 삭제");
-  //     },
-  //     onError: (error: Error) => {
-  //       console.error("Error deleting category:", error);
-  //     },
-  //   }
-  // );
-
   const deleteCategoryMutation = useMutation(
     async ({ groupPk, id }: { groupPk: number; id: number }) =>
       await deleteCategory(groupPk, id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("categories");
+        refetch();
         console.log("카테고리 삭제");
       },
       onError: (error: Error) => {
@@ -121,6 +105,20 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       },
     }
   );
+
+  // const deleteCategoryMutation = useMutation(
+  //   async ({ groupPk, id }: { groupPk: number; id: number }) =>
+  //     await deleteCategory(groupPk, id),
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries("categories");
+  //       console.log("카테고리 삭제");
+  //     },
+  //     onError: (error: Error) => {
+  //       console.error("Error deleting category:", error);
+  //     },
+  //   }
+  // );
 
   const toggleAddModal = () => {
     setIsAddModalOpen(!isAddModalOpen); // 채널 추가 모달 창 열림/닫힘 상태 변경
@@ -138,16 +136,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     addCategoryMutation.mutate(name);
   };
 
-  const handleAddChannel = () => {
-    if (newChannelName.trim()) {
-      addCategory(newChannelName);
-      setNewChannelName("");
-      toggleAddModal(); // 모달 창 닫기
-      //refetch();
-      //console.log(newChannelName);
-    }
-  };
-
   const handleUpdateChannel = (newName: string) => {
     if (selectedEditCategory) {
       updateCategoryMutation.mutate({
@@ -156,6 +144,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
         newName: newName,
       });
       setUpdatedChannelName("");
+      setSelectedEditCategory(null);
       toggleEditModal(); // Close modal
     }
   };
@@ -168,6 +157,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       });
       setSelectedCategory(null);
       toggleDeleteModal();
+      //refetch();
     }
   };
 
@@ -263,6 +253,37 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     );
   };
 
+  const renderAddModal = () => {
+    const handleAddChannel = () => {
+      if (newChannelName.trim()) {
+        addCategory(newChannelName);
+        setNewChannelName("");
+        toggleAddModal(); // 모달 창 닫기
+      }
+    };
+
+    return (
+      <div className={styles.modal} onClick={toggleAddModal}>
+        <div
+          className={styles.modalContent}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2>채널 추가</h2>
+          <input
+            type="text"
+            value={newChannelName}
+            onChange={(e) => setNewChannelName(e.target.value)}
+            placeholder="채널 이름 입력"
+          />
+          <div>
+            <button onClick={handleAddChannel}>추가</button>
+            <button onClick={toggleAddModal}>취소</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <nav
@@ -275,26 +296,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
           {renderAddChannelButton()}
         </ul>
       </nav>
-      {isAddModalOpen && (
-        <div className={styles.modal} onClick={toggleAddModal}>
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2>채널 추가</h2>
-            <input
-              type="text"
-              value={newChannelName}
-              onChange={(e) => setNewChannelName(e.target.value)}
-              placeholder="채널 이름 입력"
-            />
-            <div>
-              <button onClick={handleAddChannel}>추가</button>
-              <button onClick={toggleAddModal}>취소</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {isAddModalOpen && renderAddModal()}
       {isDeleteModalOpen && renderDeleteModal()}
       {isEditModalOpen && renderEditModal()}
     </>
