@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { SidebarData } from "./SidebarData";
 import styles from "./Sidebar.module.scss";
 import { SidebarProps } from "../../interface/Interface";
 import {
@@ -45,7 +44,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const groupPk = 1; // groupPk 값을 1로 설정
   const { categories, refetch } = useFeed(groupPk);
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   // useEffect(() => {
   //   if (!categories) {
@@ -151,7 +150,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     }
   };
 
-  const handleDeleteChanner = () => {
+  const handleDeleteChannel = () => {
     if (selectedCategory) {
       deleteCategoryMutation.mutate({
         groupPk: selectedCategory.groupPk,
@@ -206,7 +205,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
 
   const renderDeleteModal = () => {
     const onDelete = () => {
-      handleDeleteChanner();
+      handleDeleteChannel();
     };
 
     return (
