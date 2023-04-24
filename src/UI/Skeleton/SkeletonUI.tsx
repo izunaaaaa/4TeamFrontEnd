@@ -8,9 +8,10 @@ const SkeletonUI = () => {
       padding="6"
       boxShadow="lg"
       bg="white"
-      width={{ lg: "40%", md: "40%", base: "80%" }}
+      // width={{ lg: "40%", md: "40%", base: "80%" }}
+      width="500px"
       height="500px"
-      margin="10px 0 0 0"
+      margin="30px 5% 30px 15%"
     >
       <div className={styles.skeletonName}>
         <SkeletonCircle size="10" />

@@ -16,6 +16,11 @@ const useMyFeed = (feedType: string) => {
           return undefined;
         }
       },
+      retry: false,
+      refetchOnWindowFocus: false,
+      onError: () => {
+        return;
+      },
     }
   );
 

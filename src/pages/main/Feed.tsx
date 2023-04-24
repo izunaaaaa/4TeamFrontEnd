@@ -41,7 +41,7 @@ import { likeState } from "recoil/feedlike";
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 
 function Feed() {
-  const { id: categoryId } = useParams();
+  const { pk: groupPk, id: categoryId } = useParams();
   const { LoginUserData } = useUser();
   const { data: myLikeFeed, isLoading: isLikeLoading } = useMyFeed("feedlike");
   const [select, setSelect] = useRecoilState<any>(likeState);
@@ -49,15 +49,13 @@ function Feed() {
   /**좋아요 로직 */
 
   const likeFeed =
-    myLikeFeed?.pages[0]?.results.map((likefeed: any) => {
+    myLikeFeed?.pages[0]?.results?.map((likefeed: any) => {
       return likefeed.id;
     }) ?? [];
 
   useEffect(() => {
     setSelect(likeFeed);
   }, [isLikeLoading]);
-
-  const groupPk = LoginUserData?.group?.pk;
 
   const {
     feedData,
@@ -119,7 +117,11 @@ function Feed() {
 
   return (
     <>
-      <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
+      <InfiniteScroll
+        loadMore={fetchNextPage}
+        hasMore={hasNextPage}
+        className={styles.main}
+      >
         <div className={styles.feeds} ref={dropdownRef}>
           {feedData.pages?.map((pageData: any) =>
             pageData?.results?.map((data: DefaultFeedData) => {
@@ -238,12 +240,13 @@ function Feed() {
               emptyColor="gray.200"
               color="pink.100"
               size={{ lg: "xl", md: "lg", base: "lg" }}
+              margin="30px 5% 30px 34%"
             />
           )}
           {isLoading && <FeedSkeleton />}
         </div>
       </InfiniteScroll>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalBody>{modalType}</ModalBody>

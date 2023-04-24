@@ -119,6 +119,7 @@ const Comment = (props) => {
     }
   };
 
+  console.log(feedComment);
   return (
     <>
       {feedComment?.map((comment, index) => {

@@ -9,5 +9,11 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
   }
+  :root {
+    --nav-medium-width: 250px;
+    --nav-medium-height : 7em;
+  }
+ 
 `;
+
 export default GlobalStyle;
