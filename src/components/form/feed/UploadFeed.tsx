@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   Center,
   Flex,
   Input,
@@ -34,15 +36,14 @@ const UploadFeed = () => {
   const { LoginUserData } = useUser();
 
   const [previewImg, setPreviewImg] = useState();
-  const [cropImg, setCropImg] = useState("");
+  const [cropImg, setCropImg] = useState<string | null>(null);
 
   /**카테고리 가져오기 */
   const { feedCategory } = useFeedCategory(LoginUserData?.group?.name);
 
   /**이미지를 담을 url 요청 */
-  const { mutateAsync: postUploadUrlHandler } = useMutation(
-    async (img: any) => await postUploadUrl(img)
-  );
+  const { mutateAsync: postUploadUrlHandler, isLoading: postUploadUrlLoading } =
+    useMutation(async (img: any) => await postUploadUrl(img));
 
   const postState = {
     onSuccess: () => {
@@ -66,7 +67,7 @@ const UploadFeed = () => {
   };
 
   /**게시글 post */
-  const { mutate: postFeedHandler, isLoading } = useMutation(
+  const { mutate: postFeedHandler, isLoading: postFeedLoading } = useMutation(
     (postData: PostFeed) => postFeed(postData),
     postState
   );
@@ -113,22 +114,23 @@ const UploadFeed = () => {
 
   /**양식 제출하기 */
   const submitHandler = async (data: PostFeed) => {
-    if (feedDetail) {
-      const postData: PostFeed = {
-        title: data.title,
-        category: data.category,
-        ...(data.description && { description: data.description }),
-        ...(feedDetail.thumbnail && { image: feedDetail.thumbnail }),
-      };
-      return updateFeedHandler(postData);
-    }
-
     let resUrl = "";
     if (cropImg) {
       const blob = dataURLToBlob(cropImg);
       const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
       resUrl = await postUploadUrlHandler(file);
     }
+    if (feedDetail) {
+      const postData: PostFeed = {
+        title: data.title,
+        category: data.category,
+        ...(data.description && { description: data.description }),
+        ...(feedDetail.thumbnail && { image: feedDetail.thumbnail }),
+        ...(resUrl && { image: resUrl }),
+      };
+      return updateFeedHandler(postData);
+    }
+
     const postData: PostFeed = {
       title: data.title,
       category: data.category,
@@ -150,7 +152,7 @@ const UploadFeed = () => {
           />
         </ModalContent>
       </Modal>
-      {isLoading && (
+      {(postFeedLoading || postUploadUrlLoading) && (
         <Center
           zIndex="1000"
           position="absolute"
@@ -184,13 +186,21 @@ const UploadFeed = () => {
           </div>
 
           <div className={styles.postFormMain}>
+            {(cropImg || feedDetail?.thumnail) && (
+              <Box left="1%" top="1%">
+                <Button onClick={() => setCropImg(null)}>x</Button>
+              </Box>
+            )}
             <div className={styles.fileForm}>
               {feedDetail?.thumbnail ? (
-                <img
-                  alt=" "
-                  className={styles.previewImg}
-                  src={feedDetail.thumbnail}
-                />
+                <>
+                  <img
+                    alt=" "
+                    className={styles.previewImg}
+                    src={feedDetail.thumbnail}
+                  />
+                  <Button position="absolute">x</Button>
+                </>
               ) : !cropImg ? (
                 <>
                   <input
@@ -208,7 +218,9 @@ const UploadFeed = () => {
                   </button>
                 </>
               ) : (
-                <img alt=" " className={styles.previewImg} src={cropImg} />
+                <>
+                  <img alt=" " className={styles.previewImg} src={cropImg} />
+                </>
               )}
             </div>
 

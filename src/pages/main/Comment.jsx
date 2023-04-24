@@ -81,11 +81,21 @@ const Comment = (props) => {
       },
     }
   );
+  const submitRecommentHandler = async (description) => {
+    await postRecommentHandler(description);
+    reset();
+    setSelectComment(null);
+  };
   /**대댓글 삭제 */
-  const { mutate: deleteRecommentHandler } = useMutation((recommentData) => {
-    console.log(recommentData.id);
-    deleteRecomment(recommentData);
-  });
+  const { mutate: deleteRecommentHandler } = useMutation(
+    (recommentData) => deleteRecomment(recommentData),
+    {
+      onSuccess: () => {
+        successPost();
+        toast({ title: "대댓글이 삭제되었습니다.", status: "success" });
+      },
+    }
+  );
 
   /**댓글 버튼 이벤트 */
   const btnHandler = async (e, id, commentType) => {
@@ -107,13 +117,6 @@ const Comment = (props) => {
         return deleteRecommentHandler(data);
       }
     }
-  };
-
-  /**대댓글달기 */
-  const submitRecommentHandler = async (description) => {
-    await postRecommentHandler(description);
-    reset();
-    setSelectComment(null);
   };
 
   return (

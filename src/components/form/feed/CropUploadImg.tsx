@@ -28,6 +28,8 @@ const CropUploadImg = (props: any) => {
     height: 0,
   });
 
+  console.log(zoom);
+
   /**이미지 */
   const previewImg = useRef<any>("");
 
@@ -59,7 +61,7 @@ const CropUploadImg = (props: any) => {
       <div className={styles.cropImg}>
         <Cropper
           image={props.previewImg}
-          aspect={6 / 7}
+          aspect={8 / 9}
           crop={crop}
           zoom={zoom}
           onCropChange={setCrop}
@@ -68,7 +70,7 @@ const CropUploadImg = (props: any) => {
           style={{
             containerStyle: {
               width: "100%",
-              height: "83%",
+              height: "75%",
               backgroundColor: "black",
             },
           }}
@@ -83,14 +85,15 @@ const CropUploadImg = (props: any) => {
         />
         <div className={styles.slider}>
           <Slider
+            value={zoom}
             aria-label="Zoom"
             min={1}
             max={3}
             step={0.1}
             onChange={(e: any) => {
               setZoom(e);
+              console.log(e);
             }}
-            defaultValue={0}
           >
             <SliderTrack>
               <SliderFilledTrack />
