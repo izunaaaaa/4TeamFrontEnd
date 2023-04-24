@@ -1,14 +1,14 @@
-import styled from "@emotion/styled";
-import Main from "../pages/main/Main";
-import { LayoutProps } from "../interface/Interface";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import Header from "./header/Header";
 
-function Layout({ children }: LayoutProps) {
+const Layout = () => {
   return (
     <>
       <Header />
-      <>{children}</>
+      <Outlet />
     </>
   );
-}
+};
+
 export default Layout;

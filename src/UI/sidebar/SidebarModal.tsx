@@ -1,60 +1,59 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import styles from "./Modal.module.scss";
 
-type ModalProps = {
+interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
-  onSubmit: () => Promise<void>;
   title: string;
-  submitLabel: string;
-  children: React.ReactNode;
-};
+  message: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  confirmLabel: string;
+  cancelLabel: string;
+}
 
-const SidebarModal = ({
+function SidebarModal({
   isOpen,
-  onClose,
-  onSubmit,
   title,
-  submitLabel,
-  children,
-}: ModalProps) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  message,
+  onConfirm,
+  onCancel,
+  confirmLabel,
+  cancelLabel,
+}: ModalProps) {
+  const [isModalOpen, setIsModalOpen] = useState(isOpen);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    await onSubmit();
-    setIsSubmitting(false);
+  const handleConfirm = () => {
+    onConfirm();
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    onCancel();
+    setIsModalOpen(false);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setIsModalOpen(false);
+    }
   };
 
   return (
     <>
-      {isOpen && (
-        <div className="modal">
-          <form className="modal-content" onSubmit={handleSubmit}>
-            <div className="modal-header">
-              <h2>{title}</h2>
-              <button className="modal-close" type="button" onClick={onClose}>
-                X
-              </button>
+      {isModalOpen && (
+        <div className={styles.modal} onClick={handleClick}>
+          <div className={styles.modalContent}>
+            <h2>{title}</h2>
+            <p>{message}</p>
+            <div className={styles.buttons}>
+              <button onClick={handleConfirm}>{confirmLabel}</button>
+              <button onClick={handleCancel}>{cancelLabel}</button>
             </div>
-            <div className="modal-body">{children}</div>
-            <div className="modal-footer">
-              <button
-                className="modal-submit"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {submitLabel}
-              </button>
-              <button className="modal-cancel" type="button" onClick={onClose}>
-                취소
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
       )}
     </>
   );
-};
+}
 
 export default SidebarModal;
