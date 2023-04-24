@@ -30,7 +30,9 @@ const Routing = () => {
         {LoginUserData ? (
           <>
             <Route
-              path="/category/:id/"
+
+              path="/:pk/category/:id"
+
               element={
                 <Layout>
                   <Feed />
