@@ -11,7 +11,10 @@ interface UseFeed {
   refetch: any;
 }
 
-export const useFeed = (): UseFeed => {
+export const useFeed = (
+  groupPk: number,
+  categoryId: string | undefined
+): UseFeed => {
   const fallBack: [] = [];
   const {
     data: feedData = fallBack,
@@ -21,13 +24,16 @@ export const useFeed = (): UseFeed => {
     isLoading,
     refetch,
   } = useInfiniteQuery(
-    Querykey.feedData,
-    ({ pageParam = `/feeds/group/category/?group_id=1&category_id=133` }) =>
-      getFeeds(pageParam),
+    [Querykey.feedData, categoryId],
+    ({
+      pageParam = `/feeds/group/category/?group_id=1&category_id=${categoryId}`,
+    }) => getFeeds(pageParam),
     {
       getNextPageParam: (lastpage) => {
         if (lastpage.total_pages - lastpage.now_page > 0)
-          return `/feeds/1/?page=${lastpage.now_page + 1}`;
+          return `/feeds/group/category/?group_id=1&category_id=${categoryId}/?page=${
+            lastpage.now_page + 1
+          }`;
         else {
           return undefined;
         }
