@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Button,
-  useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -18,22 +17,21 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { postLetters } from "api/axios/axiosSetting";
 
-interface MsgData {
+interface SendMsgData {
   receiver: number;
   text: string;
 }
 
 const SendMsg = (props: any) => {
   //쪽지 모달 폼 관리
-  const { register, handleSubmit, reset } = useForm<MsgData>();
-
-  const sendMutation = useMutation((data: { receiver: number; text: string }) =>
-    postLetters(data.receiver, data.text)
-  );
-
-  const toast = useToast();
+  const { register, handleSubmit, reset } = useForm<SendMsgData>();
 
   // 쪽지 전송 기능
+
+  const sendMutation = useMutation((data: { receiver: number; text: string }) =>
+    postLetters(data)
+  );
+  const toast = useToast();
   const onSubmit = async (data: { receiver: number; text: string }) => {
     if (data.text.trim() === "") {
       toast({
@@ -47,8 +45,9 @@ const SendMsg = (props: any) => {
     }
 
     try {
-      await sendMutation.mutateAsync(data);
+      await sendMutation.mutateAsync({ ...data });
       reset();
+      console.log("send", data);
       props.onClose();
     } catch (error) {
       console.error(error);
@@ -63,7 +62,11 @@ const SendMsg = (props: any) => {
           <ModalHeader>쪽지</ModalHeader>
           <FormControl onClick={handleSubmit(onSubmit)}>
             <ModalBody>
-              <Input type="hidden" {...register("receiver")} />
+              <Input
+                type="hidden"
+                {...register("receiver")}
+                value={props.receiver}
+              />
               <Textarea
                 placeholder="보내실 내용을 입력해주세요"
                 {...register("text")}

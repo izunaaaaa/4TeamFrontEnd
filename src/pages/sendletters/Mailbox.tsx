@@ -3,11 +3,6 @@ import { Flex, Box, Text, useMediaQuery } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
 import { useQuery } from "react-query";
 import { getLetterlists } from "api/axios/axiosSetting";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelopeOpenText,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
 import LetterSkeleton from "UI/Skeleton/LetterSkeleton";
 import { ChatList } from "interface/Interface";
 import { Outlet } from "react-router-dom";

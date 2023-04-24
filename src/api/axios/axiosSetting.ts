@@ -129,7 +129,13 @@ export const getLetters = async (chatId: number) =>
   await instance.get(`/letterlist/${chatId}`).then((res) => res.data);
 
 // 쪽지 보내기
-export const postLetters = async (receiver: number, text: string) =>
+export const postLetters = async ({
+  receiver,
+  text,
+}: {
+  receiver: number;
+  text: string;
+}) =>
   await instance
     .post(`/letterlist/message/`, { receiver, text })
     .then((res) => res.data);

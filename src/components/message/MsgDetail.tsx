@@ -22,11 +22,18 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { deleteLetters } from "api/axios/axiosSetting";
 import { ChatId } from "interface/Interface";
 
-const MsgDetail = ({ sender, room, text, is_sender }: ChatId) => {
+interface MsgDetailProps {
+  chatId?: number;
+  text: string;
+  is_sender: boolean;
+}
+
+const MsgDetail = ({ text, is_sender, chatId }: MsgDetailProps) => {
+  //마우스 hover 상태 관리
   const [isHovering, setIsHovering] = useState(true);
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -35,9 +42,18 @@ const MsgDetail = ({ sender, room, text, is_sender }: ChatId) => {
     setIsHovering(false);
   };
 
+  //삭제 모달 관리
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // const deleteChat = useMutation(["deleteLetters"], deleteLetters)
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation(deleteLetters, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("text");
+    },
+    onError: (error) => {
+      console.error("Error deleting letter:", error);
+    },
+  });
 
   return (
     <Flex>
@@ -81,12 +97,23 @@ const MsgDetail = ({ sender, room, text, is_sender }: ChatId) => {
         <ModalContent>
           <ModalHeader>쪽지를 삭제하시겠습니까?</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>내용</ModalBody>
+          <ModalBody></ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="red" mr={3}>
-              Delete
-            </Button>
+            {chatId && (
+              <Button
+                colorScheme="red"
+                mr={3}
+                onClick={() => {
+                  if (chatId) {
+                    deleteMutation.mutate(chatId);
+                  }
+                }}
+              >
+                Delete
+              </Button>
+            )}
+
             <Button variant="ghost" onClick={onClose}>
               Close
             </Button>
