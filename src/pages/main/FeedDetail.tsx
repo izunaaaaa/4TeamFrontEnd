@@ -30,11 +30,15 @@ import DeleteConfirm from "UI/DeleteConfirm";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDetectOutsideClick } from "UI/DetectOutsideClick/useDetectOutsideClick";
+import { useRecoilState } from "recoil";
+import { likeState } from "recoil/feedlike";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 
 const FeedDetail = (props: any) => {
   const feedData = props.feedData;
+  const [select, setSelect] = useRecoilState<any>(likeState);
+
   const {
     feedDetail,
     isLoading,
@@ -53,8 +57,6 @@ const FeedDetail = (props: any) => {
       queryClient.invalidateQueries([feedData.id, Querykey.feedComment]);
     },
   };
-
-  console.log(feedDetail);
 
   /**dropdown menu */
   const dropdownRef = useRef(null);
@@ -108,11 +110,7 @@ const FeedDetail = (props: any) => {
           <ModalOverlay />
           <ModalContent>
             <ModalBody>
-              <DeleteConfirm
-                onClose={onClose}
-                // feedId={eventTarget.value}
-                // refetch={refetch}
-              />
+              <DeleteConfirm onClose={onClose} />
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -165,14 +163,20 @@ const FeedDetail = (props: any) => {
             margin={0}
             padding={2}
             leftIcon={<FontAwesomeIcon icon={faThumbsUp} size="lg" />}
+            color={select.includes(feedData.id) ? "red" : "black"}
             onClick={() => {
+              !select.includes(feedData.id)
+                ? setSelect((select: any) => [...select, feedData.id])
+                : setSelect(
+                    select.filter((button: number) => button !== feedData.id)
+                  );
               const feedId = {
                 id: feedData.id,
               };
               feedLikeHandler(feedId);
             }}
           >
-            {feedDetail.like_count}
+            <Box color="black">{feedDetail.like_count}</Box>
           </Button>
           <Button
             backgroundColor={"transparent"}
