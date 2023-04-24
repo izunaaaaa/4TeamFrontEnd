@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import styles from './Landing.module.scss';
-import { FaUserCircle, FaSignInAlt, FaRunning } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styles from "./Landing.module.scss";
+import { FaUserCircle, FaSignInAlt, FaRunning } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Login from "components/form/User/Login";
+import { useDisclosure } from "@chakra-ui/react";
 
 export default function Landing() {
-   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-   useEffect(() => {
-      const interval = setInterval(() => {
-         setCurrentSlide(prevSlide => (prevSlide + 1) % 4);
-      }, 3000);
-      return () => clearInterval(interval);
-   }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % 4);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
    const [isLoggedIn, setIsLoggedIn] = useState(false);
 

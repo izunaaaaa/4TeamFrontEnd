@@ -56,11 +56,16 @@ export const postComment = async (feedId: number, commentData: object) =>
     .post(`/feeds/${feedId}/comment/`, commentData)
     .then((res) => res.data);
 
-export const deleteComment = async (commentId: number) =>
-  await instance.delete(`/comments/${commentId}`);
+export const deleteComment = async (commentData: any) =>
+  await instance.delete(`/comments/${commentData.id}`);
 
-export const postCommentLike = async (commentId: number) =>
-  await instance.post(`likes/commentlike/${commentId}`).then((res) => res.data);
+export const postCommentLike = async (commentData: any) =>
+  await instance
+    .post(
+      `likes/${commentData?.commentType}like/${commentData.id}`,
+      commentData.id
+    )
+    .then((res) => res.data);
 
 /**recomment */
 export const postRecomment = async (
@@ -72,11 +77,9 @@ export const postRecomment = async (
     .post(`/feeds/${feedId}/comment/${commentId}/recomment/`, description)
     .then((res) => res.data);
 
-// export const deleteRecomment = async(comment)s
-
-export const postRecommentLike = async (recommentId: number) =>
+export const deleteRecomment = async (recommentData: any) =>
   await instance
-    .post(`likes/recommentlike/${recommentId}`)
+    .delete(`/comments/recomments/${recommentData?.id}`)
     .then((res) => res.data);
 
 /**Feed 올리기 */
@@ -126,7 +129,13 @@ export const getLetters = async (chatId: number) =>
   await instance.get(`/letterlist/${chatId}`).then((res) => res.data);
 
 // 쪽지 보내기
-export const postLetters = async (receiver: number, text: string) =>
+export const postLetters = async ({
+  receiver,
+  text,
+}: {
+  receiver: number;
+  text: string;
+}) =>
   await instance
     .post(`/letterlist/message/`, { receiver, text })
     .then((res) => res.data);

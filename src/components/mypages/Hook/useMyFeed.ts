@@ -4,9 +4,10 @@ import { useInfiniteQuery } from "react-query";
 
 const useMyFeed = (feedType: string) => {
   const fallback = [];
-  const { data } = useInfiniteQuery(
+  const { data, isLoading } = useInfiniteQuery(
     ["myFeed", feedType],
-    ({ pageParam = `/users/me/${feedType}/` }) => getMyFeed(pageParam),
+    async ({ pageParam = `/users/me/${feedType}/` }) =>
+      await getMyFeed(pageParam),
     {
       getNextPageParam: (lastpage) => {
         if (lastpage.total_pages - lastpage.now_page > 0)
@@ -18,7 +19,7 @@ const useMyFeed = (feedType: string) => {
     }
   );
 
-  return { data };
+  return { data, isLoading };
 };
 
 export default useMyFeed;
