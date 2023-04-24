@@ -16,11 +16,11 @@ import {
   useDisclosure,
   Modal,
   ModalBody,
-  Box,
   AspectRatio,
 } from "@chakra-ui/react";
 import FeedDetail from "pages/main/FeedDetail";
 import useMyFeed from "components/mypages/Hook/useMyFeed";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("feedlist");
