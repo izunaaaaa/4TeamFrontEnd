@@ -26,50 +26,28 @@ const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
         {LoginUserData ? (
           <>
-            <Route
-
-              path="/:pk/category/:id"
-
-              element={
-                <Layout>
-                  <Feed />
-                </Layout>
-              }
-            />
-            <Route
-              path="/letterlist/"
-              element={
-                <Layout>
-                  <Mailbox />
-                </Layout>
-              }
-            >
-              <Route path={":chatId/"} element={<MsgRoom />} />
+            <Route path="/" element={<Layout />}>
+              <Route path=":pk/category/:id" element={<Feed />} />
+              <Route path="letterlist/" element={<Mailbox />}>
+                <Route path={":chatId/"} element={<MsgRoom />} />
+              </Route>
+              {/* 내정보 */}
+              <Route path="mypage/" element={<MyPage />}>
+                {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
+                <Route path="feedlist" element={<WrittenPost />} />
+                <Route path="commentlist" element={<WrittenComment />} />
+                <Route path="feedlike" element={<LikedPost />} />
+                <Route path="profile" element={<Profile />} />
+              </Route>
             </Route>
-
-            {/* 내정보 */}
-            <Route
-              path="/mypage"
-              element={
-                <Layout>
-                  <MyPage />
-                </Layout>
-              }
-            >
-              {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
-              <Route path="feedlist" element={<WrittenPost />} />
-              <Route path="commentlist" element={<WrittenComment />} />
-              <Route path="feedlike" element={<LikedPost />} />
-              <Route path="profile" element={<Profile />} />
-            </Route>
+            <Route path="/main" element={<Main />} />
             <Route path="/upload" element={<UploadFeed />} />
           </>
         ) : (
           <>
-            <Route path="/main" element={<Main />} />
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup/" element={<SignUp />}>
               <Route path="main" element={<SignUpMain />} />
