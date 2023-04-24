@@ -6,7 +6,7 @@ import {
   faMessage,
   faThumbsUp,
 } from "@fortawesome/free-regular-svg-icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -33,10 +33,22 @@ import { useMutation, useQueryClient } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import useUser from "components/form/User/Hook/useUser";
 import { DefaultFeedData } from "./interface/type";
+import useMyFeed from "components/mypages/Hook/useMyFeed";
 
 const myFeedDropDownMenu = ["수정하기", "삭제하기"];
 
 function Feed() {
+  const { id: categoryId } = useParams();
+  const { LoginUserData } = useUser();
+  const { data: myLikeFeed, isLoading: isLikeLoading } = useMyFeed("feedlike");
+
+  const likeFeed =
+    myLikeFeed?.pages[0]?.results.map((likefeed: any) => {
+      return likefeed.id;
+    }) ?? [];
+
+  const groupPk = LoginUserData?.group?.pk;
+
   const {
     feedData,
     fetchNextPage,
@@ -44,14 +56,17 @@ function Feed() {
     isFetching,
     isLoading,
     refetch,
-  } = useFeed();
-  // let { id } = useParams();
+  } = useFeed(groupPk, categoryId);
+
   const navigate = useNavigate();
-  const { LoginUserData } = useUser();
 
   const dropdownRef = useRef(null);
-  const [select, setSelect] = useState<number[]>([]);
+  const [select, setSelect] = useState<number[]>(likeFeed);
   const [feedOption, setFeedOption] = useState<number[]>([]);
+
+  useEffect(() => {
+    setSelect(likeFeed);
+  }, [isLikeLoading]);
 
   /**게시글 보기 모달 */
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -82,13 +97,20 @@ function Feed() {
   const queryClient = useQueryClient();
 
   const { mutate: likeHandler } = useMutation(
-    (feedID: object) => postFeedLike(feedID),
+    (feedID: object) => {
+      return postFeedLike(feedID);
+    },
     {
       onSuccess: () => {
         queryClient.invalidateQueries(Querykey.feedData);
+        // setIsLike()
       },
     }
   );
+
+  const onLike = (is_liked: boolean, feedId: any) => {
+    likeHandler(feedId);
+  };
 
   return (
     <>
@@ -153,7 +175,7 @@ function Feed() {
                     key={data.id}
                     value={data.id}
                     leftIcon={
-                      data.is_like ? (
+                      select.includes(data.id) ? (
                         <FontAwesomeIcon
                           icon={faThumbsUp}
                           size="lg"
@@ -169,11 +191,12 @@ function Feed() {
                         : setSelect(
                             select.filter((button) => button !== data.id)
                           );
-
+                      // setIsLike(Boolean(data.is_like))
                       const feedId = {
                         id: data.id,
                       };
                       likeHandler(feedId);
+                      // onLike(Boolean(data.is_like), feedId);
                     }}
                   >
                     {data.like_count}

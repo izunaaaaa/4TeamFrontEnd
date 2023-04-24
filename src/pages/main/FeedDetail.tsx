@@ -55,8 +55,6 @@ const FeedDetail = (props: any) => {
     },
   };
 
-  console.log(feedDetail);
-
   /**dropdown menu */
   const dropdownRef = useRef(null);
   const { isActive, setIsActive } = useDetectOutsideClick(dropdownRef, false);

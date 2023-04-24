@@ -21,6 +21,7 @@ import "moment/locale/ko";
 import { useMutation, useQueryClient } from "react-query";
 import {
   deleteComment,
+  deleteRecomment,
   postCommentLike,
   postRecomment,
   postRecommentLike,
@@ -65,35 +66,11 @@ const Comment = (props) => {
     }
   );
 
-  /**대댓글 삭제 */
-
-  /**댓글 좋아요 */
-  const { mutate: commentLikeHandler } = useMutation(
-    (id) => postCommentLike(id),
-    successRefetch
-  );
-
-  /**댓글 버튼 이벤트 */
-  const btnHandler = async (e, id, commentType) => {
-    reset();
-    const targetValue = e.target.value;
-
-    if (targetValue === "like") {
-      if (commentType === "comment") {
-        return commentLikeHandler(id);
-      } else {
-        return recommentLikeHandler(id);
-      }
-    }
-    if (targetValue === "recomment") return setSelectComment(id);
-    if (targetValue === "delete") return deleteCommentHandler(id);
-  };
-
-  /**대댓글 좋아요. */
-  const { mutate: recommentLikeHandler } = useMutation(
-    (id) => postRecommentLike(id),
-    successRefetch
-  );
+  /**댓글/대댓글 좋아요 */
+  const { mutate: commentLikeHandler } = useMutation((commentData) => {
+    console.log(commentData);
+    postCommentLike(commentData);
+  }, successRefetch);
 
   /**대댓글 달기 */
   const { mutateAsync: postRecommentHandler, isLoading } = useMutation(
@@ -104,6 +81,33 @@ const Comment = (props) => {
       },
     }
   );
+  /**대댓글 삭제 */
+  const { mutate: deleteRecommentHandler } = useMutation((recommentData) => {
+    console.log(recommentData.id);
+    deleteRecomment(recommentData);
+  });
+
+  /**댓글 버튼 이벤트 */
+  const btnHandler = async (e, id, commentType) => {
+    reset();
+    const targetValue = e.target.value;
+    const data = {
+      id,
+      commentType,
+    };
+    if (targetValue === "like") {
+      return commentLikeHandler(data);
+    }
+    if (targetValue === "recomment") return setSelectComment(id);
+
+    if (targetValue === "delete") {
+      if (commentType === "comment") {
+        return deleteCommentHandler(data);
+      } else {
+        return deleteRecommentHandler(data);
+      }
+    }
+  };
 
   /**대댓글달기 */
   const submitRecommentHandler = async (description) => {

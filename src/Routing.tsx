@@ -18,6 +18,7 @@ import SignUpMain from "pages/SignUp/SignUpMain";
 import SignUpFormManager from "components/form/User/SignUpFormManager";
 import Landing from "UI/landing/Landing";
 import useUser from "components/form/User/Hook/useUser";
+import NotFound from "pages/notFound/NotFound";
 
 const Routing = () => {
   const { LoginUserData } = useUser();
@@ -28,9 +29,8 @@ const Routing = () => {
         <Route path="/" element={<Landing />} />
         {LoginUserData ? (
           <>
-            <Route path="/main" element={<Main />} />
             <Route
-              path="/category/:id"
+              path="/category/:id/"
               element={
                 <Layout>
                   <Feed />
@@ -48,7 +48,6 @@ const Routing = () => {
               <Route path={":chatId/"} element={<MsgRoom />} />
             </Route>
 
-
             {/* 내정보 */}
             <Route
               path="/mypage"
@@ -59,15 +58,16 @@ const Routing = () => {
               }
             >
               {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
-                <Route path="feedlist" element={<WrittenPost />} />
-          <Route path="commentlist" element={<WrittenComment />} />
-          <Route path="feedlike" element={<LikedPost />} />
-          <Route path="profile" element={<Profile />} />
+              <Route path="feedlist" element={<WrittenPost />} />
+              <Route path="commentlist" element={<WrittenComment />} />
+              <Route path="feedlike" element={<LikedPost />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="/upload" element={<UploadFeed />} />
           </>
         ) : (
           <>
+            <Route path="/main" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup/" element={<SignUp />}>
               <Route path="main" element={<SignUpMain />} />
@@ -77,6 +77,8 @@ const Routing = () => {
           </>
         )}
 
+        {/* notfound */}
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

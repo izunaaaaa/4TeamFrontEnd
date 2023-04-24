@@ -52,7 +52,7 @@ const UploadFeed = () => {
         duration: 3000,
         isClosable: true,
       });
-      navigate("/category/1");
+      navigate(-1);
     },
     onError: () => {
       toast({
