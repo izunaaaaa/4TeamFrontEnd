@@ -15,74 +15,63 @@ export default function Landing() {
     return () => clearInterval(interval);
   }, []);
 
-  const {
-    isOpen: isLoginOpen,
-    onClose: onLoginClose,
-    onOpen: onLoginOpen,
-  } = useDisclosure();
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <h1>CurB</h1>
-        </div>
+   return (
+      <div className={styles.container}>
+         {/* header */}
+         <header className={styles.header}>
+            <div className={styles.logo}>
+               <h1>CurB</h1>
+            </div>
 
-        <div className={styles.login__icon} onClick={() => onLoginOpen()}>
-          <Link to="/">
-            <FaSignInAlt className={styles.hover} />
-          </Link>
-        </div>
-        <Login isOpen={isLoginOpen} onClose={onLoginClose} />
+            <div className={styles.login__icon} onClick={() => setIsLoggedIn(true)}>
+               <Link to='/login'>
+                  <FaSignInAlt className={styles.hover} />
+               </Link>
+            </div>
+         </header>
 
-        {/* login 했을 경우 보여주게 */}
-        {/* <div className={styles.user__icon}>
-               <FaUserCircle />
-            </div> */}
-      </header>
-      <section className={styles.wrapper}>
-        <div className={styles.monitor}>
-          {[...Array(4)].map((_, index) => (
-            <img
-              key={index}
-              alt={`Slide${index + 1}`}
-              src={`https://source.unsplash.com/random/1600x900/?${
-                ["nature", "water", "mountain", "landscape"][index]
-              }`}
-              className={`${styles.slide} ${
-                currentSlide === index ? styles.active : ""
-              }`}
-            />
-          ))}
-          <div className={styles.mobile}>
-            {[...Array(4)].map((_, index) => (
-              <img
-                key={index}
-                alt={`Slide${index + 1}`}
-                src={`https://source.unsplash.com/random/800x1200/?${
-                  ["nature", "water", "mountain", "landscape"][index]
-                }`}
-                className={`${styles.slide} ${
-                  currentSlide === index ? styles.active : ""
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-      <section>{/* landing page or s */}</section>
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <h3>CurB</h3>
-          <ul>
-            {["김두홍", "박현지", "송가연", "이풍현", "임창섭", "최현우"].map(
-              (name) => (
-                <li key={name}>{name}</li>
-              )
-            )}
-          </ul>
-        </div>
-      </footer>
-    </div>
-  );
+         {/* 1번째 섹션*/}
+         <section className={styles.wrapper}>
+            {/* 현재는 랜덤이미지로 보여기제 하였지만,
+            현재 커뮤니티 작업물을 스크린샷을 찍어 이미지를 만든다음 배열로 감싸 넣어서 배열로 뿌려주면 됩니다.
+            다른 더 좋은 방법이 있을껀데.. 있다면 더 좋은 방법을 채택하면 좋을 것 같습니다.
+          */}
+            <div className={styles.monitor}>
+               {[...Array(4)].map((_, index) => (
+                  <img
+                     key={index}
+                     alt={`Slide${index + 1}`}
+                     src={`https://source.unsplash.com/random/1600x900/?${['nature', 'water', 'mountain', 'landscape'][index]}`}
+                     className={`${styles.slide} ${currentSlide === index ? styles.active : ''}`}
+                  />
+               ))}
+               <div className={styles.mobile}>
+                  {[...Array(4)].map((_, index) => (
+                     <img
+                        key={index}
+                        alt={`Slide${index + 1}`}
+                        src={`https://source.unsplash.com/random/800x1200/?${['nature', 'water', 'mountain', 'landscape'][index]}`}
+                        className={`${styles.slide} ${currentSlide === index ? styles.active : ''}`}
+                     />
+                  ))}
+               </div>
+            </div>
+         </section>
+
+         {/* 2번째 섹션 */}
+         <section></section>
+         <footer className={styles.footer}>
+            <div className={styles.footerContent}>
+               <h3>CurB</h3>
+               <ul>
+                  {['김두홍', '박현지', '송가연', '이풍현', '임창섭', '최현우'].map(name => (
+                     <li key={name}>{name}</li>
+                  ))}
+               </ul>
+            </div>
+         </footer>
+      </div>
+   );
 }

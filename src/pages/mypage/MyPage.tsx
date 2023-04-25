@@ -20,45 +20,26 @@ import {
 } from "@chakra-ui/react";
 import FeedDetail from "pages/main/FeedDetail";
 import useMyFeed from "components/mypages/Hook/useMyFeed";
-import { useLocation, useParams } from "react-router-dom";
+import ManagerProfiles from "components/mypages/myProfile/ManagerProfiles";
+import useUser from "components/form/User/Hook/useUser";
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("feedlist");
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isTabMenuFixed, setIsTabMenuFixed] = useState(false);
+  const { LoginUserData } = useUser();
+  const isCoach = LoginUserData.is_coach;
   const [feedData, setFeedData] = useState({});
+  const [isMyPage, setMyPage] = useState(false);
 
+  /**routing */
   const handleTab = (tab: string) => {
     setActiveTab(tab);
+    setMyPage(false);
+  };
+  const myPageHandler = () => {
+    setMyPage(true);
   };
 
   const { data } = useMyFeed(activeTab);
-
-  const activeContentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      const activeContentHeight = activeContentRef.current?.clientHeight || 0;
-      setIsScrolled(scrollTop > 0);
-
-      if (
-        activeContentRef.current &&
-        scrollTop >= activeContentRef.current.offsetTop - activeContentHeight
-      ) {
-        setIsTabMenuFixed(true);
-      } else {
-        setIsTabMenuFixed(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -72,7 +53,10 @@ export default function MyPage() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Center flexDirection="column" margin="150px 0 20px 0">
+      <Center
+        flexDirection="column"
+        margin="var(--nav-medium-height) 0px 30px var(--nav-medium-width)"
+      >
         <HStack listStyleType="none" display="flex" spacing="10">
           <TabMenuItem
             icon={faPenToSquare}
@@ -102,40 +86,44 @@ export default function MyPage() {
             icon={faUser}
             size="lg"
             text="내 정보"
-            tabName="profile"
+            tabName="managerProfile"
             activeTab={activeTab}
-            onClick={handleTab}
+            onClick={myPageHandler}
           />
         </HStack>
-        <Flex border="1px solid black " width="80%" flexWrap="wrap">
-          {data?.pages?.map((feedData: any) =>
-            feedData.results?.map((data: any) => (
-              <AspectRatio
-                key={data.id ? data.id : data.pk}
-                width="33%"
-                padding="5px"
-                justifyContent="center"
-                alignItems="center"
-                ratio={9 / 10}
-                onClick={() => {
-                  setFeedData(data);
-                  onOpen();
-                }}
-              >
-                {data.thumbnail ? (
-                  <Img
-                    src={data.thumbnail}
-                    objectFit="cover"
-                    width="100%"
-                    height="100%"
-                  />
-                ) : (
-                  <p>{data.title}</p>
-                )}
-              </AspectRatio>
-            ))
-          )}
-        </Flex>
+        {isMyPage && isCoach ? (
+          <ManagerProfiles />
+        ) : (
+          <Flex border="1px solid black " width="80%" flexWrap="wrap">
+            {data?.pages?.map((feedData: any) =>
+              feedData.results?.map((data: any) => (
+                <AspectRatio
+                  key={data.id ? data.id : data.pk}
+                  width="33%"
+                  padding="5px"
+                  justifyContent="center"
+                  alignItems="center"
+                  ratio={9 / 10}
+                  onClick={() => {
+                    setFeedData(data);
+                    onOpen();
+                  }}
+                >
+                  {data.thumbnail ? (
+                    <Img
+                      src={data.thumbnail}
+                      objectFit="cover"
+                      width="100%"
+                      height="100%"
+                    />
+                  ) : (
+                    <p>{data.title}</p>
+                  )}
+                </AspectRatio>
+              ))
+            )}
+          </Flex>
+        )}
       </Center>
     </>
   );

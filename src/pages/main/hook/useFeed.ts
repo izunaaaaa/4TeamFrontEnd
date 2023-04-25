@@ -12,7 +12,7 @@ interface UseFeed {
 }
 
 export const useFeed = (
-  groupPk: number,
+  groupPk: string | undefined,
   categoryId: string | undefined
 ): UseFeed => {
   const fallBack: [] = [];
@@ -26,12 +26,12 @@ export const useFeed = (
   } = useInfiniteQuery(
     [Querykey.feedData, categoryId],
     ({
-      pageParam = `/feeds/group/category/?group_id=1&category_id=${categoryId}`,
+      pageParam = `/feeds/group/category/?group_id=${groupPk}&category_id=${categoryId}`,
     }) => getFeeds(pageParam),
     {
       getNextPageParam: (lastpage) => {
         if (lastpage.total_pages - lastpage.now_page > 0)
-          return `/feeds/group/category/?group_id=1&category_id=${categoryId}/?page=${
+          return `/feeds/group/category/?group_id=${groupPk}&category_id=${categoryId}/?page=${
             lastpage.now_page + 1
           }`;
         else {

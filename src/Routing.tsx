@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "pages/SignUp/SignUp";
 import Main from "./pages/main/Main";
@@ -19,9 +19,12 @@ import SignUpFormManager from "components/form/User/SignUpFormManager";
 import Landing from "UI/landing/Landing";
 import useUser from "components/form/User/Hook/useUser";
 import NotFound from "pages/notFound/NotFound";
+import ManagerProfiles from "components/mypages/myProfile/ManagerProfiles";
 
 const Routing = () => {
   const { LoginUserData } = useUser();
+
+  useEffect(() => {}, []);
 
   return (
     <BrowserRouter>
@@ -41,6 +44,7 @@ const Routing = () => {
                 <Route path="feedlike" element={<LikedPost />} />
                 <Route path="profile" element={<Profile />} />
               </Route>
+
             </Route>
             <Route path="/main" element={<Main />} />
             <Route path="/upload" element={<UploadFeed />} />

@@ -6,6 +6,12 @@ export interface DefaultValue {
   description: string;
 }
 
+export interface group {
+  pk: number;
+  name: string;
+  members_count: number;
+}
+
 export interface CropAttribute {
   x: number;
   y: number;

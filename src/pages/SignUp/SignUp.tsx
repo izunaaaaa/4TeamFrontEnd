@@ -7,14 +7,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 const SignUp = (props: any) => {
   const { LoginUserData, isLoading, isError } = useUser();
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     if (!isError) {
-  //       console.log(LoginUserData);
-  //     }
-  //   }
-  // }, [LoginUserData, isLoading, isError]);
-
   return (
     <>
       <Outlet />

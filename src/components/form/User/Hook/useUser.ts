@@ -14,7 +14,13 @@ const useUser = (): UseUser => {
     data: LoginUserData = null,
     isLoading,
     isError,
-  } = useQuery(Querykey.userData, getUserData);
+  } = useQuery(Querykey.userData, getUserData, {
+    retry: false,
+    refetchOnWindowFocus: false,
+    onError: () => {
+      return;
+    },
+  });
 
   return { LoginUserData, isLoading, isError };
 };

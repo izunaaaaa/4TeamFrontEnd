@@ -5,4 +5,5 @@ export const Querykey = {
   feedDetail: "feedDetail",
   feedComment: "feedComment",
   feedCategory: "feedCategory",
+  access: "access",
 };

@@ -1,5 +1,7 @@
 import axios from "axios";
 import { LoginData, SignUpData } from "components/form/User/interface/type";
+import { accessUser } from "components/mypages/interface/type";
+import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
 export const instance = axios.create({
   // baseURL: BASE_URL,
@@ -150,7 +152,29 @@ export const deleteLetters = async (chatId: number) =>
 export const getMyFeed = async (url: string) =>
   await instance.get(url).then((res) => res.data);
 
-// Category
+export const getAccess = async (groupPk: number) =>
+  await instance.get(`/access/group/${groupPk}`).then((res) => res.data);
+
+export const postAccess = async (postAccessData: accessUser, groupPk: number) =>
+  await instance
+    .post(`/access/group/${groupPk}`, postAccessData)
+    .then((res) => res.data);
+
+export const putAccess = async (
+  putAccessData: accessUser,
+  accessInform: accessInform
+) =>
+  await instance
+    .put(
+      `/access/group/${accessInform.groupPk}/${accessInform.userId}`,
+      putAccessData
+    )
+    .then((res) => res.data);
+
+export const deleteAccess = async (accessInform: accessInform) =>
+  await instance
+    .delete(`/access/group/${accessInform.groupPk}/${accessInform.userId}`)
+    .then((res) => res.data);
 
 export const getCategories = async (groupPk: number) => {
   const result = await instance.get(`/categories/${groupPk}`);
