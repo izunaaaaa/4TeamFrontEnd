@@ -1,10 +1,9 @@
 import { getMyFeed } from "api/axios/axiosSetting";
-import React from "react";
 import { useInfiniteQuery } from "react-query";
 
-const useMyFeed = (feedType: string) => {
-  const fallback = [];
-  const { data, isLoading } = useInfiniteQuery(
+const useMyFeed = (feedType: string | undefined) => {
+  const fallback: [] = [];
+  const { data, isLoading = fallback } = useInfiniteQuery(
     ["myFeed", feedType],
     async ({ pageParam = `/users/me/${feedType}/` }) =>
       await getMyFeed(pageParam),
@@ -15,6 +14,11 @@ const useMyFeed = (feedType: string) => {
         else {
           return undefined;
         }
+      },
+      retry: false,
+      refetchOnWindowFocus: false,
+      onError: () => {
+        return;
       },
     }
   );

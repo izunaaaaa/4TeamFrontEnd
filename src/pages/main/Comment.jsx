@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  ButtonGroup,
   Flex,
   HStack,
   Input,
@@ -24,13 +25,15 @@ import {
   deleteRecomment,
   postCommentLike,
   postRecomment,
-  postRecommentLike,
 } from "api/axios/axiosSetting";
 import useUser from "components/form/User/Hook/useUser";
 import useComment from "./hook/useComment";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Querykey } from "api/react-query/QueryKey";
+import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
+import { IoPaperPlaneOutline } from "react-icons/io5";
+import { BsTrash3, BsArrowReturnRight } from "react-icons/bs";
 
 const Comment = (props) => {
   const feedId = props.feedId;
@@ -68,7 +71,6 @@ const Comment = (props) => {
 
   /**댓글/대댓글 좋아요 */
   const { mutate: commentLikeHandler } = useMutation((commentData) => {
-    console.log(commentData);
     postCommentLike(commentData);
   }, successRefetch);
 
@@ -136,41 +138,43 @@ const Comment = (props) => {
               <Flex justifyContent="space-between" marginBottom="2px">
                 <Box fontWeight="bold">익명{index + 1}</Box>
                 <Flex onClick={(e) => btnHandler(e, comment.id, "comment")}>
-                  <Button
-                    backgroundColor={"transparent"}
-                    height="20px"
-                    padding="0 4px"
-                    value="like"
-                  >
-                    <FontAwesomeIcon icon={faThumbsUp} />
-                  </Button>
-                  <Button
-                    backgroundColor={"transparent"}
-                    height="20px"
-                    padding="0 1px"
-                    value="recomment"
-                  >
-                    <FontAwesomeIcon icon={faMessage} />
-                  </Button>
+                  <ButtonGroup spacing="-1.5">
+                    <Button
+                      backgroundColor={"transparent"}
+                      height="20px"
+                      padding="0 2px"
+                      value="like"
+                    >
+                      <FiThumbsUp size="18" />
+                    </Button>
+                    <Button
+                      backgroundColor={"transparent"}
+                      height="20px"
+                      padding="0 2px"
+                      value="recomment"
+                    >
+                      <FiMessageSquare size="18" />
+                    </Button>
 
-                  {comment.user.pk !== LoginUserData.id ? (
-                    <Button
-                      backgroundColor={"transparent"}
-                      height="20px"
-                      padding="0 1px"
-                    >
-                      <FontAwesomeIcon icon={faPaperPlane} />
-                    </Button>
-                  ) : (
-                    <Button
-                      backgroundColor={"transparent"}
-                      height="20px"
-                      padding="0 1px"
-                      value="delete"
-                    >
-                      <FontAwesomeIcon icon={faTrashCan} />
-                    </Button>
-                  )}
+                    {comment.user.pk !== LoginUserData.id ? (
+                      <Button
+                        backgroundColor={"transparent"}
+                        height="20px"
+                        padding="0 2px"
+                      >
+                        <IoPaperPlaneOutline size="18" />
+                      </Button>
+                    ) : (
+                      <Button
+                        backgroundColor={"transparent"}
+                        height="20px"
+                        padding="0 1px"
+                        value="delete"
+                      >
+                        <BsTrash3 />
+                      </Button>
+                    )}
+                  </ButtonGroup>
                 </Flex>
               </Flex>
               <Box fontSize="0.9rem">{comment.description}</Box>
@@ -213,19 +217,14 @@ const Comment = (props) => {
                 </form>
               ) : null}
               {comment.recomment?.map((recomment, index) => (
-                <Flex key={index} marginTop="10px">
+                <Flex key={index} marginTop="10px" width="100%">
                   <Box lineHeight={5} margin="10px">
-                    <FontAwesomeIcon
-                      icon={faArrowTurnUp}
-                      rotation={90}
-                      size="lg"
-                    />
+                    <BsArrowReturnRight />
                   </Box>
                   <Flex
                     key={index}
-                    width="400px"
-                    borderRadius="lg"
-                    borderWidth="1px"
+                    width="100%"
+                    // borderBottom="1px solid #bec1c7"
                   >
                     <Box margin="10px 0 5px 5px">
                       <Avatar
@@ -234,7 +233,11 @@ const Comment = (props) => {
                         src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                       />
                     </Box>
-                    <Box padding="10px" lineHeight="5" width="100%">
+                    <Box
+                      padding="10px 0px 10px 10px"
+                      lineHeight="5"
+                      width="100%"
+                    >
                       <Flex justifyContent="space-between" marginBottom="2px">
                         <Box fontWeight="bold">익명{recomment.pk}</Box>
                         <Flex
@@ -242,32 +245,34 @@ const Comment = (props) => {
                             btnHandler(e, recomment.pk, "recomment")
                           }
                         >
-                          <Button
-                            backgroundColor={"transparent"}
-                            height="20px"
-                            padding="0 4px"
-                            value="like"
-                          >
-                            <FontAwesomeIcon icon={faThumbsUp} />
-                          </Button>
-                          {recomment.user.pk !== LoginUserData.id ? (
+                          <ButtonGroup spacing="-1.5">
                             <Button
                               backgroundColor={"transparent"}
                               height="20px"
-                              padding="0 1px"
+                              padding="0 4px"
+                              value="like"
                             >
-                              <FontAwesomeIcon icon={faPaperPlane} />
+                              <FiThumbsUp />
                             </Button>
-                          ) : (
-                            <Button
-                              backgroundColor={"transparent"}
-                              height="20px"
-                              padding="0 1px"
-                              value="delete"
-                            >
-                              <FontAwesomeIcon icon={faTrashCan} />
-                            </Button>
-                          )}
+                            {recomment.user.pk !== LoginUserData.id ? (
+                              <Button
+                                backgroundColor={"transparent"}
+                                height="20px"
+                                padding="0 1px"
+                              >
+                                <FiMessageSquare />
+                              </Button>
+                            ) : (
+                              <Button
+                                backgroundColor={"transparent"}
+                                height="20px"
+                                padding="0 1px"
+                                value="delete"
+                              >
+                                <BsTrash3 />
+                              </Button>
+                            )}
+                          </ButtonGroup>
                         </Flex>
                       </Flex>
                       <Box fontSize="0.9rem">{recomment.description}</Box>

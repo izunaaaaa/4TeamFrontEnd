@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Landing.module.scss";
-import { FaSignInAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import Login from "components/form/User/Login";
 import { useDisclosure } from "@chakra-ui/react";
 

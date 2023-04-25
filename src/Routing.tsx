@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "pages/SignUp/SignUp";
 import Main from "./pages/main/Main";
@@ -19,6 +18,7 @@ import SignUpFormManager from "components/form/User/SignUpFormManager";
 import Landing from "UI/landing/Landing";
 import useUser from "components/form/User/Hook/useUser";
 import NotFound from "pages/notFound/NotFound";
+import ManagerProfiles from "components/mypages/myProfile/ManagerProfiles";
 
 const Routing = () => {
   const { LoginUserData } = useUser();
@@ -35,19 +35,16 @@ const Routing = () => {
                 <Route path={":chatId/"} element={<MsgRoom />} />
               </Route>
               {/* 내정보 */}
-              <Route path="mypage/" element={<MyPage />}>
+              <Route path="mypage/:type" element={<MyPage />}>
                 {/* 작성글, 작성댓글, 댓글단 글,  좋아요한 글, 삭제한 글 */}
-                <Route path="feedlist" element={<WrittenPost />} />
-                <Route path="commentlist" element={<WrittenComment />} />
-                <Route path="feedlike" element={<LikedPost />} />
-                <Route path="profile" element={<Profile />} />
               </Route>
             </Route>
-            <Route path="/main" element={<Main />} />
             <Route path="/upload" element={<UploadFeed />} />
           </>
         ) : (
           <>
+            <Route path="/main" element={<Main />} />
+
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup/" element={<SignUp />}>

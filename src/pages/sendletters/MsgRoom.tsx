@@ -1,28 +1,10 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Flex,
-  Text,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  Textarea,
-  FormControl,
-  Box,
-  HStack,
-  Badge,
-} from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Flex, useDisclosure, Box } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
-import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { useMutation, useQuery } from "react-query";
-import { getLetters, postLetters } from "api/axios/axiosSetting";
+import { useQuery } from "react-query";
+import { getLetters } from "api/axios/axiosSetting";
 import { useParams } from "react-router-dom";
 import SendMsg from "components/message/SendMsg";
 import TimeStepper from "components/message/TimeStepper";
@@ -43,10 +25,19 @@ export default function MsgRoom() {
     { enabled: chatId !== undefined }
   );
 
+  const [receiver, setReceiver] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (data) {
+      const otherUser = data.find((item) => !item.is_sender);
+      if (otherUser) {
+        setReceiver(otherUser.sender.pk);
+      }
+    }
+  }, [data]);
+
   // chakra ui의 모달 컨트롤 훅
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // 쪽지 전송 기능
 
   return (
     <>
@@ -57,7 +48,7 @@ export default function MsgRoom() {
           return (
             <Flex key={idx} justify={"space-around"}>
               <TimeStepper {...item} nextData={nextData} />
-              <MsgDetail {...item} />
+              <MsgDetail {...item} chatId={chatId} />
             </Flex>
           );
         })}
@@ -66,8 +57,9 @@ export default function MsgRoom() {
           <FontAwesomeIcon icon={faPaperPlane} size="xl" cursor="pointer" />
         </button>
       </Box>
-
-      <SendMsg isOpen={isOpen} onClose={onClose} />
+      {receiver && (
+        <SendMsg isOpen={isOpen} onClose={onClose} receiver={receiver} />
+      )}
     </>
   );
 }
