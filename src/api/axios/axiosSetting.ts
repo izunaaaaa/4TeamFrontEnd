@@ -128,24 +128,29 @@ export const getLetterlists = async () => {
 
 //쪽지 조회
 export const getLetters = async (chatId: number) =>
-  await instance.get(`/letterlist/${chatId}`).then((res) => res.data);
+  await instance.get(`letterlist/${chatId}`).then((res) => res.data);
 
 // 쪽지 보내기
-export const postLetters = async ({
-  receiver,
-  text,
-}: {
-  receiver: number;
-  text: string;
-}) =>
-  await instance
-    .post(`/letterlist/message/`, { receiver, text })
-    .then((res) => res.data);
+// 쪽지 보내기
+export const postLetters = async (data: { receiver: number; text: string }) => {
+  try {
+    console.log("Sending data:", data); // 데이터 출력
+    const response = await axios.post(`  /letterlist/message/`, {
+      receiver: data.receiver,
+      text: data.text,
+    });
+    console.log("Response received:", response.data); // 응답 출력
+    return response.data;
+  } catch (error) {
+    console.error("Error during request:", error);
+    throw error;
+  }
+};
 
 // 쪽지 삭제
-export const deleteLetters = async (chatId: number) =>
+export const deleteLetters = async (textId: number) =>
   await instance
-    .delete(`/letterlist/message/${chatId}`)
+    .delete(`/letterlist/message/${textId}`)
     .then((res) => res.data);
 
 /**MyPage  */

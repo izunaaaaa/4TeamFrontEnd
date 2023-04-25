@@ -3,7 +3,14 @@ import { Text, Box, HStack } from "@chakra-ui/react";
 import { ChatList } from "interface/Interface";
 import { Link } from "react-router-dom";
 
-const MsgList = ({ pk, receiver, created_at }: ChatList) => {
+interface ChatListProps {
+  pk: number;
+  receiver: string;
+  created_at: string;
+  isMobile: boolean;
+}
+
+const MsgList = ({ pk, receiver, created_at, isMobile }: ChatListProps) => {
   const formatDate = (input: string): string => {
     const date = new Date(input);
 
@@ -20,7 +27,10 @@ const MsgList = ({ pk, receiver, created_at }: ChatList) => {
 
   return (
     <>
-      <Link to={`/letterlist/${pk}`}>
+      <Link
+        to={isMobile ? `/letterlist/mobile/${pk}` : `/letterlist/${pk}`}
+        target={isMobile ? "_blank" : "_self"}
+      >
         <Box px={5} py={5} borderBottom={"1px solid black"}>
           <HStack>
             <Text>{receiver}</Text>

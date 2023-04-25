@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { postLetters } from "api/axios/axiosSetting";
 
-interface SendMsgData {
+export interface SendMsgData {
   receiver: number;
   text: string;
 }
@@ -63,10 +63,11 @@ const SendMsg = (props: any) => {
           <FormControl onClick={handleSubmit(onSubmit)}>
             <ModalBody>
               <Input
-                type="hidden"
+                type="number"
                 {...register("receiver")}
                 value={props.receiver}
               />
+
               <Textarea
                 placeholder="보내실 내용을 입력해주세요"
                 {...register("text")}

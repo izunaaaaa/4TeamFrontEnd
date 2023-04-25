@@ -68,8 +68,7 @@ export interface ChatList {
 }
 
 export interface ChatId {
-  sender: Sender;
-  room: ChatList;
+  id: number;
   text: string;
   is_sender: boolean;
 }

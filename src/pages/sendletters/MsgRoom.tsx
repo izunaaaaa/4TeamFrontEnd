@@ -14,6 +14,8 @@ export default function MsgRoom() {
   //pk값 가져오기
   const { chatId: chatIdString } = useParams<{ chatId: string }>();
   const chatId = chatIdString ? parseInt(chatIdString) : undefined;
+  const [receiver, setReceiver] = useState<number | undefined>(undefined);
+  const [id, setId] = useState<number | undefined>(undefined);
 
   // 쪽지 내역 불러오기
   const { data } = useQuery<ChatId[]>(
@@ -27,14 +29,20 @@ export default function MsgRoom() {
     { enabled: chatId !== undefined }
   );
 
-  // receiver 값 상태 관리
-  const [receiver, setReceiver] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    if (data) {
+      const otherUser = data.find((item) => item.is_sender);
+      if (otherUser) {
+        setReceiver(otherUser.id);
+      }
+    }
+  }, [data]);
 
   useEffect(() => {
     if (data) {
-      const otherUser = data.find((item) => !item.is_sender);
-      if (otherUser) {
-        setReceiver(otherUser.sender.pk);
+      const target = data.find((item) => item.id);
+      if (target) {
+        setId(target.id);
       }
     }
   }, [data]);
@@ -51,7 +59,7 @@ export default function MsgRoom() {
           return (
             <Flex key={idx} justify={"space-around"}>
               <TimeStepper {...item} nextData={nextData} />
-              <MsgDetail {...item} chatId={chatId} />
+              <MsgDetail {...item} textId={item.id} />
             </Flex>
           );
         })}
@@ -62,9 +70,7 @@ export default function MsgRoom() {
       </Box>
 
       {/* 쪽지 보내기 모달  */}
-      {receiver && (
-        <SendMsg isOpen={isOpen} onClose={onClose} receiver={receiver} />
-      )}
+      <SendMsg isOpen={isOpen} onClose={onClose} receiver={receiver} />
     </>
   );
 }

@@ -27,12 +27,12 @@ import { deleteLetters } from "api/axios/axiosSetting";
 import { ChatId } from "interface/Interface";
 
 interface MsgDetailProps {
-  chatId?: number;
+  textId?: number;
   text: string;
   is_sender: boolean;
 }
 
-const MsgDetail = ({ text, is_sender, chatId }: MsgDetailProps) => {
+const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
   //마우스 hover 상태 관리
   const [isHovering, setIsHovering] = useState(true);
   const handleMouseEnter = () => {
@@ -99,16 +99,19 @@ const MsgDetail = ({ text, is_sender, chatId }: MsgDetailProps) => {
         <ModalContent>
           <ModalHeader>쪽지를 삭제하시겠습니까?</ModalHeader>
           <ModalCloseButton />
-          <ModalBody></ModalBody>
+          <ModalBody>
+            삭제한 쪽지는 개인 쪽지함에서만 삭제되고, 상대 쪽지함에서는 삭제되지
+            않습니다.{" "}
+          </ModalBody>
 
           <ModalFooter>
-            {chatId && (
+            {textId && (
               <Button
                 colorScheme="red"
                 mr={3}
                 onClick={() => {
-                  if (chatId) {
-                    deleteMutation.mutate(chatId);
+                  if (textId) {
+                    deleteMutation.mutate(textId);
                   }
                 }}
               >

@@ -6,13 +6,7 @@ interface StepperProps extends ChatId {
   nextData: boolean;
 }
 
-const TimeStepper = ({
-  sender,
-  room,
-  text,
-  is_sender,
-  nextData,
-}: StepperProps) => {
+const TimeStepper = ({ text, is_sender, id, nextData }: StepperProps) => {
   return (
     <VStack spacing={7} alignItems="center" mt={"5.2rem"}>
       <Circle
