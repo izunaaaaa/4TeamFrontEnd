@@ -1,18 +1,13 @@
 import { useFeed } from "./hook/useFeed";
 import styles from "./Feed.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelope,
-  faMessage,
-  faThumbsUp,
-} from "@fortawesome/free-regular-svg-icons";
-import { useEffect, useRef, useState } from "react";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Avatar,
   Box,
   Button,
+  Flex,
+  HStack,
   Image,
   Modal,
   ModalBody,
@@ -23,10 +18,7 @@ import {
 } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
 import FeedDetail from "./FeedDetail";
-import DeleteConfirm from "../../UI/DeleteConfirm";
 import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
-import useClickOutside from "UI/header/useClickOutside";
-
 import moment from "moment";
 import "moment/locale/ko";
 import { postFeedLike } from "api/axios/axiosSetting";
@@ -34,28 +26,16 @@ import { useMutation, useQueryClient } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import useUser from "components/form/User/Hook/useUser";
 import { DefaultFeedData } from "./interface/type";
-import useMyFeed from "components/mypages/Hook/useMyFeed";
 import { useRecoilState } from "recoil";
 import { likeState } from "recoil/feedlike";
-
-const myFeedDropDownMenu = ["수정하기", "삭제하기"];
+import FeedOption from "./FeedOption";
+import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
+import { IoPaperPlaneOutline } from "react-icons/io5";
 
 function Feed() {
   const { pk: groupPk, id: categoryId } = useParams();
   const { LoginUserData } = useUser();
-  const { data: myLikeFeed, isLoading: isLikeLoading } = useMyFeed("feedlike");
-  const [select, setSelect] = useRecoilState<any>(likeState);
-
-  /**좋아요 로직 */
-
-  const likeFeed =
-    myLikeFeed?.pages[0]?.results?.map((likefeed: any) => {
-      return likefeed.id;
-    }) ?? [];
-
-  useEffect(() => {
-    setSelect(likeFeed);
-  }, [isLikeLoading]);
+  const [islike, setIsLike] = useRecoilState<any>(likeState);
 
   const {
     feedData,
@@ -63,38 +43,12 @@ function Feed() {
     hasNextPage,
     isFetching,
     isLoading,
-    refetch,
+    refetch: feedRefetch,
   } = useFeed(groupPk, categoryId);
-
-  const navigate = useNavigate();
-
-  const dropdownRef = useRef(null);
-  const [feedOption, setFeedOption] = useState<number[]>([]);
 
   /**게시글 보기 모달 */
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(<FeedDetail />);
-
-  /**feed 드롭다운 메뉴 이벤트 */
-  const dropDownMenuEvent = (e: React.MouseEvent, data: any) => {
-    const eventTarget = e.target as HTMLInputElement;
-    const menuType = eventTarget.innerText;
-    if (menuType === "수정하기") return navigate("/upload", { state: data });
-    if (menuType === "삭제하기") {
-      onOpen();
-      return setModalType(
-        <DeleteConfirm
-          onClose={onClose}
-          feedId={eventTarget.value}
-          refetch={refetch}
-        />
-      );
-    }
-  };
-
-  useClickOutside(dropdownRef, () => {
-    setFeedOption([]);
-  });
 
   /**좋아요누르기 */
   const queryClient = useQueryClient();
@@ -106,7 +60,6 @@ function Feed() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(Querykey.feedData);
-        // setIsLike()
       },
     }
   );
@@ -122,7 +75,7 @@ function Feed() {
         hasMore={hasNextPage}
         className={styles.main}
       >
-        <div className={styles.feeds} ref={dropdownRef}>
+        <div className={styles.feeds}>
           {feedData.pages?.map((pageData: any) =>
             pageData?.results?.map((data: DefaultFeedData) => {
               return (
@@ -133,64 +86,39 @@ function Feed() {
                       size="sm"
                       src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                     />
-                    <h1>
-                      <p>{data.group.name}의 개발자</p>
-                      {moment(data.created_at).fromNow()}
-                    </h1>
+                    <Flex justifyContent="space-between" w="100%">
+                      <h1>
+                        <p>{data.group.name}의 개발자</p>
+                        {moment(data.created_at).fromNow()}
+                      </h1>
+                      <FeedOption
+                        data={data}
+                        LoginUserData={LoginUserData}
+                        feedRefetch={feedRefetch}
+                      />
+                    </Flex>
                   </div>
-                  <div className={styles.feedMenu}>
-                    {LoginUserData?.id === data.user?.pk && (
-                      <button
-                        className={styles.dropDownBtn}
-                        value={data.id}
-                        onClick={() => {
-                          !feedOption.includes(data.id)
-                            ? setFeedOption((select) => [...select, data.id])
-                            : setFeedOption(
-                                feedOption.filter(
-                                  (button) => button !== data.id
-                                )
-                              );
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faEllipsis} size="2x" />
-                      </button>
-                    )}
-                    <ul
-                      className={
-                        feedOption.includes(data.id)
-                          ? styles.menu
-                          : styles.disable
-                      }
-                    >
-                      {myFeedDropDownMenu.map((menu) => (
-                        <li
-                          className={styles.menuList}
-                          key={menu}
-                          value={data.id}
-                          onClick={(e) => dropDownMenuEvent(e, data)}
-                        >
-                          {menu}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <Image src={data.thumbnail} marginBottom="10px" />
-                  <p>{data.title}</p>
-                  <div className={styles.iconDiv}>
+                  {data.thumbnail && (
+                    <Image src={data.thumbnail} margin="20px 0" />
+                  )}
+                  <Box marginBottom="20px" fontSize="1.2rem">
+                    {data.title}
+                  </Box>
+                  <HStack spacing="1px">
                     <Button
-                      padding="5px"
+                      padding="0px 5px"
+                      margin="0px"
                       backgroundColor="transparent"
+                      h="10px"
                       key={data.id}
                       value={data.id}
-                      color={select.includes(data.id) ? "red" : "black"}
-                      leftIcon={<FontAwesomeIcon icon={faThumbsUp} size="lg" />}
+                      color={islike.includes(data.id) ? "red" : "black"}
+                      leftIcon={<FiThumbsUp />}
                       onClick={() => {
-                        !select.includes(data.id)
-                          ? setSelect((select: any) => [...select, data.id])
-                          : setSelect(
-                              select.filter((button: any) => button !== data.id)
+                        !islike.includes(data.id)
+                          ? setIsLike((select: any) => [...select, data.id])
+                          : setIsLike(
+                              islike.filter((likeId: any) => likeId !== data.id)
                             );
                         const feedId = {
                           id: data.id,
@@ -204,24 +132,29 @@ function Feed() {
                     <Button
                       padding="5px"
                       backgroundColor="transparent"
-                      leftIcon={<FontAwesomeIcon icon={faMessage} size="lg" />}
+                      leftIcon={<FiMessageSquare />}
                     >
                       {data.comments_count}
                     </Button>
                     {LoginUserData?.id !== data.user?.pk && (
-                      <Button padding="5px" backgroundColor="transparent">
-                        <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                      </Button>
+                      <Button
+                        padding="3px"
+                        paddingTop="9px"
+                        backgroundColor="transparent"
+                        leftIcon={<IoPaperPlaneOutline />}
+                      ></Button>
                     )}
-                  </div>
+                  </HStack>
 
                   <div
+                    className={styles.comment}
                     onClick={() => {
                       setModalType(
                         <FeedDetail
                           feedData={data}
-                          select={select}
-                          setSelect={setSelect}
+                          data={data}
+                          LoginUserData={LoginUserData}
+                          feedRefetch={feedRefetch}
                         />
                       );
                       onOpen();
@@ -246,7 +179,7 @@ function Feed() {
           {isLoading && <FeedSkeleton />}
         </div>
       </InfiniteScroll>
-      <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalBody>{modalType}</ModalBody>

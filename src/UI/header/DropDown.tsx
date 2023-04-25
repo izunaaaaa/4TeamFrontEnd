@@ -6,7 +6,7 @@ import useClickOutside from "./useClickOutside";
 import { useDisclosure } from "@chakra-ui/react";
 
 const list = [
-  { id: 1, title: "마이페이지", link: "/mypage" },
+  { id: 1, title: "마이페이지", link: "/mypage/feedlist" },
   { id: 2, title: "쪽지", link: "/chattings" },
   { id: 3, title: "글등록", link: "/upload" },
 ];

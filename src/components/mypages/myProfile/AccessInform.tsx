@@ -52,20 +52,11 @@ const AccessInform = (props: any) => {
         loginGroup={loginGroup}
         accessUserInform={accessUserInform}
       />
-      <TableContainer w="90%" marginTop="20px">
-        <Box
-          margin="20px"
-          fontSize="1.2rem"
-          fontWeight="bold"
-          backgroundColor="twitter.50"
-          borderRadius="md"
-          px={5}
-          height="70px"
-          as="button"
-        >
+      <TableContainer w="77%" marginTop="20px">
+        <Box fontSize="1.2rem" fontWeight="bold">
           부트캠프 : {loginGroupName}
         </Box>
-        <Table>
+        <Table textAlign="center">
           <Thead overscroll="auto">
             <Tr>
               <Th>name</Th>
