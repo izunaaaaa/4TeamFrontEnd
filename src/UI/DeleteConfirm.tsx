@@ -1,4 +1,11 @@
-import { Button, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  useToast,
+} from "@chakra-ui/react";
 import { deleteFeed } from "api/axios/axiosSetting";
 import React from "react";
 import { useMutation } from "react-query";
@@ -6,7 +13,6 @@ import styles from "./DeleteConfirm.module.scss";
 
 const DeleteConfirm = (props: any) => {
   const feedId = props.feedId;
-
   const toast = useToast();
 
   const { mutate: deleteFeedHandler, isLoading: deleteFeedLoading } =
@@ -24,18 +30,25 @@ const DeleteConfirm = (props: any) => {
 
   return (
     <>
-      <div className={styles.deleteDiv}>
-        <h1 className={styles.deleteTitle}>삭제하시겠습니까?</h1>
-        <div className={styles.deleteBtnDiv}>
-          <Button
-            isLoading={deleteFeedLoading}
-            onClick={() => deleteFeedHandler(feedId)}
-          >
-            삭제
-          </Button>
-          <Button onClick={props.onClose}>취소</Button>
-        </div>
-      </div>
+      <Modal isOpen={props.isOpen} onClose={props.onClose} size="sm" isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <div className={styles.deleteDiv}>
+              <h1 className={styles.deleteTitle}>삭제하시겠습니까?</h1>
+              <div className={styles.deleteBtnDiv}>
+                <Button
+                  isLoading={deleteFeedLoading}
+                  onClick={() => deleteFeedHandler(feedId)}
+                >
+                  삭제
+                </Button>
+                <Button onClick={props.onClose}>취소</Button>
+              </div>
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

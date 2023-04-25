@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { SidebarData } from "./SidebarData";
 import styles from "./Sidebar.module.scss";
 import { SidebarProps } from "../../interface/Interface";
 import {
@@ -14,8 +13,9 @@ import {
   updateCategory,
 } from "api/axios/axiosSetting";
 import { useMutation, useQueryClient } from "react-query";
-import { useFeed } from "./hook/useFeed";
-import { Category } from "./hook/useFeed";
+import { useFeed } from "./hook/useSide";
+import { Category } from "./hook/useSide";
+import SidebarModal from "./SidebarModal";
 import { Link } from "react-router-dom";
 
 // useQuery : 데이터를 가져올 때
@@ -41,12 +41,10 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     name: string;
   } | null>(null);
 
-  // 관리자 여부를 나타내는 상태
-  const [isAdmin, setIsAdmin] = useState(true);
   const groupPk = 1; // groupPk 값을 1로 설정
   const { categories, refetch } = useFeed(groupPk);
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   // useEffect(() => {
   //   if (!categories) {
@@ -94,12 +92,27 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   );
 
   // 카테고리 삭제
+  const deleteCategoryMutation = useMutation(
+    async ({ groupPk, id }: { groupPk: number; id: number }) => {
+      setTimeout(() => {
+        refetch();
+      }, 100);
+      await deleteCategory(groupPk, id);
+    },
+    {
+      onError: (error: Error) => {
+        console.error("Error deleting category:", error);
+      },
+    }
+  );
+
   // const deleteCategoryMutation = useMutation(
   //   async ({ groupPk, id }: { groupPk: number; id: number }) =>
   //     await deleteCategory(groupPk, id),
   //   {
   //     onSuccess: () => {
   //       refetch();
+  // //       queryClient.invalidateQueries("categories");
   //       console.log("카테고리 삭제");
   //     },
   //     onError: (error: Error) => {
@@ -107,21 +120,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   //     },
   //   }
   // );
-
-  const deleteCategoryMutation = useMutation(
-    async ({ groupPk, id }: { groupPk: number; id: number }) =>
-      await deleteCategory(groupPk, id),
-    {
-      onSuccess: () => {
-        // queryClient.invalidateQueries(["categories"]);
-        refetch();
-        console.log("카테고리 삭제");
-      },
-      onError: (error: Error) => {
-        console.error("Error deleting category:", error);
-      },
-    }
-  );
 
   const toggleAddModal = () => {
     setIsAddModalOpen(!isAddModalOpen); // 채널 추가 모달 창 열림/닫힘 상태 변경
@@ -139,16 +137,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     addCategoryMutation.mutate(name);
   };
 
-  const handleAddChannel = () => {
-    if (newChannelName.trim()) {
-      addCategory(newChannelName);
-      setNewChannelName("");
-      toggleAddModal(); // 모달 창 닫기
-      //refetch();
-      //console.log(newChannelName);
-    }
-  };
-
   const handleUpdateChannel = (newName: string) => {
     if (selectedEditCategory) {
       updateCategoryMutation.mutate({
@@ -157,11 +145,12 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
         newName: newName,
       });
       setUpdatedChannelName("");
+      setSelectedEditCategory(null);
       toggleEditModal(); // Close modal
     }
   };
 
-  const handleDeleteChanner = () => {
+  const handleDeleteChannel = () => {
     if (selectedCategory) {
       deleteCategoryMutation.mutate({
         groupPk: selectedCategory.groupPk,
@@ -169,6 +158,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       });
       setSelectedCategory(null);
       toggleDeleteModal();
+      //refetch();
     }
   };
 
@@ -185,7 +175,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const renderSidebarData = () =>
     categories?.map((item: Category, id: number) => (
       <li key={id} className={styles.nav_text}>
-        <Link to={`/category/${item.id}`}>
+        <Link to={`/${item.group.pk}/category/${item.id}`}>
           <div className={styles.nav_name}>
             <span>{item.name}</span>
           </div>
@@ -215,7 +205,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
 
   const renderDeleteModal = () => {
     const onDelete = () => {
-      handleDeleteChanner();
+      handleDeleteChannel();
     };
 
     return (
@@ -264,6 +254,37 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     );
   };
 
+  const renderAddModal = () => {
+    const handleAddChannel = () => {
+      if (newChannelName.trim()) {
+        addCategory(newChannelName);
+        setNewChannelName("");
+        toggleAddModal(); // 모달 창 닫기
+      }
+    };
+
+    return (
+      <div className={styles.modal} onClick={toggleAddModal}>
+        <div
+          className={styles.modalContent}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2>채널 추가</h2>
+          <input
+            type="text"
+            value={newChannelName}
+            onChange={(e) => setNewChannelName(e.target.value)}
+            placeholder="채널 이름 입력"
+          />
+          <div>
+            <button onClick={handleAddChannel}>추가</button>
+            <button onClick={toggleAddModal}>취소</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <nav
@@ -276,27 +297,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
           {renderAddChannelButton()}
         </ul>
       </nav>
-
-      {isAddModalOpen && (
-        <div className={styles.modal} onClick={toggleAddModal}>
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2>채널 추가</h2>
-            <input
-              type="text"
-              value={newChannelName}
-              onChange={(e) => setNewChannelName(e.target.value)}
-              placeholder="채널 이름 입력"
-            />
-            <div>
-              <button onClick={handleAddChannel}>추가</button>
-              <button onClick={toggleAddModal}>취소</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {isAddModalOpen && renderAddModal()}
       {isDeleteModalOpen && renderDeleteModal()}
       {isEditModalOpen && renderEditModal()}
     </>

@@ -1,103 +1,65 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Flex,
-  Text,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  Textarea,
-  FormControl,
-  Box,
-  HStack,
-} from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Flex, useDisclosure, Box } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
-import { useForm } from "react-hook-form";
 import MsgDetail from "../../components/message/MsgDetail";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { useMutation, useQuery } from "react-query";
-import { getLetters, postLetters } from "api/axios/axiosSetting";
+import { useQuery } from "react-query";
+import { getLetters } from "api/axios/axiosSetting";
 import { useParams } from "react-router-dom";
-import { Chattings } from "interface/Interface";
+import SendMsg from "components/message/SendMsg";
+import TimeStepper from "components/message/TimeStepper";
+import { ChatId } from "interface/Interface";
 
 export default function MsgRoom() {
-  const { id } = useParams();
+  const { chatId: chatIdString } = useParams<{ chatId: string }>();
+  const chatId = chatIdString ? parseInt(chatIdString) : undefined;
 
-  //api 호출
-  const { data } = useQuery<Chattings[]>(["letters", Number(id)], () =>
-    getLetters(Number(id))
+  const { data } = useQuery<ChatId[]>(
+    ["letters", chatId],
+    () => {
+      if (chatId === undefined) {
+        throw new Error("Invalid chatId");
+      }
+      return getLetters(chatId);
+    },
+    { enabled: chatId !== undefined }
   );
 
-  console.log(data);
-  const sendLetter = useMutation(["postLetters", Number(id)], (data: string) =>
-    postLetters(Number(id), data)
-  );
+  const [receiver, setReceiver] = useState<number | undefined>(undefined);
 
-  //쪽지 모달 폼 관리
-  const { register, handleSubmit } = useForm();
+  useEffect(() => {
+    if (data) {
+      const otherUser = data.find((item) => !item.is_sender);
+      if (otherUser) {
+        setReceiver(otherUser.sender.pk);
+      }
+    }
+  }, [data]);
+
   // chakra ui의 모달 컨트롤 훅
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // 쪽지 전송 기능
-  const onSubmit = async (data: any) => {
-    const sendContent = data.description.trim();
-    if (sendContent === "") {
-    } else {
-      console.log(sendContent);
-      sendLetter.mutate({ ...sendContent });
-      onClose();
-    }
-  };
-
   return (
     <>
-      <Flex
-        textAlign={"right"}
-        flexDirection="column"
-        justifyContent="flex-end"
-      >
+      <Box bgColor={"#F5F6CE"} w="60vw" h="100vmax">
         {/* 주고받은 쪽지내역 */}
-        {data?.map((item: Chattings, idx: any) => {
+        {data?.map((item: ChatId, idx: number) => {
+          const nextData = idx < data.length - 1;
           return (
-            <Flex key={idx} mt={"5"} maxW={100} justifyContent="flex-end">
-              <MsgDetail {...item} />
+            <Flex key={idx} justify={"space-around"}>
+              <TimeStepper {...item} nextData={nextData} />
+              <MsgDetail {...item} chatId={chatId} />
             </Flex>
           );
         })}
-      </Flex>
 
-      <HStack onClick={onOpen} cursor="pointer" margin="2rem">
-        <FontAwesomeIcon icon={faPaperPlane} size="xl" />
-      </HStack>
-
-      {/* 모달 */}
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>쪽지</ModalHeader>
-          <FormControl onClick={handleSubmit(onSubmit)}>
-            <ModalBody>
-              <Textarea
-                placeholder="보내실 내용을 입력해주세요"
-                {...register("description")}
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button type="submit" colorScheme="blue" mr={3}>
-                Send
-              </Button>
-              <Button color="black" onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
-          </FormControl>
-        </ModalContent>
-      </Modal>
+        <button onClick={onOpen} style={{ margin: "50px" }}>
+          <FontAwesomeIcon icon={faPaperPlane} size="xl" cursor="pointer" />
+        </button>
+      </Box>
+      {receiver && (
+        <SendMsg isOpen={isOpen} onClose={onClose} receiver={receiver} />
+      )}
     </>
   );
 }

@@ -1,14 +1,14 @@
 import React, { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import styled from "styled-components";
 import styles from "./SearchBar.module.scss";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 
-interface autoDatas {
+interface AutoDatas {
   city: string;
   growth_from_2000_to_2013: string;
   latitude: number;
@@ -33,7 +33,9 @@ interface Tag {
 
 function SearchBar() {
   const [keyword, setKeyword] = useState<string>("");
-  const [keyItems, setKeyItems] = useState<autoDatas[]>([]);
+
+  // 자동 완성 제안 배열을 저장
+  const [keyItems, setKeyItems] = useState<AutoDatas[]>([]);
   const onChangeData = (e: React.FormEvent<HTMLInputElement>) => {
     setKeyword(e.currentTarget.value);
   };
@@ -63,22 +65,16 @@ function SearchBar() {
     }
   }, [data, keyword]);
 
+  const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
   const searchbarRef = useRef<HTMLDivElement | null>(null);
 
-  const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
+  const toggleSearchbar = async () => {
+    setSearchbarVisible(!searchbarVisible);
+  };
 
   useClickOutside(searchbarRef, () => {
     setSearchbarVisible(false);
   });
-
-  useEffect(() => {
-    if (keyword) {
-      setSearchbarVisible(true);
-      refetch();
-    } else {
-      setSearchbarVisible(false);
-    }
-  }, [keyword]);
 
   return (
     <>
@@ -89,7 +85,7 @@ function SearchBar() {
           placeholder="Search text"
           value={keyword}
           onChange={onChangeData}
-          onClick={() => setSearchbarVisible(true)}
+          onClick={toggleSearchbar}
         />
         <FontAwesomeIcon
           className={styles.searchIcon}
@@ -100,7 +96,7 @@ function SearchBar() {
       {searchbarVisible && keyItems.length > 0 && keyword && (
         <div className={styles.autoSearchContainer} ref={searchbarRef}>
           <ul>
-            {keyItems.map((search, idx) => (
+            {keyItems.map((search) => (
               <li
                 className={styles.autoSearchData}
                 key={search.city}
@@ -108,7 +104,9 @@ function SearchBar() {
                   setKeyword(search.city);
                 }}
               >
-                <a href="#">{search.city}</a>
+                <Link to={`/feeds/${search.city}`}>
+                  <span>{search.city}</span>
+                </Link>
               </li>
             ))}
           </ul>

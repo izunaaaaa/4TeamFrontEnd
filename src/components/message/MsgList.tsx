@@ -1,40 +1,35 @@
 import React from "react";
-import {
-  Divider,
-  Text,
-  Avatar,
-  Box,
-  Flex,
-  HStack,
-  VStack,
-} from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { Chattings } from "interface/Interface";
+import { Text, Box, HStack } from "@chakra-ui/react";
+import { ChatList } from "interface/Interface";
 import { Link } from "react-router-dom";
 
-const MsgList: React.FC<Chattings> = ({ user, created_at, messages }) => {
-  const avatarUrl = messages.sender?.avatar || "https://bit.ly/broken-link";
+const MsgList = ({ pk, receiver, created_at }: ChatList) => {
+  const formatDate = (input: string): string => {
+    const date = new Date(input);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hour = String(date.getHours()).padStart(2, "0");
+    const minute = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}/${month}/${day} ${hour}:${minute}`;
+  };
+
+  const formattedDate = formatDate(created_at);
 
   return (
-    <Link to={`/chattings/${messages.room}`}>
-      <VStack spacing={2} h="5rem" maxW={"500px"}>
-        <Box>
-          <Flex
-            alignItems="center"
-            justifyContent="space-between"
-            px={10}
-            py={4}
-          >
-            <HStack>
-              <Avatar src={avatarUrl} />
-              {user.username && <Text>{user.username}</Text>}
-              {created_at && <Text>{created_at}</Text>}
-            </HStack>
-          </Flex>
+    <>
+      <Link to={`/letterlist/${pk}`}>
+        <Box px={5} py={5} borderBottom={"1px solid black"}>
+          <HStack>
+            <Text>{receiver}</Text>
+          </HStack>
+
+          <Text my={3}>{formattedDate}</Text>
         </Box>
-      </VStack>
-    </Link>
+      </Link>
+    </>
   );
 };
 

@@ -44,8 +44,8 @@ export interface DefaultFeedData {
   visited: number;
   created_at: string;
   updated_at: string;
-  like_count: string;
-  comments_count: string;
+  like_count: number;
+  comments_count: number;
   highest_like_comments: [Comment];
   is_like: string;
   comment: [Comment];
