@@ -11,9 +11,11 @@ import TimeStepper from "components/message/TimeStepper";
 import { ChatId } from "interface/Interface";
 
 export default function MsgRoom() {
+  //pk값 가져오기
   const { chatId: chatIdString } = useParams<{ chatId: string }>();
   const chatId = chatIdString ? parseInt(chatIdString) : undefined;
 
+  // 쪽지 내역 불러오기
   const { data } = useQuery<ChatId[]>(
     ["letters", chatId],
     () => {
@@ -25,6 +27,7 @@ export default function MsgRoom() {
     { enabled: chatId !== undefined }
   );
 
+  // receiver 값 상태 관리
   const [receiver, setReceiver] = useState<number | undefined>(undefined);
 
   useEffect(() => {
@@ -41,7 +44,7 @@ export default function MsgRoom() {
 
   return (
     <>
-      <Box bgColor={"#F5F6CE"} w="60vw" h="100vmax">
+      <Box bgColor={"#F5F6CE"} w="60vw" h="100vh">
         {/* 주고받은 쪽지내역 */}
         {data?.map((item: ChatId, idx: number) => {
           const nextData = idx < data.length - 1;
@@ -57,6 +60,8 @@ export default function MsgRoom() {
           <FontAwesomeIcon icon={faPaperPlane} size="xl" cursor="pointer" />
         </button>
       </Box>
+
+      {/* 쪽지 보내기 모달  */}
       {receiver && (
         <SendMsg isOpen={isOpen} onClose={onClose} receiver={receiver} />
       )}

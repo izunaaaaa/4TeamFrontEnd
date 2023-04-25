@@ -20,30 +20,23 @@ function Mailbox() {
   //받은 쪽지함
   //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
   return (
-    <Flex mt={"5rem"} minH={"100vmax"}>
+    <Flex mt={"5rem"} h={"100vh"} maxH={"100%"}>
       <Box minW="500px" border={"1px solid lightgray"} bg={"lightgray"}>
-        {data?.length ? (
-          data?.map((item: ChatList, idx: number) => {
-            return (
-              <Box
-                key={idx}
-                bg={"#FAFAFA"}
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                _hover={{ bg: "#848484", cursor: "pointer" }}
-                ml={isMobile ? 0 : "15.5rem"}
-                minW="400px"
-              >
-                <MsgList {...item} />
-              </Box>
-            );
-          })
-        ) : (
-          <div>
-            <LetterSkeleton />
-            <LetterSkeleton />
-          </div>
-        )}
+        {data?.map((item: ChatList, idx: number) => {
+          return (
+            <Box
+              key={idx}
+              bg={"#FAFAFA"}
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+              _hover={{ bg: "#848484", cursor: "pointer" }}
+              ml={isMobile ? 0 : "15.5rem"}
+              minW="400px"
+            >
+              <MsgList {...item} />
+            </Box>
+          );
+        })}
       </Box>
       <Outlet />
     </Flex>

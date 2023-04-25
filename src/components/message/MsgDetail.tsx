@@ -49,9 +49,11 @@ const MsgDetail = ({ text, is_sender, chatId }: MsgDetailProps) => {
   const deleteMutation = useMutation(deleteLetters, {
     onSuccess: () => {
       queryClient.invalidateQueries("text");
+      onClose();
     },
     onError: (error) => {
-      console.error("Error deleting letter:", error);
+      console.error("에러!!", error);
+      onClose();
     },
   });
 
