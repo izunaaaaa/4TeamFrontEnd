@@ -48,8 +48,9 @@ function Feed() {
 
   /**좋아요 로직 */
 
+  console.log(myLikeFeed);
   const likeFeed =
-    myLikeFeed?.pages[0]?.results.map((likefeed: any) => {
+    myLikeFeed?.pages[0]?.results?.map((likefeed: any) => {
       return likefeed.id;
     }) ?? [];
 

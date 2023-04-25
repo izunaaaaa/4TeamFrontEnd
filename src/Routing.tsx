@@ -28,6 +28,7 @@ const Routing = () => {
       <Routes>
         {LoginUserData ? (
           <>
+            {/* <Route path="/landing" element={<Landing />} /> */}
             <Route path="/" element={<Layout />}>
               <Route path=":pk/category/:id" element={<Feed />} />
               <Route path="letterlist/" element={<Mailbox />}>
