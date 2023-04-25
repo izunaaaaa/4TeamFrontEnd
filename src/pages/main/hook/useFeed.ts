@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import { getFeeds } from "api/axios/axiosSetting";
+import { useNavigate } from "react-router-dom";
 
 interface UseFeed {
   feedData: any;
@@ -15,6 +16,7 @@ export const useFeed = (
   groupPk: string | undefined,
   categoryId: string | undefined
 ): UseFeed => {
+  const navigate = useNavigate();
   const fallBack: [] = [];
   const {
     data: feedData = fallBack,
@@ -37,6 +39,9 @@ export const useFeed = (
         else {
           return undefined;
         }
+      },
+      onError: () => {
+        navigate("/error");
       },
     }
   );
