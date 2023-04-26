@@ -41,18 +41,19 @@ export default function MsgRoom() {
   // receiver_pk 불러오기
 
   const resultPk = useQuery<LetterList[]>("Letterlists", getLetterlists);
-  const [receiverPks, setReceiverPks] = useState<number[]>([]);
+  const [receiverPk, setReceiverPk] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     if (resultPk.data) {
-      const receiverPksArray = resultPk.data.map(
-        (chat: LetterList) => chat.receiver_pk
+      const targetReceiver = resultPk.data.find(
+        (chat: LetterList) => chat.pk === chatId
       );
-      setReceiverPks(receiverPksArray);
+      if (targetReceiver) {
+        setReceiverPk(targetReceiver.receiver_pk);
+        console.log("Receiver PK:", targetReceiver.receiver_pk); // 확인용 로그
+      }
     }
-  }, [resultPk.data]);
-
-  // 쪽지 내역 불러오기
+  }, [resultPk.data, chatId]);
 
   // chakra ui의 모달 컨트롤 훅
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -77,7 +78,7 @@ export default function MsgRoom() {
       </Box>
 
       {/* 쪽지 보내기 모달  */}
-      <SendMsg isOpen={isOpen} onClose={onClose} receiver={receiverPks} />
+      <SendMsg isOpen={isOpen} onClose={onClose} receiver={receiverPk} />
     </>
   );
 }
