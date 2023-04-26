@@ -1,7 +1,9 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Flex,
+  FormLabel,
   HStack,
   Input,
   InputGroup,
@@ -163,21 +165,37 @@ const ManagerProfiles = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Box width="78%">
+        <Box width="100%" justifySelf="flex-start" alignSelf="flex-start">
           <form className={styles.accessForm} onSubmit={handleSubmit(onSubmit)}>
             <label className={styles.inputLabel}>수강생 목록 업로드</label>
             <InputGroup>
-              <InputLeftAddon
-                children={<FontAwesomeIcon icon={faFile} />}
-                h="45px"
-              />
-              <HStack spacing={0.5}>
-                <Input
-                  placeholder="업로드 버튼을 눌러주세요."
-                  defaultValue={fileName}
-                  fontSize="0.9rem"
-                  h="45px"
-                />
+              <HStack
+                spacing={0.5}
+                width={{
+                  base: "100%",
+                  md: "55%",
+                }}
+                flexDirection={{
+                  base: "column",
+                  md: "row",
+                }}
+              >
+                <Flex flexDirection="row" width="100%">
+                  <InputLeftAddon
+                    children={<FontAwesomeIcon icon={faFile} />}
+                    h="45px"
+                  />
+                  <Input
+                    placeholder="업로드 버튼을 눌러주세요."
+                    defaultValue={fileName}
+                    fontSize="0.9rem"
+                    h="45px"
+                    width={{
+                      base: "100%",
+                      md: "400px",
+                    }}
+                  />
+                </Flex>
                 <Input
                   id="groupFile"
                   h="45px"
@@ -197,12 +215,29 @@ const ManagerProfiles = () => {
                     },
                   })}
                 />
-                <label className={styles.uploadFile} htmlFor="groupFile">
-                  업로드
-                </label>
-                <Button h="45px" width="140px" type="submit">
-                  제출하기
-                </Button>
+
+                <ButtonGroup spacing={0}>
+                  <Button
+                    h="40px"
+                    width="120px"
+                    padding="0"
+                    w="80px"
+                    margin="9px"
+                  >
+                    <FormLabel htmlFor="groupFile" margin="0" fontWeight="bold">
+                      업로드
+                    </FormLabel>
+                  </Button>
+                  <Button
+                    h="40px"
+                    w="80px"
+                    type="submit"
+                    margin="9px"
+                    colorScheme="twitter"
+                  >
+                    제출
+                  </Button>
+                </ButtonGroup>
               </HStack>
             </InputGroup>
           </form>

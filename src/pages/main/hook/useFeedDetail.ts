@@ -10,7 +10,7 @@ interface UseFeedDetail {
   refetch: any;
 }
 
-const useFeedDetail = (feedID: number): UseFeedDetail => {
+const useFeedDetail = (feedID: string | undefined): UseFeedDetail => {
   const fallBack: [] = [];
   const {
     data: feedDetail = fallBack,

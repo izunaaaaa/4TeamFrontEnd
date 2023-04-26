@@ -33,7 +33,7 @@ export const useFeed = (
     {
       getNextPageParam: (lastpage) => {
         if (lastpage.total_pages - lastpage.now_page > 0)
-          return `/feeds/group/category/?group_id=${groupPk}&category_id=${categoryId}/?page=${
+          return `/feeds/group/category/?group_id=${groupPk}&category_id=${categoryId}&page=${
             lastpage.now_page + 1
           }`;
         else {
