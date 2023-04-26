@@ -44,7 +44,7 @@ export const postFeedLike = async (feedId: any) =>
     .post(`/likes/feedlike/${feedId?.id}`, feedId)
     .then((res) => res.data);
 
-export const getFeedDetail = async (feedId: number) =>
+export const getFeedDetail = async (feedId: string | undefined) =>
   await instance.get(`/feeds/${feedId}/`).then((res) => {
     return res.data;
   });

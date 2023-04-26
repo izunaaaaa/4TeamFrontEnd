@@ -168,65 +168,96 @@ const UploadFeed = () => {
         </Center>
       )}
 
-      <Flex justifyContent="center" margin="20px">
+      <Flex
+        justifyContent="center"
+        margin={{
+          md: "80px 0px 30px var(--nav-medium-width)",
+          sm: "8.7em 0px 0px 0px",
+        }}
+        h="100%"
+      >
         <form
           onSubmit={handleSubmit(submitHandler)}
           className={styles.postForm}
         >
           <div className={styles.postFormHeader}>
-            <button onClick={() => navigate("/home")}>
+            <Button onClick={() => navigate(-1)}>
               <FontAwesomeIcon icon={faArrowLeft} />
-            </button>
+            </Button>
             {feedDetail ? (
-              <h3>게시물 수정하기</h3>
+              <Box lineHeight={2} fontSize="xl">
+                게시물 수정하기
+              </Box>
             ) : (
-              <h3>새 게시물 작성하기</h3>
+              <Box lineHeight={2} fontSize="xl">
+                새 게시물 작성하기
+              </Box>
             )}
-            <button onSubmit={handleSubmit(submitHandler)}>업로드하기</button>
+            <Button type="submit" onSubmit={handleSubmit(submitHandler)}>
+              업로드하기
+            </Button>
           </div>
 
           <div className={styles.postFormMain}>
-            {(cropImg || feedDetail?.thumnail) && (
-              <Box left="1%" top="1%">
-                <Button onClick={() => setCropImg(null)}>x</Button>
-              </Box>
-            )}
-            <div className={styles.fileForm}>
-              {feedDetail?.thumbnail ? (
-                <>
-                  <img
-                    alt=" "
-                    className={styles.previewImg}
-                    src={feedDetail.thumbnail}
-                  />
-                  <Button position="absolute">x</Button>
-                </>
-              ) : !cropImg ? (
-                <>
-                  <input
-                    type="file"
-                    {...register("image")}
-                    accept="image/*"
-                    onChange={changeImg}
-                  />
-                  <button>
-                    <FontAwesomeIcon
-                      icon={faCloudArrowUp}
-                      size="5x"
-                      style={{ color: "skyblue" }}
+            <Flex
+              flexDirection="column"
+              width={{
+                md: "50%",
+                sm: "100%",
+              }}
+            >
+              <div className={styles.fileForm}>
+                {feedDetail?.thumbnail ? (
+                  <>
+                    <img
+                      alt=" "
+                      className={styles.previewImg}
+                      src={feedDetail.thumbnail}
                     />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <img alt=" " className={styles.previewImg} src={cropImg} />
-                </>
+                  </>
+                ) : !cropImg ? (
+                  <>
+                    <input
+                      type="file"
+                      {...register("image")}
+                      accept="image/*"
+                      onChange={changeImg}
+                    />
+                    <button>
+                      <FontAwesomeIcon
+                        icon={faCloudArrowUp}
+                        size="5x"
+                        style={{ color: "skyblue" }}
+                      />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <img alt=" " className={styles.previewImg} src={cropImg} />
+                  </>
+                )}
+              </div>
+              {(cropImg || feedDetail?.thumnail) && (
+                <Box textAlign="center">
+                  <Button marginTop="5px" onClick={() => setCropImg(null)}>
+                    사진 삭제
+                  </Button>
+                </Box>
               )}
-            </div>
+            </Flex>
 
-            <Flex flexDirection="column" w="450px" padding="10px">
+            <Flex
+              flexDirection="column"
+              width={{
+                md: "50%",
+                sm: "100%",
+              }}
+              padding="10px"
+              height="100%"
+            >
               <Select
                 placeholder="카테고리를 입력해주세요"
+                h="40px"
                 size="sm"
                 {...register("category", {})}
               >
@@ -242,6 +273,7 @@ const UploadFeed = () => {
                 placeholder="제목을 입력하세요."
                 marginTop="10px"
                 type="text"
+                minH="40px"
                 defaultValue={feedDetail ? feedDetail.title : null}
                 {...register("title", {})}
               />
@@ -250,7 +282,7 @@ const UploadFeed = () => {
                 placeholder="내용을 입력해주세요..."
                 {...register("description")}
                 resize="none"
-                h={"50%"}
+                h={"100%"}
               />
             </Flex>
           </div>

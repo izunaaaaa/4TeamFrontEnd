@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
   }
   :root {
     --nav-medium-width: 250px;
-    --nav-medium-height : 7em;
+    --nav-medium-height : 6em;
   }
  
 

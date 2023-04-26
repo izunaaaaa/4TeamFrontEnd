@@ -39,7 +39,7 @@ function Header(): ReactElement {
       {mediaWidth > 767 ? (
         <>
           <div className={styles.nav_bar}>
-            <Link to={"/category/133"}>
+            <Link to={"/home"}>
               <h1>CurB</h1>
             </Link>
             <div className={styles.rightWrapper}>
