@@ -42,10 +42,6 @@ function Feed() {
     refetch: feedRefetch,
   } = useFeed(groupPk, categoryId);
 
-  /**게시글 보기 모달 */
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [modalType, setModalType] = useState(<FeedDetail />);
-
   return (
     <>
       <InfiniteScroll
@@ -109,15 +105,6 @@ function Feed() {
                   <div
                     className={styles.comment}
                     onClick={() => {
-                      setModalType(
-                        <FeedDetail
-                          feedData={data}
-                          data={data}
-                          LoginUserData={LoginUserData}
-                          feedRefetch={feedRefetch}
-                        />
-                      );
-
                       navigate(
                         `/${groupPk}/category/${categoryId}/feedDetail/${data.id}`
                       );
