@@ -68,8 +68,16 @@ export interface ChatList {
 }
 
 export interface ChatId {
-  sender: Sender;
-  room: ChatList;
+  id: number;
   text: string;
   is_sender: boolean;
+}
+
+export interface LetterList {
+  pk: number;
+  receiver: string;
+  receiver_pk: number;
+  created_at: string;
+  letter_count: number;
+  last_letter: string;
 }

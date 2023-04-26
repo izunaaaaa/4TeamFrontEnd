@@ -1,18 +1,13 @@
 import React from "react";
-import { Box, SkeletonCircle, SkeletonText, Flex } from "@chakra-ui/react";
+import { Box, Circle, Text } from "@chakra-ui/react";
 
 const LetterSkeleton = () => {
   return (
     <>
       <Box padding={6} maxW={"100vmin"} bg={"lightgray"}>
         <Box padding="6" boxShadow="md" bg="white" mb="5">
-          <SkeletonCircle size="10" />
-          <SkeletonText
-            mt="3rem"
-            noOfLines={4}
-            spacing="4"
-            skeletonHeight="2"
-          />
+          <Circle size="10" />
+          <Text>쪽지를 보내거나 받으면 쪽지함이 생성됩니다.</Text>
         </Box>
       </Box>
     </>
