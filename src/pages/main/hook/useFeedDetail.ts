@@ -17,7 +17,7 @@ const useFeedDetail = (feedID: string | undefined): UseFeedDetail => {
     isLoading,
     refetch,
   } = useQuery([Querykey.feedDetail, feedID], () => getFeedDetail(feedID));
-
+  //
   return { feedDetail, isLoading, refetch };
 };
 
