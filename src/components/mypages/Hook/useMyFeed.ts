@@ -3,6 +3,7 @@ import { useInfiniteQuery } from "react-query";
 
 const useMyFeed = (feedType: string | undefined) => {
   const fallback: [] = [];
+  //
   const {
     data,
     isLoading = fallback,
