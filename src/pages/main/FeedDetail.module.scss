@@ -1,8 +1,20 @@
+.writerName {
+  display: flex;
+  margin-bottom: 5px;
+  h1 {
+    font-size: 0.6rem;
+    margin-left: 5px;
+  }
+  p {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+}
 .feedDetailDiv {
-  padding: 20px 0px 0px 0px;
+  padding: 30px 5px 10px 5px;
   margin: 0 auto;
   max-height: 500px;
-  max-width: 90%;
+  max-width: 100%;
   overflow-y: scroll;
 
   /* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
@@ -13,18 +25,7 @@
   img {
     width: 100%;
   }
-  .writerName {
-    display: flex;
-    margin-bottom: 5px;
-    h1 {
-      font-size: 0.6rem;
-      margin-left: 5px;
-    }
-    p {
-      font-size: 0.9rem;
-      font-weight: bold;
-    }
-  }
+
   .feedTitle {
     margin: 10px 0 0 0;
     font-weight: bold;
@@ -35,34 +36,14 @@
   }
 }
 .commentInput {
-  border-top: 1.5px solid grey;
+  border-top: 1px solid #bec1c7;
   opacity: 0.8;
   display: flex;
-  padding: 10px;
+  padding: 20px;
+  height: 70px;
   justify-content: space-around;
   textarea {
     width: 80%;
     resize: none;
-  }
-}
-
-.menu {
-  z-index: 100;
-  list-style: none;
-  position: absolute;
-  background-color: aliceblue;
-  border-radius: 20px;
-  width: 200px;
-  right: 10px;
-}
-.disable {
-  display: none;
-}
-.menuList {
-  padding: 10px 8px;
-  &:hover {
-    background-color: black;
-    color: white;
-    border-radius: 20px;
   }
 }

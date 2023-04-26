@@ -8,9 +8,11 @@ import {
   Center,
   Heading,
   HStack,
+  Img,
 } from "@chakra-ui/react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import codingImg from "../../images/coding.png";
+import readingImg from "../../images/reading.png";
 
 const SignUpMain = () => {
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ const SignUpMain = () => {
             justifyContent="space-around"
           >
             <CardHeader>
-              <Avatar size="2xl" />
+              <Img src={readingImg} w="150px" />
             </CardHeader>
             <Heading size="md">수강생</Heading>
 
@@ -49,13 +51,8 @@ const SignUpMain = () => {
             flexDirection="column"
             justifyContent="space-around"
           >
-            <CardHeader>
-              <Avatar
-                size="2xl"
-                src="
-              https://e7.pngegg.com/pngimages/65/690/png-clipart-laptop-computer-icons-user-system-administrator-programmer-case-closed-miscellaneous-electronics.png
-              "
-              />
+            <CardHeader marginTop="10px">
+              <Img src={codingImg} w="140px" />
             </CardHeader>
             <Heading size="md">매니저</Heading>
 

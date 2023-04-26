@@ -1,5 +1,8 @@
 import {
+  Box,
   Button,
+  Flex,
+  HStack,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -8,7 +11,7 @@ import {
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postAccessList } from "api/axios/axiosSetting";
-import React, { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { userValue } from "components/form/User/interface/type";
@@ -19,11 +22,7 @@ import useAccess from "../Hook/useAccess";
 import AccessInform from "./AccessInform";
 
 const ManagerProfiles = () => {
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-  } = useForm();
+  const { handleSubmit, register } = useForm();
   const toast = useToast();
 
   const { LoginUserData } = useUser();
@@ -158,49 +157,63 @@ const ManagerProfiles = () => {
 
   return (
     <>
-      <form className={styles.accessForm} onSubmit={handleSubmit(onSubmit)}>
-        <label className={styles.inputLabel}>수강생 목록 업로드</label>
-        <InputGroup>
-          <InputLeftAddon
-            children={<FontAwesomeIcon icon={faFile} />}
-            h="50px"
-          />
-          <Input
-            placeholder="업로드 버튼을 눌러주세요."
-            defaultValue={fileName}
-            fontSize="0.9rem"
-          />
-          <Input
-            id="groupFile"
-            type="file"
-            accept=".xlsx, .xls"
-            {...register("groupFile", {
-              required: "필수입니다.",
-              onChange: (e) => {
-                handleFileUpload(e);
-              },
-              validate: {
-                check: () => {
-                  if (fileDataRef.current.length === 0) {
-                    return "데이터가 부정확합니다.";
-                  }
-                },
-              },
-            })}
-          />
-          <label className={styles.uploadFile} htmlFor="groupFile">
-            업로드
-          </label>
-          <Button height="50px" width="140px" type="submit">
-            제출하기
-          </Button>
-        </InputGroup>
-      </form>
-      <AccessInform
-        groupAccess={groupAccess}
-        loginGroup={loginGroup}
-        LoginUserData={LoginUserData}
-      />
+      <Flex
+        w="100%"
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box width="78%">
+          <form className={styles.accessForm} onSubmit={handleSubmit(onSubmit)}>
+            <label className={styles.inputLabel}>수강생 목록 업로드</label>
+            <InputGroup>
+              <InputLeftAddon
+                children={<FontAwesomeIcon icon={faFile} />}
+                h="45px"
+              />
+              <HStack spacing={0.5}>
+                <Input
+                  placeholder="업로드 버튼을 눌러주세요."
+                  defaultValue={fileName}
+                  fontSize="0.9rem"
+                  h="45px"
+                />
+                <Input
+                  id="groupFile"
+                  h="45px"
+                  type="file"
+                  accept=".xlsx, .xls"
+                  {...register("groupFile", {
+                    required: "필수입니다.",
+                    onChange: (e) => {
+                      handleFileUpload(e);
+                    },
+                    validate: {
+                      check: () => {
+                        if (fileDataRef.current.length === 0) {
+                          return "데이터가 부정확합니다.";
+                        }
+                      },
+                    },
+                  })}
+                />
+                <label className={styles.uploadFile} htmlFor="groupFile">
+                  업로드
+                </label>
+                <Button h="45px" width="140px" type="submit">
+                  제출하기
+                </Button>
+              </HStack>
+            </InputGroup>
+          </form>
+        </Box>
+
+        <AccessInform
+          groupAccess={groupAccess}
+          loginGroup={loginGroup}
+          LoginUserData={LoginUserData}
+        />
+      </Flex>
     </>
   );
 };

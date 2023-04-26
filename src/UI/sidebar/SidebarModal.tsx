@@ -1,59 +1,126 @@
-import { useState } from "react";
-import styles from "./Modal.module.scss";
+import React from "react";
+import styles from "./SidebarModal.module.scss";
 
-interface ModalProps {
-  isOpen: boolean;
-  title: string;
-  message: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-  confirmLabel: string;
-  cancelLabel: string;
+export interface SidebarModalProps {
+  type: "add" | "edit" | "delete" | null;
+  data: any;
+  handleModal: (type: "add" | "edit" | "delete" | null, data?: any) => void;
+  handleAction: (type: "add" | "edit" | "delete", data: any) => void;
 }
 
-function SidebarModal({
-  isOpen,
-  title,
-  message,
-  onConfirm,
-  onCancel,
-  confirmLabel,
-  cancelLabel,
-}: ModalProps) {
-  const [isModalOpen, setIsModalOpen] = useState(isOpen);
-
-  const handleConfirm = () => {
-    onConfirm();
-    setIsModalOpen(false);
+const SidebarModal: React.FC<SidebarModalProps> = ({
+  type,
+  data,
+  handleModal,
+  handleAction,
+}) => {
+  const handleSubmit = () => {
+    if (type) {
+      handleAction(type, data);
+    }
   };
 
-  const handleCancel = () => {
-    onCancel();
-    setIsModalOpen(false);
-  };
+  const renderModalContent = () => {
+    switch (type) {
+      case "add":
+        return (
+          <div className={styles.modalinner}>
+            <h2>채널 추가</h2>
+            <input
+              type="text"
+              value={data}
+              onChange={(e) => handleModal(type, e.target.value)}
+              placeholder="채널 이름 입력"
+            />
+            <div>
+              <button
+                className={styles.sideBtn_le}
+                type="button"
+                onClick={handleSubmit}
+              >
+                추가
+              </button>
+              <button
+                className={styles.sideBtn_ri}
+                type="button"
+                onClick={() => handleModal(null)}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        );
+      case "edit":
+        return (
+          <div className={styles.modalinner}>
+            <h2>채널 수정</h2>
+            <input
+              type="text"
+              value={data.name}
+              onChange={(e) => handleModal(type, e.target.value)}
+              placeholder="채널 이름 입력"
+            />
+            <div>
+              <button
+                className={styles.sideBtn_le}
+                type="button"
+                onClick={handleSubmit}
+              >
+                <p>수정</p>
+              </button>
+              <button
+                className={styles.sideBtn_ri}
+                type="button"
+                onClick={() => handleModal(null)}
+              >
+                <p>취소</p>
+              </button>
+            </div>
+          </div>
+        );
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      setIsModalOpen(false);
+      case "delete":
+        return (
+          <div className={styles.modalinner}>
+            <h2>카테고리 삭제</h2>
+            <p>정말로 삭제하시겠습니까?</p>
+            <div>
+              <button
+                className={styles.sideBtn_le}
+                type="button"
+                onClick={handleSubmit}
+              >
+                삭제
+              </button>
+              <button
+                className={styles.sideBtn_ri}
+                type="button"
+                onClick={() => handleModal(null)}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        );
+      default:
+        return null;
     }
   };
 
   return (
     <>
-      {isModalOpen && (
-        <div className={styles.modal} onClick={handleClick}>
-          <div className={styles.modalContent}>
-            <h2>{title}</h2>
-            <p>{message}</p>
-            <div className={styles.buttons}>
-              <button onClick={handleConfirm}>{confirmLabel}</button>
-              <button onClick={handleCancel}>{cancelLabel}</button>
-            </div>
+      {type && (
+        <div className={styles.modal} onClick={() => handleModal(null)}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {renderModalContent()}
           </div>
         </div>
       )}
     </>
   );
-}
+};
 
 export default SidebarModal;

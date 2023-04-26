@@ -6,7 +6,7 @@ import useClickOutside from "./useClickOutside";
 import { useDisclosure } from "@chakra-ui/react";
 
 const list = [
-  { id: 1, title: "마이페이지", link: "/mypage" },
+  { id: 1, title: "마이페이지", link: "/mypage/feedlist" },
   { id: 2, title: "쪽지", link: "/chattings" },
   { id: 3, title: "글등록", link: "/upload" },
 ];
@@ -38,7 +38,7 @@ function DropDown() {
       >
         <div className={styles.myFrofile}>
           <img
-            src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"
+            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
             alt="fofile"
           ></img>
         </div>

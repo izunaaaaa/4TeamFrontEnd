@@ -17,6 +17,7 @@ import { useFeed } from "./hook/useSide";
 import { Category } from "./hook/useSide";
 import SidebarModal from "./SidebarModal";
 import { Link } from "react-router-dom";
+import useUser from "components/form/User/Hook/useUser";
 
 // useQuery : 데이터를 가져올 때
 // useMutation : 데이터를 변경, 추가 또는 삭제
@@ -27,30 +28,24 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   // 수정된 카테고리 상태 변수
   const [updatedChannelName, setUpdatedChannelName] = useState("");
 
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // 채널 추가 모달 창 상태 변수
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 카테고리 삭제 모달 창 상태 변수
   const [selectedCategory, setSelectedCategory] = useState<{
     groupPk: number;
     id: number;
   } | null>(null);
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 채널 수정 모달 창 상태 변수
-  const [selectedEditCategory, setSelectedEditCategory] = useState<{
-    groupPk: number;
-    id: number;
-    name: string;
-  } | null>(null);
+  const [modal, setModal] = useState<{
+    type: "add" | "delete" | "edit" | null;
+    data: any;
+  }>({ type: null, data: "" });
 
   const groupPk = 1; // groupPk 값을 1로 설정
   const { categories, refetch } = useFeed(groupPk);
 
+  // 코치 여부 확인
+  const { LoginUserData } = useUser();
+
   // const queryClient = useQueryClient();
 
-  // useEffect(() => {
-  //   if (!categories) {
-  //     refetch();
-  //   }
-  // }, []);
   useEffect(() => {
     refetch();
   }, []);
@@ -106,70 +101,61 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     }
   );
 
-  // const deleteCategoryMutation = useMutation(
-  //   async ({ groupPk, id }: { groupPk: number; id: number }) =>
-  //     await deleteCategory(groupPk, id),
-  //   {
-  //     onSuccess: () => {
-  //       refetch();
-  // //       queryClient.invalidateQueries("categories");
-  //       console.log("카테고리 삭제");
-  //     },
-  //     onError: (error: Error) => {
-  //       console.error("Error deleting category:", error);
-  //     },
-  //   }
-  // );
-
-  const toggleAddModal = () => {
-    setIsAddModalOpen(!isAddModalOpen); // 채널 추가 모달 창 열림/닫힘 상태 변경
+  const handleModal = (
+    type: "add" | "delete" | "edit" | null,
+    data: any = ""
+  ) => {
+    setModal({ type, data });
   };
 
-  const toggleDeleteModal = () => {
-    setIsDeleteModalOpen(!isDeleteModalOpen); // 카테고리 삭제 모달 창 열림/닫힘 상태 변경
-  };
-
-  const toggleEditModal = () => {
-    setIsEditModalOpen(!isEditModalOpen);
-  };
-
-  const addCategory = async (name: string) => {
-    addCategoryMutation.mutate(name);
-  };
-
-  const handleUpdateChannel = (newName: string) => {
-    if (selectedEditCategory) {
-      updateCategoryMutation.mutate({
-        groupPk: selectedEditCategory.groupPk,
-        id: selectedEditCategory.id,
-        newName: newName,
-      });
-      setUpdatedChannelName("");
-      setSelectedEditCategory(null);
-      toggleEditModal(); // Close modal
+  const handleAddChannel = (name: string) => {
+    if (name.trim()) {
+      addCategoryMutation.mutate(name);
+      handleModal(null);
     }
   };
 
-  const handleDeleteChannel = () => {
-    if (selectedCategory) {
+  const handleUpdateChannel = ({
+    groupPk,
+    id,
+    newName,
+  }: {
+    groupPk: number;
+    id: number;
+    newName: string;
+  }) => {
+    if (newName.trim()) {
+      updateCategoryMutation.mutate({
+        groupPk,
+        id,
+        newName,
+      });
+    }
+  };
+
+  const handleDeleteChannel = (category: { groupPk: number; id: number }) => {
+    if (category) {
       deleteCategoryMutation.mutate({
-        groupPk: selectedCategory.groupPk,
-        id: selectedCategory.id,
+        groupPk: category.groupPk,
+        id: category.id,
       });
       setSelectedCategory(null);
-      toggleDeleteModal();
-      //refetch();
+      handleModal(null);
     }
   };
 
-  const openEditModal = (groupPk: number, id: number, name: string) => {
-    setSelectedEditCategory({ groupPk, id, name });
-    toggleEditModal();
-  };
-
-  const deleteCategorytModal = (groupPk: number, id: number) => {
-    setSelectedCategory({ groupPk, id });
-    toggleDeleteModal();
+  const handleAction = (type: "add" | "edit" | "delete", data: any) => {
+    if (type === "add") {
+      handleAddChannel(data);
+    } else if (type === "edit" && selectedCategory) {
+      handleUpdateChannel({
+        groupPk: selectedCategory.groupPk,
+        id: selectedCategory.id,
+        newName: data.name,
+      });
+    } else if (type === "delete" && data) {
+      handleDeleteChannel(data);
+    }
   };
 
   const renderSidebarData = () =>
@@ -180,110 +166,42 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
             <span>{item.name}</span>
           </div>
         </Link>
-        <div className={styles.faiconContent}>
-          <div onClick={() => openEditModal(item.group.pk, item.id, item.name)}>
-            <span>
-              <FontAwesomeIcon icon={faPen} />
-            </span>
+        {LoginUserData.is_coach && (
+          <div className={styles.faiconContent}>
+            <div
+              onClick={() =>
+                handleModal("edit", {
+                  groupPk: item.group.pk,
+                  id: item.id,
+                  name: item.name,
+                })
+              }
+            >
+              <span>
+                <FontAwesomeIcon icon={faPen} />
+              </span>
+            </div>
+            <div
+              onClick={() =>
+                handleModal("delete", { groupPk: item.group.pk, id: item.id })
+              }
+            >
+              <span>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+            </div>
           </div>
-          <div onClick={() => deleteCategorytModal(item.group.pk, item.id)}>
-            <span>
-              <FontAwesomeIcon icon={faTrash} />
-            </span>
-          </div>
-        </div>
+        )}
       </li>
     ));
 
   const renderAddChannelButton = () => (
-    <li className={styles.nav_text} onClick={toggleAddModal}>
+    <li className={styles.nav_text} onClick={() => handleModal("add")}>
       <span>
         <FontAwesomeIcon icon={faCirclePlus} size="lg" /> 채널 추가
       </span>
     </li>
   );
-
-  const renderDeleteModal = () => {
-    const onDelete = () => {
-      handleDeleteChannel();
-    };
-
-    return (
-      <div className={styles.modal} onClick={toggleDeleteModal}>
-        <div
-          className={styles.modalContent}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <h2>카테고리 삭제</h2>
-          <p>정말로 삭제하시겠습니까?</p>
-          <div>
-            <button onClick={onDelete}>삭제</button>
-            <button onClick={toggleDeleteModal}>취소</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderEditModal = () => {
-    const onUpdate = () => {
-      if (selectedEditCategory && updatedChannelName.trim()) {
-        handleUpdateChannel(updatedChannelName);
-      }
-    };
-
-    return (
-      <div className={styles.modal} onClick={toggleEditModal}>
-        <div
-          className={styles.modalContent}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <h2>채널 수정</h2>
-          <input
-            type="text"
-            value={updatedChannelName}
-            onChange={(e) => setUpdatedChannelName(e.target.value)}
-            placeholder="채널 이름 입력"
-          />
-          <div>
-            <button onClick={onUpdate}>수정</button>
-            <button onClick={toggleEditModal}>취소</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderAddModal = () => {
-    const handleAddChannel = () => {
-      if (newChannelName.trim()) {
-        addCategory(newChannelName);
-        setNewChannelName("");
-        toggleAddModal(); // 모달 창 닫기
-      }
-    };
-
-    return (
-      <div className={styles.modal} onClick={toggleAddModal}>
-        <div
-          className={styles.modalContent}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <h2>채널 추가</h2>
-          <input
-            type="text"
-            value={newChannelName}
-            onChange={(e) => setNewChannelName(e.target.value)}
-            placeholder="채널 이름 입력"
-          />
-          <div>
-            <button onClick={handleAddChannel}>추가</button>
-            <button onClick={toggleAddModal}>취소</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -294,12 +212,15 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       >
         <ul className={styles.navmenu_items}>
           {renderSidebarData()}
-          {renderAddChannelButton()}
+          {LoginUserData.is_coach && renderAddChannelButton()}
         </ul>
       </nav>
-      {isAddModalOpen && renderAddModal()}
-      {isDeleteModalOpen && renderDeleteModal()}
-      {isEditModalOpen && renderEditModal()}
+      <SidebarModal
+        type={modal.type}
+        data={modal.data}
+        handleModal={handleModal}
+        handleAction={handleAction}
+      />
     </>
   );
 }
