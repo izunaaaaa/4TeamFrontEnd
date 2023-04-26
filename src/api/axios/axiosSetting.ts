@@ -202,3 +202,10 @@ export const updateCategory = async (
   await instance.put(`/categories/${groupPk}/${id}/`, { name }).then((res) => {
     return res.data;
   });
+
+export const getSearchData = async (groupId: number, keyword: string) => {
+  const result = await instance.get(
+    `/feeds/group/search/?group_id=${groupId}&keyword=${keyword}`
+  );
+  return result.data;
+};
