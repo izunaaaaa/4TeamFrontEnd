@@ -14,12 +14,12 @@ const FeedOption = (props: any) => {
   const refetchFeed = props.feedRefetch;
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [feedOption, setFeedOption] = useState(null);
+  const [feedOption, setFeedOption] = useState(false);
   const feedIdRef = useRef<string>();
   const dropdownRef = useRef(null);
 
   useClickOutside(dropdownRef, () => {
-    setFeedOption(null);
+    setFeedOption(false);
   });
 
   /**feed 드롭다운 메뉴 이벤트 */
@@ -42,32 +42,19 @@ const FeedOption = (props: any) => {
         refetch={refetchFeed}
       />
 
-      {/* <div className={styles.feedMenu}> */}
       {LoginUserData?.id === data.user?.pk && (
         <button
           className={styles.dropDownBtn}
           value={data.id}
           onClick={() => {
-            // !feedOption.includes(data.id)
-            //   ? setFeedOption((select) => [...select, data.id])
-            //   : setFeedOption(
-            //       feedOption.filter((button) => button !== data.id)
-            //     );
-
-            setFeedOption(data.id);
+            setFeedOption(!feedOption);
           }}
         >
           <HiEllipsisVertical size="26" />
         </button>
       )}
-      {feedOption === data.id && (
-        <ul
-          className={
-            // feedOption.includes(data.id)
-            styles.menu
-          }
-          ref={dropdownRef}
-        >
+      {feedOption && (
+        <ul className={styles.menu} ref={dropdownRef}>
           {myFeedDropDownMenu.map((menu) => (
             <li
               className={styles.menuList}

@@ -1,7 +1,7 @@
 import { useFeed } from "./hook/useFeed";
 import styles from "./Feed.module.scss";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -21,21 +21,17 @@ import FeedDetail from "./FeedDetail";
 import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
 import moment from "moment";
 import "moment/locale/ko";
-import { postFeedLike } from "api/axios/axiosSetting";
-import { useMutation, useQueryClient } from "react-query";
-import { Querykey } from "api/react-query/QueryKey";
 import useUser from "components/form/User/Hook/useUser";
 import { DefaultFeedData } from "./interface/type";
-import { useRecoilState } from "recoil";
-import { likeState } from "recoil/feedlike";
 import FeedOption from "./FeedOption";
-import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
+import { FiMessageSquare } from "react-icons/fi";
 import { IoPaperPlaneOutline } from "react-icons/io5";
+import LikeBtn from "./LikeBtn";
 
 function Feed() {
   const { pk: groupPk, id: categoryId } = useParams();
   const { LoginUserData } = useUser();
-  const [islike, setIsLike] = useRecoilState<any>(likeState);
+  const navigate = useNavigate();
 
   const {
     feedData,
@@ -49,24 +45,6 @@ function Feed() {
   /**게시글 보기 모달 */
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(<FeedDetail />);
-
-  /**좋아요누르기 */
-  const queryClient = useQueryClient();
-
-  const { mutate: likeHandler } = useMutation(
-    (feedID: object) => {
-      return postFeedLike(feedID);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(Querykey.feedData);
-      },
-    }
-  );
-
-  const onLike = (feedId: any, likeCount: number) => {
-    likeHandler(feedId);
-  };
 
   return (
     <>
@@ -105,29 +83,11 @@ function Feed() {
                     {data.title}
                   </Box>
                   <HStack spacing="1px">
-                    <Button
-                      padding="0px 5px"
-                      margin="0px"
-                      backgroundColor="transparent"
-                      h="10px"
-                      key={data.id}
-                      value={data.id}
-                      color={islike.includes(data.id) ? "red" : "black"}
-                      leftIcon={<FiThumbsUp />}
-                      onClick={() => {
-                        !islike.includes(data.id)
-                          ? setIsLike((select: any) => [...select, data.id])
-                          : setIsLike(
-                              islike.filter((likeId: any) => likeId !== data.id)
-                            );
-                        const feedId = {
-                          id: data.id,
-                        };
-                        onLike(feedId, data.like_count);
-                      }}
-                    >
-                      <Box color="black">{data.like_count}</Box>
-                    </Button>
+                    <LikeBtn
+                      id={data.id}
+                      likeCount={data.like_count}
+                      isLike={data.is_like}
+                    />
 
                     <Button
                       padding="5px"
@@ -157,7 +117,10 @@ function Feed() {
                           feedRefetch={feedRefetch}
                         />
                       );
-                      onOpen();
+
+                      navigate(
+                        `/${groupPk}/category/${categoryId}/feedDetail/${data.id}`
+                      );
                     }}
                   >
                     댓글모두 보기
@@ -166,25 +129,38 @@ function Feed() {
               );
             })
           )}
+
           {isFetching && (
-            <Spinner
-              thickness="5px"
-              speed="0.75s"
-              emptyColor="gray.200"
-              color="pink.100"
-              size={{ lg: "xl", md: "lg", base: "lg" }}
-              margin="30px 5% 30px 34%"
-            />
+            <Box margin="20px 5% 0px 15%" width="500px">
+              <Box textAlign="center">
+                <Spinner
+                  thickness="5px"
+                  speed="0.75s"
+                  emptyColor="gray.200"
+                  color="pink.100"
+                  size={{ lg: "xl", md: "lg", base: "lg" }}
+                />
+              </Box>
+            </Box>
           )}
           {isLoading && <FeedSkeleton />}
         </div>
       </InfiniteScroll>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
+      {/* <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={{
+          md: "xl",
+          sm: "sm",
+        }}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalBody>{modalType}</ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
+      <Outlet />
     </>
   );
 }

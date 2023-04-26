@@ -33,6 +33,9 @@ export const login = async (data: LoginData) =>
 export const getUserData = async () =>
   await instance.get(`/users/me/`).then((res) => res.data);
 
+/**검색데이터 */
+export const getSearchData = async () => {};
+
 /**Feed */
 export const getFeeds = async (url: string) =>
   await instance.get(url).then((res) => {
@@ -44,7 +47,7 @@ export const postFeedLike = async (feedId: any) =>
     .post(`/likes/feedlike/${feedId?.id}`, feedId)
     .then((res) => res.data);
 
-export const getFeedDetail = async (feedId: number) =>
+export const getFeedDetail = async (feedId: undefined | string) =>
   await instance.get(`/feeds/${feedId}/`).then((res) => {
     return res.data;
   });

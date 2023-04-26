@@ -20,7 +20,7 @@
   position: fixed;
   top: 0;
   background-color: white;
-  z-index: 100;
+  z-index: 1000;
   background-color: pink;
 }
 .sidebar_top {
@@ -52,7 +52,7 @@
 .nav_barMobile h1 {
   font-size: 2rem;
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .searchWrapper {
     width: 80%;
     height: 50px;
