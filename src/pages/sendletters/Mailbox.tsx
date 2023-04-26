@@ -21,7 +21,7 @@ function Mailbox() {
   //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
   return (
     <Flex mt={"5rem"} h={"100vh"} maxH={"100%"}>
-      <Box maxW="500px" border={"1px solid lightgray"} bg={"lightgray"}>
+      <Box maxW="600px" border={"1px solid lightgray"} bg={"lightgray"}>
         {data?.map((item: ChatList, idx: number) => {
           return (
             <Box

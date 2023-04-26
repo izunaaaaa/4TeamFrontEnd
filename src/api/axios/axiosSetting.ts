@@ -131,11 +131,9 @@ export const getLetters = async (chatId: number) =>
   await instance.get(`letterlist/${chatId}`).then((res) => res.data);
 
 // 쪽지 보내기
-// 쪽지 보내기
 export const postLetters = async (data: { receiver: number; text: string }) => {
   try {
-    console.log("Sending data:", data); // 데이터 출력
-    const response = await axios.post(`  /letterlist/message/`, {
+    const response = await instance.post(`/letterlist/message/`, {
       receiver: data.receiver,
       text: data.text,
     });

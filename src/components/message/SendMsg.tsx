@@ -63,7 +63,7 @@ const SendMsg = (props: any) => {
           <FormControl onClick={handleSubmit(onSubmit)}>
             <ModalBody>
               <Input
-                type="number"
+                type="hidden"
                 {...register("receiver")}
                 value={props.receiver}
               />

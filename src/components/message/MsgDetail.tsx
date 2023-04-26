@@ -61,12 +61,11 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
     <Flex>
       {/* 쪽지 내역 */}
       <Box
-        mt={10}
         padding="6"
         boxShadow="xl"
         bgColor={is_sender ? "#F7FE2E" : "white"}
-        w={"20vw"}
-        h={"25vh"}
+        w={"13rem"}
+        h={"10rem"}
         cursor={"pointer"}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
