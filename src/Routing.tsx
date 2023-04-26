@@ -19,6 +19,7 @@ import Landing from "UI/landing/Landing";
 import useUser from "components/form/User/Hook/useUser";
 import NotFound from "pages/notFound/NotFound";
 import ManagerProfiles from "components/mypages/myProfile/ManagerProfiles";
+import MobileMsg from "pages/sendletters/MobileMsg";
 
 const Routing = () => {
   const { LoginUserData } = useUser();
@@ -31,6 +32,7 @@ const Routing = () => {
             {/* <Route path="/landing" element={<Landing />} /> */}
             <Route path="/" element={<Layout />}>
               <Route path=":pk/category/:id" element={<Feed />} />
+              <Route path="letterlist/mobile/:chatId" element={<MobileMsg />} />
               <Route path="letterlist/" element={<Mailbox />}>
                 <Route path={":chatId/"} element={<MsgRoom />} />
               </Route>
