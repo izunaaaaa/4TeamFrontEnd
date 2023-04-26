@@ -36,7 +36,7 @@ function Header(): ReactElement {
 
   return (
     <>
-      {mediaWidth > 768 ? (
+      {mediaWidth > 767 ? (
         <>
           <div className={styles.nav_bar}>
             <Link to={"/category/133"}>
