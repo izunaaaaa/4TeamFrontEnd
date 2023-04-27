@@ -80,6 +80,7 @@ export default function MsgRoom() {
               key={idx}
               mb={10}
               ml={10}
+              mt={5}
               justifyContent={item.is_sender ? "flex-end" : "flex-start"}
               alignItems={"center"}
               px={5}
@@ -89,8 +90,9 @@ export default function MsgRoom() {
             </Flex>
           );
         })}
+        {receiverPk && <SendMsgBar receiver={receiverPk} />}
       </Box>
-      <SendMsgBar receiver={receiverPk} />
+      {/* <SendMsgBar receiver={receiverPk} /> */}
     </>
   );
 }

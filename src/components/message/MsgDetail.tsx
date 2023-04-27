@@ -10,6 +10,7 @@ import {
   Badge,
   Flex,
   VStack,
+  Input,
 } from "@chakra-ui/react";
 import {
   Modal,
@@ -21,10 +22,9 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperclip, faScissors } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteLetters } from "api/axios/axiosSetting";
-import { ChatId } from "interface/Interface";
 
 interface MsgDetailProps {
   textId?: number;
@@ -34,7 +34,7 @@ interface MsgDetailProps {
 
 const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
   //마우스 hover 상태 관리
-  const [isHovering, setIsHovering] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
   const handleMouseEnter = () => {
     setIsHovering(true);
   };
@@ -44,7 +44,7 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
 
   //삭제 모달 관리
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  // 삭제 처리 로직
   const queryClient = useQueryClient();
   const deleteMutation = useMutation(deleteLetters, {
     onSuccess: () => {
@@ -70,7 +70,7 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
         <HStack justifyContent={is_sender ? "flex-end" : "flex-start"}>
           {isHovering && (
             <button onClick={onOpen}>
-              <FontAwesomeIcon icon={faScissors} />
+              <FontAwesomeIcon icon={faTrashCan} />
             </button>
           )}
           <Text color={is_sender ? "white" : "black"}>{text}</Text>

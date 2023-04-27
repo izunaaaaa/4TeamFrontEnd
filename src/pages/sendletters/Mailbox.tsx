@@ -19,7 +19,7 @@ function Mailbox() {
   const [isHovering, setIsHovering] = useState(false);
 
   // 브라우저 화면 크기 설정하는 chakra 내장함수
-  const [isMobile] = useMediaQuery("(max-width: 480px)");
+  const [isMobile] = useMediaQuery("(max-width: 769px)");
 
   //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
 
@@ -38,8 +38,7 @@ function Mailbox() {
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         _hover={{ bg: "#848484", cursor: "pointer" }}
-        w={isMobile ? "400px" : "600px"}
-        maxW="400px"
+        w={isMobile ? "100vw" : "400px"}
       >
         <MsgList {...item} isMobile={isMobile} isHovering={isHovering} />
       </Box>
@@ -48,9 +47,9 @@ function Mailbox() {
 
   return (
     <Flex
-      mt={"5rem"}
       h={"100vh"}
       maxH={"100%"}
+      mt={isMobile ? "8rem" : "5rem"}
       ml={isMobile ? 0 : "15.5rem"}
       position={"fixed"}
       overscrollY={"auto"}
