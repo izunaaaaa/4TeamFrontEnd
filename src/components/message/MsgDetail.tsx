@@ -47,8 +47,16 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
   // 삭제 처리 로직
   const queryClient = useQueryClient();
   const deleteMutation = useMutation(deleteLetters, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("text");
+    onSuccess: (deletedTextId) => {
+      queryClient.setQueryData<MsgDetailProps[] | undefined>(
+        ["letters", textId],
+        (oldData) => {
+          if (oldData) {
+            return oldData.filter((item) => item.textId !== deletedTextId);
+          }
+          return oldData;
+        }
+      );
       onClose();
     },
     onError: (error) => {
@@ -61,7 +69,7 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
     <>
       <Box
         p="2"
-        maxW="65%"
+        maxW="25vw"
         bgColor={is_sender ? "purple.500" : "gray.200"}
         borderRadius="lg"
         onMouseEnter={handleMouseEnter}
@@ -96,6 +104,7 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
                 onClick={() => {
                   if (textId) {
                     deleteMutation.mutate(textId);
+                    onClose();
                   }
                 }}
               >
