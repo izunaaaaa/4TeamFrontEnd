@@ -77,7 +77,7 @@ function SearchBar() {
       {searchbarVisible && searchResults && keyword.length > 0 && (
         <div className={styles.autoSearchContainer} ref={searchbarRef}>
           <ul>
-            {searchResults.result?.map((result: Type) => (
+            {searchResults?.result?.map((result: Type) => (
               <li
                 className={styles.autoSearchData}
                 key={result.id}
