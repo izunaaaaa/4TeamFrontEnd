@@ -4,11 +4,15 @@ import MsgList from "../../components/message/MsgList";
 import { useQuery } from "react-query";
 import { getLetterlists } from "api/axios/axiosSetting";
 import LetterSkeleton from "UI/Skeleton/LetterSkeleton";
-import { ChatList } from "interface/Interface";
+import { LetterList } from "interface/Interface";
 import { Outlet } from "react-router-dom";
+import SkeletonUI from "UI/Skeleton/SkeletonUI";
+import EmptyMsg from "./EmptyMsg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 function Mailbox() {
-  const { isLoading, error, data } = useQuery<ChatList[]>(
+  const { isLoading, error, data } = useQuery<LetterList[]>(
     "Letterlists",
     getLetterlists
   );
@@ -17,27 +21,42 @@ function Mailbox() {
   // 브라우저 화면 크기 설정하는 chakra 내장함수
   const [isMobile] = useMediaQuery("(max-width: 480px)");
 
-  //받은 쪽지함
   //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
+
+  const renderChatList = () => {
+    if (isLoading || !data) {
+      return <LetterSkeleton />;
+    }
+    if (data && data.length === 0) {
+      return <EmptyMsg />;
+    }
+
+    return data.map((item: LetterList, idx: number) => (
+      <Box
+        key={idx}
+        bg={"#FAFAFA"}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        _hover={{ bg: "#848484", cursor: "pointer" }}
+        w={isMobile ? "400px" : "600px"}
+        maxW="400px"
+      >
+        <MsgList {...item} isMobile={isMobile} isHovering={isHovering} />
+      </Box>
+    ));
+  };
+
   return (
-    <Flex mt={"5rem"} h={"100vh"} maxH={"100%"}>
-      <Box maxW="600px" border={"1px solid lightgray"} bg={"lightgray"}>
-        {data?.map((item: ChatList, idx: number) => {
-          return (
-            <Box
-              key={idx}
-              bg={"#FAFAFA"}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-              _hover={{ bg: "#848484", cursor: "pointer" }}
-              w={isMobile ? "100vw" : "500px"}
-              ml={isMobile ? 0 : "15.5rem"}
-              minW="400px"
-            >
-              <MsgList {...item} isMobile={isMobile} />
-            </Box>
-          );
-        })}
+    <Flex
+      mt={"5rem"}
+      h={"100vh"}
+      maxH={"100%"}
+      ml={isMobile ? 0 : "15.5rem"}
+      position={"fixed"}
+      overscrollY={"auto"}
+    >
+      <Box maxW="600px" border={"1px solid lightgray"} bg={"white"}>
+        {renderChatList()}
       </Box>
       <Outlet />
     </Flex>
