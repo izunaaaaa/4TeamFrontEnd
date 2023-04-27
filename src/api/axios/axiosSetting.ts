@@ -25,17 +25,11 @@ export const postAccessList = async (accessData: any) =>
   await instance.post(`/access/`, accessData).then((res) => res.data);
 
 export const login = async (data: LoginData) =>
-  await instance.post(`/users/login/`, data).then((res) => {
-    return res.data;
-  });
+  await instance.post(`/users/login/`, data).then((res) => res.data);
 
 /**로그인한 유저 정보 받기 */
 export const getUserData = async () =>
   await instance.get(`/users/me/`).then((res) => res.data);
-
-/**Feed 검색한 데이터 얻기 */
-export const getSearchFeed = async () =>
-  await instance.get(`/feeds/group/search/result`);
 
 /**Feed */
 export const getFeeds = async (url: string) =>

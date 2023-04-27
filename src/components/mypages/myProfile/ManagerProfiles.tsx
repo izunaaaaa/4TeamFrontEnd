@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { postAccessList } from "api/axios/axiosSetting";
+
 import { useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
@@ -22,6 +22,7 @@ import styles from "./ManagerProfiles.module.scss";
 import useUser from "components/form/User/Hook/useUser";
 import useAccess from "../Hook/useAccess";
 import AccessInform from "./AccessInform";
+import { postAccessList } from "api/axios/axiosSetting";
 
 const ManagerProfiles = () => {
   const { handleSubmit, register } = useForm();
@@ -100,8 +101,8 @@ const ManagerProfiles = () => {
           }
 
           toast({
-            title: "성공적으로 확인되었습니다.",
-            description: "Data is confirmed!!",
+            title: "업로드가 완료되었습니다.",
+            description: "파일을 제출해주세요.",
             status: "success",
             duration: 4000,
             isClosable: true,
@@ -111,7 +112,7 @@ const ManagerProfiles = () => {
         } else {
           /**업로드 실패했을때 */
           toast({
-            title: "필드가 비었습니다.",
+            title: "파일을 다시 제출해주세요.",
             description: `Missing fields: ${missingFields.join(", ")}`,
             status: "error",
             duration: 4000,

@@ -36,7 +36,7 @@ const UploadFeed = () => {
   const { LoginUserData } = useUser();
 
   const [previewImg, setPreviewImg] = useState();
-  const [cropImg, setCropImg] = useState<string | null>(null);
+  const [cropImg, setCropImg] = useState<string | null>(feedDetail.thumbnail);
 
   /**카테고리 가져오기 */
   const { feedCategory } = useFeedCategory(LoginUserData?.group?.name);
@@ -115,20 +115,22 @@ const UploadFeed = () => {
   /**양식 제출하기 */
   const submitHandler = async (data: PostFeed) => {
     let resUrl = "";
-    if (cropImg) {
-      const blob = dataURLToBlob(cropImg);
-      const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
-      resUrl = await postUploadUrlHandler(file);
-    }
     if (feedDetail) {
       const postData: PostFeed = {
         title: data.title,
         category: data.category,
         ...(data.description && { description: data.description }),
-        ...(feedDetail.thumbnail && { image: feedDetail.thumbnail }),
+        ...(cropImg ? { image: cropImg } : { image: null }),
         ...(resUrl && { image: resUrl }),
       };
+      console.log(postData);
       return updateFeedHandler(postData);
+    } else {
+      if (cropImg) {
+        const blob = dataURLToBlob(cropImg);
+        const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
+        resUrl = await postUploadUrlHandler(file);
+      }
     }
 
     const postData: PostFeed = {
@@ -207,37 +209,44 @@ const UploadFeed = () => {
               }}
             >
               <div className={styles.fileForm}>
-                {feedDetail?.thumbnail ? (
-                  <>
-                    <img
-                      alt=" "
-                      className={styles.previewImg}
-                      src={feedDetail.thumbnail}
-                    />
-                  </>
-                ) : !cropImg ? (
-                  <>
-                    <input
-                      type="file"
-                      {...register("image")}
-                      accept="image/*"
-                      onChange={changeImg}
-                    />
-                    <button>
-                      <FontAwesomeIcon
-                        icon={faCloudArrowUp}
-                        size="5x"
-                        style={{ color: "skyblue" }}
+                {
+                  // feedDetail?.thumbnail ? (
+                  //   <>
+                  //     <img
+                  //       alt=" "
+                  //       className={styles.previewImg}
+                  //       src={feedDetail.thumbnail}
+                  //     />
+                  //   </>
+                  // ) :
+                  !cropImg ? (
+                    <>
+                      <input
+                        type="file"
+                        {...register("image")}
+                        accept="image/*"
+                        onChange={changeImg}
                       />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <img alt=" " className={styles.previewImg} src={cropImg} />
-                  </>
-                )}
+                      <button>
+                        <FontAwesomeIcon
+                          icon={faCloudArrowUp}
+                          size="5x"
+                          style={{ color: "skyblue" }}
+                        />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <img
+                        alt=" "
+                        className={styles.previewImg}
+                        src={cropImg}
+                      />
+                    </>
+                  )
+                }
               </div>
-              {(cropImg || feedDetail?.thumnail) && (
+              {(cropImg || feedDetail?.thumbnail) && (
                 <Box textAlign="center">
                   <Button marginTop="5px" onClick={() => setCropImg(null)}>
                     사진 삭제

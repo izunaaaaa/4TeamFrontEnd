@@ -42,5 +42,5 @@ export interface PostFeed {
   title: string;
   description?: string;
   category: number;
-  image?: string;
+  image?: string | null;
 }
