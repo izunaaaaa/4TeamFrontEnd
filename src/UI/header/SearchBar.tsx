@@ -6,7 +6,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getSearchData } from "api/axios/axiosSetting";
 
 interface SearchResult {
@@ -23,6 +23,7 @@ function SearchBar() {
   const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
   const searchbarRef = useRef<HTMLDivElement | null>(null);
   const groupId = 1;
+  const navigate = useNavigate();
 
   const { data: searchResults, refetch } = useQuery<SearchResult>(
     ["search", keyword],
@@ -31,7 +32,6 @@ function SearchBar() {
       enabled: false,
     }
   );
-  //const { result } = searchResults;
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -54,9 +54,15 @@ function SearchBar() {
     setKeyword(e.currentTarget.value);
   };
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    navigate(`/search/group_id/${groupId}/keyword/${keyword}`);
+    e.preventDefault();
+    setSearchbarVisible(false);
+  };
+
   return (
     <>
-      <>
+      <form className={styles.searchWrapper} onSubmit={onSubmit}>
         <input
           className={styles.searchInput}
           type="text"
@@ -65,33 +71,45 @@ function SearchBar() {
           onChange={onChangeData}
           onClick={toggleSearchbar}
         />
-        <FontAwesomeIcon
-          className={styles.searchIcon}
-          icon={faMagnifyingGlass}
-        />
-      </>
 
-      {searchbarVisible && searchResults && keyword.length > 0 && (
-        <div className={styles.autoSearchContainer} ref={searchbarRef}>
-          <ul>
-            {searchResults.result.map((result: Type) => (
-              <li
-                className={styles.autoSearchData}
-                key={result.id}
-                onClick={() => {
-                  setKeyword(result.title);
-                }}
-              >
-                <Link
-                  to={`/search/group_id/${groupId}/keyword/${result.title}`}
-                >
-                  <span>{result.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <div
+          className={styles.searchDiv}
+          onClick={() => {
+            navigate(`/search/group_id/${groupId}/keyword/${keyword}`);
+            setSearchbarVisible(false);
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className={styles.searchIcon}
+          />
         </div>
-      )}
+
+        {searchbarVisible &&
+          searchResults &&
+          searchResults.result.some((result) => result.title !== "") && (
+            <div className={styles.autoSearchContainer} ref={searchbarRef}>
+              <ul>
+                {searchResults.result.map((result: Type) => (
+                  <li
+                    className={styles.autoSearchData}
+                    key={result.id}
+                    onClick={() => {
+                      setKeyword(result.title);
+                      setSearchbarVisible(false);
+                    }}
+                  >
+                    <Link
+                      to={`/search/group_id/${groupId}/keyword/${result.title}`}
+                    >
+                      <span>{result.title}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+      </form>
     </>
   );
 }

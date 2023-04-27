@@ -201,10 +201,10 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     ));
 
   const renderAddChannelButton = () => (
-    <li className={styles.nav_text} onClick={() => handleModal("add")}>
-      <span>
-        <FontAwesomeIcon icon={faCirclePlus} size="lg" /> 채널 추가
-      </span>
+    <li className={styles.nav_add} onClick={() => handleModal("add")}>
+      <p>
+        <FontAwesomeIcon icon={faCirclePlus} size="lg" /> <span>채널 추가</span>
+      </p>
     </li>
   );
 
@@ -215,10 +215,11 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
           sidebar ? `${styles.nav_menu} ${styles.active}` : styles.nav_menu
         }
       >
-        <ul className={styles.navmenu_items}>
-          {renderSidebarData()}
+        <ul className={styles.navmenu_items}>{renderSidebarData()}</ul>
+
+        <div className={styles.navmenu_add}>
           {LoginUserData.is_coach && renderAddChannelButton()}
-        </ul>
+        </div>
       </nav>
       <SidebarModal
         type={modal.type}

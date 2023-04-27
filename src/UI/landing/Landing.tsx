@@ -13,7 +13,10 @@ function Landing() {
     <>
       <div className={styles.header}>
         <div className={styles.logo}>
-          <h1>CurB</h1>
+          <img
+            src="https://velog.velcdn.com/images/view_coding/post/00c25245-11c5-4c63-a30a-fadae29621c7/image.png"
+            alt="logo"
+          />
         </div>
         <div className={styles.login_btn} onClick={() => onLoginOpen()}>
           커비 즐기기
