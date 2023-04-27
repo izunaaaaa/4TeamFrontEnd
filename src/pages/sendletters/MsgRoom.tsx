@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Flex, useDisclosure, Box } from "@chakra-ui/react";
+import {
+  Flex,
+  Button,
+  Box,
+  Input,
+  InputRightElement,
+  InputGroup,
+} from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import MsgDetail from "../../components/message/MsgDetail";
 import { useQuery } from "react-query";
 import { getLetterlists, getLetters } from "api/axios/axiosSetting";
 import { useParams } from "react-router-dom";
-import SendMsg from "components/message/SendMsg";
 import TimeStepper from "components/message/TimeStepper";
 import { ChatId, LetterList } from "interface/Interface";
+import { useSendMsg } from "components/message/hook/useSendMsg";
+import SendMsgBar from "components/message/SendMsgBar";
+import SendMsg from "components/message/SendMsg";
 
 export default function MsgRoom() {
   //url params 가져오기
@@ -50,35 +59,38 @@ export default function MsgRoom() {
       );
       if (targetReceiver) {
         setReceiverPk(targetReceiver.receiver_pk);
-        console.log("Receiver PK:", targetReceiver.receiver_pk); // 확인용 로그
       }
     }
   }, [resultPk.data, chatId]);
 
-  // chakra ui의 모달 컨트롤 훅
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
-      <Box bgColor={"#F5F6CE"} w="100vw" h="100vh">
+      <Box
+        bgColor={"white"}
+        overflowY="scroll"
+        overflowX="hidden"
+        h="86vh"
+        w="45vw"
+      >
         {/* 주고받은 쪽지내역 */}
         {data?.map((item: ChatId, idx: number) => {
           const nextData = idx < data.length - 1;
           return (
-            <Flex key={idx} justify={"space-around"} mb={10}>
-              <TimeStepper {...item} nextData={nextData} />
+            <Flex
+              key={idx}
+              mb={10}
+              ml={10}
+              justifyContent={item.is_sender ? "flex-end" : "flex-start"}
+              alignItems={"center"}
+              px={5}
+            >
+              {/* <TimeStepper {...item} nextData={nextData} /> */}
               <MsgDetail {...item} textId={item.id} />
             </Flex>
           );
         })}
-
-        <button onClick={onOpen} style={{ marginLeft: "6rem" }}>
-          <FontAwesomeIcon icon={faPaperPlane} size="xl" cursor="pointer" />
-        </button>
       </Box>
-
-      {/* 쪽지 보내기 모달  */}
-      <SendMsg isOpen={isOpen} onClose={onClose} receiver={receiverPk} />
+      <SendMsgBar receiver={receiverPk} />
     </>
   );
 }

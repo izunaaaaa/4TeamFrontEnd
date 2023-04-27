@@ -2,15 +2,26 @@ import React from "react";
 import { Text, Box, HStack } from "@chakra-ui/react";
 import { ChatList } from "interface/Interface";
 import { Link } from "react-router-dom";
+import { faScissors, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ChatListProps {
   pk: number;
   receiver: string;
   created_at: string;
   isMobile: boolean;
+  isHovering: boolean;
+  last_letter: string;
 }
 
-const MsgList = ({ pk, receiver, created_at, isMobile }: ChatListProps) => {
+const MsgList = ({
+  pk,
+  receiver,
+  created_at,
+  last_letter,
+  isMobile,
+  isHovering,
+}: ChatListProps) => {
   const formatDate = (input: string): string => {
     const date = new Date(input);
 
@@ -32,11 +43,16 @@ const MsgList = ({ pk, receiver, created_at, isMobile }: ChatListProps) => {
         target={isMobile ? "_blank" : "_self"}
       >
         <Box px={5} py={5} borderBottom={"1px solid black"}>
-          <HStack>
-            <Text>{receiver}</Text>
+          <HStack justify={"space-between"}>
+            <Text>{pk}번째 쪽지</Text>
+            <Text my={3}>{formattedDate}</Text>
+            {isHovering && (
+              <button>
+                <FontAwesomeIcon icon={faTrashCan} />
+              </button>
+            )}
           </HStack>
-
-          <Text my={3}>{formattedDate}</Text>
+          <Text fontWeight={"600"}>{last_letter}</Text>
         </Box>
       </Link>
     </>

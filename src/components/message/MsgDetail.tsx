@@ -58,38 +58,16 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
   });
 
   return (
-    <Flex>
-      {/* 쪽지 내역 */}
+    <>
       <Box
-        padding="6"
-        boxShadow="xl"
-        bgColor={is_sender ? "#F7FE2E" : "white"}
-        w={"13rem"}
-        h={"10rem"}
-        cursor={"pointer"}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        p="2"
+        maxW="65%"
+        bgColor={is_sender ? "purple.500" : "gray.200"}
+        borderRadius="lg"
       >
-        <Stack spacing={2}>
-          <HStack>
-            <FontAwesomeIcon icon={faPaperclip} />
-          </HStack>
-          <HStack>
-            <Avatar size="xs" />
-
-            <Text fontWeight={600} color={is_sender ? "blue" : "red"}>
-              {is_sender ? "To. " : "From. "}
-            </Text>
-          </HStack>
-          <HStack>
-            {isHovering && (
-              <button onClick={onOpen}>
-                <FontAwesomeIcon icon={faScissors} />
-              </button>
-            )}
-            <Text as="ins">{text}</Text>
-          </HStack>
-        </Stack>
+        <HStack justifyContent={is_sender ? "flex-end" : "flex-start"}>
+          <Text color={is_sender ? "white" : "black"}>{text}</Text>
+        </HStack>
       </Box>
 
       {/* 모달 */}
@@ -124,7 +102,7 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Flex>
+    </>
   );
 };
 
