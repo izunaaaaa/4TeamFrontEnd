@@ -31,6 +31,15 @@ export const logout = async () => {
 export const login = async (data: LoginData) =>
   await instance.post(`/users/login/`, data).then((res) => res.data);
 
+export const findId = async (data: any) =>
+  await instance.post(`/users/find/id/`, data).then((res) => res.data);
+
+export const findPassword = async (data: any) =>
+  await instance.post("users/find/password/", data).then((res) => res.data);
+
+export const changePassword = async (data: any) =>
+  await instance.put("/users/new-password/", data).then((res) => res.data);
+
 /**로그인한 유저 정보 받기 */
 export const getUserData = async () =>
   await instance.get(`/users/me/`).then((res) => res.data);
@@ -218,9 +227,15 @@ export const updateCategory = async (
     return res.data;
   });
 
-export const getSearchData = async (groupId: number, keyword: string) => {
+export const getSearchData = async (
+  groupId: number | string,
+  keyword: string | undefined
+) => {
   const result = await instance.get(
     `/feeds/group/search/?group_id=${groupId}&keyword=${keyword}`
   );
   return result.data;
 };
+
+export const getSearchFeed = async (url: string) =>
+  await instance.get(url).then((res) => res.data);

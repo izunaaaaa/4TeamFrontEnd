@@ -6,15 +6,16 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getSearchData } from "api/axios/axiosSetting";
+import useUser from "components/form/User/Hook/useUser";
 
 interface SearchResult {
   result: Type[];
 }
 
 interface Type {
-  id: number;
+  id: string | undefined;
   title: string;
 }
 
@@ -22,11 +23,13 @@ function SearchBar() {
   const [keyword, setKeyword] = useState<string>("");
   const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
   const searchbarRef = useRef<HTMLDivElement | null>(null);
-  const groupId = 1;
+  const { LoginUserData } = useUser();
+
+  const groupPk = LoginUserData?.group?.pk;
 
   const { data: searchResults, refetch } = useQuery<SearchResult>(
     ["search", keyword],
-    () => getSearchData(groupId, keyword),
+    () => getSearchData(groupPk, keyword),
     {
       enabled: false,
     }
@@ -74,7 +77,7 @@ function SearchBar() {
       {searchbarVisible && searchResults && keyword.length > 0 && (
         <div className={styles.autoSearchContainer} ref={searchbarRef}>
           <ul>
-            {searchResults.result.map((result: Type) => (
+            {searchResults?.result?.map((result: Type) => (
               <li
                 className={styles.autoSearchData}
                 key={result.id}
@@ -83,7 +86,7 @@ function SearchBar() {
                 }}
               >
                 <Link
-                  to={`/search/group_id/${groupId}/keyword/${result.title}`}
+                  to={`/search/group_id/${groupPk}/keyword/${result.title}`}
                 >
                   <span>{result.title}</span>
                 </Link>

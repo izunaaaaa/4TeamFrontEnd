@@ -10,8 +10,14 @@ const SendBtn = (props: any) => {
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 
+  const height = props.height;
   return (
-    <Button paddingTop="3px" backgroundColor="transparent" onClick={onOpen}>
+    <Button
+      paddingTop="3px"
+      backgroundColor="transparent"
+      h={height}
+      onClick={onOpen}
+    >
       <IoPaperPlaneOutline />
       <SendMsg isOpen={isOpen} onClose={onClose} receiver={userPk} />
     </Button>

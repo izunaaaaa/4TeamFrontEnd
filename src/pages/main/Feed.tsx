@@ -11,7 +11,6 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
-import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
 import moment from "moment";
 import "moment/locale/ko";
 import useUser from "components/form/User/Hook/useUser";
@@ -108,23 +107,10 @@ function Feed() {
               </Box>
             </Box>
           )}
-          {isLoading && <FeedSkeleton />}
+          {/* {isLoading && <FeedSkeleton />} */}
         </div>
       </InfiniteScroll>
-      {/* <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        size={{
-          md: "xl",
-          sm: "sm",
-        }}
-        isCentered
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody>{modalType}</ModalBody>
-        </ModalContent>
-      </Modal> */}
+
       <Outlet />
     </>
   );

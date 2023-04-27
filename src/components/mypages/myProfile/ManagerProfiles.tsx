@@ -162,13 +162,15 @@ const ManagerProfiles = () => {
       members: fileDataRef.current,
     };
 
+    console.log(accessData);
+
     await postAccessListHandler(accessData);
   };
 
   return (
     <>
       <Flex
-        w="100%"
+        w="78%"
         flexDir="column"
         alignItems="center"
         justifyContent="center"
