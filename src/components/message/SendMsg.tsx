@@ -16,7 +16,7 @@ import { useSendMsg } from "./hook/useSendMsg";
 const SendMsg = ({ isOpen, onClose, receiver }: any) => {
   //쪽지 모달 폼 관리
 
-  const { register, handleSubmit, onSubmit } = useSendMsg(onClose);
+  const { register, handleSubmit, onSubmit, reset } = useSendMsg(onClose);
 
   return (
     <>
@@ -24,7 +24,7 @@ const SendMsg = ({ isOpen, onClose, receiver }: any) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>쪽지</ModalHeader>
-          <FormControl onClick={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
               <Input type="hidden" {...register("receiver")} value={receiver} />
 
@@ -41,7 +41,7 @@ const SendMsg = ({ isOpen, onClose, receiver }: any) => {
                 Close
               </Button>
             </ModalFooter>
-          </FormControl>
+          </form>
         </ModalContent>
       </Modal>
     </>
