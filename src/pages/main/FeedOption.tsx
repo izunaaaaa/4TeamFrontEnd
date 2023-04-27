@@ -1,9 +1,18 @@
-import { Button, useDisclosure } from "@chakra-ui/react";
-import styles from "./FeedOption.module.scss";
+import {
+  Button,
+  ButtonGroup,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { HiEllipsisVertical } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 import FeedOptionModal from "UI/Modal/FeedOptionModal";
 
 const FeedOption = (props: any) => {
+  const navigate = useNavigate();
   const data = props.data;
   const LoginUserData = props.LoginUserData;
   const {

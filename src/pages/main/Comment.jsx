@@ -158,7 +158,7 @@ const Comment = (props) => {
                     </Button>
 
                     {comment.user.pk !== LoginUserData.id ? (
-                      <SendBtn userPk={comment.user.pk} />
+                      <SendBtn userPk={comment.user.pk} height={"20px"} />
                     ) : (
                       <Button
                         backgroundColor={"transparent"}
@@ -216,11 +216,7 @@ const Comment = (props) => {
                   <Box lineHeight={5} margin="10px">
                     <BsArrowReturnRight />
                   </Box>
-                  <Flex
-                    key={index}
-                    width="100%"
-                    // borderBottom="1px solid #bec1c7"
-                  >
+                  <Flex key={index} width="100%">
                     <Box margin="10px 0 5px 5px">
                       <Avatar
                         name="익명"
@@ -249,15 +245,7 @@ const Comment = (props) => {
                             >
                               <FiThumbsUp />
                             </Button>
-                            {recomment.user.pk !== LoginUserData.id ? (
-                              <Button
-                                backgroundColor={"transparent"}
-                                height="20px"
-                                padding="0 1px"
-                              >
-                                <FiMessageSquare />
-                              </Button>
-                            ) : (
+                            {recomment.user.pk !== LoginUserData.id ? null : (
                               <Button
                                 backgroundColor={"transparent"}
                                 height="20px"

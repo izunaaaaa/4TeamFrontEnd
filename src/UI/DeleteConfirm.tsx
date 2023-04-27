@@ -10,7 +10,7 @@ import {
 import { deleteFeed } from "api/axios/axiosSetting";
 import { Querykey } from "api/react-query/QueryKey";
 import { useMutation, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DeleteConfirm.module.scss";
 
 const DeleteConfirm = (props: any) => {
@@ -27,7 +27,10 @@ const DeleteConfirm = (props: any) => {
           status: "success",
           duration: 4000,
         });
+
         queryclient.invalidateQueries([Querykey.feedData, categoryId]);
+
+        window.location.reload();
       },
     });
 

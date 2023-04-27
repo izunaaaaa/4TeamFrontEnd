@@ -75,16 +75,18 @@ export default function MyPage() {
             isFitted
             variant="unstyled"
             justifyContent="center"
-            w="78%"
+            w={{
+              base: "100%",
+              md: "78%",
+            }}
             defaultIndex={selectedTabIndex}
           >
             <TabList borderTopRadius={"3xl"}>
               <Tab
                 m={"1px"}
                 borderTopRadius={"lg"}
-                _selected={{ color: "white", bg: "#ff535e" }}
+                _selected={{ bg: "#f1f4f7" }}
                 onClick={() => handleTab("feedlist")}
-                bg="#f1f4f7"
               >
                 작성글
               </Tab>
@@ -92,8 +94,7 @@ export default function MyPage() {
               <Tab
                 m={"1px"}
                 borderTopRadius={"lg"}
-                _selected={{ color: "white", bg: "#ff535e" }}
-                bg="#f1f4f7"
+                _selected={{ bg: "#f1f4f7" }}
                 onClick={() => handleTab("feedlike")}
               >
                 좋아요 글
@@ -101,8 +102,7 @@ export default function MyPage() {
               <Tab
                 m={"1px"}
                 borderTopRadius={"lg"}
-                _selected={{ color: "white", bg: "#ff535e" }}
-                bg="#f1f4f7"
+                _selected={{ bg: "#f1f4f7" }}
                 onClick={() => handleTab("profile")}
               >
                 프로필
@@ -159,9 +159,8 @@ export default function MyPage() {
               </Box>
             )}
           </Flex>
-
-          {type === "profile" && <Profiles />}
         </InfiniteScroll>
+        {type === "profile" && <Profiles />}
       </Center>
       <Outlet />
     </>
