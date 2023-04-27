@@ -18,8 +18,8 @@ import useUser from "components/form/User/Hook/useUser";
 import { DefaultFeedData } from "./interface/type";
 import FeedOption from "./FeedOption";
 import { FiMessageSquare } from "react-icons/fi";
-import { IoPaperPlaneOutline } from "react-icons/io5";
 import LikeBtn from "./LikeBtn";
+import SendBtn from "UI/Button/SendBtn";
 
 function Feed() {
   const { pk: groupPk, id: categoryId } = useParams();
@@ -76,13 +76,7 @@ function Feed() {
                       {data.comments_count}
                     </Button>
                     {LoginUserData?.id !== data.user?.pk && (
-                      <Button
-                        padding="3px"
-                        paddingTop="9px"
-                        backgroundColor="transparent"
-                        leftIcon={<IoPaperPlaneOutline />}
-                        onClick={() => console.log(data.user.pk)}
-                      ></Button>
+                      <SendBtn userPk={data.user.pk} />
                     )}
                   </HStack>
 

@@ -34,6 +34,7 @@ import { Querykey } from "api/react-query/QueryKey";
 import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { BsTrash3, BsArrowReturnRight } from "react-icons/bs";
+import SendBtn from "UI/Button/SendBtn";
 
 const Comment = (props) => {
   const feedId = props.feedId;
@@ -157,13 +158,7 @@ const Comment = (props) => {
                     </Button>
 
                     {comment.user.pk !== LoginUserData.id ? (
-                      <Button
-                        backgroundColor={"transparent"}
-                        height="20px"
-                        padding="0 2px"
-                      >
-                        <IoPaperPlaneOutline size="18" />
-                      </Button>
+                      <SendBtn userPk={comment.user.pk} />
                     ) : (
                       <Button
                         backgroundColor={"transparent"}

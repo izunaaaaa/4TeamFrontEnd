@@ -60,7 +60,7 @@ const Routing = () => {
         )}
 
         {/* notfound */}
-        {/* <Route path="/*" element={<NotFound />} /> */}
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
