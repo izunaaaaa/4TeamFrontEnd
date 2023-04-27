@@ -36,7 +36,9 @@ const UploadFeed = () => {
   const { LoginUserData } = useUser();
 
   const [previewImg, setPreviewImg] = useState();
-  const [cropImg, setCropImg] = useState<string | null>(feedDetail.thumbnail);
+
+  const feedThumbnail = feedDetail?.thumbnail ?? null;
+  const [cropImg, setCropImg] = useState<string | null>(feedThumbnail);
 
   /**카테고리 가져오기 */
   const { feedCategory } = useFeedCategory(LoginUserData?.group?.name);
@@ -115,15 +117,21 @@ const UploadFeed = () => {
   /**양식 제출하기 */
   const submitHandler = async (data: PostFeed) => {
     let resUrl = "";
+
     if (feedDetail) {
+      if (cropImg === null) {
+      } else if (cropImg !== feedDetail?.thumbnail) {
+        const blob = dataURLToBlob(cropImg);
+        const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
+        resUrl = await postUploadUrlHandler(file);
+      }
       const postData: PostFeed = {
         title: data.title,
         category: data.category,
         ...(data.description && { description: data.description }),
-        ...(cropImg ? { image: cropImg } : { image: null }),
+        ...(cropImg ? { image: feedDetail?.thumbnail } : { image: null }),
         ...(resUrl && { image: resUrl }),
       };
-      console.log(postData);
       return updateFeedHandler(postData);
     } else {
       if (cropImg) {

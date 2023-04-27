@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Modal,
   ModalBody,
@@ -7,13 +8,16 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { deleteFeed } from "api/axios/axiosSetting";
-import React from "react";
-import { useMutation } from "react-query";
+import { Querykey } from "api/react-query/QueryKey";
+import { useMutation, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
 import styles from "./DeleteConfirm.module.scss";
 
 const DeleteConfirm = (props: any) => {
   const feedId = props.feedId;
   const toast = useToast();
+  const { id: categoryId } = useParams();
+  const queryclient = useQueryClient();
 
   const { mutate: deleteFeedHandler, isLoading: deleteFeedLoading } =
     useMutation((feedId: number) => deleteFeed(feedId), {
@@ -23,8 +27,7 @@ const DeleteConfirm = (props: any) => {
           status: "success",
           duration: 4000,
         });
-        props.onClose();
-        props.refetch();
+        queryclient.invalidateQueries([Querykey.feedData, categoryId]);
       },
     });
 
@@ -35,7 +38,12 @@ const DeleteConfirm = (props: any) => {
         <ModalContent>
           <ModalBody>
             <div className={styles.deleteDiv}>
-              <h1 className={styles.deleteTitle}>삭제하시겠습니까?</h1>
+              <h1 className={styles.deleteTitle}>
+                삭제하시겠습니까?
+                <Box fontSize="0.8rem" marginTop="5px">
+                  게시물이 바로 삭제됩니다.
+                </Box>
+              </h1>
               <div className={styles.deleteBtnDiv}>
                 <Button
                   isLoading={deleteFeedLoading}

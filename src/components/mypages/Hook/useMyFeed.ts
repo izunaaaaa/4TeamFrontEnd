@@ -1,12 +1,20 @@
 import { getMyFeed } from "api/axios/axiosSetting";
 import { useInfiniteQuery } from "react-query";
 
-const useMyFeed = (feedType: string | undefined) => {
+interface UseMyFeed {
+  data: any;
+  isLoading: boolean;
+  fetchNextPage: (options?: any) => Promise<any>;
+  hasNextPage?: boolean;
+  isFetching: boolean;
+}
+
+const useMyFeed = (feedType: string | undefined): UseMyFeed => {
   const fallback: [] = [];
-  //
+
   const {
-    data,
-    isLoading = fallback,
+    data = fallback,
+    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetching,

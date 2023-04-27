@@ -26,14 +26,8 @@ function Feed() {
   const { LoginUserData } = useUser();
   const navigate = useNavigate();
 
-  const {
-    feedData,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isLoading,
-    refetch: feedRefetch,
-  } = useFeed(groupPk, categoryId);
+  const { feedData, fetchNextPage, hasNextPage, isFetching, isLoading } =
+    useFeed(groupPk, categoryId);
 
   return (
     <>
@@ -58,11 +52,7 @@ function Feed() {
                         <p>{data.group.name}의 개발자</p>
                         {moment(data.created_at).fromNow()}
                       </h1>
-                      <FeedOption
-                        data={data}
-                        LoginUserData={LoginUserData}
-                        feedRefetch={feedRefetch}
-                      />
+                      <FeedOption data={data} LoginUserData={LoginUserData} />
                     </Flex>
                   </div>
                   {data.thumbnail && (
@@ -91,6 +81,7 @@ function Feed() {
                         paddingTop="9px"
                         backgroundColor="transparent"
                         leftIcon={<IoPaperPlaneOutline />}
+                        onClick={() => console.log(data.user.pk)}
                       ></Button>
                     )}
                   </HStack>

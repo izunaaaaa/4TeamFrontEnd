@@ -45,9 +45,14 @@ const FeedDetail = (props: any) => {
 
   const successRefetch = {
     onSuccess: () => {
+      console.log("3214");
       refetchFeedDetail();
       queryClient.invalidateQueries(Querykey.feedData);
-      queryClient.invalidateQueries([feedData.id, Querykey.feedComment]);
+      queryClient.invalidateQueries([
+        Querykey.feedDetail,
+        feedData.id,
+        Querykey.feedComment,
+      ]);
     },
   };
 
@@ -63,15 +68,15 @@ const FeedDetail = (props: any) => {
     reset();
   };
 
+  /**작성시간 */
+  const writeTime = moment(feedData.created_at).fromNow();
+
   if (isLoading)
     return (
       <Center h="600px">
         <Spinner size="xl" margin="20px" />
       </Center>
     );
-
-  /**작성시간 */
-  const writeTime = moment(feedData.created_at).fromNow();
 
   return (
     <Modal

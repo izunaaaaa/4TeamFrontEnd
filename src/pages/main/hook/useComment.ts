@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 const useComment = (feedId: number) => {
   const fallback: [] = [];
   const { data: feedComment = fallback, refetch } = useQuery(
-    [feedId, Querykey.feedComment],
+    [Querykey.feedDetail, feedId, Querykey.feedComment],
     () => getComment(feedId)
   );
 

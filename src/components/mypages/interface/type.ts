@@ -8,3 +8,13 @@ export interface accessUser {
   phone_number: string;
   email: string;
 }
+
+export interface memebers {
+  name: string;
+  email: string;
+  phone_number: string;
+}
+export interface accessData {
+  group: string;
+  members: memebers[];
+}
