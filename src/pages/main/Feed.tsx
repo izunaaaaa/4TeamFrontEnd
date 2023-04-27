@@ -11,15 +11,14 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
-import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
 import moment from "moment";
 import "moment/locale/ko";
 import useUser from "components/form/User/Hook/useUser";
 import { DefaultFeedData } from "./interface/type";
 import FeedOption from "./FeedOption";
 import { FiMessageSquare } from "react-icons/fi";
-import { IoPaperPlaneOutline } from "react-icons/io5";
 import LikeBtn from "./LikeBtn";
+import SendBtn from "UI/Button/SendBtn";
 
 function Feed() {
   const { pk: groupPk, id: categoryId } = useParams();
@@ -76,13 +75,7 @@ function Feed() {
                       {data.comments_count}
                     </Button>
                     {LoginUserData?.id !== data.user?.pk && (
-                      <Button
-                        padding="3px"
-                        paddingTop="9px"
-                        backgroundColor="transparent"
-                        leftIcon={<IoPaperPlaneOutline />}
-                        onClick={() => console.log(data.user.pk)}
-                      ></Button>
+                      <SendBtn userPk={data.user.pk} />
                     )}
                   </HStack>
 
@@ -114,23 +107,10 @@ function Feed() {
               </Box>
             </Box>
           )}
-          {isLoading && <FeedSkeleton />}
+          {/* {isLoading && <FeedSkeleton />} */}
         </div>
       </InfiniteScroll>
-      {/* <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        size={{
-          md: "xl",
-          sm: "sm",
-        }}
-        isCentered
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody>{modalType}</ModalBody>
-        </ModalContent>
-      </Modal> */}
+
       <Outlet />
     </>
   );

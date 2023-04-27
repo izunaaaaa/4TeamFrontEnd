@@ -6,8 +6,9 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
 import { useQuery } from "react-query";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams  } from "react-router-dom";
 import { getSearchData } from "api/axios/axiosSetting";
+import useUser from "components/form/User/Hook/useUser";
 
 interface SearchResult {
   result: Type[];
@@ -22,12 +23,15 @@ function SearchBar() {
   const [keyword, setKeyword] = useState<string>("");
   const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
   const searchbarRef = useRef<HTMLDivElement | null>(null);
-  const groupId = 1;
+  const { LoginUserData } = useUser();
+  
+  const groupPk = LoginUserData?.group?.pk;
+
   const navigate = useNavigate();
 
   const { data: searchResults, refetch } = useQuery<SearchResult>(
     ["search", keyword],
-    () => getSearchData(groupId, keyword),
+    () => getSearchData(groupPk, keyword),
     {
       enabled: false,
     }
@@ -55,7 +59,7 @@ function SearchBar() {
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    navigate(`/search/group_id/${groupId}/keyword/${keyword}`);
+    navigate(`/search/group_id/${groupPk}/keyword/${keyword}`);
     e.preventDefault();
     setSearchbarVisible(false);
   };
@@ -75,7 +79,7 @@ function SearchBar() {
         <div
           className={styles.searchDiv}
           onClick={() => {
-            navigate(`/search/group_id/${groupId}/keyword/${keyword}`);
+            navigate(`/search/group_id/${groupPk}/keyword/${keyword}`);
             setSearchbarVisible(false);
           }}
         >
@@ -100,7 +104,7 @@ function SearchBar() {
                     }}
                   >
                     <Link
-                      to={`/search/group_id/${groupId}/keyword/${result.title}`}
+                      to={`/search/group_id/${groupPk}/keyword/${result.title}`}
                     >
                       <span>{result.title}</span>
                     </Link>

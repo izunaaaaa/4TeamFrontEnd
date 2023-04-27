@@ -1,40 +1,55 @@
 import React from "react";
-import { Text, Box, HStack } from "@chakra-ui/react";
-import { ChatList } from "interface/Interface";
+import {
+  useDisclosure,
+  Text,
+  Box,
+  HStack,
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { faScissors, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-interface ChatListProps {
-  pk: number;
-  receiver: string;
-  created_at: string;
-  isMobile: boolean;
-  isHovering: boolean;
-  last_letter: string;
-}
+import { useState } from "react";
+import useFormatDate from "./hook/useFormatDate";
+import { LetterList } from "interface/Interface";
+import { useMutation, useQueryClient } from "react-query";
+import { deleteLetterlists } from "api/axios/axiosSetting";
 
 const MsgList = ({
   pk,
-  receiver,
+  receiver_pk,
   created_at,
   last_letter,
   isMobile,
-  isHovering,
-}: ChatListProps) => {
-  const formatDate = (input: string): string => {
-    const date = new Date(input);
+}: any) => {
+  const formattedDate = useFormatDate(created_at);
 
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hour = String(date.getHours()).padStart(2, "0");
-    const minute = String(date.getMinutes()).padStart(2, "0");
-
-    return `${year}/${month}/${day} ${hour}:${minute}`;
+  const [isHovering, setIsHovering] = useState(false);
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovering(false);
   };
 
-  const formattedDate = formatDate(created_at);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const queryClient = useQueryClient();
+  const blockMutation = useMutation(deleteLetterlists, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("Letterlists");
+    },
+    onError: (error) => {
+      console.error("에러ㅠㅠ", error);
+    },
+  });
 
   return (
     <>
@@ -42,19 +57,51 @@ const MsgList = ({
         to={isMobile ? `/letterlist/mobile/${pk}` : `/letterlist/${pk}`}
         target={isMobile ? "_blank" : "_self"}
       >
-        <Box px={5} py={5} borderBottom={"1px solid black"}>
+        <Box
+          px={5}
+          py={5}
+          borderBottom={"1px solid black"}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <HStack justify={"space-between"}>
-            <Text>{pk}번째 쪽지</Text>
-            <Text my={3}>{formattedDate}</Text>
-            {isHovering && (
-              <button>
-                <FontAwesomeIcon icon={faTrashCan} />
-              </button>
-            )}
+            <Text>익명{receiver_pk}</Text>
+            <button onClick={onOpen}>
+              <FontAwesomeIcon icon={faTrashCan} size="sm" />
+            </button>
           </HStack>
-          <Text fontWeight={"600"}>{last_letter}</Text>
+          <HStack justify={"space-between"}>
+            <Text fontWeight={"600"}>{last_letter}</Text>
+            <Text fontSize={"sm"} my={3}>
+              {formattedDate}
+            </Text>
+          </HStack>
         </Box>
       </Link>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>쪽지를 차단하시겠습니까?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>내용 </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="red"
+              mr={3}
+              onClick={() => {
+                blockMutation.mutate(receiver_pk);
+                onClose();
+              }}
+            >
+              Delete
+            </Button>
+
+            <Button variant="ghost" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

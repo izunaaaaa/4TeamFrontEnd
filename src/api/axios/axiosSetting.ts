@@ -31,6 +31,15 @@ export const logout = async () => {
 export const login = async (data: LoginData) =>
   await instance.post(`/users/login/`, data).then((res) => res.data);
 
+export const findId = async (data: any) =>
+  await instance.post(`/users/find/id/`, data).then((res) => res.data);
+
+export const findPassword = async (data: any) =>
+  await instance.post("users/find/password/", data).then((res) => res.data);
+
+export const changePassword = async (data: any) =>
+  await instance.put("/users/new-password/", data).then((res) => res.data);
+
 /**로그인한 유저 정보 받기 */
 export const getUserData = async () =>
   await instance.get(`/users/me/`).then((res) => res.data);
@@ -128,6 +137,11 @@ export const getLetterlists = async () => {
   return res.data;
 };
 
+//쪽지 차단
+export const deleteLetterlists = async (id: number) => {
+  await instance.delete(`letterlist/${id}`).then((res) => res.data);
+};
+
 //쪽지 조회
 export const getLetters = async (chatId: number) =>
   await instance.get(`letterlist/${chatId}`).then((res) => res.data);
@@ -148,10 +162,18 @@ export const postLetters = async (data: { receiver: number; text: string }) => {
 };
 
 // 쪽지 삭제
-export const deleteLetters = async (textId: number) =>
-  await instance
-    .delete(`/letterlist/message/${textId}`)
-    .then((res) => res.data);
+export const deleteLetters = async (textId: number) => {
+  if (textId) {
+    try {
+      const response = await instance.delete(`/letterlist/message/${textId}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    console.error("textId is undefined");
+  }
+};
 
 /**MyPage  */
 export const getMyFeed = async (url: string) =>
@@ -205,9 +227,15 @@ export const updateCategory = async (
     return res.data;
   });
 
-export const getSearchData = async (groupId: number, keyword: string) => {
+export const getSearchData = async (
+  groupId: number | string,
+  keyword: string | undefined
+) => {
   const result = await instance.get(
     `/feeds/group/search/?group_id=${groupId}&keyword=${keyword}`
   );
   return result.data;
 };
+
+export const getSearchFeed = async (url: string) =>
+  await instance.get(url).then((res) => res.data);

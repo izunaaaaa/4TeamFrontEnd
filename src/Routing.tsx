@@ -18,6 +18,9 @@ import NotFound from "pages/notFound/NotFound";
 import Home from "pages/main/Home";
 import FeedDetail from "pages/main/FeedDetail";
 import MobileMsg from "pages/sendletters/MobileMsg";
+import FindId from "components/form/User/FindId";
+import FindPassword from "components/form/User/FindPassword";
+import SearchFeed from "pages/searchPage/SearchFeed";
 
 const Routing = () => {
   const { LoginUserData } = useUser();
@@ -30,7 +33,12 @@ const Routing = () => {
             {/* <Route path="/landing" element={<Landing />} /> */}
             <Route path="/" element={<Layout />}>
               <Route path="home" element={<Home />} />
-              <Route path="search/group_id/:grouId/keyword/:keyword" />
+              <Route
+                path="search/group_id/:groupId/keyword/:keyword"
+                element={<SearchFeed />}
+              >
+                <Route path="feedDetail/:feedId" element={<FeedDetail />} />
+              </Route>
               <Route path=":pk/category/:id" element={<Feed />}>
                 <Route path="feedDetail/:feedId" element={<FeedDetail />} />
               </Route>
@@ -48,8 +56,10 @@ const Routing = () => {
           </>
         ) : (
           <>
-            <Route path="/main" element={<Main />} />
+            {/* <Route path="/main" element={<Main />} /> */}
             <Route path="/" element={<Landing />} />
+            <Route path="findId" element={<FindId />} />
+            <Route path="findPassword" element={<FindPassword />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup/" element={<SignUp />}>
               <Route path="main" element={<SignUpMain />} />
@@ -60,7 +70,7 @@ const Routing = () => {
         )}
 
         {/* notfound */}
-        {/* <Route path="/*" element={<NotFound />} /> */}
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

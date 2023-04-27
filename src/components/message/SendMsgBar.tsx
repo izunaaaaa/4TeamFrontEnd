@@ -26,6 +26,7 @@ const SendMsgBar = ({ receiver }: any) => {
       as={"div"}
       templateColumns={"6fr 1fr"}
       alignItems="center"
+      ml={10}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputGroup size="lg" w={isMobile ? "43vw" : "90vw"} mx="auto">

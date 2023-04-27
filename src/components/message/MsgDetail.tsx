@@ -22,17 +22,17 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPaperclip,
+  faScissors,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteLetters } from "api/axios/axiosSetting";
+import { ChatId } from "interface/Interface";
+import useFormatDate from "./hook/useFormatDate";
 
-interface MsgDetailProps {
-  textId?: number;
-  text: string;
-  is_sender: boolean;
-}
-
-const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
+const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
   //마우스 hover 상태 관리
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseEnter = () => {
@@ -49,33 +49,40 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
   const deleteMutation = useMutation(deleteLetters, {
     onSuccess: () => {
       queryClient.invalidateQueries("text");
-      onClose();
     },
     onError: (error) => {
       console.error("에러!!", error);
-      onClose();
     },
   });
 
+  const formattedDate = useFormatDate(created_at);
+
   return (
     <>
+      {is_sender ? (
+        <Text mr={3} mt={3} fontSize={"sm"}>
+          {formattedDate}
+        </Text>
+      ) : null}
       <Box
         p="2"
-        maxW="65%"
         bgColor={is_sender ? "purple.500" : "gray.200"}
         borderRadius="lg"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <HStack justifyContent={is_sender ? "flex-end" : "flex-start"}>
-          {isHovering && (
-            <button onClick={onOpen}>
-              <FontAwesomeIcon icon={faTrashCan} />
-            </button>
-          )}
           <Text color={is_sender ? "white" : "black"}>{text}</Text>
+          <button onClick={onOpen}>
+            <FontAwesomeIcon icon={faTrashCan} size="sm" />
+          </button>
         </HStack>
       </Box>
+      {!is_sender ? (
+        <Text ml={3} mt={3} fontSize={"sm"}>
+          {formattedDate}
+        </Text>
+      ) : null}
 
       {/* 모달 */}
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -89,19 +96,16 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
           </ModalBody>
 
           <ModalFooter>
-            {textId && (
-              <Button
-                colorScheme="red"
-                mr={3}
-                onClick={() => {
-                  if (textId) {
-                    deleteMutation.mutate(textId);
-                  }
-                }}
-              >
-                Delete
-              </Button>
-            )}
+            <Button
+              colorScheme="red"
+              mr={3}
+              onClick={() => {
+                deleteMutation.mutate(id);
+                onClose();
+              }}
+            >
+              Delete
+            </Button>
 
             <Button variant="ghost" onClick={onClose}>
               Close

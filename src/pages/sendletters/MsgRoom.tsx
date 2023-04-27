@@ -13,7 +13,6 @@ import MsgDetail from "../../components/message/MsgDetail";
 import { useQuery } from "react-query";
 import { getLetterlists, getLetters } from "api/axios/axiosSetting";
 import { useParams } from "react-router-dom";
-import TimeStepper from "components/message/TimeStepper";
 import { ChatId, LetterList } from "interface/Interface";
 import { useSendMsg } from "components/message/hook/useSendMsg";
 import SendMsgBar from "components/message/SendMsgBar";
@@ -40,9 +39,9 @@ export default function MsgRoom() {
   const [id, setId] = useState<number | undefined>(undefined);
   useEffect(() => {
     if (data) {
-      const target = data.find((item) => item.id);
+      const target = data.find((item) => item.textId);
       if (target) {
-        setId(target.id);
+        setId(target.textId);
       }
     }
   }, [data]);
@@ -67,10 +66,11 @@ export default function MsgRoom() {
     <>
       <Box
         bgColor={"white"}
-        overflowY="scroll"
+        // overflowY="scroll"
         overflowX="hidden"
         h="86vh"
-        w="45vw"
+        w="100vmin"
+        maxW="100vmax"
       >
         {/* 주고받은 쪽지내역 */}
         {data?.map((item: ChatId, idx: number) => {
@@ -79,20 +79,17 @@ export default function MsgRoom() {
             <Flex
               key={idx}
               mb={10}
-              ml={10}
               mt={5}
               justifyContent={item.is_sender ? "flex-end" : "flex-start"}
               alignItems={"center"}
               px={5}
             >
-              {/* <TimeStepper {...item} nextData={nextData} /> */}
-              <MsgDetail {...item} textId={item.id} />
+              <MsgDetail {...item} textId={id} />
             </Flex>
           );
         })}
         {receiverPk && <SendMsgBar receiver={receiverPk} />}
       </Box>
-      {/* <SendMsgBar receiver={receiverPk} /> */}
     </>
   );
 }
