@@ -157,10 +157,10 @@ export const postLetters = async (data: { receiver: number; text: string }) => {
 };
 
 // 쪽지 삭제
-export const deleteLetters = async (textId: number) =>
-  await instance
-    .delete(`/letterlist/message/${textId}`)
-    .then((res) => res.data);
+export const deleteLetters = async (textId: number) => {
+  const response = await instance.delete(`/letterlist/message/${textId}`);
+  return response.data.id;
+};
 
 /**MyPage  */
 export const getMyFeed = async (url: string) =>
