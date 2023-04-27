@@ -18,6 +18,7 @@ const SendMsgBar = ({ receiver }: any) => {
   return (
     <Box
       bottom="0"
+      right="20"
       position={"fixed"}
       bgColor="white"
       borderTop="1px solid #E2E8F0"
@@ -26,7 +27,7 @@ const SendMsgBar = ({ receiver }: any) => {
       zIndex="1"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputGroup size="lg" w={"30vw"} mx="auto">
+        <InputGroup size="lg" w={"40vw"} mx="auto">
           <Input type="hidden" {...register("receiver")} value={receiver} />
           <Input
             type="text"
