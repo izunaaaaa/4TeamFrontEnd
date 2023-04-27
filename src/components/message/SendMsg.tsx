@@ -12,11 +12,23 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useSendMsg } from "./hook/useSendMsg";
+import { useNavigate } from "react-router-dom";
 
 const SendMsg = ({ isOpen, onClose, receiver }: any) => {
   //쪽지 모달 폼 관리
 
   const { register, handleSubmit, onSubmit, reset } = useSendMsg(onClose);
+
+  const navigate = useNavigate();
+
+  const moveLetterlist = async (data: any) => {
+    try {
+      await onSubmit(data);
+      navigate(`/letterlist/me`);
+    } catch (error) {
+      console.log("쪽지함 이동 실패", error);
+    }
+  };
 
   return (
     <>
@@ -24,7 +36,7 @@ const SendMsg = ({ isOpen, onClose, receiver }: any) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>쪽지</ModalHeader>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(moveLetterlist)}>
             <ModalBody>
               <Input type="hidden" {...register("receiver")} value={receiver} />
 

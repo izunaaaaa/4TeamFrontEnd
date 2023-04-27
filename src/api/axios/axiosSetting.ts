@@ -128,6 +128,11 @@ export const getLetterlists = async () => {
   return res.data;
 };
 
+//쪽지 차단
+export const deleteLetterlists = async (id: number) => {
+  await instance.delete(`letterlist/${id}`).then((res) => res.data);
+};
+
 //쪽지 조회
 export const getLetters = async (chatId: number) =>
   await instance.get(`letterlist/${chatId}`).then((res) => res.data);
@@ -149,8 +154,16 @@ export const postLetters = async (data: { receiver: number; text: string }) => {
 
 // 쪽지 삭제
 export const deleteLetters = async (textId: number) => {
-  const response = await instance.delete(`/letterlist/message/${textId}`);
-  return response.data.id;
+  if (textId) {
+    try {
+      const response = await instance.delete(`/letterlist/message/${textId}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    console.error("textId is undefined");
+  }
 };
 
 /**MyPage  */

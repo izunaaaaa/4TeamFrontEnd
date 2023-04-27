@@ -68,9 +68,10 @@ export interface ChatList {
 }
 
 export interface ChatId {
-  id: number;
+  textId: number;
   text: string;
   is_sender: boolean;
+  created_at: string;
 }
 
 export interface LetterList {
