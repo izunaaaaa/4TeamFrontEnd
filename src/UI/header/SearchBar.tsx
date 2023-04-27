@@ -31,7 +31,6 @@ function SearchBar() {
       enabled: false,
     }
   );
-  console.log(searchResults);
   //const { result } = searchResults;
 
   useEffect(() => {
@@ -84,7 +83,7 @@ function SearchBar() {
                 }}
               >
                 <Link
-                  to={`/search?group_id=${groupId}&keyword=${result.title}`}
+                  to={`/search/group_id/${groupId}/keyword/${result.title}`}
                 >
                   <span>{result.title}</span>
                 </Link>

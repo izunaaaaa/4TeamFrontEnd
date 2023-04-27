@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import FeedDetail from "pages/main/FeedDetail";
 import useMyFeed from "components/mypages/Hook/useMyFeed";
-import { useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import Profiles from "components/mypages/myProfile/Profiles";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./MyPage.module.scss";
@@ -43,7 +43,7 @@ export default function MyPage() {
 
   const selectedTabIndex = tabMap[type] ?? 0;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -127,7 +127,7 @@ export default function MyPage() {
                   ratio={9 / 10}
                   onClick={() => {
                     setFeedData(data);
-                    onOpen();
+                    navigate(`/mypage/${type}/feedDetail/${data.id}`);
                   }}
                 >
                   {data.thumbnail ? (
@@ -162,6 +162,7 @@ export default function MyPage() {
           {type === "profile" && <Profiles />}
         </InfiniteScroll>
       </Center>
+      <Outlet />
     </>
   );
 }
