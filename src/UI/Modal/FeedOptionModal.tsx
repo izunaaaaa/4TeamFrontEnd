@@ -34,25 +34,23 @@ const FeedOptionModal = (props: any) => {
       <Modal isOpen={isOpen} onClose={onClose} size="sm" isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalContent>
-            <ModalBody>
-              <ButtonGroup display="flex" flexDir="column">
-                <Button
-                  h={70}
-                  bg="transparent"
-                  onClick={() => navigate("/upload", { state: feedData })}
-                >
-                  수정하기
-                </Button>
-                <Button h={70} bg="transparent" onClick={() => onDeleteOpen()}>
-                  삭제하기
-                </Button>
-                <Button h={70} bg="transparent" onClick={() => onClose()}>
-                  취소
-                </Button>
-              </ButtonGroup>
-            </ModalBody>
-          </ModalContent>
+          <ModalBody>
+            <ButtonGroup display="flex" flexDir="column">
+              <Button
+                h={70}
+                bg="transparent"
+                onClick={() => navigate("/upload", { state: feedData })}
+              >
+                수정하기
+              </Button>
+              <Button h={70} bg="transparent" onClick={() => onDeleteOpen()}>
+                삭제하기
+              </Button>
+              <Button h={70} bg="transparent" onClick={() => onClose()}>
+                취소
+              </Button>
+            </ButtonGroup>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>

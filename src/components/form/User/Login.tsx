@@ -109,11 +109,11 @@ const Login = (props: any) => {
               w={"100%"}
               justifyContent={"center"}
             >
-              <Link to="/" onClick={() => props.onClose()}>
+              <Link to="/findId" onClick={() => props.onClose()}>
                 아이디 찾기
               </Link>
               <Text>|</Text>
-              <Link to="/" onClick={() => props.onClose()}>
+              <Link to="/findPassword" onClick={() => props.onClose()}>
                 비밀번호 찾기
               </Link>
               <Text>|</Text>

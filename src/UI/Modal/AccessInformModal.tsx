@@ -58,6 +58,7 @@ const AccessInformModal = (props: any) => {
   );
 
   const onSubmit = async (data: accessUser) => {
+    console.log(data);
     const newAccessData: accessUser = {
       name: data.name,
       email: data.email,
