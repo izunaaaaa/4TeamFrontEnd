@@ -45,13 +45,12 @@ const FeedDetail = (props: any) => {
 
   const successRefetch = {
     onSuccess: () => {
-      console.log("3214");
       refetchFeedDetail();
       queryClient.invalidateQueries(Querykey.feedData);
       queryClient.invalidateQueries([
-        Querykey.feedDetail,
-        feedData.id,
-        Querykey.feedComment,
+        "feedDetail",
+        String(feedData.id),
+        "feedComment",
       ]);
     },
   };

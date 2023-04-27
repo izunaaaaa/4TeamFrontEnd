@@ -8,14 +8,6 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import {
-  faArrowTurnUp,
-  faMessage,
-  faPaperPlane,
-  faThumbsUp,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./Comment.module.scss";
 import moment from "moment";
 import "moment/locale/ko";
@@ -32,9 +24,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Querykey } from "api/react-query/QueryKey";
 import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
-import { IoPaperPlaneOutline } from "react-icons/io5";
 import { BsTrash3, BsArrowReturnRight } from "react-icons/bs";
 import SendBtn from "UI/Button/SendBtn";
+import CommnetLikeBtn from "./CommetLikeBtn";
 
 const Comment = (props) => {
   const feedId = props.feedId;
@@ -140,14 +132,20 @@ const Comment = (props) => {
                 <Box fontWeight="bold">익명{index + 1}</Box>
                 <Flex onClick={(e) => btnHandler(e, comment.id, "comment")}>
                   <ButtonGroup spacing="-1.5">
-                    <Button
+                    {/* <Button
                       backgroundColor={"transparent"}
                       height="20px"
                       padding="0 2px"
                       value="like"
                     >
                       <FiThumbsUp size="18" />
-                    </Button>
+                    </Button> */}
+                    <CommnetLikeBtn
+                      isLike={comment.is_like}
+                      height={"20px"}
+                      id={comment.id}
+                      type={"comment"}
+                    />
                     <Button
                       backgroundColor={"transparent"}
                       height="20px"
@@ -177,11 +175,7 @@ const Comment = (props) => {
                 <Box>{commentWriteTime}</Box>
                 {comment.commentlikeCount > 0 && (
                   <>
-                    <FontAwesomeIcon
-                      icon={faThumbsUp}
-                      size="xs"
-                      style={{ color: "red" }}
-                    />
+                    <FiThumbsUp style={{ color: "red" }} />
                     <Box color="red">{comment.commentlikeCount}</Box>
                   </>
                 )}
@@ -245,6 +239,7 @@ const Comment = (props) => {
                             >
                               <FiThumbsUp />
                             </Button>
+
                             {recomment.user.pk !== LoginUserData.id ? null : (
                               <Button
                                 backgroundColor={"transparent"}
@@ -264,11 +259,7 @@ const Comment = (props) => {
                           <Box>{commentWriteTime}</Box>
                           {recomment.commentlikeCount > 0 && (
                             <>
-                              <FontAwesomeIcon
-                                icon={faThumbsUp}
-                                size="xs"
-                                style={{ color: "red" }}
-                              />
+                              <FiThumbsUp style={{ color: "red" }} />
                               <Box color="red">
                                 {recomment.commentlikeCount}
                               </Box>
