@@ -5,6 +5,7 @@ import {
   faCirclePlus,
   faPen,
   faTrash,
+  faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -31,6 +32,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const [selectedCategory, setSelectedCategory] = useState<{
     groupPk: number;
     id: number;
+    name: string;
   } | null>(null);
 
   const [modal, setModal] = useState<{
@@ -79,6 +81,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       onSuccess: () => {
         refetch();
         console.log("카테고리 수정");
+        handleModal(null); // close the modal after successful update
       },
       onError: (error: Error) => {
         console.error("Error updating category:", error);
@@ -124,6 +127,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     id: number;
     newName: string;
   }) => {
+    console.log("handleUpdateChannel called with newName:", newName);
     if (newName.trim()) {
       updateCategoryMutation.mutate({
         groupPk,
@@ -145,13 +149,14 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   };
 
   const handleAction = (type: "add" | "edit" | "delete", data: any) => {
+    console.log(type, data);
     if (type === "add") {
       handleAddChannel(data);
     } else if (type === "edit" && selectedCategory) {
       handleUpdateChannel({
         groupPk: selectedCategory.groupPk,
         id: selectedCategory.id,
-        newName: data.name,
+        newName: data,
       });
     } else if (type === "delete" && data) {
       handleDeleteChannel(data);
@@ -177,7 +182,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
                 })
               }
             >
-              <span>
+              <span className={styles.fapen}>
                 <FontAwesomeIcon icon={faPen} />
               </span>
             </div>
@@ -187,7 +192,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
               }
             >
               <span>
-                <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon icon={faTrashCan} />
               </span>
             </div>
           </div>

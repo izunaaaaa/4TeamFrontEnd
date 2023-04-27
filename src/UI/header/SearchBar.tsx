@@ -20,7 +20,7 @@ interface Type {
 
 function SearchBar() {
   const [keyword, setKeyword] = useState<string>("");
-  const [searchbarVisible, setSearchbarVisible] = useState<boolean>(true);
+  const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
   const searchbarRef = useRef<HTMLDivElement | null>(null);
   const groupId = 1;
 
@@ -71,7 +71,7 @@ function SearchBar() {
         />
       </>
 
-      {searchbarVisible && searchResults && (
+      {searchbarVisible && searchResults && keyword.length > 0 && (
         <div className={styles.autoSearchContainer} ref={searchbarRef}>
           <ul>
             {searchResults.result.map((result: Type) => (
