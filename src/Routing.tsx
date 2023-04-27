@@ -20,6 +20,7 @@ import FeedDetail from "pages/main/FeedDetail";
 import MobileMsg from "pages/sendletters/MobileMsg";
 import FindId from "components/form/User/FindId";
 import FindPassword from "components/form/User/FindPassword";
+import SearchFeed from "pages/searchPage/SearchFeed";
 
 const Routing = () => {
   const { LoginUserData } = useUser();
@@ -32,7 +33,10 @@ const Routing = () => {
             {/* <Route path="/landing" element={<Landing />} /> */}
             <Route path="/" element={<Layout />}>
               <Route path="home" element={<Home />} />
-              <Route path="search/group_id/:grouId/keyword/:keyword" />
+              <Route
+                path="search/group_id/:groupId/keyword/:keyword"
+                element={<SearchFeed />}
+              />
               <Route path=":pk/category/:id" element={<Feed />}>
                 <Route path="feedDetail/:feedId" element={<FeedDetail />} />
               </Route>

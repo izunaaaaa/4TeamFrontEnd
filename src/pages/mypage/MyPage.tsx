@@ -110,7 +110,6 @@ export default function MyPage() {
             </TabList>
           </Tabs>
         </HStack>
-
         <InfiniteScroll
           loadMore={fetchNextPage}
           hasMore={hasNextPage}

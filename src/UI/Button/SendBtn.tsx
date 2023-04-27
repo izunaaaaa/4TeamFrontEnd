@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const SendBtn = (props: any) => {
   const userPk = props.userPk;
-   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 
@@ -16,9 +16,8 @@ const SendBtn = (props: any) => {
       paddingTop="3px"
       backgroundColor="transparent"
       h={height}
-     onClick={onOpen}}
+      onClick={onOpen}
     >
-
       <IoPaperPlaneOutline />
       <SendMsg isOpen={isOpen} onClose={onClose} receiver={userPk} />
     </Button>

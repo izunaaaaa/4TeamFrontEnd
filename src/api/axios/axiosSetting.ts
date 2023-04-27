@@ -214,9 +214,15 @@ export const updateCategory = async (
     return res.data;
   });
 
-export const getSearchData = async (groupId: number, keyword: string) => {
+export const getSearchData = async (
+  groupId: number | string,
+  keyword: string | undefined
+) => {
   const result = await instance.get(
     `/feeds/group/search/?group_id=${groupId}&keyword=${keyword}`
   );
   return result.data;
 };
+
+export const getSearchFeed = async (url: string) =>
+  await instance.get(url).then((res) => res.data);
