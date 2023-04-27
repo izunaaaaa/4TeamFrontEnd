@@ -39,13 +39,13 @@ const useSearchData = (
   } = useInfiniteQuery(
     ["searchFeed", keyword],
     ({
-      pageParam = `/feeds/group/search/?group_id=${groupId}&keyword=${keyword}`,
+      pageParam = `/feeds/group/search/result?group_id=${groupId}&keyword=${keyword}`,
     }) => getSearchFeed(pageParam),
 
     {
       getNextPageParam: (lastpage) => {
         if (lastpage?.total_pages - lastpage.now_page > 0)
-          return `//feeds/group/search/?group_id=${groupId}/?page=${
+          return `//feeds/group/search/result?group_id=${groupId}/?page=${
             lastpage.now_page + 1
           }`;
         else {

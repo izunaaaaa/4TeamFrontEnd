@@ -36,7 +36,9 @@ const Routing = () => {
               <Route
                 path="search/group_id/:groupId/keyword/:keyword"
                 element={<SearchFeed />}
-              />
+              >
+                <Route path="feedDetail/:feedId" element={<FeedDetail />} />
+              </Route>
               <Route path=":pk/category/:id" element={<Feed />}>
                 <Route path="feedDetail/:feedId" element={<FeedDetail />} />
               </Route>

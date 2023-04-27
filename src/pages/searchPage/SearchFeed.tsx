@@ -1,9 +1,11 @@
 import { AspectRatio, Box, Center, Flex, Img, Spinner } from "@chakra-ui/react";
+import MiniFeedCard from "components/Card/MiniFeedCard";
 import { DefaultFeedData } from "pages/main/interface/type";
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import { useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import useSearchData from "./Hook/useSearchData";
+import styles from "./SearchFeed.module.scss";
 
 const SearchFeed = () => {
   const navigate = useNavigate();
@@ -11,8 +13,6 @@ const SearchFeed = () => {
   const { groupId, keyword } = useParams();
   const { searchResults, fetchNextPage, hasNextPage, isFetching } =
     useSearchData(Number(groupId), keyword);
-
-  console.log(searchResults);
 
   return (
     <>
@@ -23,34 +23,17 @@ const SearchFeed = () => {
           base: "140px 0px 0px 0px",
         }}
       >
-        <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
+        <InfiniteScroll
+          loadMore={fetchNextPage}
+          hasMore={hasNextPage}
+          className={styles.searchPageContents}
+        >
           <Flex flexWrap="wrap">
             {searchResults?.pages?.map((feedData: any) =>
-              feedData?.result?.map((data: DefaultFeedData) => (
-                <AspectRatio
-                  key={data.id ? data.id : data.pk}
-                  width="31.33%"
-                  margin="1%"
-                  justifyContent="center"
-                  alignItems="center"
-                  ratio={9 / 10}
-                  // onClick={() => {
-                  //   setFeedData(data);
-                  //   navigate(`/mypage/${type}/feedDetail/${data.id}`);
-                  // }}
-                >
-                  {data.thumbnail ? (
-                    <Img
-                      src={data.thumbnail}
-                      objectFit="cover"
-                      width="100%"
-                      height="100%"
-                    />
-                  ) : (
-                    <p>{data.title}</p>
-                  )}
-                </AspectRatio>
-              ))
+              feedData?.results?.map((data: DefaultFeedData) => {
+                console.log(data);
+                return <MiniFeedCard feedData={data} />;
+              })
             )}
 
             {isFetching && (
@@ -69,6 +52,7 @@ const SearchFeed = () => {
           </Flex>
         </InfiniteScroll>
       </Center>
+      <Outlet />
     </>
   );
 };
