@@ -64,3 +64,11 @@
 .dropList.active {
   transition: 350ms;
 }
+@media (max-width: 767px) {
+  .drop_list {
+    position: relative;
+    top: 56px;
+  }
+}
+@media (max-width: 376px) {
+}
