@@ -1,6 +1,6 @@
 import axios from "axios";
 import { LoginData, SignUpData } from "components/form/User/interface/type";
-import { accessUser } from "components/mypages/interface/type";
+import { accessData, accessUser } from "components/mypages/interface/type";
 import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
 export const instance = axios.create({
@@ -21,7 +21,7 @@ export const getGroup = async () =>
     return res.data;
   });
 
-export const postAccessList = async (accessData: any) =>
+export const postAccessList = async (accessData: accessData) =>
   await instance.post(`/access/`, accessData).then((res) => res.data);
 
 export const logout = async () => {

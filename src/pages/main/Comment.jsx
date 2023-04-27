@@ -70,7 +70,7 @@ const Comment = (props) => {
   );
 
   /**댓글/대댓글 좋아요 */
-  const { mutate: commentLikeHandler } = useMutation((commentData) => {
+  const { mutateAsync: commentLikeHandler } = useMutation((commentData) => {
     postCommentLike(commentData);
   }, successRefetch);
 
@@ -108,7 +108,7 @@ const Comment = (props) => {
       commentType,
     };
     if (targetValue === "like") {
-      return commentLikeHandler(data);
+      return await commentLikeHandler(data);
     }
     if (targetValue === "recomment") return setSelectComment(id);
 

@@ -22,26 +22,27 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import Profiles from "components/mypages/myProfile/Profiles";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./MyPage.module.scss";
+import { DefaultFeedData } from "pages/main/interface/type";
 
 export default function MyPage() {
   const navigate = useNavigate();
-  const { type } = useParams();
   const [feedData, setFeedData] = useState({});
+  const { type }: { type?: string } = useParams();
 
   /**routing */
-  const handleTab = (tab) => {
+  const handleTab = (tab: string) => {
     navigate(`/mypage/${tab}`);
   };
 
   const { data, isFetching, hasNextPage, fetchNextPage } = useMyFeed(type);
 
-  const tabMap = {
+  const tabMap: Record<string, number> = {
     feedlist: 0,
     feedlike: 1,
     profile: 2,
   };
 
-  const selectedTabIndex = tabMap[type] ?? 0;
+  const selectedTabIndex = tabMap[type ?? ""] ?? 0;
 
   const { isOpen, onClose } = useDisclosure();
 
@@ -116,8 +117,8 @@ export default function MyPage() {
           className={styles.myPageContents}
         >
           <Flex flexWrap="wrap">
-            {data?.pages?.map((feedData) =>
-              feedData.results?.map((data) => (
+            {data?.pages?.map((feedData: any) =>
+              feedData.results?.map((data: DefaultFeedData) => (
                 <AspectRatio
                   key={data.id ? data.id : data.pk}
                   width="31.33%"

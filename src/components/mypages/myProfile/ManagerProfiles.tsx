@@ -13,7 +13,7 @@ import {
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { useCallback, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { userValue } from "components/form/User/interface/type";
@@ -23,6 +23,7 @@ import useUser from "components/form/User/Hook/useUser";
 import useAccess from "../Hook/useAccess";
 import AccessInform from "./AccessInform";
 import { postAccessList } from "api/axios/axiosSetting";
+import { accessData } from "../interface/type";
 
 const ManagerProfiles = () => {
   const { handleSubmit, register } = useForm();
@@ -38,99 +39,105 @@ const ManagerProfiles = () => {
   const [fileName, setFileName] = useState("");
 
   const handleFileUpload = useCallback(
-    (acceptedFiles: any) => {
-      const file = acceptedFiles.target.files[0];
+    (acceptedFiles: ChangeEvent<HTMLInputElement>) => {
+      const file = acceptedFiles?.target?.files?.[0];
 
-      const reader = new FileReader();
+      if (file) {
+        const reader = new FileReader();
 
-      reader.onload = (event) => {
-        if (!event.target) {
-          return;
-        }
-        const binaryString = event.target.result;
-        const workbook = XLSX.read(binaryString, { type: "binary" });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-
-        /**필드 확인 */
-        const expectedFields = ["name", "email", "phone_number"];
-        const actualFields: any[] = [];
-
-        for (let i = 65; i <= 67; i++) {
-          const cell = String.fromCharCode(i) + "1";
-          if (sheet[cell]) {
-            actualFields.push(sheet[cell].v.toLowerCase());
+        reader.onload = (event) => {
+          if (!event.target) {
+            return;
           }
-        }
+          const binaryString = event.target.result;
+          const workbook = XLSX.read(binaryString, { type: "binary" });
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-        const missingFields = expectedFields.filter(
-          (field) => !actualFields.includes(field)
-        );
+          /**필드 확인 */
+          const expectedFields = ["name", "email", "phone_number"];
+          const actualFields: any[] = [];
 
-        const data = [];
-
-        /**필드값이 모두 존재하면 */
-        if (missingFields.length === 0) {
-          for (let i = 2; ; i++) {
-            const name = sheet["A" + i]?.v;
-            const email = sheet["B" + i]?.v;
-            const number = sheet["C" + i]?.v;
-
-            /**다음 열 값이 없으면 중단 */
-            if (!name && !email && !number) {
-              break;
+          for (let i = 65; i <= 67; i++) {
+            const cell = String.fromCharCode(i) + "1";
+            if (sheet[cell]) {
+              actualFields.push(sheet[cell].v.toLowerCase());
             }
-
-            /**빈값이 존재할때 */
-            if (
-              name === undefined ||
-              email === undefined ||
-              number === undefined
-            ) {
-              fileDataRef.current = [];
-              return toast({
-                title: "데이터가 비었습니다.",
-                description: "Data is invalid",
-                status: "warning",
-                duration: 4000,
-                isClosable: true,
-              });
-            }
-
-            const userData = { name: name, email: email, phone_number: number };
-            data.push(userData);
           }
 
-          toast({
-            title: "업로드가 완료되었습니다.",
-            description: "파일을 제출해주세요.",
-            status: "success",
-            duration: 4000,
-            isClosable: true,
-          });
-          setFileName(file.name);
-          fileDataRef.current = data;
-        } else {
-          /**업로드 실패했을때 */
-          toast({
-            title: "파일을 다시 제출해주세요.",
-            description: `Missing fields: ${missingFields.join(", ")}`,
-            status: "error",
-            duration: 4000,
-            isClosable: true,
-          });
-          setFileName("수강생 목록을 넣어 인증해주세요.");
-          fileDataRef.current = [];
-        }
-      };
+          const missingFields = expectedFields.filter(
+            (field) => !actualFields.includes(field)
+          );
 
-      reader.readAsBinaryString(file);
+          const data = [];
+
+          /**필드값이 모두 존재하면 */
+          if (missingFields.length === 0) {
+            for (let i = 2; ; i++) {
+              const name = sheet["A" + i]?.v;
+              const email = sheet["B" + i]?.v;
+              const number = sheet["C" + i]?.v;
+
+              /**다음 열 값이 없으면 중단 */
+              if (!name && !email && !number) {
+                break;
+              }
+
+              /**빈값이 존재할때 */
+              if (
+                name === undefined ||
+                email === undefined ||
+                number === undefined
+              ) {
+                fileDataRef.current = [];
+                return toast({
+                  title: "데이터가 비었습니다.",
+                  description: "Data is invalid",
+                  status: "warning",
+                  duration: 4000,
+                  isClosable: true,
+                });
+              }
+
+              const userData = {
+                name: name,
+                email: email,
+                phone_number: number,
+              };
+              data.push(userData);
+            }
+
+            toast({
+              title: "업로드가 완료되었습니다.",
+              description: "파일을 제출해주세요.",
+              status: "success",
+              duration: 4000,
+              isClosable: true,
+            });
+            setFileName(file.name);
+            fileDataRef.current = data;
+          } else {
+            /**업로드 실패했을때 */
+            toast({
+              title: "파일을 다시 제출해주세요.",
+              description: `Missing fields: ${missingFields.join(", ")}`,
+              status: "error",
+              duration: 4000,
+              isClosable: true,
+            });
+            setFileName("수강생 목록을 넣어 인증해주세요.");
+            fileDataRef.current = [];
+          }
+        };
+
+        reader.readAsBinaryString(file);
+      }
     },
     [toast]
   );
 
   /**유저 accesslist 제출 */
   const { mutateAsync: postAccessListHandler } = useMutation(
-    (accessData: any) => postAccessList(accessData),
+    (accessData: accessData) => postAccessList(accessData),
     {
       onSuccess: () => {
         toast({
@@ -150,7 +157,7 @@ const ManagerProfiles = () => {
   );
 
   const onSubmit = async () => {
-    const accessData = {
+    const accessData: accessData = {
       group: LoginUserData.group.name,
       members: fileDataRef.current,
     };
