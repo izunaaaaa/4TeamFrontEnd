@@ -33,6 +33,10 @@ export const login = async (data: LoginData) =>
 export const getUserData = async () =>
   await instance.get(`/users/me/`).then((res) => res.data);
 
+/**Feed 검색한 데이터 얻기 */
+export const getSearchFeed = async () =>
+  await instance.get(`/feeds/group/search/result`);
+
 /**Feed */
 export const getFeeds = async (url: string) =>
   await instance.get(url).then((res) => {
@@ -44,7 +48,7 @@ export const postFeedLike = async (feedId: any) =>
     .post(`/likes/feedlike/${feedId?.id}`, feedId)
     .then((res) => res.data);
 
-export const getFeedDetail = async (feedId: number) =>
+export const getFeedDetail = async (feedId: string | undefined) =>
   await instance.get(`/feeds/${feedId}/`).then((res) => {
     return res.data;
   });
@@ -202,3 +206,10 @@ export const updateCategory = async (
   await instance.put(`/categories/${groupPk}/${id}/`, { name }).then((res) => {
     return res.data;
   });
+
+export const getSearchData = async (groupId: number, keyword: string) => {
+  const result = await instance.get(
+    `/feeds/group/search/?group_id=${groupId}&keyword=${keyword}`
+  );
+  return result.data;
+};

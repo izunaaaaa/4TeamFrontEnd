@@ -6,7 +6,7 @@
 }
 .searchIcon {
   height: 20px;
-  padding-top: 3px;
+  //padding-top: 2px;
   cursor: pointer;
 }
 .autoSearchContainer {
@@ -54,7 +54,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .autoSearchContainer {
     z-index: 3;
     height: 300px;

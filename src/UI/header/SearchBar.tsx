@@ -7,42 +7,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { getSearchData } from "api/axios/axiosSetting";
 
-interface AutoDatas {
-  city: string;
-  growth_from_2000_to_2013: string;
-  latitude: number;
-  longitude: number;
-  population: string;
-  rank: string;
-  state: string;
+interface SearchResult {
+  result: Type[];
 }
 
-const fetchData = async () => {
-  const response = await fetch(
-    `https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json`
-  );
-  const data = await response.json();
-  return data.slice(0, 100);
-};
-
-interface Tag {
-  includes(data: string): boolean;
-  city?: any;
+interface Type {
+  id: number;
+  title: string;
 }
 
 function SearchBar() {
   const [keyword, setKeyword] = useState<string>("");
+  const [searchbarVisible, setSearchbarVisible] = useState<boolean>(true);
+  const searchbarRef = useRef<HTMLDivElement | null>(null);
+  const groupId = 1;
 
-  // 자동 완성 제안 배열을 저장
-  const [keyItems, setKeyItems] = useState<AutoDatas[]>([]);
-  const onChangeData = (e: React.FormEvent<HTMLInputElement>) => {
-    setKeyword(e.currentTarget.value);
-  };
-  const { data, refetch } = useQuery("cities", fetchData, {
-    enabled: false,
-    refetchOnWindowFocus: false,
-  });
+  const { data: searchResults, refetch } = useQuery<SearchResult>(
+    ["search", keyword],
+    () => getSearchData(groupId, keyword),
+    {
+      enabled: false,
+    }
+  );
+  //const { result } = searchResults;
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -53,21 +42,6 @@ function SearchBar() {
     };
   }, [keyword, refetch]);
 
-  useEffect(() => {
-    if (data) {
-      const filteredCities = data
-        .filter(
-          (list: Tag) =>
-            list.city.toLowerCase().includes(keyword.toLowerCase()) === true
-        )
-        .slice(0, 10);
-      setKeyItems(filteredCities);
-    }
-  }, [data, keyword]);
-
-  const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
-  const searchbarRef = useRef<HTMLDivElement | null>(null);
-
   const toggleSearchbar = async () => {
     setSearchbarVisible(!searchbarVisible);
   };
@@ -76,13 +50,17 @@ function SearchBar() {
     setSearchbarVisible(false);
   });
 
+  const onChangeData = (e: React.FormEvent<HTMLInputElement>) => {
+    setKeyword(e.currentTarget.value);
+  };
+
   return (
     <>
       <>
         <input
           className={styles.searchInput}
           type="text"
-          placeholder="Search text"
+          placeholder="Search title"
           value={keyword}
           onChange={onChangeData}
           onClick={toggleSearchbar}
@@ -93,19 +71,21 @@ function SearchBar() {
         />
       </>
 
-      {searchbarVisible && keyItems.length > 0 && keyword && (
+      {searchbarVisible && searchResults && (
         <div className={styles.autoSearchContainer} ref={searchbarRef}>
           <ul>
-            {keyItems.map((search) => (
+            {searchResults.result.map((result: Type) => (
               <li
                 className={styles.autoSearchData}
-                key={search.city}
+                key={result.id}
                 onClick={() => {
-                  setKeyword(search.city);
+                  setKeyword(result.title);
                 }}
               >
-                <Link to={`/feeds/${search.city}`}>
-                  <span>{search.city}</span>
+                <Link
+                  to={`/search/group_id/${groupId}/keyword/${result.title}`}
+                >
+                  <span>{result.title}</span>
                 </Link>
               </li>
             ))}
@@ -115,4 +95,5 @@ function SearchBar() {
     </>
   );
 }
+
 export default SearchBar;

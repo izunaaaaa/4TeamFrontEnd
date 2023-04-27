@@ -3,7 +3,14 @@ import { useInfiniteQuery } from "react-query";
 
 const useMyFeed = (feedType: string | undefined) => {
   const fallback: [] = [];
-  const { data, isLoading = fallback } = useInfiniteQuery(
+  //
+  const {
+    data,
+    isLoading = fallback,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useInfiniteQuery(
     ["myFeed", feedType],
     async ({ pageParam = `/users/me/${feedType}/` }) =>
       await getMyFeed(pageParam),
@@ -23,7 +30,7 @@ const useMyFeed = (feedType: string | undefined) => {
     }
   );
 
-  return { data, isLoading };
+  return { data, isLoading, fetchNextPage, hasNextPage, isFetching };
 };
 
 export default useMyFeed;

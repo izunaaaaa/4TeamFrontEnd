@@ -10,6 +10,8 @@ import {
   FormLabel,
   Input,
   useToast,
+  HStack,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { accessUser } from "components/mypages/interface/type";
@@ -24,16 +26,17 @@ const AccessInformModal = (props: any) => {
   const accessUserInform = props.accessUserInform;
   /**access 추가하기 */
   const queryClinet = useQueryClient();
-  const { mutateAsync: postAccessHandler } = useMutation(
-    (postAccessData: accessUser) =>
-      postAccess(postAccessData, props.loginGroup),
-    {
-      onSuccess: () => {
-        queryClinet.invalidateQueries([Querykey.access, props.loginGroup]);
-      },
-    }
-  );
-  const { mutateAsync: putAccessHandler } = useMutation(
+  const { mutateAsync: postAccessHandler, isLoading: postLoading } =
+    useMutation(
+      (postAccessData: accessUser) =>
+        postAccess(postAccessData, props.loginGroup),
+      {
+        onSuccess: () => {
+          queryClinet.invalidateQueries([Querykey.access, props.loginGroup]);
+        },
+      }
+    );
+  const { mutateAsync: putAccessHandler, isLoading: putLoading } = useMutation(
     (putAccessData: accessUser) => {
       return putAccess(putAccessData, accessUserInform);
     },
@@ -73,36 +76,47 @@ const AccessInformModal = (props: any) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} size="lg" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create your account</ModalHeader>
+        <ModalHeader pt={7}>수강생을 추가해주세요.</ModalHeader>
         <ModalCloseButton />
-        <ModalBody pb={4}>
+        <ModalBody pb={5}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <FormLabel>name</FormLabel>
+            <FormLabel margin="0 0 8px 0">이름</FormLabel>
             <Input
               placeholder="이름을 입력하세요."
               {...register("name", {
                 required: true,
               })}
+              marginBottom="20px"
             />
 
-            <FormLabel>email</FormLabel>
+            <FormLabel margin="0 0 8px 0">이메일</FormLabel>
             <Input
               placeholder="이메일을 입력하세요."
               {...register("email", {
                 required: true,
               })}
+              marginBottom="20px"
             />
-            <FormLabel>phoneNumber</FormLabel>
+            <FormLabel margin="0 0 8px 0">전화번호</FormLabel>
             <Input
               placeholder="휴대폰 번호를 입력하세요."
               {...register("phone_number", {
                 required: true,
               })}
+              marginBottom="20px"
             />
-            <Button type="submit" colorScheme="blue" mr={3}>
-              추가하기
-            </Button>
-            <Button onClick={props.onClose}>Cancel</Button>
+            <ButtonGroup width="100%" justifyContent="center">
+              <Button
+                type="submit"
+                mr={3}
+                isLoading={putLoading || postLoading}
+              >
+                추가하기
+              </Button>
+              <Button onClick={props.onClose} colorScheme="red">
+                취소하기
+              </Button>
+            </ButtonGroup>
           </form>
         </ModalBody>
       </ModalContent>

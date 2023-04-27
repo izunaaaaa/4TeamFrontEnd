@@ -10,14 +10,14 @@ interface UseFeedDetail {
   refetch: any;
 }
 
-const useFeedDetail = (feedID: number): UseFeedDetail => {
+const useFeedDetail = (feedID: string | undefined): UseFeedDetail => {
   const fallBack: [] = [];
   const {
     data: feedDetail = fallBack,
     isLoading,
     refetch,
   } = useQuery([Querykey.feedDetail, feedID], () => getFeedDetail(feedID));
-
+  //
   return { feedDetail, isLoading, refetch };
 };
 

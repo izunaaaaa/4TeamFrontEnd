@@ -66,6 +66,11 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
         borderRadius="lg"
       >
         <HStack justifyContent={is_sender ? "flex-end" : "flex-start"}>
+          {isHovering && (
+            <button onClick={onOpen}>
+              <FontAwesomeIcon icon={faScissors} />
+            </button>
+          )}
           <Text color={is_sender ? "white" : "black"}>{text}</Text>
         </HStack>
       </Box>

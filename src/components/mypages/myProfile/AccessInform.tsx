@@ -9,6 +9,7 @@ import {
   Tr,
   useDisclosure,
   Box,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { deleteAccess } from "api/axios/axiosSetting";
 import { Querykey } from "api/react-query/QueryKey";
@@ -36,7 +37,10 @@ const AccessInform = (props: any) => {
   /**access 삭제하기 */
   const queryClinet = useQueryClient();
   const { mutateAsync: deleteAccessHandler } = useMutation(
-    (accessInform: accessInform) => deleteAccess(accessInform),
+    (accessInform: accessInform) => {
+      console.log(accessInform);
+      return deleteAccess(accessInform);
+    },
     {
       onSuccess: () => {
         queryClinet.invalidateQueries([Querykey.access, loginGroup]);
@@ -52,7 +56,7 @@ const AccessInform = (props: any) => {
         loginGroup={loginGroup}
         accessUserInform={accessUserInform}
       />
-      <TableContainer w="77%" marginTop="20px">
+      <TableContainer w="100%" marginTop="20px">
         <Box fontSize="1.2rem" fontWeight="bold">
           부트캠프 : {loginGroupName}
         </Box>
@@ -62,7 +66,7 @@ const AccessInform = (props: any) => {
               <Th>name</Th>
               <Th>email</Th>
               <Th>phoneNumber</Th>
-              <Th>
+              <Th textAlign="center">
                 <Button onClick={() => onOpen()}>추가하기</Button>
               </Th>
             </Tr>
@@ -70,30 +74,34 @@ const AccessInform = (props: any) => {
           <Tbody>
             {groupAccess?.map((data: accessUser) => {
               const accessInform = {
-                groupPk: data.group?.pk,
+                groupPk: loginGroup,
                 userId: data.id,
               };
+
               return (
                 <Tr key={data.id}>
                   <Td>{data.name}</Td>
                   <Td>{data.email}</Td>
                   <Td>{data.phone_number}</Td>
-                  <Td>
-                    <Button
-                      onClick={() => {
-                        setAccessUserInform(accessInform);
-                        onOpen();
-                      }}
-                    >
-                      수정
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        deleteAccessHandler(accessInform);
-                      }}
-                    >
-                      삭제
-                    </Button>
+                  <Td textAlign="center">
+                    <ButtonGroup spacing={1}>
+                      <Button
+                        onClick={() => {
+                          setAccessUserInform(accessInform);
+                          onOpen();
+                        }}
+                      >
+                        수정
+                      </Button>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => {
+                          deleteAccessHandler(accessInform);
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    </ButtonGroup>
                   </Td>
                 </Tr>
               );

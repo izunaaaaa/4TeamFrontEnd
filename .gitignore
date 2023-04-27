@@ -1,3 +1,10 @@
 node_modules
 
+# api/
+
 .env
+
+# env.ts
+
+
+# setupProxy.js

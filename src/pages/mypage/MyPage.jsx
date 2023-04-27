@@ -13,11 +13,15 @@ import {
   Tabs,
   TabList,
   Tab,
+  Box,
+  Spinner,
 } from "@chakra-ui/react";
 import FeedDetail from "pages/main/FeedDetail";
 import useMyFeed from "components/mypages/Hook/useMyFeed";
-import { useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import Profiles from "components/mypages/myProfile/Profiles";
+import InfiniteScroll from "react-infinite-scroller";
+import styles from "./MyPage.module.scss";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -29,18 +33,17 @@ export default function MyPage() {
     navigate(`/mypage/${tab}`);
   };
 
-  const { data } = useMyFeed(type);
+  const { data, isFetching, hasNextPage, fetchNextPage } = useMyFeed(type);
 
   const tabMap = {
     feedlist: 0,
-    likelist: 1,
-    feedlike: 2,
-    profile: 3,
+    feedlike: 1,
+    profile: 2,
   };
 
   const selectedTabIndex = tabMap[type] ?? 0;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -84,14 +87,7 @@ export default function MyPage() {
               >
                 작성글
               </Tab>
-              <Tab
-                m={"1px"}
-                borderTopRadius={"lg"}
-                _selected={{ color: "white", bg: "#ff535e" }}
-                bg="#f1f4f7"
-              >
-                작성 댓글
-              </Tab>
+
               <Tab
                 m={"1px"}
                 borderTopRadius={"lg"}
@@ -99,7 +95,7 @@ export default function MyPage() {
                 bg="#f1f4f7"
                 onClick={() => handleTab("feedlike")}
               >
-                좋아요한 글
+                좋아요 글
               </Tab>
               <Tab
                 m={"1px"}
@@ -108,43 +104,65 @@ export default function MyPage() {
                 bg="#f1f4f7"
                 onClick={() => handleTab("profile")}
               >
-                마이페이지
+                프로필
               </Tab>
             </TabList>
           </Tabs>
         </HStack>
 
-        <Flex width="80%" flexWrap="wrap">
-          {data?.pages?.map((feedData) =>
-            feedData.results?.map((data) => (
-              <AspectRatio
-                key={data.id ? data.id : data.pk}
-                width="33%"
-                padding="5px"
-                justifyContent="center"
-                alignItems="center"
-                ratio={9 / 10}
-                onClick={() => {
-                  setFeedData(data);
-                  onOpen();
-                }}
-              >
-                {data.thumbnail ? (
-                  <Img
-                    src={data.thumbnail}
-                    objectFit="cover"
-                    width="100%"
-                    height="100%"
+        <InfiniteScroll
+          loadMore={fetchNextPage}
+          hasMore={hasNextPage}
+          className={styles.myPageContents}
+        >
+          <Flex flexWrap="wrap">
+            {data?.pages?.map((feedData) =>
+              feedData.results?.map((data) => (
+                <AspectRatio
+                  key={data.id ? data.id : data.pk}
+                  width="31.33%"
+                  margin="1%"
+                  justifyContent="center"
+                  alignItems="center"
+                  ratio={9 / 10}
+                  onClick={() => {
+                    setFeedData(data);
+                    navigate(`/mypage/${type}/feedDetail/${data.id}`);
+                  }}
+                >
+                  {data.thumbnail ? (
+                    <Img
+                      src={data.thumbnail}
+                      objectFit="cover"
+                      width="100%"
+                      height="100%"
+                    />
+                  ) : (
+                    <p>{data.title}</p>
+                  )}
+                </AspectRatio>
+              ))
+            )}
+
+            {isFetching && (
+              <Box width="100%">
+                <Box textAlign="center">
+                  <Spinner
+                    thickness="5px"
+                    speed="0.75s"
+                    emptyColor="gray.200"
+                    color="pink.100"
+                    size={{ lg: "xl", md: "lg", base: "lg" }}
                   />
-                ) : (
-                  <p>{data.title}</p>
-                )}
-              </AspectRatio>
-            ))
-          )}
-        </Flex>
-        {type === "profile" && <Profiles />}
+                </Box>
+              </Box>
+            )}
+          </Flex>
+
+          {type === "profile" && <Profiles />}
+        </InfiniteScroll>
       </Center>
+      <Outlet />
     </>
   );
 }

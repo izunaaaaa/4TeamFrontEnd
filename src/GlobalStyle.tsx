@@ -11,11 +11,11 @@ const GlobalStyle = createGlobalStyle`
   }
   :root {
     --nav-medium-width: 250px;
-    --nav-medium-height : 7em;
+    --nav-medium-height : 6em;
   }
  
 
-@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
-`;
+  `;
+// @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 
 export default GlobalStyle;
