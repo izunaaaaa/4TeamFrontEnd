@@ -1,6 +1,5 @@
 import { useFeed } from "./hook/useFeed";
 import styles from "./Feed.module.scss";
-import { useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import {
   Avatar,
@@ -9,15 +8,9 @@ import {
   Flex,
   HStack,
   Image,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
   Spinner,
-  useDisclosure,
 } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
-import FeedDetail from "./FeedDetail";
 import FeedSkeleton from "UI/Skeleton/FeedSkeleton";
 import moment from "moment";
 import "moment/locale/ko";

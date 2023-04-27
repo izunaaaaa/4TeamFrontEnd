@@ -33,6 +33,10 @@ export const login = async (data: LoginData) =>
 export const getUserData = async () =>
   await instance.get(`/users/me/`).then((res) => res.data);
 
+/**Feed 검색한 데이터 얻기 */
+export const getSearchFeed = async () =>
+  await instance.get(`/feeds/group/search/result`);
+
 /**Feed */
 export const getFeeds = async (url: string) =>
   await instance.get(url).then((res) => {
