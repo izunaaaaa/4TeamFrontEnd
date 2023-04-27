@@ -28,8 +28,6 @@ const CropUploadImg = (props: any) => {
     height: 0,
   });
 
-  console.log(zoom);
-
   /**이미지 */
   const previewImg = useRef<any>("");
 
@@ -92,7 +90,6 @@ const CropUploadImg = (props: any) => {
             step={0.1}
             onChange={(e: any) => {
               setZoom(e);
-              console.log(e);
             }}
           >
             <SliderTrack>

@@ -16,22 +16,20 @@ import {
 } from "@chakra-ui/react";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { login } from "api/axios/axiosSetting";
 import { AxiosError } from "axios";
 import { LoginData } from "./interface/type";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "recoil/user";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "api/axios/axiosSetting";
 
 const Login = (props: any) => {
   const { handleSubmit, register } = useForm<LoginData>();
   const toast = useToast();
-  const [user, setUser] = useRecoilState(userState);
+  const navigate = useNavigate();
 
   const { mutate: loginHandler } = useMutation(
-    (loginData: LoginData) => login(loginData).then((res) => setUser(res)),
+    (loginData: LoginData) => login(loginData),
     {
       onError: (error: AxiosError) => {
         toast({
@@ -46,6 +44,8 @@ const Login = (props: any) => {
           status: "success",
           isClosable: true,
         });
+        navigate("/home");
+        window.location.reload();
       },
     }
   );

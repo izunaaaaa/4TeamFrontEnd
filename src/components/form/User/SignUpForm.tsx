@@ -18,10 +18,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "react-query";
-import { signUp } from "api/axios/axiosSetting";
 import useSignUpGroup from "./Hook/useSignUpGroup";
 import { useState } from "react";
 import PhoneVerifyModal from "./PhoneVerifyModal";
+import { signUp } from "api/axios/axiosSetting";
 
 const SignUpForm = () => {
   const {
@@ -48,9 +48,14 @@ const SignUpForm = () => {
     {
       onError: (error: any) => {
         const detail_error = Object.values(error.response.data);
+        const isAccess = error.response.data["detail"];
         toast({
           title: "회원가입 실패",
-          description: `${detail_error[0]}`,
+          description: `  ${
+            isAccess
+              ? "권한이 없습니다, 매니저로부터 권한을 받으세요."
+              : detail_error[0]
+          }`,
           status: "error",
           duration: 3000,
           isClosable: true,
