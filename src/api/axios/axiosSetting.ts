@@ -24,6 +24,10 @@ export const getGroup = async () =>
 export const postAccessList = async (accessData: any) =>
   await instance.post(`/access/`, accessData).then((res) => res.data);
 
+export const logout = async () => {
+  await instance.post(`/users/logout/`);
+};
+
 export const login = async (data: LoginData) =>
   await instance.post(`/users/login/`, data).then((res) => {
     return res.data;

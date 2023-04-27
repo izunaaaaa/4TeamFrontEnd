@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./DropDown.module.scss";
 import Login from "components/form/User/Login";
 import useClickOutside from "./useClickOutside";
 import { useDisclosure } from "@chakra-ui/react";
+import { logout } from "api/axios/axiosSetting";
 
 const list = [
   { id: 1, title: "마이페이지", link: "/mypage/feedlist" },
@@ -12,14 +13,9 @@ const list = [
 ];
 
 function DropDown() {
-  const {
-    isOpen: isLoginOpen,
-    onClose: onLoginClose,
-    onOpen: onLoginOpen,
-  } = useDisclosure();
-
   const [dropOpen, setDropOpen] = useState<boolean>(false);
   const dropListRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setDropOpen(!dropOpen);
@@ -28,6 +24,15 @@ function DropDown() {
   useClickOutside(dropListRef, () => {
     setDropOpen(false);
   });
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.log("logout error");
+    }
+  };
 
   return (
     <>
@@ -52,17 +57,13 @@ function DropDown() {
                   </Link>
                 </li>
               ))}
-              <li
-                className={styles.drop_listItem}
-                onClick={() => onLoginOpen()}
-              >
-                <span>로그인</span>
+              <li className={styles.drop_listItem} onClick={handleLogout}>
+                <span>로그 아웃</span>
               </li>
             </ul>
           </div>
         )}
       </div>
-      <Login isOpen={isLoginOpen} onClose={onLoginClose} />
     </>
   );
 }

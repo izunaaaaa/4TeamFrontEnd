@@ -40,7 +40,11 @@ function Header(): ReactElement {
         <>
           <div className={styles.nav_bar}>
             <Link to={"/home"}>
-              <h1>CurB</h1>
+              {/* <h1>CurB</h1> */}
+              <img
+                src="https://velog.velcdn.com/images/view_coding/post/ac265859-96d2-4af8-9297-3775f49724be/image.png"
+                alt="logo"
+              />
             </Link>
             <div className={styles.rightWrapper}>
               <div className={styles.searchWrapper}>
@@ -55,12 +59,16 @@ function Header(): ReactElement {
         <>
           <div className={styles.nav_barMobile}>
             <div className={styles.sidebar_top}>
-              <h1>CurB</h1>
+              {/* <h1>CurB</h1> */}
+              <img
+                src="https://velog.velcdn.com/images/view_coding/post/ac265859-96d2-4af8-9297-3775f49724be/image.png"
+                alt="logo"
+              />
             </div>
             <div className={styles.sidebar_bottom}>
               <div className={styles.sidebar_btn} ref={sidebarRef}>
                 <div onClick={handleSidebarToggle}>
-                  <CgMenuLeft />
+                  <CgMenuLeft color="#276c7c" />
                 </div>
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
               </div>

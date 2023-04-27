@@ -6,6 +6,7 @@
   height: 100%;
   //transition: 850ms;
   z-index: 100;
+  background: linear-gradient(#fccec0, #f89598);
 }
 
 @media (max-width: 767px) {
@@ -33,27 +34,29 @@
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
+  border-radius: 10px;
+
   span {
     text-decoration: none;
-    color: #000;
+    color: #fff;
   }
 }
 .nav_text:hover {
-  background: #000;
+  background: #fff;
   transition: 150ms;
-  //border-radius: 8px;
+  border-radius: 10px;
   span {
-    color: #fff;
+    color: #276c7c;
   }
 }
 .navmenu_items {
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  //background-color: #fff;
+  background: linear-gradient(#4093a5, #276c7c);
   list-style: none;
   padding: 12px;
-  border-right: 1px solid #e3e3e3;
-  //width: 15vw;
+  //border-right: 1px solid #e3e3e3;
 }
 .modal {
   position: fixed;
@@ -81,6 +84,9 @@
 // }
 .faiconContent {
   display: flex;
+  .fapen {
+    margin-right: 6px;
+  }
 }
 .nav_name {
   display: flex;
