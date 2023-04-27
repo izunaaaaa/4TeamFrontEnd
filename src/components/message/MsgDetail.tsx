@@ -64,6 +64,8 @@ const MsgDetail = ({ text, is_sender, textId }: MsgDetailProps) => {
         maxW="65%"
         bgColor={is_sender ? "purple.500" : "gray.200"}
         borderRadius="lg"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <HStack justifyContent={is_sender ? "flex-end" : "flex-start"}>
           {isHovering && (
