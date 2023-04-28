@@ -82,8 +82,8 @@ export const postCommentLike = async (commentData: any) =>
 
 /**recomment */
 export const postRecomment = async (
-  feedId: number,
-  commentId: number,
+  feedId: string | undefined,
+  commentId: string | null,
   description: object
 ) =>
   await instance

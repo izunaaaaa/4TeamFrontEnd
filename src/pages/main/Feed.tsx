@@ -25,6 +25,7 @@ function Feed() {
   const { LoginUserData } = useUser();
   const navigate = useNavigate();
 
+  const groupName = LoginUserData.group.name;
   const { feedData, fetchNextPage, hasNextPage, isFetching, isLoading } =
     useFeed(groupPk, categoryId);
 
@@ -48,7 +49,7 @@ function Feed() {
                     />
                     <Flex justifyContent="space-between" w="100%">
                       <h1>
-                        <p>{data.group.name}의 개발자</p>
+                        <p>{groupName}의 개발자</p>
                         {moment(data.created_at).fromNow()}
                       </h1>
                       <FeedOption data={data} LoginUserData={LoginUserData} />
@@ -71,6 +72,11 @@ function Feed() {
                       padding="5px"
                       backgroundColor="transparent"
                       leftIcon={<FiMessageSquare />}
+                      onClick={() => {
+                        navigate(
+                          `/${groupPk}/category/${categoryId}/feedDetail/${data.id}`
+                        );
+                      }}
                     >
                       {data.comments_count}
                     </Button>
