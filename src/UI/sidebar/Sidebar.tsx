@@ -40,11 +40,11 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     data: any;
   }>({ type: null, data: "" });
 
-  const groupPk = 1; // groupPk 값을 1로 설정
-  const { categories, refetch } = useFeed(groupPk);
-
   // 코치 여부 확인
   const { LoginUserData } = useUser();
+
+  const groupPk = LoginUserData?.group?.pk;
+  const { categories, refetch } = useFeed(groupPk);
 
   // const queryClient = useQueryClient();
 
@@ -108,6 +108,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     type: "add" | "delete" | "edit" | null,
     data: any = ""
   ) => {
+    console.log("handleModal called with type and data:", type, data); // Add this line
     setModal({ type, data });
   };
 
@@ -153,6 +154,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     if (type === "add") {
       handleAddChannel(data);
     } else if (type === "edit" && selectedCategory) {
+      console.log("New name:", data);
       handleUpdateChannel({
         groupPk: selectedCategory.groupPk,
         id: selectedCategory.id,
@@ -166,37 +168,39 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const renderSidebarData = () =>
     categories?.map((item: Category, id: number) => (
       <li key={id} className={styles.nav_text}>
-        <Link to={`${item.group.pk}/category/${item.id}`}>
+        <Link to={`/${item.group.pk}/category/${item.id}`}>
           <div className={styles.nav_name}>
             <span>{item.name}</span>
           </div>
         </Link>
-        {LoginUserData?.is_coach && (
-          <div className={styles.faiconContent}>
-            <div
-              onClick={() =>
-                handleModal("edit", {
-                  groupPk: item.group.pk,
-                  id: item.id,
-                  name: item.name,
-                })
-              }
-            >
-              <span className={styles.fapen}>
-                <FontAwesomeIcon icon={faPen} />
-              </span>
+        {LoginUserData.is_coach &&
+          item.name !== "전체글" &&
+          item.name !== "인기글" && (
+            <div className={styles.faiconContent}>
+              <div
+                onClick={() =>
+                  handleModal("edit", {
+                    groupPk: item.group.pk,
+                    id: item.id,
+                    name: item.name,
+                  })
+                }
+              >
+                <span className={styles.fapen}>
+                  <FontAwesomeIcon icon={faPen} />
+                </span>
+              </div>
+              <div
+                onClick={() =>
+                  handleModal("delete", { groupPk: item.group.pk, id: item.id })
+                }
+              >
+                <span>
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </span>
+              </div>
             </div>
-            <div
-              onClick={() =>
-                handleModal("delete", { groupPk: item.group.pk, id: item.id })
-              }
-            >
-              <span>
-                <FontAwesomeIcon icon={faTrashCan} />
-              </span>
-            </div>
-          </div>
-        )}
+          )}
       </li>
     ));
 
@@ -218,7 +222,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
         <ul className={styles.navmenu_items}>{renderSidebarData()}</ul>
 
         <div className={styles.navmenu_add}>
-          {LoginUserData?.is_coach && renderAddChannelButton()}
+          {LoginUserData.is_coach && renderAddChannelButton()}
         </div>
       </nav>
       <SidebarModal

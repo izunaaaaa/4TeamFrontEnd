@@ -1,5 +1,5 @@
 .drop_list {
-  background-color: #fff;
+  background-color: #c2dffb;
   box-shadow: 0 0.125rem 0.4rem rgba(0, 0, 0, 0.075);
   width: 100%;
   height: 100%;
@@ -16,7 +16,7 @@
   &:focus {
     cursor: pointer;
     font-weight: bold;
-    background-color: #ccc;
+    background-color: #ffffff;
     transition: 150ms;
   }
 
@@ -26,6 +26,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #161616;
   }
 
   a {
