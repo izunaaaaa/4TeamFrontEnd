@@ -6,7 +6,7 @@ import { getUserData } from "api/axios/axiosSetting";
 interface UseUser {
   LoginUserData: UserData;
   isLoading: boolean;
-  isError: boolean;
+  isLoggedIn: boolean;
 }
 
 const useUser = (): UseUser => {
@@ -22,7 +22,7 @@ const useUser = (): UseUser => {
     },
   });
 
-  return { LoginUserData, isLoading, isError };
+  return { LoginUserData, isLoading, isLoggedIn: isError };
 };
 
 export default useUser;
