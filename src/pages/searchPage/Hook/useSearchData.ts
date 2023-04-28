@@ -1,10 +1,5 @@
-import { getSearchData, getSearchFeed } from "api/axios/axiosSetting";
-import React from "react";
-import { useInfiniteQuery, useQuery } from "react-query";
-
-interface SearchResult {
-  result: Type[];
-}
+import { getSearchFeed } from "api/axios/axiosSetting";
+import { useInfiniteQuery } from "react-query";
 
 interface Type {
   id: number;
