@@ -33,6 +33,8 @@ const FeedDetail = (props: any) => {
   const refetchFeed = props.feedRefetch;
   const navigate = useNavigate();
 
+  const groupName = LoginUserData.group.name;
+
   const {
     feedDetail: feedData,
     isLoading,
@@ -83,12 +85,12 @@ const FeedDetail = (props: any) => {
       onClose={() => navigate(-1)}
       size={{
         md: "xl",
-        sm: "sm",
+        sm: "lg",
       }}
       isCentered
     >
       <ModalOverlay />
-      <ModalContent padding="0px 25px">
+      <ModalContent padding="0px 25px" width="100%">
         <Box paddingTop="30px">
           <div className={styles.writerName}>
             <Avatar
@@ -98,7 +100,7 @@ const FeedDetail = (props: any) => {
             />
             <Flex justifyContent="space-between" w="100%">
               <h1>
-                <p>익명의 개발자</p>
+                <p>{groupName}의 개발자</p>
                 {writeTime}
               </h1>
               <FeedOption

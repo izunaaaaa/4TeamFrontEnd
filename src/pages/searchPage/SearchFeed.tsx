@@ -1,15 +1,12 @@
-import { AspectRatio, Box, Center, Flex, Img, Spinner } from "@chakra-ui/react";
+import { Box, Center, Flex, Spinner } from "@chakra-ui/react";
 import MiniFeedCard from "components/Card/MiniFeedCard";
 import { DefaultFeedData } from "pages/main/interface/type";
-import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import useSearchData from "./Hook/useSearchData";
 import styles from "./SearchFeed.module.scss";
 
 const SearchFeed = () => {
-  const navigate = useNavigate();
-  // const [feedData, setFeedData] = useState({});
   const { groupId, keyword } = useParams();
   const { searchResults, fetchNextPage, hasNextPage, isFetching } =
     useSearchData(Number(groupId), keyword);
@@ -23,6 +20,9 @@ const SearchFeed = () => {
           base: "140px 0px 0px 0px",
         }}
       >
+        <Box w="78%" padding="20px 0" fontWeight="bold" fontSize={20}>
+          {keyword}로 검색한 결과
+        </Box>
         <InfiniteScroll
           loadMore={fetchNextPage}
           hasMore={hasNextPage}
@@ -31,7 +31,6 @@ const SearchFeed = () => {
           <Flex flexWrap="wrap">
             {searchResults?.pages?.map((feedData: any) =>
               feedData?.results?.map((data: DefaultFeedData) => {
-                console.log(data);
                 return <MiniFeedCard feedData={data} />;
               })
             )}

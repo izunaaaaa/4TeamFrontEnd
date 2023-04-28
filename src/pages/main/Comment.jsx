@@ -1,38 +1,20 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  ButtonGroup,
-  Flex,
-  HStack,
-  Input,
-  useToast,
-} from "@chakra-ui/react";
+import { Button, Flex, Input, useToast } from "@chakra-ui/react";
 import styles from "./Comment.module.scss";
 import moment from "moment";
 import "moment/locale/ko";
 import { useMutation, useQueryClient } from "react-query";
-import {
-  deleteComment,
-  deleteRecomment,
-  postCommentLike,
-  postRecomment,
-} from "api/axios/axiosSetting";
+import { postRecomment } from "api/axios/axiosSetting";
 import useUser from "components/form/User/Hook/useUser";
 import useComment from "./hook/useComment";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Querykey } from "api/react-query/QueryKey";
-import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
-import { BsTrash3, BsArrowReturnRight } from "react-icons/bs";
-import SendBtn from "UI/Button/SendBtn";
-import CommnetLikeBtn from "./CommetLikeBtn";
+import CommentCard from "components/Card/CommentCard";
+import ReCommentCard from "components/Card/ReCommentCard";
 
 const Comment = (props) => {
   const feedId = props.feedId;
   const { register, handleSubmit, reset } = useForm();
-  const toast = useToast();
-  const { LoginUserData } = useUser();
   const { feedComment, refetch: refetchComment } = useComment(feedId);
 
   const [selectComment, setSelectComment] = useState(null);
@@ -51,22 +33,6 @@ const Comment = (props) => {
     refetchComment();
   };
 
-  /**댓글 삭제 */
-  const { mutate: deleteCommentHandler } = useMutation(
-    (id) => deleteComment(id),
-    {
-      onSuccess: () => {
-        successPost();
-        toast({ title: "댓글이 삭제되었습니다.", status: "success" });
-      },
-    }
-  );
-
-  /**댓글/대댓글 좋아요 */
-  const { mutateAsync: commentLikeHandler } = useMutation((commentData) => {
-    postCommentLike(commentData);
-  }, successRefetch);
-
   /**대댓글 달기 */
   const { mutateAsync: postRecommentHandler, isLoading } = useMutation(
     (description) => postRecomment(feedId, selectComment, description),
@@ -81,197 +47,54 @@ const Comment = (props) => {
     reset();
     setSelectComment(null);
   };
-  /**대댓글 삭제 */
-  const { mutate: deleteRecommentHandler } = useMutation(
-    (recommentData) => deleteRecomment(recommentData),
-    {
-      onSuccess: () => {
-        successPost();
-        toast({ title: "대댓글이 삭제되었습니다.", status: "success" });
-      },
-    }
-  );
-
-  /**댓글 버튼 이벤트 */
-  const btnHandler = async (e, id, commentType) => {
-    reset();
-    const targetValue = e.target.value;
-    const data = {
-      id,
-      commentType,
-    };
-    if (targetValue === "like") {
-      return await commentLikeHandler(data);
-    }
-    if (targetValue === "recomment") return setSelectComment(id);
-
-    if (targetValue === "delete") {
-      if (commentType === "comment") {
-        return deleteCommentHandler(data);
-      } else {
-        return deleteRecommentHandler(data);
-      }
-    }
-  };
 
   return (
     <>
       {feedComment?.map((comment, index) => {
-        const commentWriteTime = moment(comment.created_at).fromNow();
         return (
-          <Flex key={index} width="100%">
-            <Box margin="10px 0 5px 5px">
-              <Avatar
-                name="익명"
-                size="xs"
-                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-              />
-            </Box>
-            <Box padding="10px" lineHeight="5" maxW="500px" w="90%">
-              <Flex justifyContent="space-between" marginBottom="2px">
-                <Box fontWeight="bold">익명{index + 1}</Box>
-                <Flex onClick={(e) => btnHandler(e, comment.id, "comment")}>
-                  <ButtonGroup spacing="-1.5">
-                    {/* <Button
-                      backgroundColor={"transparent"}
-                      height="20px"
-                      padding="0 2px"
-                      value="like"
-                    >
-                      <FiThumbsUp size="18" />
-                    </Button> */}
-                    <CommnetLikeBtn
-                      isLike={comment.is_like}
-                      height={"20px"}
-                      id={comment.id}
-                      type={"comment"}
-                    />
-                    <Button
-                      backgroundColor={"transparent"}
-                      height="20px"
-                      padding="0 2px"
-                      value="recomment"
-                    >
-                      <FiMessageSquare size="18" />
-                    </Button>
+          <Flex key={index} width="100%" flexDir="column">
+            <CommentCard
+              key={index}
+              comment={comment}
+              index={index}
+              successRefetch={successRefetch}
+              successPost={successPost}
+            />
 
-                    {comment.user.pk !== LoginUserData.id ? (
-                      <SendBtn userPk={comment.user.pk} height={"20px"} />
-                    ) : (
-                      <Button
-                        backgroundColor={"transparent"}
-                        height="20px"
-                        padding="0 1px"
-                        value="delete"
-                      >
-                        <BsTrash3 />
-                      </Button>
-                    )}
-                  </ButtonGroup>
-                </Flex>
-              </Flex>
-              <Box fontSize="0.9rem">{comment.description}</Box>
-              <HStack marginTop="2px" fontSize="0.8rem" spacing="4px">
-                <Box>{commentWriteTime}</Box>
-                {comment.commentlikeCount > 0 && (
-                  <>
-                    <FiThumbsUp style={{ color: "red" }} />
-                    <Box color="red">{comment.commentlikeCount}</Box>
-                  </>
-                )}
-              </HStack>
-              {comment.id === selectComment ? (
-                <form
-                  className={styles.recommentForm}
-                  h={"30px"}
-                  display="flex"
+            {comment.id === selectComment ? (
+              <form
+                className={styles.recommentForm}
+                h={"30px"}
+                display="flex"
+                onSubmit={handleSubmit(submitRecommentHandler)}
+              >
+                <Input
+                  h="100%"
+                  w="100%"
+                  placeholder="댓글을 입력해주세요."
+                  {...register("description", {
+                    required: true,
+                  })}
+                />
+                <Button
+                  h={"100%"}
+                  type="submit"
+                  isLoading={isLoading}
                   onSubmit={handleSubmit(submitRecommentHandler)}
                 >
-                  <Input
-                    h="100%"
-                    w="100%"
-                    placeholder="댓글을 입력해주세요."
-                    {...register("description", {
-                      required: true,
-                    })}
-                  />
-                  <Button
-                    h={"100%"}
-                    type="submit"
-                    isLoading={isLoading}
-                    onSubmit={handleSubmit(submitRecommentHandler)}
-                  >
-                    답글
-                  </Button>
-                </form>
-              ) : null}
-              {comment.recomment?.map((recomment, index) => (
-                <Flex key={index} marginTop="10px" width="100%">
-                  <Box lineHeight={5} margin="10px">
-                    <BsArrowReturnRight />
-                  </Box>
-                  <Flex key={index} width="100%">
-                    <Box margin="10px 0 5px 5px">
-                      <Avatar
-                        name="익명"
-                        size="xs"
-                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                      />
-                    </Box>
-                    <Box
-                      padding="10px 0px 10px 10px"
-                      lineHeight="5"
-                      width="100%"
-                    >
-                      <Flex justifyContent="space-between" marginBottom="2px">
-                        <Box fontWeight="bold">익명{recomment.pk}</Box>
-                        <Flex
-                          onClick={(e) =>
-                            btnHandler(e, recomment.pk, "recomment")
-                          }
-                        >
-                          <ButtonGroup spacing="-1.5">
-                            <Button
-                              backgroundColor={"transparent"}
-                              height="20px"
-                              padding="0 4px"
-                              value="like"
-                            >
-                              <FiThumbsUp />
-                            </Button>
-
-                            {recomment.user.pk !== LoginUserData.id ? null : (
-                              <Button
-                                backgroundColor={"transparent"}
-                                height="20px"
-                                padding="0 1px"
-                                value="delete"
-                              >
-                                <BsTrash3 />
-                              </Button>
-                            )}
-                          </ButtonGroup>
-                        </Flex>
-                      </Flex>
-                      <Box fontSize="0.9rem">{recomment.description}</Box>
-                      <Flex margin="4px 0 0 0">
-                        <HStack fontSize="0.8rem" spacing="4px">
-                          <Box>{commentWriteTime}</Box>
-                          {recomment.commentlikeCount > 0 && (
-                            <>
-                              <FiThumbsUp style={{ color: "red" }} />
-                              <Box color="red">
-                                {recomment.commentlikeCount}
-                              </Box>
-                            </>
-                          )}
-                        </HStack>
-                      </Flex>
-                    </Box>
-                  </Flex>
-                </Flex>
-              ))}
-            </Box>
+                  답글
+                </Button>
+              </form>
+            ) : null}
+            {comment.recomment?.map((recomment, index) => (
+              <ReCommentCard
+                key={index}
+                recomment={recomment}
+                index={index}
+                successRefetch={successRefetch}
+                successPost={successPost}
+              />
+            ))}
           </Flex>
         );
       })}

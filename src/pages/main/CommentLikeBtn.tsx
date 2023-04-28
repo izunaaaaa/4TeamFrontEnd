@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { FiThumbsUp } from "react-icons/fi";
 
-const CommnetLikeBtn = (props: any) => {
+const CommentLikeBtn = (props: any) => {
   const height = props.height;
   const isLike = props.isLike;
 
@@ -18,4 +18,4 @@ const CommnetLikeBtn = (props: any) => {
   );
 };
 
-export default CommnetLikeBtn;
+export default CommentLikeBtn;

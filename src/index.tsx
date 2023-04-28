@@ -21,6 +21,8 @@ const client = new QueryClient({
   defaultOptions: {
     queries: {
       onError: queryErrorHandler,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
     mutations: {
       onError: queryErrorHandler,
