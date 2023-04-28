@@ -17,7 +17,7 @@ export function send_message(phone) {
   const method = "POST";
   const space = " ";
   const newLine = "\n";
-  // const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
+  const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
   const url2 = `/sms/v2/services/${uri}/messages`;
 
   const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
@@ -35,7 +35,7 @@ export function send_message(phone) {
 
   axios
     .post(
-      `/sms/v2/services/${uri}/messages`,
+      url,
       {
         type: "SMS",
         countryCode: "82",

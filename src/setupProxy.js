@@ -8,11 +8,11 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
-  app.use(
-    createProxyMiddleware("/sms/v2/services", {
-      target: "https://sens.apigw.ntruss.com",
+  // app.use(
+  //   createProxyMiddleware("/sms/v2/services", {
+  //     target: "https://sens.apigw.ntruss.com",
 
-      changeOrigin: true,
-    })
-  );
+  //     changeOrigin: true,
+  //   })
+  // );
 };
