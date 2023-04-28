@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Box, Text, useMediaQuery } from "@chakra-ui/react";
+import { Flex, Box, Text, useMediaQuery, Spinner } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
 import { useQuery } from "react-query";
 import { getLetterlists } from "api/axios/axiosSetting";
-import LetterSkeleton from "UI/Skeleton/LetterSkeleton";
 import { LetterList } from "interface/Interface";
 import { Outlet } from "react-router-dom";
-import SkeletonUI from "UI/Skeleton/SkeletonUI";
 import EmptyMsg from "./EmptyMsg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-function Mailbox() {
+interface MailboxProps {
+  chatId?: number;
+}
+
+function Mailbox(chatId: MailboxProps) {
   const { isLoading, error, data } = useQuery<LetterList[]>(
     "Letterlists",
-    getLetterlists
+    getLetterlists,
+    { enabled: !chatId }
   );
 
   const [clickedIdx, setClickedIdx] = useState<number | null>(null);
@@ -26,7 +27,17 @@ function Mailbox() {
 
   const renderChatList = () => {
     if (isLoading || !data) {
-      return <LetterSkeleton />;
+      return (
+        <Box w={"100vw"} textAlign={"center"}>
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </Box>
+      );
     }
     if (data && data.length === 0) {
       return <EmptyMsg />;
@@ -37,7 +48,7 @@ function Mailbox() {
         key={idx}
         _hover={{ bg: "#dce0e7", cursor: "pointer" }}
         w={isMobile ? "100vw" : "30vw"}
-        bg={clickedIdx === idx ? "#dce0e7" : "white"}
+        bg={clickedIdx === idx ? "#dce0e7" : "transparent"}
         onClick={() => setClickedIdx(idx)}
       >
         <MsgList {...item} isMobile={isMobile} />
@@ -54,7 +65,7 @@ function Mailbox() {
       position={"fixed"}
       overscrollY={"auto"}
     >
-      <Box maxW="600px" border={"1px solid lightgray"} bg={"white"}>
+      <Box maxW="480px" border={"1px solid lightgray"} bg={"white"}>
         {renderChatList()}
       </Box>
       <Outlet />

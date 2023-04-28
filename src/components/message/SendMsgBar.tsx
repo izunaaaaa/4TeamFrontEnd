@@ -22,14 +22,16 @@ const SendMsgBar = ({ receiver }: any) => {
   return (
     <Grid
       position={"fixed"}
+      bg={"white"}
       bottom={0}
       as={"div"}
       templateColumns={"6fr 1fr"}
       alignItems="center"
       ml={10}
+      w={isMobile ? "100vmin" : "50vw"}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputGroup size="lg" w={isMobile ? "43vw" : "90vw"} mx="auto">
+        <InputGroup size="lg" mx="auto">
           <Input type="hidden" {...register("receiver")} value={receiver} />
           <Input
             type="text"
