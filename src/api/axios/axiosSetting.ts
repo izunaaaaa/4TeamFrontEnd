@@ -7,7 +7,10 @@ import Cookie from "js-cookie";
 import { Description } from "pages/main/interface/type";
 export const instance = axios.create({
   // baseURL: BASE_URL,
-  baseURL: process.env.NODE_ENV === "development" ? "/api/v1/" : BASE_URL,
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? "/api/v1/"
+      : "https://backend.curb.site",
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },
