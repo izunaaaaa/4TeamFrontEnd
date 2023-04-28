@@ -44,7 +44,7 @@ const Login = (props: any) => {
           status: "success",
           isClosable: true,
         });
-        navigate("/community");
+        navigate("/community/home");
         window.location.reload();
       },
     }
