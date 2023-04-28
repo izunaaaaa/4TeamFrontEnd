@@ -2,32 +2,49 @@ export interface User {
   pk: number;
   is_coach: boolean;
 }
-interface Comment {
+
+export interface Group {
+  group: {
+    pk: number;
+    name: string;
+    members_count: string;
+  };
+}
+
+export interface Category {
+  id: number;
+  group: Group;
+  name: string;
+}
+export interface CommentType {
   id: number;
   user: {
-    usernmae: string;
-    name: string;
-    email: string;
-    avatar: string;
+    pk: number;
     is_coach: boolean;
   };
   description: string;
   created_at: string;
   commentlikeCount: string;
-  recomment: [
-    {
-      user: {
-        usernmae: string;
-        name: string;
-        email: string;
-        avatar: string;
-        is_coach: boolean;
-      };
-      created_at: string;
-      description: string;
-      comment: number;
-    }
-  ];
+  is_writer: boolean;
+  is_like: boolean;
+  recomment: RecommentType[];
+}
+
+export interface Description {
+  description: string;
+}
+
+export interface RecommentType {
+  user: {
+    pk: number;
+    is_coach: boolean;
+  };
+  pk: number;
+  is_writer: boolean;
+  is_like: boolean;
+  feed_writer: boolean;
+  description: string;
+  created_at: string;
 }
 
 export interface DefaultFeedData {
@@ -35,11 +52,7 @@ export interface DefaultFeedData {
   pk?: number;
   user: User;
   title: string;
-  group: {
-    pk: number;
-    name: string;
-    members_count: string;
-  };
+  group: Group;
   category: number;
   description: string;
   visited: number;

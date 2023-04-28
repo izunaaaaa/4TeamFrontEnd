@@ -10,7 +10,6 @@ import {
   FormLabel,
   Input,
   useToast,
-  HStack,
   ButtonGroup,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
@@ -26,35 +25,35 @@ const AccessInformModal = (props: any) => {
   const accessUserInform = props.accessUserInform;
   /**access 추가하기 */
   const queryClinet = useQueryClient();
+
+  const mutationState = {
+    onSuccess: () => {
+      queryClinet.invalidateQueries([Querykey.access, props.loginGroup]);
+    },
+    onError: (error: any) => {
+      const detail_error = Object.values(error?.response?.data);
+      toast({
+        title: "정보를 다시 입력해주세요.",
+        description: `${detail_error[0]}`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+  };
+
   const { mutateAsync: postAccessHandler, isLoading: postLoading } =
     useMutation(
       (postAccessData: accessUser) =>
         postAccess(postAccessData, props.loginGroup),
-      {
-        onSuccess: () => {
-          queryClinet.invalidateQueries([Querykey.access, props.loginGroup]);
-        },
-      }
+      mutationState
     );
+
   const { mutateAsync: putAccessHandler, isLoading: putLoading } = useMutation(
     (putAccessData: accessUser) => {
       return putAccess(putAccessData, accessUserInform);
     },
-    {
-      onSuccess: () => {
-        queryClinet.invalidateQueries([Querykey.access, props.loginGroup]);
-      },
-      onError: (error: any) => {
-        const detail_error = Object.values(error?.response?.data);
-        toast({
-          title: "회원가입 실패",
-          description: `${detail_error[0]}`,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      },
-    }
+    mutationState
   );
 
   const onSubmit = async (data: accessUser) => {
@@ -70,6 +69,7 @@ const AccessInformModal = (props: any) => {
     } else {
       await postAccessHandler(newAccessData);
     }
+    reset();
     props.onClose();
   };
 
