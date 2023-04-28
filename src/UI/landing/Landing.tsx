@@ -14,7 +14,7 @@ function Landing() {
       <div className={styles.header}>
         <div className={styles.logo}>
           <img
-            src="https://velog.velcdn.com/images/view_coding/post/00c25245-11c5-4c63-a30a-fadae29621c7/image.png"
+            src="https://velog.velcdn.com/images/view_coding/post/a8381e96-0dae-45bf-b30f-985c1d2d6359/image.png"
             alt="logo"
           />
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SidebarModal.module.scss";
 
 export interface SidebarModalProps {
@@ -16,9 +16,16 @@ const SidebarModal: React.FC<SidebarModalProps> = ({
 }) => {
   const [updatedChannelName, setUpdatedChannelName] = useState("");
 
+  useEffect(() => {
+    if (!type) {
+      setUpdatedChannelName("");
+    }
+  }, [type]);
+
   const handleSubmit = () => {
+    console.log("handleSubmit called"); // Add this line
     if (type === "edit") {
-      handleAction(type, { ...data, name: updatedChannelName });
+      handleAction(type, updatedChannelName);
       console.log(updatedChannelName);
     } else if (type === "add" || type === "delete") {
       handleAction(type, data);
