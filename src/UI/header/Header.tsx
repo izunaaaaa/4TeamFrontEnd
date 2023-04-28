@@ -39,7 +39,7 @@ function Header(): ReactElement {
       {mediaWidth > 767 ? (
         <>
           <div className={styles.nav_bar}>
-            <Link to={"/home"}>
+            <Link to={"home"}>
               {/* <h1>CurB</h1> */}
               <img
                 src="https://velog.velcdn.com/images/view_coding/post/a8381e96-0dae-45bf-b30f-985c1d2d6359/image.png"

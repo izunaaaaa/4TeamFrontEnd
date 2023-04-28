@@ -12,7 +12,6 @@ import {
 
 import {
   deleteComment,
-  deleteRecomment,
   postCommentLike,
   postRecomment,
 } from "api/axios/axiosSetting";
@@ -26,6 +25,7 @@ import moment from "moment";
 import "moment/locale/ko";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import { Description } from "pages/main/interface/type";
 
 const CommentCard = (props: any) => {
   const comment = props.comment;
@@ -35,14 +35,14 @@ const CommentCard = (props: any) => {
   const successRefetch = props.successRefetch;
   const successPost = props.successPost;
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm<Description>();
   const toast = useToast();
 
   const [isOpenRecommentInput, setIsOpenRecommentInput] = useState(false);
   const [isLike, setIsLike] = useState(comment.is_like);
   const [likeCount, setLikeCount] = useState(comment.commentlikeCount);
 
-  /**댓글/대댓글 좋아요 */
+  /**댓글 좋아요 */
   const { mutateAsync: commentLikeHandler } = useMutation(
     (commentData: any) => {
       return postCommentLike(commentData);
@@ -63,37 +63,33 @@ const CommentCard = (props: any) => {
 
   /**대댓글 달기 */
   const { mutateAsync: postRecommentHandler, isLoading } = useMutation(
-    (description: object) => postRecomment(feedId, comment.id, description),
+    (description: Description) =>
+      postRecomment(feedId, comment.id, description),
     {
       onSuccess: () => {
         successPost();
       },
     }
   );
-  const submitRecommentHandler = async (description: object) => {
+  const submitRecommentHandler = async (description: Description) => {
     await postRecommentHandler(description);
     reset();
   };
 
-  /**대댓글 삭제 */
-  const { mutate: deleteRecommentHandler } = useMutation(
-    (recommentData) => deleteRecomment(recommentData),
-    {
-      onSuccess: () => {
-        successPost();
-        toast({ title: "대댓글이 삭제되었습니다.", status: "success" });
-      },
-    }
-  );
-
   /**댓글 버튼 이벤트 */
-  const btnHandler = async (e: any, id: string, commentType: string) => {
-    // reset();
-    const targetValue = e.target.value;
+  const btnHandler = async (
+    e: React.MouseEvent,
+    id: string,
+    commentType: string
+  ) => {
+    const eventTarget = e.target as any;
+    const targetValue = eventTarget.value;
     const data: any = {
       id,
       commentType,
     };
+
+    console.log(targetValue);
     if (targetValue === "like") {
       if (isLike) {
         setIsLike(false);
@@ -108,11 +104,7 @@ const CommentCard = (props: any) => {
       return setIsOpenRecommentInput(!isOpenRecommentInput);
 
     if (targetValue === "delete") {
-      if (commentType === "comment") {
-        return deleteCommentHandler(data);
-      } else {
-        return deleteRecommentHandler(data);
-      }
+      return deleteCommentHandler(data);
     }
   };
 
@@ -152,6 +144,7 @@ const CommentCard = (props: any) => {
                 height="20px"
                 padding="0 2px"
                 value="recomment"
+                onClick={() => setIsOpenRecommentInput(!isOpenRecommentInput)}
               >
                 <FiMessageSquare size="18" />
               </Button>

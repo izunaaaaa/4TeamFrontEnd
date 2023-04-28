@@ -5,7 +5,6 @@ import { NCP_accessKey, NCP_secretKey, NCP_serviceID } from "env";
 const Cache = require("memory-cache");
 
 export function send_message(phone) {
-  console.log(phone);
   var user_phone_number = phone;
   const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
   Cache.put(phone, verifyCode.toString());
@@ -17,7 +16,7 @@ export function send_message(phone) {
   const method = "POST";
   const space = " ";
   const newLine = "\n";
-  // const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
+  const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
   const url2 = `/sms/v2/services/${uri}/messages`;
 
   const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
@@ -35,7 +34,8 @@ export function send_message(phone) {
 
   axios
     .post(
-      `/sms/v2/services/${uri}/messages`,
+      // `/sms/v2/services/${uri}/messages`
+      url,
       {
         type: "SMS",
         countryCode: "82",
@@ -54,6 +54,7 @@ export function send_message(phone) {
           "x-ncp-apigw-timestamp": Number(date),
           "x-ncp-apigw-signature-v2": signature,
         },
+        withCredentials: true,
       }
     )
     .then((data) => console.log(data))

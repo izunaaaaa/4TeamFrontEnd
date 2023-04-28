@@ -26,8 +26,14 @@ function Feed() {
   const navigate = useNavigate();
 
   const groupName = LoginUserData.group.name;
-  const { feedData, fetchNextPage, hasNextPage, isFetching, isLoading } =
-    useFeed(groupPk, categoryId);
+  const { feedData, fetchNextPage, hasNextPage, isFetching } = useFeed(
+    groupPk,
+    categoryId
+  );
+
+  const viewDetail = (dataId: number) => {
+    navigate(`/${groupPk}/category/${categoryId}/feedDetail/${dataId}`);
+  };
 
   return (
     <>
@@ -36,6 +42,17 @@ function Feed() {
         hasMore={hasNextPage}
         className={styles.main}
       >
+        {isFetching && (
+          <Box textAlign="center" position="fixed" top="50%" left="50%">
+            <Spinner
+              thickness="5px"
+              speed="0.75s"
+              emptyColor="gray.200"
+              color="pink.100"
+              size={{ lg: "xl", md: "lg", base: "lg" }}
+            />
+          </Box>
+        )}
         <div className={styles.feeds}>
           {feedData.pages?.map((pageData: any) =>
             pageData?.results?.map((data: DefaultFeedData) => {
@@ -56,9 +73,19 @@ function Feed() {
                     </Flex>
                   </div>
                   {data.thumbnail && (
-                    <Image src={data.thumbnail} margin="20px 0" />
+                    <Image
+                      src={data.thumbnail}
+                      margin="20px 0"
+                      cursor="pointer"
+                      onClick={() => viewDetail(data.id)}
+                    />
                   )}
-                  <Box marginBottom="20px" fontSize="1.2rem">
+                  <Box
+                    marginBottom="20px"
+                    fontSize="1.2rem"
+                    onClick={() => viewDetail(data.id)}
+                    cursor="pointer"
+                  >
                     {data.title}
                   </Box>
                   <HStack spacing="1px">
@@ -72,11 +99,7 @@ function Feed() {
                       padding="5px"
                       backgroundColor="transparent"
                       leftIcon={<FiMessageSquare />}
-                      onClick={() => {
-                        navigate(
-                          `/${groupPk}/category/${categoryId}/feedDetail/${data.id}`
-                        );
-                      }}
+                      onClick={() => viewDetail(data.id)}
                     >
                       {data.comments_count}
                     </Button>
@@ -87,11 +110,7 @@ function Feed() {
 
                   <div
                     className={styles.comment}
-                    onClick={() => {
-                      navigate(
-                        `/${groupPk}/category/${categoryId}/feedDetail/${data.id}`
-                      );
-                    }}
+                    onClick={() => viewDetail(data.id)}
                   >
                     댓글모두 보기
                   </div>
@@ -99,21 +118,6 @@ function Feed() {
               );
             })
           )}
-
-          {isFetching && (
-            <Box margin="20px 5% 0px 15%" width="500px">
-              <Box textAlign="center">
-                <Spinner
-                  thickness="5px"
-                  speed="0.75s"
-                  emptyColor="gray.200"
-                  color="pink.100"
-                  size={{ lg: "xl", md: "lg", base: "lg" }}
-                />
-              </Box>
-            </Box>
-          )}
-          {/* {isLoading && <FeedSkeleton />} */}
         </div>
       </InfiniteScroll>
 
