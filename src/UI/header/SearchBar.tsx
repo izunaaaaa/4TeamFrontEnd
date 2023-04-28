@@ -6,7 +6,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
 import { useQuery } from "react-query";
-import { Link, useNavigate, useParams  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getSearchData } from "api/axios/axiosSetting";
 import useUser from "components/form/User/Hook/useUser";
 
@@ -24,7 +24,7 @@ function SearchBar() {
   const [searchbarVisible, setSearchbarVisible] = useState<boolean>(false);
   const searchbarRef = useRef<HTMLDivElement | null>(null);
   const { LoginUserData } = useUser();
-  
+
   const groupPk = LoginUserData?.group?.pk;
 
   const navigate = useNavigate();

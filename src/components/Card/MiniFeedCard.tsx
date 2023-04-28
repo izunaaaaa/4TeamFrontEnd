@@ -1,12 +1,9 @@
-import { AspectRatio, Card, CardBody, Img } from "@chakra-ui/react";
-import useUser from "components/form/User/Hook/useUser";
-import React from "react";
+import { AspectRatio, Img } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const MiniFeedCard = (props: any) => {
   const data = props.feedData;
   const navigate = useNavigate();
-  const { LoginUserData } = useUser();
   const { groupId, keyword } = useParams();
   // const groupPk = LoginUserData.group.pk;
 
