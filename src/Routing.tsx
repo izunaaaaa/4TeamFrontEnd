@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "pages/SignUp/SignUp";
-import Main from "./pages/main/Main";
 import UploadFeed from "./components/form/feed/UploadFeed";
 import MsgRoom from "./pages/sendletters/MsgRoom";
 import Mailbox from "./pages/sendletters/Mailbox";
@@ -21,11 +20,8 @@ import MobileMsg from "pages/sendletters/MobileMsg";
 import FindId from "components/form/User/FindId";
 import FindPassword from "components/form/User/FindPassword";
 import SearchFeed from "pages/searchPage/SearchFeed";
-import { Navigate } from "react-router-dom";
 
 const Routing = () => {
-  const { LoginUserData } = useUser();
-
   // return (
   //   <BrowserRouter>
   //     <Routes>

@@ -31,7 +31,7 @@ export default function MyPage() {
 
   /**routing */
   const handleTab = (tab: string) => {
-    navigate(`/mypage/${tab}`);
+    navigate(`/community/mypage/${tab}`);
   };
 
   const { data, isFetching, hasNextPage, fetchNextPage } = useMyFeed(type);
@@ -127,7 +127,7 @@ export default function MyPage() {
                   ratio={9 / 10}
                   onClick={() => {
                     setFeedData(data);
-                    navigate(`/mypage/${type}/feedDetail/${data.id}`);
+                    navigate(`feedDetail/${data.id}`);
                   }}
                 >
                   {data.thumbnail ? (

@@ -57,9 +57,9 @@ function SearchBar() {
   const onChangeData = (e: React.FormEvent<HTMLInputElement>) => {
     setKeyword(e.currentTarget.value);
   };
-
+  // search/group_id/1/keyword/tes
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    navigate(`/search/group_id/${groupPk}/keyword/${keyword}`);
+    navigate(`search/group_id/${groupPk}/keyword/${keyword}`);
     e.preventDefault();
     setSearchbarVisible(false);
   };
