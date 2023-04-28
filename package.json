@@ -2,7 +2,6 @@
   "name": "11",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://115.85.181.9",
   "dependencies": {
     "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
