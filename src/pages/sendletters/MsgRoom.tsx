@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Flex,
-  Button,
-  Box,
-  Input,
-  InputRightElement,
-  InputGroup,
-} from "@chakra-ui/react";
+import { Flex, Box, useMediaQuery } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import MsgDetail from "../../components/message/MsgDetail";
@@ -62,19 +55,20 @@ export default function MsgRoom() {
     }
   }, [resultPk.data, chatId]);
 
+  const isMobile = useMediaQuery("(max-width: 769px)");
+
   return (
     <>
       <Box
         bgColor={"white"}
-        // overflowY="scroll"
         overflowX="hidden"
         h="86vh"
-        w="100vmin"
-        maxW="100vmax"
+        w={isMobile ? "100vmin" : "80vw"}
+        mt={isMobile ? "0" : "20rem"}
+        maxW="100%"
       >
         {/* 주고받은 쪽지내역 */}
         {data?.map((item: ChatId, idx: number) => {
-          const nextData = idx < data.length - 1;
           return (
             <Flex
               key={idx}

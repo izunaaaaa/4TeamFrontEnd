@@ -21,6 +21,7 @@ import MobileMsg from "pages/sendletters/MobileMsg";
 import FindId from "components/form/User/FindId";
 import FindPassword from "components/form/User/FindPassword";
 import SearchFeed from "pages/searchPage/SearchFeed";
+import { Navigate } from "react-router-dom";
 
 const Routing = () => {
   const { LoginUserData } = useUser();

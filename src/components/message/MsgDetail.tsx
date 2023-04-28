@@ -59,30 +59,46 @@ const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
 
   return (
     <>
-      {is_sender ? (
-        <Text mr={3} mt={3} fontSize={"sm"}>
-          {formattedDate}
-        </Text>
-      ) : null}
-      <Box
-        p="2"
-        bgColor={is_sender ? "purple.500" : "gray.200"}
-        borderRadius="lg"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+      <HStack
+        justifyContent={is_sender ? "flex-end" : "flex-start"}
+        alignItems={"flex-end"}
       >
-        <HStack justifyContent={is_sender ? "flex-end" : "flex-start"}>
-          <Text color={is_sender ? "white" : "black"}>{text}</Text>
-          <button onClick={onOpen}>
-            <FontAwesomeIcon icon={faTrashCan} size="sm" />
-          </button>
-        </HStack>
-      </Box>
-      {!is_sender ? (
-        <Text ml={3} mt={3} fontSize={"sm"}>
-          {formattedDate}
-        </Text>
-      ) : null}
+        <VStack justify={"end"}>
+          {is_sender ? (
+            <Box textAlign={"right"} mr={2}>
+              {" "}
+              <button onClick={onOpen}>
+                <FontAwesomeIcon icon={faTrashCan} size="sm" />
+              </button>
+              <Text fontSize={"sm"}>{formattedDate}</Text>
+            </Box>
+          ) : null}
+        </VStack>
+
+        <Box
+          p="2"
+          bgColor={is_sender ? "purple.500" : "gray.200"}
+          borderRadius="lg"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          maxW={"200px"}
+        >
+          <HStack>
+            <Text color={is_sender ? "white" : "black"}>{text}</Text>
+          </HStack>
+        </Box>
+        <VStack>
+          {!is_sender ? (
+            <Box ml={2} textAlign={"left"}>
+              {" "}
+              <button onClick={onOpen}>
+                <FontAwesomeIcon icon={faTrashCan} size="sm" />
+              </button>
+              <Text fontSize={"sm"}>{formattedDate}</Text>
+            </Box>
+          ) : null}
+        </VStack>
+      </HStack>
 
       {/* 모달 */}
       <Modal isOpen={isOpen} onClose={onClose}>
