@@ -166,12 +166,12 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const renderSidebarData = () =>
     categories?.map((item: Category, id: number) => (
       <li key={id} className={styles.nav_text}>
-        <Link to={`/${item.group.pk}/category/${item.id}`}>
+        <Link to={`${item.group.pk}/category/${item.id}`}>
           <div className={styles.nav_name}>
             <span>{item.name}</span>
           </div>
         </Link>
-        {LoginUserData.is_coach && (
+        {LoginUserData?.is_coach && (
           <div className={styles.faiconContent}>
             <div
               onClick={() =>
@@ -218,7 +218,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
         <ul className={styles.navmenu_items}>{renderSidebarData()}</ul>
 
         <div className={styles.navmenu_add}>
-          {LoginUserData.is_coach && renderAddChannelButton()}
+          {LoginUserData?.is_coach && renderAddChannelButton()}
         </div>
       </nav>
       <SidebarModal

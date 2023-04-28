@@ -6,8 +6,8 @@ import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
 import { Description } from "pages/main/interface/type";
 export const instance = axios.create({
-  baseURL: BASE_URL,
-  // baseURL: "/api/v1/",
+  // baseURL: BASE_URL,
+  baseURL: "/api/v1/",
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },
