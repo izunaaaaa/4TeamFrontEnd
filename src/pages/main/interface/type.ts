@@ -9,6 +9,7 @@ export interface Group {
     name: string;
     members_count: string;
   };
+  //test
 }
 
 export interface Category {
