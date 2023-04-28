@@ -22,6 +22,7 @@ const FeedOption = (props: any) => {
       {LoginUserData?.id === data.user?.pk && (
         <Button
           bg="transparent"
+          _hover={{ bg: "transparent" }}
           onClick={() => {
             onOptionOpen();
           }}

@@ -14,6 +14,12 @@ const GlobalStyle = createGlobalStyle`
     --nav-medium-height : 6em;
   }
  
+  svg {
+    pointer-events: none;
+  }
+  path {
+    pointer-events: none;
+  }
 
   `;
 // @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');

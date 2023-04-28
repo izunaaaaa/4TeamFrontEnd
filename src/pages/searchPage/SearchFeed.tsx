@@ -20,9 +20,17 @@ const SearchFeed = () => {
           base: "140px 0px 0px 0px",
         }}
       >
-        <Box w="78%" padding="20px 0" fontWeight="bold" fontSize={20}>
-          {keyword}로 검색한 결과
-        </Box>
+        <Flex
+          w={{
+            base: "92%",
+            md: "78%",
+          }}
+          padding="20px 0"
+          fontWeight="bold"
+          fontSize={20}
+        >
+          <Box color="yellow.500">"{keyword}"</Box>로 검색한 결과
+        </Flex>
         <InfiniteScroll
           loadMore={fetchNextPage}
           hasMore={hasNextPage}
@@ -31,7 +39,7 @@ const SearchFeed = () => {
           <Flex flexWrap="wrap">
             {searchResults?.pages?.map((feedData: any) =>
               feedData?.results?.map((data: DefaultFeedData) => {
-                return <MiniFeedCard feedData={data} />;
+                return <MiniFeedCard feedData={data} key={data.id} />;
               })
             )}
 

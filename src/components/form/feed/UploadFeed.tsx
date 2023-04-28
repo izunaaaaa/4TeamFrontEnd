@@ -25,6 +25,7 @@ import CropUploadImg from "./CropUploadImg";
 import useFeedCategory from "./hook/useFeedCategory";
 import styles from "./UploadFeed.module.scss";
 import useUser from "../User/Hook/useUser";
+import { Category } from "UI/sidebar/hook/useSide";
 
 const UploadFeed = () => {
   const { register, handleSubmit } = useForm<PostFeed>();
@@ -36,12 +37,17 @@ const UploadFeed = () => {
   const { LoginUserData } = useUser();
 
   const [previewImg, setPreviewImg] = useState();
-
   const feedThumbnail = feedDetail?.thumbnail ?? null;
   const [cropImg, setCropImg] = useState<string | null>(feedThumbnail);
 
   /**카테고리 가져오기 */
-  const { feedCategory } = useFeedCategory(LoginUserData?.group?.name);
+  const { feedCategory } = useFeedCategory(LoginUserData?.group?.pk);
+
+  const newCategory = feedCategory?.filter((data: Category) => {
+    return data.name !== "전체글" && data.name !== "인기글";
+  });
+
+  console.log(newCategory);
 
   /**이미지를 담을 url 요청 */
   const { mutateAsync: postUploadUrlHandler, isLoading: postUploadUrlLoading } =
@@ -162,36 +168,39 @@ const UploadFeed = () => {
           />
         </ModalContent>
       </Modal>
-      {(postFeedLoading || postUploadUrlLoading) && (
-        <Center
-          zIndex="1000"
-          position="absolute"
-          top="50%"
-          left="50%"
-          height="50%"
-          marginLeft="-50px"
-          marginTop="-50px"
-          display="flex"
-          flexDirection="column"
-        >
-          <Spinner size="xl" thickness="3px" color="blue.500" />
-        </Center>
-      )}
 
       <Flex
         justifyContent="center"
         margin={{
-          md: "80px 0px 30px var(--nav-medium-width)",
+          md: "100px 0px 0px var(--nav-medium-width)",
           sm: "8.7em 0px 0px 0px",
         }}
         h="100%"
       >
+        {(postFeedLoading || postUploadUrlLoading) && (
+          <Center
+            zIndex="1000"
+            position="fixed"
+            top="50%"
+            left="50%"
+            display="flex"
+            flexDirection="column"
+          >
+            <Spinner
+              thickness="5px"
+              speed="0.75s"
+              emptyColor="gray.200"
+              color="pink.100"
+              size={{ lg: "xl", md: "lg", base: "lg" }}
+            />
+          </Center>
+        )}
         <form
           onSubmit={handleSubmit(submitHandler)}
           className={styles.postForm}
         >
           <div className={styles.postFormHeader}>
-            <Button onClick={() => navigate(-1)}>
+            <Button onClick={() => navigate(-1)} bg="transparent">
               <FontAwesomeIcon icon={faArrowLeft} />
             </Button>
             {feedDetail ? (
@@ -199,12 +208,12 @@ const UploadFeed = () => {
                 게시물 수정하기
               </Box>
             ) : (
-              <Box lineHeight={2} fontSize="xl">
+              <Box lineHeight={2} fontSize="xl" bg="transparent">
                 새 게시물 작성하기
               </Box>
             )}
             <Button type="submit" onSubmit={handleSubmit(submitHandler)}>
-              업로드하기
+              업로드
             </Button>
           </div>
 
@@ -217,42 +226,27 @@ const UploadFeed = () => {
               }}
             >
               <div className={styles.fileForm}>
-                {
-                  // feedDetail?.thumbnail ? (
-                  //   <>
-                  //     <img
-                  //       alt=" "
-                  //       className={styles.previewImg}
-                  //       src={feedDetail.thumbnail}
-                  //     />
-                  //   </>
-                  // ) :
-                  !cropImg ? (
-                    <>
-                      <input
-                        type="file"
-                        {...register("image")}
-                        accept="image/*"
-                        onChange={changeImg}
+                {!cropImg ? (
+                  <>
+                    <input
+                      type="file"
+                      {...register("image")}
+                      accept="image/*"
+                      onChange={changeImg}
+                    />
+                    <button>
+                      <FontAwesomeIcon
+                        icon={faCloudArrowUp}
+                        size="5x"
+                        style={{ color: "skyblue" }}
                       />
-                      <button>
-                        <FontAwesomeIcon
-                          icon={faCloudArrowUp}
-                          size="5x"
-                          style={{ color: "skyblue" }}
-                        />
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <img
-                        alt=" "
-                        className={styles.previewImg}
-                        src={cropImg}
-                      />
-                    </>
-                  )
-                }
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <img alt=" " className={styles.previewImg} src={cropImg} />
+                  </>
+                )}
               </div>
               {(cropImg || feedDetail?.thumbnail) && (
                 <Box textAlign="center">
@@ -278,7 +272,7 @@ const UploadFeed = () => {
                 size="sm"
                 {...register("category", {})}
               >
-                {feedCategory.map((category: any) => {
+                {newCategory?.map((category: Category) => {
                   return (
                     <option key={category.id} value={category.id}>
                       {category.name}

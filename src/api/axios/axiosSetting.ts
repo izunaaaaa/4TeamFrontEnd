@@ -3,6 +3,7 @@ import { LoginData, SignUpData } from "components/form/User/interface/type";
 import { accessData, accessUser } from "components/mypages/interface/type";
 import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
+import { Description } from "pages/main/interface/type";
 export const instance = axios.create({
   // baseURL: BASE_URL,
   baseURL: "/api/v1/",
@@ -84,7 +85,7 @@ export const postCommentLike = async (commentData: any) =>
 export const postRecomment = async (
   feedId: string | undefined,
   commentId: string | null,
-  description: object
+  description: Description
 ) =>
   await instance
     .post(`/feeds/${feedId}/comment/${commentId}/recomment/`, description)
@@ -96,7 +97,7 @@ export const deleteRecomment = async (recommentData: any) =>
     .then((res) => res.data);
 
 /**Feed 올리기 */
-export const getFeedCategory = async (group: string) =>
+export const getFeedCategory = async (group: number) =>
   await instance.get(`/categories/${group}`).then((res) => res.data);
 
 export const postUploadUrl = async (imgFile: File) =>
