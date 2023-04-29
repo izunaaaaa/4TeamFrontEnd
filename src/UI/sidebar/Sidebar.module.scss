@@ -96,6 +96,44 @@
   padding: 12px;
   //border-right: 1px solid #e3e3e3;
 }
+// .modal {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(0, 0, 0, 0.5);
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 100;
+// }
+// .modalContent {
+//   background-color: white;
+//   padding: 2rem;
+//   border-radius: 5px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// .navfaIcon {
+//   margin-left: 20px;
+// }
+.faiconContent {
+  display: flex;
+  .fapen {
+    margin-right: 6px;
+  }
+}
+.nav_name {
+  display: flex;
+  align-items: center;
+  width: 10rem;
+  height: 3rem;
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -111,24 +149,45 @@
 .modalContent {
   background-color: white;
   padding: 2rem;
+  width: 20rem;
+  height: 15rem;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-// .navfaIcon {
-//   margin-left: 20px;
-// }
-.faiconContent {
-  display: flex;
-  .fapen {
-    margin-right: 6px;
+
+  .sideBtn_le {
+    color: rgb(29, 29, 29);
+    width: 6rem;
+    height: 45px;
+    border-radius: 5px;
+    background-color: #e1e3ea;
+    margin-right: 8px;
+  }
+  .sideBtn_ri {
+    color: white;
+    width: 6rem;
+    height: 45px;
+    border-radius: 5px;
+    background-color: #6165e0;
+  }
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  input {
+    width: 100%;
+    font-size: 1rem;
+  }
+  p {
+    font-size: 1rem;
   }
 }
-.nav_name {
+.modalinner {
+  height: 190px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 10rem;
-  height: 3rem;
+  justify-content: space-between;
 }
