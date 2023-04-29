@@ -7,11 +7,20 @@ import Sidebar from "UI/sidebar/Sidebar";
 import DropDown from "./DropDown";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
+import useUser from "components/form/User/Hook/useUser";
+import { useFeed } from "UI/sidebar/hook/useSide";
 
 function Header(): ReactElement {
   const [mediaWidth, setMediaWidth] = useState<number>(window.innerWidth);
   const [sidebar, setSidebar] = useState<boolean>(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
+
+  // // 코치 여부 확인
+  // const { LoginUserData } = useUser();
+
+  // const groupPk = LoginUserData?.group?.pk;
+
+  // const { categories, refetch } = useFeed(groupPk);
 
   const handleSidebarToggle = () => {
     setSidebar(!sidebar);

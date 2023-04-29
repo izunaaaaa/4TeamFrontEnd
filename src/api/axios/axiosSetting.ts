@@ -208,10 +208,8 @@ export const deleteAccess = async (accessInform: accessInform) =>
     .delete(`/access/group/${accessInform.groupPk}/${accessInform.userId}`)
     .then((res) => res.data);
 
-export const getCategories = async (groupPk: number) => {
-  const result = await instance.get(`/categories/${groupPk}`);
-  return result.data;
-};
+export const getCategories = async (groupPk: number) =>
+  await instance.get(`/categories/${groupPk}`).then((res) => res.data);
 
 export const postCategory = async (name: string, groupPk: number) =>
   await instance.post(`/categories/${groupPk}`, { name }).then((res) => {

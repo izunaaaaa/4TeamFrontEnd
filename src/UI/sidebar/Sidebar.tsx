@@ -44,6 +44,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const { LoginUserData } = useUser();
 
   const groupPk = LoginUserData?.group?.pk;
+
   const { categories, refetch } = useFeed(groupPk);
 
   // const queryClient = useQueryClient();
@@ -173,7 +174,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
             <span>{item.name}</span>
           </div>
         </Link>
-        {LoginUserData.is_coach &&
+        {LoginUserData?.is_coach &&
           item.name !== "전체글" &&
           item.name !== "인기글" && (
             <div className={styles.faiconContent}>
@@ -222,7 +223,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
         <ul className={styles.navmenu_items}>{renderSidebarData()}</ul>
 
         <div className={styles.navmenu_add}>
-          {LoginUserData.is_coach && renderAddChannelButton()}
+          {LoginUserData?.is_coach && renderAddChannelButton()}
         </div>
       </nav>
       <SidebarModal
