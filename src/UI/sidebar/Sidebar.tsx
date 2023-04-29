@@ -137,7 +137,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const renderSidebarData = () =>
     categories?.map((item: Category, id: number) => (
       <li key={id} className={styles.nav_text}>
-        <Link to={`/${item.group.pk}/category/${item.id}`}>
+        <Link to={`${item.group.pk}/category/${item.id}`}>
           <div className={styles.nav_name}>
             <span>{item.name}</span>
           </div>

@@ -15,11 +15,12 @@ export type Category = {
 };
 
 export const useFeed = (groupPk: number) => {
+  console.log(groupPk);
   const { data: categories, refetch } = useQuery<Category[]>(
-    ["categories"],
+    ["categories", groupPk],
     () => getCategories(groupPk),
     {
-      retry: false,
+      enabled: !!groupPk,
     }
   );
 
