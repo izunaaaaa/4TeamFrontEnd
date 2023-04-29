@@ -24,7 +24,7 @@ const SendMsg = ({ isOpen, onClose, receiver }: any) => {
   const moveLetterlist = async (data: any) => {
     try {
       await onSubmit(data);
-      navigate(`/letterlist/me`);
+      navigate(`letterlist/me`);
     } catch (error) {
       console.log("쪽지함 이동 실패", error);
     }

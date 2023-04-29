@@ -19,7 +19,7 @@ export const useFeed = (groupPk: number) => {
     ["categories", groupPk],
     () => getCategories(groupPk),
     {
-      enabled: !!groupPk,
+      // enabled: !!groupPk,
     }
   );
 

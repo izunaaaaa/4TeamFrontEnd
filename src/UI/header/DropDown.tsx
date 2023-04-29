@@ -8,7 +8,7 @@ import { logout } from "api/axios/axiosSetting";
 
 const list = [
   { id: 1, title: "마이페이지", link: "mypage/feedlist" },
-  { id: 2, title: "쪽지", link: "letterlist/me" },
+  { id: 2, title: "쪽지", link: "/letterlist/me" },
   { id: 3, title: "글등록", link: "upload" },
 ];
 

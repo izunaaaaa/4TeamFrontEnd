@@ -48,7 +48,6 @@ const Routing = () => {
           </Route>
         </Route>
 
-        {/* <Route path="/main" element={<Main />} /> */}
         <Route path="/" element={<Landing />} />
         <Route path="findId" element={<FindId />} />
         <Route path="findPassword" element={<FindPassword />} />
