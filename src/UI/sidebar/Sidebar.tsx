@@ -38,15 +38,10 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   } | null>(null);
 
   const { LoginUserData } = useUser();
+
   const groupPk = LoginUserData?.group?.pk;
 
   const { categories, refetch } = useFeed(groupPk);
-
-  console.log(LoginUserData);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   const addCategoryMutation = useMutation(
     async (name: string) => await postCategory(name, groupPk),

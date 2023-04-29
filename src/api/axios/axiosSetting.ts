@@ -1,4 +1,3 @@
-import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
 import { LoginData, SignUpData } from "components/form/User/interface/type";
 import { accessData, accessUser } from "components/mypages/interface/type";
@@ -6,11 +5,10 @@ import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
 import { Description } from "pages/main/interface/type";
 export const instance = axios.create({
-  // baseURL: BASE_URL,
   baseURL:
-    // process.env.NODE_ENV === "development"
-    "/api/v1",
-  // "https://backend.curb.site",
+    process.env.NODE_ENV === "development"
+      ? "/api/v1/"
+      : "https://backend.curb.site/api/v1/",
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },

@@ -7,14 +7,13 @@ import { useNavigate } from "react-router-dom";
 export default function AuthPage(props: any) {
   const { isLoggedIn, isLoading, LoginUserData } = useUser();
   const navigate = useNavigate();
-  console.log(LoginUserData);
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     if (isLoggedIn) {
-  //       navigate("/errorpage");
-  //     }
-  //   }
-  // }, [isLoading, isLoggedIn, LoginUserData, navigate]);
+  useEffect(() => {
+    if (!isLoading) {
+      if (!isLoggedIn) {
+        navigate("/errorpage");
+      }
+    }
+  }, [isLoading, isLoggedIn, LoginUserData, navigate]);
   if (!isLoading) {
     return <>{props.children}</>;
   } else {

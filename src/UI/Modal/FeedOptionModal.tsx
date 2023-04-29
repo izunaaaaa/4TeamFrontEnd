@@ -8,7 +8,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import DeleteConfirm from "UI/DeleteConfirm";
+import DeleteConfirm from "./DeleteConfirm";
 
 const FeedOptionModal = (props: any) => {
   const isOpen = props.isOpen;
@@ -39,14 +39,27 @@ const FeedOptionModal = (props: any) => {
               <Button
                 h={70}
                 bg="transparent"
-                onClick={() => navigate("/upload", { state: feedData })}
+                margin="3px"
+                onClick={() =>
+                  navigate("/community/upload", { state: feedData })
+                }
               >
                 수정하기
               </Button>
-              <Button h={70} bg="transparent" onClick={() => onDeleteOpen()}>
+              <Button
+                h={70}
+                bg="transparent"
+                margin="3px"
+                onClick={() => onDeleteOpen()}
+              >
                 삭제하기
               </Button>
-              <Button h={70} bg="transparent" onClick={() => onClose()}>
+              <Button
+                h={70}
+                bg="transparent"
+                margin="3px"
+                onClick={() => onClose()}
+              >
                 취소
               </Button>
             </ButtonGroup>
