@@ -8,7 +8,7 @@ export const instance = axios.create({
   baseURL:
     process.env.NODE_ENV === "development"
       ? "/api/v1/"
-      : "https://backend.curb.site",
+      : "https://backend.curb.site/api/v1/",
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },
