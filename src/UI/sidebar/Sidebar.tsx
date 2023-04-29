@@ -164,7 +164,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
     ));
 
   const renderAddChannelButton = () => (
-    <li className={styles.nav_add} onClick={() => toggleModal("add")}>
+    <li className={styles.navmenu_add} onClick={() => toggleModal("add")}>
       <p>
         <FontAwesomeIcon icon={faCirclePlus} size="lg" /> <span>채널 추가</span>
       </p>
@@ -285,15 +285,19 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   };
 
   return (
-    <div className={sidebar ? styles.sidebar_active : styles.sidebar}>
-      <div className={styles.sidebar_content}>
-        <ul>
+    <>
+      <nav
+        className={
+          sidebar ? `${styles.nav_menu} ${styles.active}` : styles.nav_menu
+        }
+      >
+        <ul className={styles.navmenu_items}>
           {renderSidebarData()}
           {LoginUserData?.is_coach && renderAddChannelButton()}
         </ul>
-      </div>
+      </nav>
       {renderModal()}
-    </div>
+    </>
   );
 }
 
