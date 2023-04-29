@@ -9,7 +9,7 @@ export default function AuthPage(props: any) {
   const navigate = useNavigate();
   useEffect(() => {
     if (!isLoading) {
-      if (isLoggedIn) {
+      if (!isLoggedIn) {
         navigate("/errorpage");
       }
     }
