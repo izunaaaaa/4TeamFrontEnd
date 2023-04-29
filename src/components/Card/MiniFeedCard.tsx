@@ -4,8 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 const MiniFeedCard = (props: any) => {
   const data = props.feedData;
   const navigate = useNavigate();
-  const { groupId, keyword } = useParams();
-  // const groupPk = LoginUserData.group.pk;
 
   return (
     <AspectRatio
@@ -16,9 +14,7 @@ const MiniFeedCard = (props: any) => {
       alignItems="center"
       ratio={9 / 10}
       onClick={() => {
-        navigate(
-          `/search/group_id/${groupId}/keyword/${keyword}/feedDetail/${data.id}`
-        );
+        navigate(`feedDetail/${data.id}`);
       }}
     >
       {data.thumbnail ? (
