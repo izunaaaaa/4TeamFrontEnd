@@ -1,10 +1,22 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
+import { UserData } from "components/form/User/interface/type";
+import { DefaultFeedData } from "pages/main/interface/type";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import FeedOptionModal from "UI/Modal/FeedOptionModal";
 
-const FeedOption = (props: any) => {
-  const data = props.data;
-  const LoginUserData = props.LoginUserData;
+interface FeedOptionProps {
+  data: DefaultFeedData;
+  LoginUserData: UserData;
+  refetchFeed?: void;
+}
+
+const FeedOption: React.FC<FeedOptionProps> = ({
+  data,
+  LoginUserData,
+  refetchFeed,
+}) => {
+  // const data = props.data;
+  // const LoginUserData = props.LoginUserData;
   const {
     isOpen: isOptionOpen,
     onOpen: onOptionOpen,
