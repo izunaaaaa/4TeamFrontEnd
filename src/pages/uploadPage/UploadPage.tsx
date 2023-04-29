@@ -16,18 +16,18 @@ import {
 import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postFeed, postUploadUrl, updateFeed } from "api/axios/axiosSetting";
-import { PostFeed } from "../User/interface/type";
+import { PostFeed } from "../../components/form/User/interface/type";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import CropUploadImg from "./CropUploadImg";
-import useFeedCategory from "./hook/useFeedCategory";
-import styles from "./UploadFeed.module.scss";
-import useUser from "../User/Hook/useUser";
+import CropUploadImg from "../../components/form/feed/CropUploadImg";
+import useFeedCategory from "../../components/form/feed/hook/useFeedCategory";
+import styles from "./UploadPage.module.scss";
+import useUser from "../../components/form/User/Hook/useUser";
 import { Category } from "UI/sidebar/hook/useSide";
 
-const UploadFeed = () => {
+const UploadPage = () => {
   const { register, handleSubmit } = useForm<PostFeed>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -303,4 +303,4 @@ const UploadFeed = () => {
   );
 };
 
-export default UploadFeed;
+export default UploadPage;

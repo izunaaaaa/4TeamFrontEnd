@@ -42,8 +42,6 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
 
   const { categories, refetch } = useFeed(groupPk);
 
-  console.log(LoginUserData);
-
   useEffect(() => {
     refetch();
   }, []);

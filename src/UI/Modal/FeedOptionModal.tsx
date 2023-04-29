@@ -39,7 +39,9 @@ const FeedOptionModal = (props: any) => {
               <Button
                 h={70}
                 bg="transparent"
-                onClick={() => navigate("/upload", { state: feedData })}
+                onClick={() =>
+                  navigate("/community/upload", { state: feedData })
+                }
               >
                 수정하기
               </Button>
