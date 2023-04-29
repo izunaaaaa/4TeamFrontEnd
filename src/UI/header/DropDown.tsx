@@ -1,9 +1,7 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./DropDown.module.scss";
-import Login from "components/form/User/Login";
 import useClickOutside from "./useClickOutside";
-import { useDisclosure } from "@chakra-ui/react";
 import { logout } from "api/axios/axiosSetting";
 
 const list = [
