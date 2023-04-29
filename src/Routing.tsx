@@ -11,7 +11,6 @@ import SignUpForm from "components/form/User/SignUpForm";
 import SignUpMain from "pages/SignUp/SignUpMain";
 import SignUpFormManager from "components/form/User/SignUpFormManager";
 import Landing from "UI/landing/Landing";
-import useUser from "components/form/User/Hook/useUser";
 import NotFound from "pages/notFound/NotFound";
 
 import Home from "pages/main/Home";

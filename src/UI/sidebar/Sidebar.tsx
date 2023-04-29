@@ -39,6 +39,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
 
   const { LoginUserData } = useUser();
   const groupPk = LoginUserData?.group?.pk;
+
   const { categories, refetch } = useFeed(groupPk);
 
   console.log(LoginUserData);
