@@ -9,7 +9,6 @@ import { useQuery } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getSearchData } from "api/axios/axiosSetting";
 import useUser from "components/form/User/Hook/useUser";
-import { useForm } from "react-hook-form";
 
 interface SearchResult {
   result: Type[];
@@ -18,10 +17,6 @@ interface SearchResult {
 interface Type {
   id: number;
   title: string;
-}
-
-interface FormData {
-  keyword: string;
 }
 
 function SearchBar() {
@@ -33,8 +28,6 @@ function SearchBar() {
   const groupPk = LoginUserData?.group?.pk;
 
   const navigate = useNavigate();
-
-  const { register, handleSubmit } = useForm<FormData>();
 
   const { data: searchResults, refetch } = useQuery<SearchResult>(
     ["search", keyword],
@@ -65,16 +58,24 @@ function SearchBar() {
     setKeyword(e.currentTarget.value);
   };
 
-  const onSubmit = (data: FormData) => {
-    if (data.keyword) {
-      navigate(`/search/group_id/${groupPk}/keyword/${data.keyword}`);
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (keyword) {
+      navigate(`/search/group_id/${groupPk}/keyword/${keyword}`);
+    }
+    e.preventDefault();
+    setSearchbarVisible(false);
+  };
+
+  const onClickSearchDiv = () => {
+    if (keyword) {
+      navigate(`/search/group_id/${groupPk}/keyword/${keyword}`);
       setSearchbarVisible(false);
     }
   };
 
   return (
     <>
-      <form className={styles.searchWrapper} onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.searchWrapper} onSubmit={onSubmit}>
         <input
           className={styles.searchInput}
           type="text"
@@ -84,12 +85,7 @@ function SearchBar() {
           onClick={toggleSearchbar}
         />
 
-        <div
-          className={styles.searchDiv}
-          onClick={() => {
-            handleSubmit(onSubmit)();
-          }}
-        >
+        <div className={styles.searchDiv} onClick={onClickSearchDiv}>
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
             className={styles.searchIcon}

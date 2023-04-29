@@ -15,13 +15,6 @@ function Header(): ReactElement {
   const [sidebar, setSidebar] = useState<boolean>(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
-  // // 코치 여부 확인
-  // const { LoginUserData } = useUser();
-
-  // const groupPk = LoginUserData?.group?.pk;
-
-  // const { categories, refetch } = useFeed(groupPk);
-
   const handleSidebarToggle = () => {
     setSidebar(!sidebar);
   };

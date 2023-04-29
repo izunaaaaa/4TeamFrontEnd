@@ -293,7 +293,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       >
         <ul className={styles.navmenu_items}>
           {renderSidebarData()}
-          {LoginUserData?.is_coach && renderAddChannelButton()}
+          {/* {LoginUserData?.is_coach && renderAddChannelButton()} */}
+          {renderAddChannelButton()}
         </ul>
       </nav>
       {renderModal()}
