@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import styles from "./FeedDetail.module.scss";
 import moment from "moment";
-import useFeedDetail from "./hook/useFeedDetail";
+import useFeedDetail from "../../pages/main/hook/useFeedDetail";
 import Comment from "./Comment";
 import "moment/locale/ko";
 import { useForm } from "react-hook-form";
@@ -22,7 +22,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
 import { FiMessageSquare } from "react-icons/fi";
 import FeedOption from "./FeedOption";
-import LikeBtn from "./LikeBtn";
+import LikeBtn from "../../UI/Button/LikeBtn";
 import { useNavigate, useParams } from "react-router-dom";
 import useUser from "components/form/User/Hook/useUser";
 import { postComment } from "api/axios/axiosSetting";

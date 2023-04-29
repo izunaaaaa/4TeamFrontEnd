@@ -1,5 +1,5 @@
 import { useFeed } from "./hook/useFeed";
-import styles from "./Feed.module.scss";
+import styles from "./FeedPage.module.scss";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import {
   Avatar,
@@ -15,12 +15,12 @@ import moment from "moment";
 import "moment/locale/ko";
 import useUser from "components/form/User/Hook/useUser";
 import { DefaultFeedData } from "./interface/type";
-import FeedOption from "./FeedOption";
+import FeedOption from "../../components/Feed/FeedOption";
 import { FiMessageSquare } from "react-icons/fi";
-import LikeBtn from "./LikeBtn";
+import LikeBtn from "../../UI/Button/LikeBtn";
 import SendBtn from "UI/Button/SendBtn";
 
-function Feed() {
+function FeedPage() {
   const { pk: groupPk, id: categoryId } = useParams();
   const { LoginUserData } = useUser();
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ function Feed() {
   );
 
   const viewDetail = (dataId: number) => {
-    navigate(`/${groupPk}/category/${categoryId}/feedDetail/${dataId}`);
+    navigate(`feedDetail/${dataId}`);
   };
 
   return (
@@ -126,4 +126,4 @@ function Feed() {
   );
 }
 
-export default Feed;
+export default FeedPage;
