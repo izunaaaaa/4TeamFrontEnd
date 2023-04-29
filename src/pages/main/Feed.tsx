@@ -25,7 +25,7 @@ function Feed() {
   const { LoginUserData } = useUser();
   const navigate = useNavigate();
 
-  const groupName = LoginUserData.group.name;
+  const groupName = LoginUserData?.group?.name;
   const { feedData, fetchNextPage, hasNextPage, isFetching } = useFeed(
     groupPk,
     categoryId
