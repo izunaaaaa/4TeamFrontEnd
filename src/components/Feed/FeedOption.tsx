@@ -15,8 +15,6 @@ const FeedOption: React.FC<FeedOptionProps> = ({
   LoginUserData,
   refetchFeed,
 }) => {
-  // const data = props.data;
-  // const LoginUserData = props.LoginUserData;
   const {
     isOpen: isOptionOpen,
     onOpen: onOptionOpen,

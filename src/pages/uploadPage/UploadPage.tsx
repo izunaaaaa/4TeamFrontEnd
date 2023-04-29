@@ -47,8 +47,6 @@ const UploadPage = () => {
     return data.name !== "전체글" && data.name !== "인기글";
   });
 
-  console.log(newCategory);
-
   /**이미지를 담을 url 요청 */
   const { mutateAsync: postUploadUrlHandler, isLoading: postUploadUrlLoading } =
     useMutation(async (img: any) => await postUploadUrl(img));
