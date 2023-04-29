@@ -66,8 +66,9 @@ function SearchBar() {
   };
 
   const onSubmit = (data: FormData) => {
+    console.log(data);
     if (data.keyword) {
-      navigate(`/search/group_id/${groupPk}/keyword/${data.keyword}`);
+      navigate(`search/group_id/${groupPk}/keyword/${data.keyword}`);
       setSearchbarVisible(false);
     }
   };
@@ -111,7 +112,7 @@ function SearchBar() {
                     }}
                   >
                     <Link
-                      to={`/search/group_id/${groupPk}/keyword/${result.title}`}
+                      to={`search/group_id/${groupPk}/keyword/${result.title}`}
                     >
                       <span>{result.title}</span>
                     </Link>
