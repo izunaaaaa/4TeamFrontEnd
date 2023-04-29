@@ -17,12 +17,9 @@ const useUser = (): UseUser => {
   } = useQuery(Querykey.userData, getUserData, {
     retry: false,
     refetchOnWindowFocus: false,
-    onError: () => {
-      return;
-    },
   });
 
-  return { LoginUserData, isLoading, isLoggedIn: isError };
+  return { LoginUserData, isLoading, isLoggedIn: !isError };
 };
 
 export default useUser;
