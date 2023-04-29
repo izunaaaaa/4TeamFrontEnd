@@ -16,7 +16,7 @@ import {
   Box,
   Spinner,
 } from "@chakra-ui/react";
-import FeedDetail from "pages/main/FeedDetail";
+import FeedDetail from "components/Feed/FeedDetail";
 import useMyFeed from "components/mypages/Hook/useMyFeed";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import Profiles from "components/mypages/myProfile/Profiles";

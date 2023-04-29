@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
 import "moment/locale/ko";
 import { useQueryClient } from "react-query";
-import useComment from "./hook/useComment";
+import useComment from "../../pages/main/hook/useComment";
 import { Querykey } from "api/react-query/QueryKey";
 import CommentCard from "components/Card/CommentCard";
 import ReCommentCard from "components/Card/ReCommentCard";
-import { CommentType } from "./interface/type";
+import { CommentType } from "../../pages/main/interface/type";
 
 const Comment = (props: any) => {
   const feedId = props.feedId;

@@ -4,7 +4,6 @@ import UploadFeed from "./components/form/feed/UploadFeed";
 import MsgRoom from "./pages/sendletters/MsgRoom";
 import Mailbox from "./pages/sendletters/Mailbox";
 import Layout from "./UI/Layout";
-import Feed from "./pages/main/Feed";
 import MyPage from "pages/mypage/MyPage";
 import Login from "components/form/User/Login";
 import SignUpForm from "components/form/User/SignUpForm";
@@ -14,11 +13,12 @@ import Landing from "UI/landing/Landing";
 import NotFound from "pages/notFound/NotFound";
 
 import Home from "pages/main/Home";
-import FeedDetail from "pages/main/FeedDetail";
+import FeedDetail from "components/Feed/FeedDetail";
 import MobileMsg from "pages/sendletters/MobileMsg";
 import FindId from "components/form/User/FindId";
 import FindPassword from "components/form/User/FindPassword";
 import SearchFeed from "pages/searchPage/SearchFeed";
+import FeedPage from "pages/main/FeedPage";
 
 const Routing = () => {
   // return (
@@ -83,7 +83,7 @@ const Routing = () => {
           >
             <Route path="feedDetail/:feedId" element={<FeedDetail />} />
           </Route>
-          <Route path=":pk/category/:id" element={<Feed />}>
+          <Route path=":pk/category/:id" element={<FeedPage />}>
             <Route path="feedDetail/:feedId" element={<FeedDetail />} />
           </Route>
           <Route path="upload" element={<UploadFeed />} />
