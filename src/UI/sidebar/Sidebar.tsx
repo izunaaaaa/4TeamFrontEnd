@@ -144,7 +144,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
               <div
                 onClick={() => openEditModal(item.group.pk, item.id, item.name)}
               >
-                <span>
+                <span className={styles.fapen}>
                   <FontAwesomeIcon icon={faPen} />
                 </span>
               </div>
@@ -288,8 +288,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       >
         <ul className={styles.navmenu_items}>
           {renderSidebarData()}
-          {/* {LoginUserData?.is_coach && renderAddChannelButton()} */}
-          {renderAddChannelButton()}
+          {LoginUserData?.is_coach && renderAddChannelButton()}
         </ul>
       </nav>
       {renderModal()}
