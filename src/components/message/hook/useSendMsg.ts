@@ -8,16 +8,14 @@ export interface SendMsgData {
   text: string;
 }
 
-export const useSendMsg = (onClose: () => void) => {
-  const { register, handleSubmit, reset } = useForm<SendMsgData>();
+export const useSendMsg = (onClose: () => void, receiver: number) => {
+  const { register, handleSubmit, reset } = useForm<{ text: string }>();
 
-  const sendMutation = useMutation((data: { receiver: number; text: string }) =>
-    postLetters(data)
-  );
+  const sendMutation = useMutation((data: SendMsgData) => postLetters(data));
 
   const toast = useToast();
 
-  const onSubmit = async (data: { receiver: number; text: string }) => {
+  const onSubmit = async (data: { text: string }) => {
     if (data.text.trim() === "") {
       toast({
         render: () => "내용을 입력해주세요",
@@ -26,9 +24,9 @@ export const useSendMsg = (onClose: () => void) => {
     }
 
     try {
-      await sendMutation.mutateAsync({ ...data });
+      await sendMutation.mutateAsync({ receiver, text: data.text });
       reset();
-      console.log("send", data);
+      console.log("send", { receiver, text: data.text });
       onClose();
     } catch (error) {
       console.error("send error", error);

@@ -5,6 +5,7 @@ import {
   Button,
   Box,
   Grid,
+  Flex,
   InputGroup,
   InputRightElement,
   useMediaQuery,
@@ -13,7 +14,10 @@ import {
 const SendMsgBar = ({ receiver }: any) => {
   const isMobile = useMediaQuery("(max-width: 480px)");
 
-  const { register, handleSubmit, onSubmit, reset } = useSendMsg(onSuccess);
+  const { register, handleSubmit, onSubmit, reset } = useSendMsg(
+    onSuccess,
+    receiver
+  );
 
   function onSuccess() {
     reset();
@@ -21,26 +25,27 @@ const SendMsgBar = ({ receiver }: any) => {
 
   return (
     <Grid
-      position={"fixed"}
-      bg={"white"}
-      bottom={0}
-      as={"div"}
-      templateColumns={"6fr 1fr"}
-      alignItems="center"
       ml={10}
-      w={isMobile ? "100vmin" : "50vw"}
+      w={"70vmin"}
+      bg={"white"}
+      position={"fixed"}
+      bottom={0}
+      right={130}
+      textAlign={"end"}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <InputGroup size="lg" mx="auto">
-          <Input type="hidden" {...register("receiver")} value={receiver} />
+      <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex" }}>
+        <InputGroup size="md">
+          <Input type="hidden" value={receiver} readOnly />
           <Input
             type="text"
             placeholder="보내실 내용을 입력해주세요"
             {...register("text")}
+            mr={3}
           />
-          <InputRightElement width="4.5rem" mr={3}>
+          <Button type="submit">Send</Button>
+          {/* <InputRightElement width="4.5rem" mr={3}>
             <Button type="submit">Send</Button>
-          </InputRightElement>
+          </InputRightElement> */}
         </InputGroup>
       </form>
     </Grid>

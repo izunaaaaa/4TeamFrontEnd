@@ -60,7 +60,7 @@ const MsgList = ({
         <Box
           px={5}
           py={5}
-          borderBottom={"1px solid black"}
+          borderBottom={"1px solid #dce0e7"}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -89,7 +89,7 @@ const MsgList = ({
               colorScheme="red"
               mr={3}
               onClick={() => {
-                blockMutation.mutate(receiver_pk);
+                blockMutation.mutate(pk);
                 onClose();
               }}
             >
