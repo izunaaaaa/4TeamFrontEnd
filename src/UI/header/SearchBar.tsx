@@ -60,7 +60,7 @@ function SearchBar() {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (keyword) {
-      navigate(`/search/group_id/${groupPk}/keyword/${keyword}`);
+      navigate(`search/group_id/${groupPk}/keyword/${keyword}`);
     }
     e.preventDefault();
     setSearchbarVisible(false);
@@ -68,7 +68,7 @@ function SearchBar() {
 
   const onClickSearchDiv = () => {
     if (keyword) {
-      navigate(`/search/group_id/${groupPk}/keyword/${keyword}`);
+      navigate(`search/group_id/${groupPk}/keyword/${keyword}`);
       setSearchbarVisible(false);
     }
   };
