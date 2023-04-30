@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Box, useMediaQuery } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import { Flex, Box, useMediaQuery, VStack } from "@chakra-ui/react";
+
 import MsgDetail from "../../components/message/MsgDetail";
 import { useQuery } from "react-query";
 import { getLetterlists, getLetters } from "api/axios/axiosSetting";
 import { useParams } from "react-router-dom";
 import { ChatId, LetterList } from "interface/Interface";
-import { useSendMsg } from "components/message/hook/useSendMsg";
 import SendMsgBar from "components/message/SendMsgBar";
-import SendMsg from "components/message/SendMsg";
 
 export default function MsgRoom() {
   //url params 가져오기
@@ -62,8 +59,8 @@ export default function MsgRoom() {
       <Box
         bgColor={"white"}
         overflowX="hidden"
-        h="86vh"
-        w={isMobile ? "100vmin" : "80vw"}
+        h="78%"
+        w={isMobile ? "100vmin" : "70vw"}
         mt={isMobile ? "0" : "20rem"}
         maxW="100%"
       >
@@ -72,7 +69,6 @@ export default function MsgRoom() {
           return (
             <Flex
               key={idx}
-              mb={10}
               mt={5}
               justifyContent={item.is_sender ? "flex-end" : "flex-start"}
               alignItems={"center"}
