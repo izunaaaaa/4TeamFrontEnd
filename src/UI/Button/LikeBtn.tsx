@@ -18,7 +18,7 @@ const LikeBtn = (props: any) => {
   }, [likeCount, isLike]);
 
   /**좋아요누르기 */
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const { mutateAsync: likeHandler } = useMutation(
     (feedID: object) => {
@@ -26,9 +26,9 @@ const LikeBtn = (props: any) => {
     },
     {
       onSuccess: () => {
-        // queryClient.invalidateQueries(Querykey.feedData);
+        queryClient.invalidateQueries(Querykey.feedData);
         // queryClient.invalidateQueries([id, Querykey.feedComment]);
-        // queryClient.invalidateQueries([Querykey.feedDetail, id]);
+        queryClient.invalidateQueries([Querykey.feedDetail, id]);
       },
     }
   );
