@@ -35,7 +35,7 @@ const SendMsgBar = ({ receiver }: any) => {
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex" }}>
         <InputGroup size="md">
-          <Input type="number" value={receiver} readOnly />
+          <Input type="hidden" value={receiver} readOnly />
           <Input
             type="text"
             placeholder="보내실 내용을 입력해주세요"
