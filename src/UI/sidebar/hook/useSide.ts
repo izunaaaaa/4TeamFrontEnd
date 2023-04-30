@@ -14,7 +14,7 @@ export type Category = {
   group: Group;
 };
 
-export const useFeed = (groupPk: number) => {
+export const useSide = (groupPk: number) => {
   const { data: categories, refetch } = useQuery<Category[]>(
     ["categories", groupPk],
     () => getCategories(groupPk),

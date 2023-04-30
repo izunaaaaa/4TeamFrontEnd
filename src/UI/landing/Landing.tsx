@@ -4,7 +4,7 @@ import Login from "components/form/User/Login";
 import { useDisclosure } from "@chakra-ui/react";
 import useUser from "components/form/User/Hook/useUser";
 import { useNavigate } from "react-router-dom";
-import { useFeed } from "UI/sidebar/hook/useSide";
+import { useSide } from "UI/sidebar/hook/useSide";
 
 function Landing() {
   const {
@@ -29,7 +29,7 @@ function Landing() {
           />
         </div>
         <div className={styles.login_btn} onClick={() => onLoginOpen()}>
-          커비 즐기기
+          <h1>커비 즐기기</h1>
         </div>
         <Login isOpen={isLoginOpen} onClose={onLoginClose} />
       </div>

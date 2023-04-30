@@ -96,7 +96,8 @@ const SignUpForm = () => {
         <img
           className={styles.signUpImg}
           alt=""
-          src="https://velog.velcdn.com/images/view_coding/post/6e4d7220-8bc8-4e88-9d4b-f3dd9e09b523/image.png"
+          src="https://velog.velcdn.com/images/view_coding/post/a8381e96-0dae-45bf-b30f-985c1d2d6359/image.png"
+          style={{ width: "55px" }}
         />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.typeDiv}>

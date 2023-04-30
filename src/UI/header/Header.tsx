@@ -8,7 +8,7 @@ import DropDown from "./DropDown";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
 import useUser from "components/form/User/Hook/useUser";
-import { useFeed } from "UI/sidebar/hook/useSide";
+import { useSide } from "UI/sidebar/hook/useSide";
 
 function Header(): ReactElement {
   const [mediaWidth, setMediaWidth] = useState<number>(window.innerWidth);
@@ -74,9 +74,7 @@ function Header(): ReactElement {
                 </div>
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
               </div>
-
               <SearchBar />
-
               <DropDown />
             </div>
           </div>

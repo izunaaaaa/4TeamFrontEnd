@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./Sidebar.module.scss";
 import { SidebarProps } from "../../interface/Interface";
 import {
@@ -13,10 +13,11 @@ import {
   updateCategory,
 } from "api/axios/axiosSetting";
 import { useMutation, useQueryClient } from "react-query";
-import { useFeed } from "./hook/useSide";
+import { useSide } from "./hook/useSide";
 import { Category } from "./hook/useSide";
 import { Link } from "react-router-dom";
 import useUser from "components/form/User/Hook/useUser";
+import { useToast } from "@chakra-ui/react";
 
 function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const [newChannelName, setNewChannelName] = useState("");
@@ -40,8 +41,9 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const { LoginUserData } = useUser();
 
   const groupPk = LoginUserData?.group?.pk;
+  const { categories, refetch } = useSide(groupPk);
 
-  const { categories, refetch } = useFeed(groupPk);
+  const toast = useToast();
 
   const addCategoryMutation = useMutation(
     async (name: string) => await postCategory(name, groupPk),
@@ -52,6 +54,12 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       },
       onError: (error: Error) => {
         console.error("Error adding category:", error);
+        toast({
+          title: "이름이 중복되었습니다.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       },
     }
   );
@@ -73,6 +81,12 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
       },
       onError: (error: Error) => {
         console.error("Error updating category:", error);
+        toast({
+          title: "이름이 중복되었습니다.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       },
     }
   );
@@ -145,12 +159,12 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
                 onClick={() => openEditModal(item.group.pk, item.id, item.name)}
               >
                 <span className={styles.fapen}>
-                  <FontAwesomeIcon icon={faPen} />
+                  <FontAwesomeIcon icon={faPen} size={"sm"} />
                 </span>
               </div>
               <div onClick={() => deleteCategorytModal(item.group.pk, item.id)}>
                 <span>
-                  <FontAwesomeIcon icon={faTrash} />
+                  <FontAwesomeIcon icon={faTrash} size={"sm"} />
                 </span>
               </div>
             </div>
