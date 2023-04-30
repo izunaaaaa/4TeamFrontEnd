@@ -17,7 +17,10 @@ import { useNavigate } from "react-router-dom";
 const SendMsg = ({ isOpen, onClose, receiver }: any) => {
   //쪽지 모달 폼 관리
 
-  const { register, handleSubmit, onSubmit, reset } = useSendMsg(onClose);
+  const { register, handleSubmit, onSubmit, reset } = useSendMsg(
+    onClose,
+    receiver
+  );
 
   const navigate = useNavigate();
 
@@ -38,7 +41,7 @@ const SendMsg = ({ isOpen, onClose, receiver }: any) => {
           <ModalHeader>쪽지</ModalHeader>
           <form onSubmit={handleSubmit(moveLetterlist)}>
             <ModalBody>
-              <Input type="hidden" {...register("receiver")} value={receiver} />
+              <Input type="hidden" value={receiver} />
 
               <Textarea
                 placeholder="보내실 내용을 입력해주세요"

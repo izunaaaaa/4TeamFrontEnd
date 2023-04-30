@@ -48,11 +48,12 @@ export default function MsgRoom() {
       );
       if (targetReceiver) {
         setReceiverPk(targetReceiver.receiver_pk);
+        console.log("receiverPk:", targetReceiver.receiver_pk);
       }
     }
   }, [resultPk.data, chatId]);
 
-  const isMobile = useMediaQuery("(max-width: 769px)");
+  const isMobile = useMediaQuery("(max-width: 480px)");
 
   return (
     <>
@@ -60,7 +61,7 @@ export default function MsgRoom() {
         bgColor={"white"}
         overflowX="hidden"
         h="78%"
-        w={isMobile ? "100vmin" : "70vw"}
+        w={isMobile ? "48vw" : "100vw"}
         mt={isMobile ? "0" : "20rem"}
         maxW="100%"
       >
