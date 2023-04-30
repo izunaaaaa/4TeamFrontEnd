@@ -36,7 +36,7 @@ const Routing = () => {
           <Route path=":pk/category/:id" element={<FeedPage />}>
             <Route path="feedDetail/:feedId" element={<FeedDetail />} />
           </Route>
-          <Route path="/community/upload" element={<UploadPage />} />
+          <Route path="upload" element={<UploadPage />} />
 
           <Route path="letterlist/mobile/:chatId" element={<MobileMsg />} />
           <Route path="letterlist/" element={<Mailbox />}>
