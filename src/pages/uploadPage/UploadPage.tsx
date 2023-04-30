@@ -47,6 +47,10 @@ const UploadPage = () => {
     return data.name !== "전체글" && data.name !== "인기글";
   });
 
+  const wholeFeedCategory = feedCategory?.find(
+    (e: Category) => e.name === "전체글"
+  );
+
   /**이미지를 담을 url 요청 */
   const { mutateAsync: postUploadUrlHandler, isLoading: postUploadUrlLoading } =
     useMutation(async (img: any) => await postUploadUrl(img));
@@ -59,7 +63,9 @@ const UploadPage = () => {
         duration: 3000,
         isClosable: true,
       });
-      navigate(-1);
+      navigate(
+        `/community/${wholeFeedCategory.group.pk}/category/${wholeFeedCategory.id}`
+      );
     },
     onError: () => {
       toast({
@@ -246,7 +252,7 @@ const UploadPage = () => {
                   </>
                 )}
               </div>
-              {(cropImg || feedDetail?.thumbnail) && (
+              {cropImg && (
                 <Box textAlign="center">
                   <Button marginTop="5px" onClick={() => setCropImg(null)}>
                     사진 삭제
