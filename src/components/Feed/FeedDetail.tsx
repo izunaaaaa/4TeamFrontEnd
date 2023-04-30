@@ -2,11 +2,8 @@ import {
   Avatar,
   Box,
   Button,
-  ButtonGroup,
   Center,
   Flex,
-  HStack,
-  Image,
   Modal,
   ModalContent,
   ModalOverlay,
@@ -15,17 +12,16 @@ import {
 import styles from "./FeedDetail.module.scss";
 import moment from "moment";
 import useFeedDetail from "../../pages/main/hook/useFeedDetail";
-import Comment from "./Comment";
 import "moment/locale/ko";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { Querykey } from "api/react-query/QueryKey";
-import { FiMessageSquare } from "react-icons/fi";
 import FeedOption from "./FeedOption";
-import LikeBtn from "../../UI/Button/LikeBtn";
 import { useNavigate, useParams } from "react-router-dom";
 import useUser from "components/form/User/Hook/useUser";
 import { postComment } from "api/axios/axiosSetting";
+import { useCallback, useRef } from "react";
+import FeedDetailContents from "./FeedDetailContents";
 
 const FeedDetail = (props: any) => {
   const { feedId } = useParams();
@@ -44,23 +40,34 @@ const FeedDetail = (props: any) => {
   const queryClient = useQueryClient();
 
   const { register, handleSubmit, reset } = useForm();
-
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const successRefetch = {
-    onSuccess: () => {
+    onSuccess: async () => {
       refetchFeedDetail();
       queryClient.invalidateQueries(Querykey.feedData);
-      queryClient.invalidateQueries([
+
+      await queryClient.invalidateQueries([
         "feedDetail",
         String(feedData.id),
         "feedComment",
       ]);
+
+      scrollToBottom();
     },
   };
 
+  const scrollToBottom = useCallback(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [feedData]);
+
   /**댓글달기 */
+
   const { mutateAsync: commentSubmitHandler, isLoading: commentLoading } =
     useMutation(
       (comment: any) => postComment(feedData.id, comment),
+
       successRefetch
     );
 
@@ -80,90 +87,66 @@ const FeedDetail = (props: any) => {
     );
 
   return (
-    <Modal
-      isOpen={true}
-      onClose={() => navigate(-1)}
-      size={{
-        md: "xl",
-        sm: "lg",
-      }}
-      isCentered
-    >
-      <ModalOverlay />
-      <ModalContent padding="0px 25px" width="100%">
-        <Box paddingTop="30px">
-          <div className={styles.writerName}>
-            <Avatar
-              name="익명"
-              size="sm"
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-            />
-            <Flex justifyContent="space-between" w="100%">
-              <h1>
-                <p>{groupName}의 개발자</p>
-                {writeTime}
-              </h1>
-              <FeedOption
-                data={feedData}
-                LoginUserData={LoginUserData}
-                refetchFeed={refetchFeed}
+    <>
+      <Modal
+        isOpen={true}
+        onClose={() => navigate(-1)}
+        size={{
+          md: "xl",
+          sm: "lg",
+        }}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent margin="0" padding="20px 25px 0px 25px" width="100%">
+          <Box height="100%">
+            <div className={styles.writerName}>
+              <Avatar
+                name="익명"
+                size="sm"
+                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
               />
-            </Flex>
-          </div>
-          <div className={styles.feedDetailDiv}>
-            <HStack
-              display="flex"
-              flexDirection="column"
-              alignItems="flex-start"
+              <Flex justifyContent="space-between" w="100%">
+                <h1>
+                  <p>{groupName}의 개발자</p>
+                  {writeTime}
+                </h1>
+                <FeedOption
+                  data={feedData}
+                  LoginUserData={LoginUserData}
+                  refetchFeed={refetchFeed}
+                />
+              </Flex>
+            </div>
+            <FeedDetailContents
+              feedData={feedData}
+              feedId={feedId}
+              scrollRef={scrollRef}
+            />
+            <Box
+              as="form"
+              className={styles.commentInput}
+              onSubmit={handleSubmit(commentSubmit)}
             >
-              {feedData?.thumbnail && (
-                <Image src={feedData?.thumbnail} margin="20px 0" />
-              )}
-              <Box>
-                <p className={styles.feedTitle}>{feedData.title}</p>
-                <p className={styles.feedDescription}>{feedData.description}</p>
-              </Box>
-            </HStack>
-            <ButtonGroup margin="5px 0 5px 0">
-              <LikeBtn
-                id={feedId}
-                likeCount={feedData.like_count}
-                isLike={feedData.is_like}
+              <textarea
+                placeholder="댓글달기"
+                {...register("description", {
+                  required: true,
+                })}
               />
               <Button
-                backgroundColor={"transparent"}
-                margin={0}
-                padding={2}
-                leftIcon={<FiMessageSquare />}
+                type="submit"
+                onSubmit={handleSubmit(commentSubmit)}
+                isLoading={commentLoading}
+                h="100%"
               >
-                {feedData.comments_count}
+                게시
               </Button>
-            </ButtonGroup>
-
-            <Comment feedId={feedId} />
-          </div>
-          <form
-            className={styles.commentInput}
-            onSubmit={handleSubmit(commentSubmit)}
-          >
-            <textarea
-              placeholder="댓글달기"
-              {...register("description", {
-                required: true,
-              })}
-            />
-            <Button
-              type="submit"
-              onSubmit={handleSubmit(commentSubmit)}
-              isLoading={commentLoading}
-              h="100%"
-            >
-              게시
-            </Button>
-          </form>
-        </Box>
-      </ModalContent>
-    </Modal>
+            </Box>
+          </Box>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 
