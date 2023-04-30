@@ -49,7 +49,7 @@ export interface RecommentType {
 }
 
 export interface DefaultFeedData {
-  id: number;
+  id: any;
   pk?: number;
   user: User;
   title: string;
@@ -62,7 +62,7 @@ export interface DefaultFeedData {
   like_count: number;
   comments_count: number;
   highest_like_comments: [Comment];
-  is_like: string;
+  is_like: boolean;
   comment: [Comment];
   thumbnail?: string;
   images?: string;

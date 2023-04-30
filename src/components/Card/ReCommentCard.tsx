@@ -23,6 +23,7 @@ const ReCommentCard = (props: any) => {
   const index = props.index;
   const commentWriteTime = moment(recomment.created_at).fromNow();
   const toast = useToast();
+  const id = "deleteRecomment";
   const successRefetch = props.successRefetch;
   const successPost = props.successPost;
 
@@ -42,7 +43,9 @@ const ReCommentCard = (props: any) => {
     {
       onSuccess: () => {
         successPost();
-        toast({ title: "대댓글이 삭제되었습니다.", status: "success" });
+        if (!toast.isActive(id)) {
+          toast({ id, title: "대댓글이 삭제되었습니다.", status: "success" });
+        }
       },
     }
   );

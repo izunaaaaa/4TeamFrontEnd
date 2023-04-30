@@ -44,18 +44,8 @@ export default function MyPage() {
 
   const selectedTabIndex = tabMap[type ?? ""] ?? 0;
 
-  const { isOpen, onClose } = useDisclosure();
-
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody>
-            <FeedDetail feedData={feedData} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
       <Center
         flexDirection="column"
         margin={{

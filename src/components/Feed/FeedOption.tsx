@@ -10,11 +10,7 @@ interface FeedOptionProps {
   refetchFeed?: void;
 }
 
-const FeedOption: React.FC<FeedOptionProps> = ({
-  data,
-  LoginUserData,
-  refetchFeed,
-}) => {
+function FeedOption({ data, LoginUserData }: FeedOptionProps) {
   const {
     isOpen: isOptionOpen,
     onOpen: onOptionOpen,
@@ -42,6 +38,6 @@ const FeedOption: React.FC<FeedOptionProps> = ({
       )}
     </>
   );
-};
+}
 
 export default FeedOption;

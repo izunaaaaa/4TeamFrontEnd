@@ -27,10 +27,7 @@ const DeleteConfirm = (props: any) => {
           status: "success",
           duration: 4000,
         });
-
         queryclient.invalidateQueries([Querykey.feedData, categoryId]);
-
-        window.location.reload();
       },
     });
 

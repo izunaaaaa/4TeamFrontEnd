@@ -26,24 +26,31 @@ import { login } from "api/axios/axiosSetting";
 const Login = (props: any) => {
   const { handleSubmit, register } = useForm<LoginData>();
   const toast = useToast();
+  const id = "loginId";
   const navigate = useNavigate();
 
-  const { mutate: loginHandler } = useMutation(
+  const { mutate: loginHandler, isLoading: loginLoading } = useMutation(
     (loginData: LoginData) => login(loginData),
     {
       onError: (error: AxiosError) => {
-        toast({
-          title: `아이디 혹은 비밀번호가 틀립니다.`,
-          status: "error",
-          isClosable: true,
-        });
+        if (!toast.isActive(id)) {
+          toast({
+            id,
+            title: `아이디 혹은 비밀번호가 틀립니다.`,
+            status: "error",
+            isClosable: true,
+          });
+        }
       },
       onSuccess: (res) => {
-        toast({
-          title: `로그인 성공!!`,
-          status: "success",
-          isClosable: true,
-        });
+        if (!toast.isActive(id)) {
+          toast({
+            id,
+            title: `로그인 성공!!`,
+            status: "success",
+            isClosable: true,
+          });
+        }
         navigate("/community/home");
         window.location.reload();
       },
@@ -91,6 +98,7 @@ const Login = (props: any) => {
               />
             </InputGroup>
             <Button
+              isLoading={loginLoading}
               type="submit"
               mt="4"
               color={"white"}

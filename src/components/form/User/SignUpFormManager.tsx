@@ -210,12 +210,6 @@ const SignUpFormManager = () => {
         getPhoneNumber={getPhoneNumber}
       />
       <div className={styles.signUp}>
-        <img
-          className={styles.signUpImg}
-          alt=""
-          src="https://velog.velcdn.com/images/view_coding/post/a8381e96-0dae-45bf-b30f-985c1d2d6359/image.png"
-          style={{ width: "55px" }}
-        />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.typeDiv}>
             <label htmlFor="username">ID</label>
