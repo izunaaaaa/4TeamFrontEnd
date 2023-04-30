@@ -23,10 +23,9 @@ import { postComment } from "api/axios/axiosSetting";
 import { useCallback, useRef } from "react";
 import FeedDetailContents from "./FeedDetailContents";
 
-const FeedDetail = (props: any) => {
+const FeedDetail = () => {
   const { feedId } = useParams();
   const { LoginUserData } = useUser();
-  const refetchFeed = props.feedRefetch;
   const navigate = useNavigate();
 
   const groupName = LoginUserData.group.name;
@@ -36,7 +35,6 @@ const FeedDetail = (props: any) => {
     isLoading,
     refetch: refetchFeedDetail,
   } = useFeedDetail(feedId);
-
   const queryClient = useQueryClient();
 
   const { register, handleSubmit, reset } = useForm();
@@ -111,11 +109,7 @@ const FeedDetail = (props: any) => {
                   <p>{groupName}의 개발자</p>
                   {writeTime}
                 </h1>
-                <FeedOption
-                  data={feedData}
-                  LoginUserData={LoginUserData}
-                  refetchFeed={refetchFeed}
-                />
+                <FeedOption data={feedData} LoginUserData={LoginUserData} />
               </Flex>
             </div>
             <FeedDetailContents

@@ -27,7 +27,9 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { Description } from "pages/main/interface/type";
 
-const CommentCard = (props: any) => {
+interface CommentCardProps {}
+
+function CommentCard(props: any) {
   const comment = props.comment;
   const index = props.index;
   const { LoginUserData } = useUser();
@@ -37,6 +39,7 @@ const CommentCard = (props: any) => {
 
   const { register, handleSubmit, reset } = useForm<Description>();
   const toast = useToast();
+  const id = "delteToast";
 
   const [isOpenRecommentInput, setIsOpenRecommentInput] = useState(false);
   const [isLike, setIsLike] = useState(comment.is_like);
@@ -54,9 +57,15 @@ const CommentCard = (props: any) => {
   const { mutate: deleteCommentHandler } = useMutation(
     (id) => deleteComment(id),
     {
-      onSuccess: (test) => {
+      onSuccess: () => {
         successPost();
-        toast({ title: "댓글이 삭제되었습니다.", status: "success" });
+        if (!toast.isActive(id)) {
+          toast({
+            id,
+            title: "댓글이 삭제되었습니다.",
+            status: "success",
+          });
+        }
       },
     }
   );
@@ -164,12 +173,7 @@ const CommentCard = (props: any) => {
             </ButtonGroup>
           </Flex>
         </Flex>
-        <Box
-          fontSize="0.9rem"
-          //  w="100%"
-        >
-          {comment.description}
-        </Box>
+        <Box fontSize="0.9rem">{comment.description}</Box>
         <HStack marginTop="2px" fontSize="0.8rem" spacing="4px">
           <Box>{commentWriteTime}</Box>
           {likeCount > 0 && (
@@ -209,6 +213,6 @@ const CommentCard = (props: any) => {
       </Box>
     </Box>
   );
-};
+}
 
 export default CommentCard;

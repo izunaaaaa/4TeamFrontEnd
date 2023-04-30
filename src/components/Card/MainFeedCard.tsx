@@ -8,10 +8,16 @@ import LikeBtn from "UI/Button/LikeBtn";
 import { FiMessageSquare } from "react-icons/fi";
 import SendBtn from "UI/Button/SendBtn";
 import { useNavigate } from "react-router-dom";
+import { DefaultFeedData } from "pages/main/interface/type";
+import { LoginData, UserData } from "components/form/User/interface/type";
 
-const MainFeedCard = (props: any) => {
-  const data = props.data;
-  const LoginUserData = props.LoginUserData;
+interface MainFeedCardProps {
+  key: number;
+  data: DefaultFeedData;
+  LoginUserData: UserData;
+}
+
+function MainFeedCard({ LoginUserData, data }: MainFeedCardProps) {
   const groupName = LoginUserData?.group.name;
 
   const navigate = useNavigate();
@@ -78,6 +84,6 @@ const MainFeedCard = (props: any) => {
       </div>
     </div>
   );
-};
+}
 
 export default MainFeedCard;

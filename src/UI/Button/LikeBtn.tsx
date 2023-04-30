@@ -5,12 +5,33 @@ import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { FiThumbsUp } from "react-icons/fi";
 
-const LikeBtn = (props: any) => {
-  const id = props.id;
-  const likeCount = props.likeCount;
-  const isLike = props.isLike;
+interface LikeBtnProps {
+  id: string | undefined;
+  likeCount: number;
+  isLike: boolean;
+  feedDetail?: boolean;
+}
+
+export interface FeedId {
+  id: string | undefined;
+}
+
+function LikeBtn({ id, likeCount, isLike, feedDetail }: LikeBtnProps) {
   const [isdefaultLike, setIsdefaultLike] = useState(isLike);
   const [defaultLikeCount, setDefaultLikeCount] = useState(likeCount);
+
+  const successRefetch = feedDetail
+    ? {
+        onSuccess: () => {
+          queryClient.invalidateQueries(Querykey.feedData);
+          queryClient.invalidateQueries([Querykey.feedDetail, id]);
+        },
+      }
+    : {
+        onSuccess: () => {
+          queryClient.invalidateQueries(Querykey.feedData);
+        },
+      };
 
   useEffect(() => {
     setDefaultLikeCount(likeCount);
@@ -20,20 +41,11 @@ const LikeBtn = (props: any) => {
   /**좋아요누르기 */
   const queryClient = useQueryClient();
 
-  const { mutateAsync: likeHandler } = useMutation(
-    (feedID: object) => {
-      return postFeedLike(feedID);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(Querykey.feedData);
-        // queryClient.invalidateQueries([id, Querykey.feedComment]);
-        queryClient.invalidateQueries([Querykey.feedDetail, id]);
-      },
-    }
-  );
+  const { mutateAsync: likeHandler } = useMutation((feedID: FeedId) => {
+    return postFeedLike(feedID);
+  }, successRefetch);
 
-  const onLike = async (feedId: any, likeCount: number) => {
+  const onLike = async (feedId: FeedId, likeCount: number) => {
     if (isLike) {
       setDefaultLikeCount(likeCount - 1);
       setIsdefaultLike(false);
@@ -63,6 +75,6 @@ const LikeBtn = (props: any) => {
       <Box>{defaultLikeCount}</Box>
     </Button>
   );
-};
+}
 
 export default LikeBtn;

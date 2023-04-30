@@ -5,6 +5,7 @@ import { accessData, accessUser } from "components/mypages/interface/type";
 import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
 import { Description } from "pages/main/interface/type";
+import { FeedId } from "UI/Button/LikeBtn";
 export const instance = axios.create({
   baseURL:
     process.env.NODE_ENV === "development"
@@ -60,7 +61,7 @@ export const getFeeds = async (url: string) =>
     return res.data;
   });
 
-export const postFeedLike = async (feedId: any) =>
+export const postFeedLike = async (feedId: FeedId) =>
   await instance
     .post(`/likes/feedlike/${feedId?.id}`, feedId)
     .then((res) => res.data);

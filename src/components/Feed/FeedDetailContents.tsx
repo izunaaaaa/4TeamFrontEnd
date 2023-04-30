@@ -1,14 +1,22 @@
 import { Box, Button, ButtonGroup, HStack, Image } from "@chakra-ui/react";
+import { DefaultFeedData } from "pages/main/interface/type";
 import React from "react";
 import { FiMessageSquare } from "react-icons/fi";
 import LikeBtn from "UI/Button/LikeBtn";
 import Comment from "./Comment";
 import styles from "./FeedDetail.module.scss";
 
-const FeedDetailContents = (props: any) => {
-  const feedData = props.feedData;
-  const feedId = props.feedId;
-  const scrollRef = props.scrollRef;
+interface FeedDetailContentsProps {
+  feedData: DefaultFeedData;
+  feedId: string | undefined;
+  scrollRef: React.MutableRefObject<HTMLDivElement | null>;
+}
+
+function FeedDetailContents({
+  feedData,
+  feedId,
+  scrollRef,
+}: FeedDetailContentsProps) {
   return (
     <>
       <div className={styles.feedDetailDiv}>
@@ -26,6 +34,7 @@ const FeedDetailContents = (props: any) => {
             id={feedId}
             likeCount={feedData.like_count}
             isLike={feedData.is_like}
+            feedDetail={true}
           />
           <Button
             backgroundColor={"transparent"}
@@ -42,6 +51,6 @@ const FeedDetailContents = (props: any) => {
       </div>
     </>
   );
-};
+}
 
 export default FeedDetailContents;

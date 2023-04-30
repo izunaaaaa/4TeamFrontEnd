@@ -18,10 +18,7 @@ const SignUpMain = () => {
   const navigate = useNavigate();
   return (
     <>
-      <Center padding="50px" fontSize="30px">
-        회원가입
-      </Center>
-      <HStack display="flex" justifyContent="center">
+      <HStack display="flex" justifyContent="center" marginTop="80px">
         <Card w="md" h="md" padding="30px">
           <Center
             display="flex"

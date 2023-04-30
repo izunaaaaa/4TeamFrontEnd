@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
   }
   :root {
     --nav-medium-width: 250px;
-    --nav-medium-height : 6em;
+    --nav-medium-height : 4.6em;
   }
  
   svg {
