@@ -54,7 +54,7 @@ const MsgList = ({
   return (
     <>
       <Link
-        to={isMobile ? `/letterlist/mobile/${pk}` : `/letterlist/${pk}`}
+        to={isMobile ? `mobile/${pk}` : `${pk}`}
         target={isMobile ? "_blank" : "_self"}
       >
         <Box

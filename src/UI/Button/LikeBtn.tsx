@@ -27,7 +27,7 @@ const LikeBtn = (props: any) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(Querykey.feedData);
-        queryClient.invalidateQueries([id, Querykey.feedComment]);
+        // queryClient.invalidateQueries([id, Querykey.feedComment]);
         queryClient.invalidateQueries([Querykey.feedDetail, id]);
       },
     }

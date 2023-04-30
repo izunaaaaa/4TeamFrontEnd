@@ -1,5 +1,6 @@
 import axios from "axios";
 import { LoginData, SignUpData } from "components/form/User/interface/type";
+import { AuthFormat, PhoneNubmer } from "components/form/User/PhoneVerifyModal";
 import { accessData, accessUser } from "components/mypages/interface/type";
 import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
@@ -18,6 +19,12 @@ export const instance = axios.create({
 export const signUp = async (data: SignUpData) => {
   await instance.post(`/users/signup/`, data);
 };
+
+export const sendPhoneNumber = async (phoneNumber: PhoneNubmer) =>
+  await instance.post(`auth/send/`, phoneNumber).then((res) => res.data);
+
+export const sendAuthCode = async (authFormat: AuthFormat) =>
+  await instance.post(`auth/check/`, authFormat).then((res) => res.data);
 
 export const getGroup = async () =>
   await instance.get(`/groups/`).then((res) => {

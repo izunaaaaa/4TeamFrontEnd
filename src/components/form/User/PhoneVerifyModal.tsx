@@ -12,7 +12,16 @@ import {
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
-import { send_message, verify } from "api/axios/phoneAuthentication";
+import { useMutation } from "react-query";
+import { sendAuthCode, sendPhoneNumber } from "api/axios/axiosSetting";
+
+export interface PhoneNubmer {
+  phone_number: string;
+}
+
+export interface AuthFormat extends PhoneNubmer {
+  auth_number: string;
+}
 
 const PhoneVerifyModal = (props: any) => {
   const toast = useToast();
@@ -25,6 +34,14 @@ const PhoneVerifyModal = (props: any) => {
   useEffect(() => {
     props.getPhoneNumber(number);
   }, [number, props]);
+
+  const { mutateAsync: sendPhoneNumberHandler } = useMutation(
+    (phoneNumber: PhoneNubmer) => sendPhoneNumber(phoneNumber)
+  );
+
+  const { mutateAsync: sendAuthCodeHandler } = useMutation(
+    (authFormat: AuthFormat) => sendAuthCode(authFormat)
+  );
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
@@ -44,7 +61,10 @@ const PhoneVerifyModal = (props: any) => {
             />
             <Button
               onClick={() => {
-                send_message(phoneRef.current);
+                const phoneNubmerFormat = {
+                  phone_number: phoneRef.current,
+                };
+                sendPhoneNumberHandler(phoneNubmerFormat);
               }}
             >
               인증번호보내기
@@ -61,39 +81,11 @@ const PhoneVerifyModal = (props: any) => {
             />
             <Button
               onClick={() => {
-                const reqData = {
-                  phoneNumber: phoneRef.current,
-                  verifyCode: verifyCode.current,
+                const verifyFormat = {
+                  phone_number: phoneRef.current,
+                  auth_number: verifyCode.current,
                 };
-                const confirm = verify(reqData);
-                if (confirm === "success") {
-                  toast({
-                    title: "인증에 성공했습니다!",
-                    description: "휴대폰인증 성공",
-                    status: "success",
-                    duration: 3000,
-                    isClosable: true,
-                  });
-                  setNumber(phoneRef.current);
-
-                  props.onClose();
-                } else if (confirm === "try") {
-                  toast({
-                    title: "인증실패",
-                    description: "인증번호를 발급받으세요.",
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                  });
-                } else if (confirm === "different") {
-                  toast({
-                    title: "인증실패",
-                    description: "인증번호가 다릅니다.",
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                  });
-                }
+                sendAuthCodeHandler(verifyFormat);
               }}
             >
               인증확인

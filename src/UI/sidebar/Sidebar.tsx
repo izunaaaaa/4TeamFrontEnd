@@ -144,7 +144,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
               <div
                 onClick={() => openEditModal(item.group.pk, item.id, item.name)}
               >
-                <span>
+                <span className={styles.fapen}>
                   <FontAwesomeIcon icon={faPen} />
                 </span>
               </div>
