@@ -59,16 +59,22 @@
   right: 0;
   width: 180px;
   position: absolute;
-  top: 80px;
+  top: 72px;
   transition: 850ms;
 }
 .dropList.active {
   transition: 350ms;
 }
 @media (max-width: 767px) {
-  .drop_list {
-    position: relative;
-    top: 56px;
+  // .drop_list {
+  //   position: relative;
+  //   top: 56px;
+  // }
+  .dropList {
+    top: 136px;
+  }
+  .fofile_box {
+    margin-left: 8px;
   }
 }
 @media (max-width: 376px) {
