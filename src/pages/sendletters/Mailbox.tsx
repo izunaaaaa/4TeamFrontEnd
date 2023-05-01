@@ -51,7 +51,7 @@ function Mailbox(chatId: MailboxProps) {
         bg={clickedIdx === idx ? "#dce0e7" : "transparent"}
         onClick={() => setClickedIdx(idx)}
       >
-        <MsgList {...item} isMobile={isMobile} refetch={refetch} />
+        <MsgList {...item} isMobile={isMobile} />
       </Box>
     ));
   };

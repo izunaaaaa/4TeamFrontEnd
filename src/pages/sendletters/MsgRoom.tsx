@@ -53,7 +53,7 @@ export default function MsgRoom() {
     }
   }, [resultPk.data, chatId]);
 
-  const isMobile = useMediaQuery("(max-width: 360px)");
+  const isMobile = window.innerWidth <= 480;
 
   return (
     <>
@@ -61,8 +61,8 @@ export default function MsgRoom() {
         bgColor={"white"}
         overflowX="hidden"
         h="78%"
-        w={"480px"}
-        mt={isMobile ? "0" : "20rem"}
+        w={isMobile ? "90vw" : "45vw"}
+        mt={isMobile ? "20rem" : "0rem"}
         maxW="100%"
       >
         {/* 주고받은 쪽지내역 */}
@@ -75,7 +75,7 @@ export default function MsgRoom() {
               alignItems={"center"}
               px={5}
             >
-              <MsgDetail {...item} textId={id} refetch={refetch} />
+              <MsgDetail {...item} textId={id} />
             </Flex>
           );
         })}

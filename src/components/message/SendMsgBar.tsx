@@ -19,9 +19,9 @@ const SendMsgBar = ({ refetch, receiver }: any) => {
     receiver
   );
 
-  function onSuccess() {
-    reset();
-  }
+  // function onSuccess() {
+  //   reset();
+  // }
 
   return (
     <Grid
@@ -29,7 +29,7 @@ const SendMsgBar = ({ refetch, receiver }: any) => {
       w={"70vmin"}
       bg={"white"}
       position={"fixed"}
-      bottom={0}
+      bottom={3}
       textAlign={"center"}
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex" }}>
@@ -42,9 +42,6 @@ const SendMsgBar = ({ refetch, receiver }: any) => {
             mr={3}
           />
           <Button type="submit">Send</Button>
-          {/* <InputRightElement width="4.5rem" mr={3}>
-            <Button type="submit">Send</Button>
-          </InputRightElement> */}
         </InputGroup>
       </form>
     </Grid>

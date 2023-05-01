@@ -46,7 +46,6 @@ const MsgList = ({
   const blockMutation = useMutation(deleteLetterlists, {
     onSuccess: () => {
       queryClient.invalidateQueries("Letterlists");
-      refetch();
       onClose();
     },
     onError: (error) => {
