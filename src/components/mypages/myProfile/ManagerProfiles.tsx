@@ -22,17 +22,17 @@ import styles from "./ManagerProfiles.module.scss";
 import useUser from "components/form/User/Hook/useUser";
 import useAccess from "../Hook/useAccess";
 import AccessInform from "./AccessInform";
-import { postAccessList } from "api/axios/axiosSetting";
-import { accessData } from "../interface/type";
+import { postAccess } from "api/axios/axiosSetting";
 
 const ManagerProfiles = () => {
   const { handleSubmit, register } = useForm();
   const toast = useToast();
+  const id = "accessId";
 
   const { LoginUserData } = useUser();
 
   const loginGroup = LoginUserData?.group?.pk;
-  const { groupAccess } = useAccess(loginGroup);
+  const { groupAccess, refetch: accessRefetch } = useAccess(loginGroup);
 
   /**액셀 파일 넣기 */
   const fileDataRef = useRef<userValue[]>([]);
@@ -89,13 +89,15 @@ const ManagerProfiles = () => {
                 number === undefined
               ) {
                 fileDataRef.current = [];
-                return toast({
-                  title: "데이터가 비었습니다.",
-                  description: "Data is invalid",
-                  status: "warning",
-                  duration: 4000,
-                  isClosable: true,
-                });
+                if (!toast.isActive(id)) {
+                  return toast({
+                    title: "데이터가 비었습니다.",
+                    description: "Data is invalid",
+                    status: "warning",
+                    duration: 4000,
+                    isClosable: true,
+                  });
+                }
               }
 
               const userData = {
@@ -105,25 +107,29 @@ const ManagerProfiles = () => {
               };
               data.push(userData);
             }
+            if (!toast.isActive(id)) {
+              toast({
+                title: "업로드가 완료되었습니다.",
+                description: "파일을 제출해주세요.",
+                status: "success",
+                duration: 4000,
+                isClosable: true,
+              });
+            }
 
-            toast({
-              title: "업로드가 완료되었습니다.",
-              description: "파일을 제출해주세요.",
-              status: "success",
-              duration: 4000,
-              isClosable: true,
-            });
             setFileName(file.name);
             fileDataRef.current = data;
           } else {
             /**업로드 실패했을때 */
-            toast({
-              title: "파일을 다시 제출해주세요.",
-              description: `Missing fields: ${missingFields.join(", ")}`,
-              status: "error",
-              duration: 4000,
-              isClosable: true,
-            });
+            if (!toast.isActive(id)) {
+              toast({
+                title: "파일을 다시 제출해주세요.",
+                description: `Missing fields: ${missingFields.join(", ")}`,
+                status: "error",
+                duration: 4000,
+                isClosable: true,
+              });
+            }
             setFileName("수강생 목록을 넣어 인증해주세요.");
             fileDataRef.current = [];
           }
@@ -137,34 +143,33 @@ const ManagerProfiles = () => {
 
   /**유저 accesslist 제출 */
   const { mutateAsync: postAccessListHandler } = useMutation(
-    (accessData: accessData) => postAccessList(accessData),
+    (accessData: userValue[]) => postAccess(accessData, LoginUserData.group.pk),
     {
       onSuccess: () => {
-        toast({
-          title: "업로드 성공",
-          description: "성공적으로 업로드 완료되었습니다.",
-          status: "success",
-        });
+        if (!toast.isActive(id)) {
+          toast({
+            title: "업로드 성공",
+            description: "성공적으로 업로드 완료되었습니다.",
+            status: "success",
+          });
+        }
       },
       onError: () => {
-        toast({
-          title: "업로드 실패",
-          description: "다시 업로드 시도해주세요.",
-          status: "error",
-        });
+        if (!toast.isActive(id)) {
+          toast({
+            title: "업로드 실패",
+            description: "다시 업로드 시도해주세요.",
+            status: "error",
+          });
+        }
       },
     }
   );
 
   const onSubmit = async () => {
-    const accessData: accessData = {
-      group: LoginUserData.group.name,
-      members: fileDataRef.current,
-    };
-
-    console.log(accessData);
-
+    const accessData: userValue[] = fileDataRef.current;
     await postAccessListHandler(accessData);
+    accessRefetch();
   };
 
   return (

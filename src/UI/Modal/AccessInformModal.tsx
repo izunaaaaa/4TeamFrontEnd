@@ -13,13 +13,13 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { accessUser } from "components/mypages/interface/type";
 import { useMutation, useQueryClient } from "react-query";
 import { postAccess, putAccess } from "api/axios/axiosSetting";
 import { Querykey } from "api/react-query/QueryKey";
+import { userValue } from "components/form/User/interface/type";
 
 const AccessInformModal = (props: any) => {
-  const { register, handleSubmit, reset } = useForm<accessUser>();
+  const { register, handleSubmit, reset } = useForm<userValue>();
   const toast = useToast();
 
   const accessUserInform = props.accessUserInform;
@@ -44,21 +44,21 @@ const AccessInformModal = (props: any) => {
 
   const { mutateAsync: postAccessHandler, isLoading: postLoading } =
     useMutation(
-      (postAccessData: accessUser) =>
+      (postAccessData: userValue) =>
         postAccess(postAccessData, props.loginGroup),
       mutationState
     );
 
   const { mutateAsync: putAccessHandler, isLoading: putLoading } = useMutation(
-    (putAccessData: accessUser) => {
+    (putAccessData: userValue) => {
       return putAccess(putAccessData, accessUserInform);
     },
     mutationState
   );
 
-  const onSubmit = async (data: accessUser) => {
+  const onSubmit = async (data: userValue) => {
     console.log(data);
-    const newAccessData: accessUser = {
+    const newAccessData: userValue = {
       name: data.name,
       email: data.email,
       phone_number: data.phone_number,

@@ -1,0 +1,76 @@
+.drop_list {
+  background-color: #bce7fb;
+  box-shadow: 0 0.125rem 0.4rem rgba(0, 0, 0, 0.075);
+  width: 100%;
+  height: 100%;
+}
+
+.drop_listItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  list-style: none;
+}
+.drop_listItem:hover, .drop_listItem:focus {
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #ffffff;
+  transition: 150ms;
+}
+.drop_listItem span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #161616;
+}
+.drop_listItem a {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+.fofile_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.myFrofile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+.myFrofile img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.dropList {
+  right: 0;
+  width: 180px;
+  position: absolute;
+  top: 72px;
+  transition: 850ms;
+}
+
+.dropList.active {
+  transition: 350ms;
+}
+
+@media (max-width: 767px) {
+  .dropList {
+    top: 136px;
+  }
+  .fofile_box {
+    margin-left: 8px;
+  }
+}/*# sourceMappingURL=DropDown.module.css.map */

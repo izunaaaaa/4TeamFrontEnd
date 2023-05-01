@@ -24,12 +24,14 @@ export interface userValue {
   name: string;
   email: string;
   phone_number: string;
+  is_signup?: boolean;
+  id?: number;
 }
 
 export interface SignUpData extends DefaultUserData {
   password: string;
   passwordConfirm?: string;
-  group: number;
+  group: string | number;
   groupFile?: userValue[];
 }
 

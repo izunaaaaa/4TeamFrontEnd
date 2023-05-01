@@ -1,0 +1,14 @@
+path {
+  pointer-events: none;
+}
+
+svg {
+  pointer-events: none;
+}
+
+html,
+body,
+#app,
+#app > div {
+  height: 100%;
+}/*# sourceMappingURL=App.module.css.map */

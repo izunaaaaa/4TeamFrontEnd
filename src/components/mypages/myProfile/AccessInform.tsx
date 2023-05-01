@@ -13,10 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { deleteAccess } from "api/axios/axiosSetting";
 import { Querykey } from "api/react-query/QueryKey";
+import { userValue } from "components/form/User/interface/type";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import AccessInformModal from "UI/Modal/AccessInformModal";
-import { accessUser } from "../interface/type";
 
 export interface accessInform {
   groupPk: number | undefined;
@@ -72,7 +72,7 @@ const AccessInform = (props: any) => {
             </Tr>
           </Thead>
           <Tbody>
-            {groupAccess?.map((data: accessUser) => {
+            {groupAccess?.map((data: userValue) => {
               const accessInform = {
                 groupPk: loginGroup,
                 userId: data.id,

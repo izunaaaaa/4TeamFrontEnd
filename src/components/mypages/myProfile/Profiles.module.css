@@ -1,0 +1,86 @@
+.my__profile {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.my__profile form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  padding: 3rem;
+}
+.my__profile form .form__group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.my__profile form .form__group .profile__img__label .profile__img__wrapper {
+  cursor: pointer;
+}
+.my__profile form .form__group .profile__img__label .profile__img__wrapper .profile__img__preview img {
+  width: 100px;
+  height: 100px;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+}
+.my__profile form .form__group .profile__img__label .profile__img__wrapper .profile__img__preview .profile__img__empty {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+}
+.my__profile form .form__group .profile__img__label .profile__img__wrapper .profile__img__change {
+  color: #0095f6;
+}
+.my__profile form .form__group label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.my__profile form .form__group .email__input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.my__profile form .form__group input[type=text],
+.my__profile form .form__group input[type=date],
+.my__profile form .form__group input[type=tel],
+.my__profile form .form__group input[type=password],
+.my__profile form .form__group textarea,
+.my__profile form .form__group select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  background-color: #fafafa;
+  transition: border-color 0.2s ease-in-out;
+}
+.my__profile form .form__group input[type=text]:focus,
+.my__profile form .form__group input[type=date]:focus,
+.my__profile form .form__group input[type=tel]:focus,
+.my__profile form .form__group input[type=password]:focus,
+.my__profile form .form__group textarea:focus,
+.my__profile form .form__group select:focus {
+  border-color: #b2dffc;
+}
+.my__profile form .form__group textarea {
+  min-height: 100px;
+}
+.my__profile form button[type=submit] {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #0095f6;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.my__profile form button[type=submit]:hover {
+  background-color: #0086e3;
+}/*# sourceMappingURL=Profiles.module.css.map */

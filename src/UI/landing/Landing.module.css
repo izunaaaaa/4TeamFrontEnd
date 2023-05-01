@@ -1,0 +1,179 @@
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #e3e3e3;
+  background-color: #fff;
+}
+
+.logo h1 {
+  font-weight: 700;
+  color: #c62917;
+  font-size: 23px;
+}
+.logo img {
+  width: 40px;
+}
+
+.landing_content {
+  width: 100%;
+  height: 685px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+}
+
+.login_btn {
+  padding: 0 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 28px;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 12px;
+  background-color: #c62917;
+  cursor: pointer;
+}
+.login_btn h1 {
+  font-size: 13px;
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  background-color: #fff;
+}
+
+.footerContent {
+  display: flex;
+  margin: 0 auto;
+}
+.footerContent ul {
+  padding: 16px 0;
+}
+.footerContent li {
+  list-style: none;
+  display: inline-block;
+  margin: 0 8px;
+  font-size: 13px;
+}
+
+.screen_le {
+  width: 270px;
+  height: 520px;
+  position: relative;
+  z-index: 1;
+  border: 2px solid #d6d6d6;
+  border-radius: 18px;
+  background-color: #fff;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.screen_ri {
+  width: 380px;
+  margin-left: 5rem;
+}
+.screen_ri h1 {
+  line-height: 40px;
+  font-size: 28px;
+}
+.screen_ri strong {
+  color: #c62917;
+  font-size: 35px;
+}
+
+.home {
+  width: 270px;
+  height: 520px;
+  background-position: 0px 0px;
+  position: absolute;
+  background-size: 270px auto;
+  opacity: 1;
+  background: transparent url("https://velog.velcdn.com/images/view_coding/post/16c386c5-bb7a-4ded-86d4-a5e2be0c79a0/image.jpg") no-repeat;
+}
+
+.board {
+  width: 270px;
+  height: 540px;
+  background-position: -570px 0px;
+  position: absolute;
+  background-size: 270px auto;
+  opacity: 0;
+  animation: active-init-board 6s infinite;
+  background: transparent url("https://velog.velcdn.com/images/view_coding/post/b7af010a-ad33-42eb-8a9c-2d7fa329b050/image.jpg") no-repeat;
+}
+
+.timetable {
+  width: 270px;
+  height: 540px;
+  background-position: -285px 0px;
+  opacity: 0;
+  animation: active-init-timetable 6s infinite;
+  position: absolute;
+  background-size: 270px auto;
+  background: transparent url("https://velog.velcdn.com/images/view_coding/post/c036fcb4-057e-4cbb-8190-d2a01615a140/image.jpg") no-repeat;
+}
+
+@keyframes active-init-board {
+  0% {
+    opacity: 0;
+  }
+  59% {
+    opacity: 0;
+  }
+  67% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes active-init-timetable {
+  0% {
+    opacity: 0;
+  }
+  26% {
+    opacity: 0;
+  }
+  34% {
+    opacity: 1;
+  }
+  67% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@media (max-width: 767px) {
+  .landing_content {
+    flex-direction: column;
+  }
+  .screen_le {
+    width: 190px;
+    height: 360px;
+  }
+  .screen_ri {
+    width: 380px;
+    margin-left: 0;
+    margin-top: 35px;
+    text-align: center;
+  }
+  .screen_ri h1 {
+    font-size: 20px;
+  }
+  .screen_ri strong {
+    font-size: 25px;
+  }
+}/*# sourceMappingURL=Landing.module.css.map */

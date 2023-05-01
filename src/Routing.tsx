@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUp from "pages/SignUp/SignUp";
 import MsgRoom from "./pages/sendletters/MsgRoom";
 import Mailbox from "./pages/sendletters/Mailbox";
 import Layout from "./UI/Layout";
@@ -10,7 +9,6 @@ import SignUpMain from "pages/SignUp/SignUpMain";
 import SignUpFormManager from "components/form/User/SignUpFormManager";
 import Landing from "UI/landing/Landing";
 import NotFound from "pages/notFound/NotFound";
-
 import Home from "pages/main/Home";
 import FeedDetail from "components/Feed/FeedDetail";
 import MobileMsg from "pages/sendletters/MobileMsg";
@@ -50,14 +48,11 @@ const Routing = () => {
         </Route>
 
         <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
 
         <Route path="user" element={<FindPage />}>
           <Route path="findId" element={<FindId />} />
           <Route path="findPassword" element={<FindPassword />} />
-        </Route>
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/signup/" element={<SignUp />}>
           <Route path="main" element={<SignUpMain />} />
           <Route path="student" element={<SignUpForm />} />
           <Route path="manager" element={<SignUpFormManager />} />

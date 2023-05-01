@@ -1,0 +1,47 @@
+@charset "UTF-8";
+.writerName {
+  display: flex;
+}
+.writerName h1 {
+  font-size: 0.6rem;
+  margin-left: 5px;
+}
+.writerName p {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.feedDetailDiv {
+  margin: 0 auto;
+  max-height: 500px;
+  max-width: 100%;
+  overflow-y: scroll;
+  /* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
+}
+.feedDetailDiv::-webkit-scrollbar {
+  display: none;
+}
+.feedDetailDiv img {
+  width: 100%;
+}
+.feedDetailDiv .feedTitle {
+  margin: 10px 0 0 0;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+.feedDetailDiv .feedDescription {
+  margin: 5px 0 0 0;
+}
+
+.commentInput {
+  border-top: 1px solid #bec1c7;
+  opacity: 0.8;
+  display: flex;
+  padding: 20px;
+  height: 70px;
+  justify-content: space-around;
+}
+.commentInput textarea {
+  width: 80%;
+  resize: none;
+}/*# sourceMappingURL=FeedDetail.module.css.map */
