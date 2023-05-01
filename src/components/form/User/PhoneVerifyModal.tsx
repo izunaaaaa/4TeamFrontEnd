@@ -38,7 +38,6 @@ const PhoneVerifyModal = (props: any) => {
 
   const { mutateAsync: sendPhoneNumberHandler } = useMutation(
     (phoneNumber: PhoneNubmer) => sendPhoneNumber(phoneNumber)
-    //
   );
 
   const { mutateAsync: sendAuthCodeHandler } = useMutation(
