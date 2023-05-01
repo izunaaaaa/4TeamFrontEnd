@@ -24,6 +24,7 @@ export interface AuthFormat extends PhoneNubmer {
 }
 
 const PhoneVerifyModal = (props: any) => {
+  const id = "verifyPhoneId";
   const toast = useToast();
 
   /**휴대폰인증 */
@@ -40,7 +41,28 @@ const PhoneVerifyModal = (props: any) => {
   );
 
   const { mutateAsync: sendAuthCodeHandler } = useMutation(
-    (authFormat: AuthFormat) => sendAuthCode(authFormat)
+    (authFormat: AuthFormat) => sendAuthCode(authFormat),
+    {
+      onSuccess: (res) => {
+        toast({
+          title: "인증성공",
+          status: "success",
+        });
+        setNumber(phoneRef.current);
+        props.onClose();
+      },
+      onError: (error: any) => {
+        if (!toast.isActive(id)) {
+          const detailError = Object.values(error.response.data);
+          toast({
+            id,
+            title: "인증실패",
+            description: `${detailError}`,
+            status: "error",
+          });
+        }
+      },
+    }
   );
 
   return (

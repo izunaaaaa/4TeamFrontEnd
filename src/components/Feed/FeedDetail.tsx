@@ -23,10 +23,15 @@ import { postComment } from "api/axios/axiosSetting";
 import { useCallback, useRef } from "react";
 import FeedDetailContents from "./FeedDetailContents";
 
+export interface CommentForm {
+  description: string;
+}
+
 const FeedDetail = () => {
   const { feedId } = useParams();
   const { LoginUserData } = useUser();
   const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm<CommentForm>();
 
   const groupName = LoginUserData.group.name;
 
@@ -34,11 +39,11 @@ const FeedDetail = () => {
     feedDetail: feedData,
     isLoading,
     refetch: refetchFeedDetail,
-  } = useFeedDetail(feedId);
+  } = useFeedDetail(Number(feedId));
   const queryClient = useQueryClient();
 
-  const { register, handleSubmit, reset } = useForm();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+
   const successRefetch = {
     onSuccess: async () => {
       refetchFeedDetail();
@@ -54,6 +59,7 @@ const FeedDetail = () => {
     },
   };
 
+  /**아래로 스크롤 */
   const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -61,15 +67,14 @@ const FeedDetail = () => {
   }, [feedData]);
 
   /**댓글달기 */
-
   const { mutateAsync: commentSubmitHandler, isLoading: commentLoading } =
     useMutation(
-      (comment: any) => postComment(feedData.id, comment),
+      (comment: CommentForm) => postComment(feedData.id, comment),
 
       successRefetch
     );
 
-  const commentSubmit = async (data: any) => {
+  const commentSubmit = async (data: CommentForm) => {
     await commentSubmitHandler(data);
     reset();
   };
