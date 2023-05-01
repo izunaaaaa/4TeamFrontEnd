@@ -85,7 +85,7 @@
     flex-direction: column;
   }
   .feedDiv {
-    width: 80%;
+    width: 100%;
   }
   .feedDiv .menu {
     position: absolute;
@@ -107,9 +107,8 @@
   }
 }
 .sideDiv {
-  background-color: azure;
   height: 300px;
-  width: 500px;
+  width: 35%;
   position: sticky;
   top: 100px;
   right: 3%;
