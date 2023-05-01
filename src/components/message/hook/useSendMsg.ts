@@ -8,7 +8,7 @@ export interface SendMsgData {
   text: string;
 }
 
-export const useSendMsg = (onClose: () => void, receiver: number) => {
+export const useSendMsg = (refetch: () => void, receiver: number) => {
   const { register, handleSubmit, reset } = useForm<{ text: string }>();
 
   const sendMutation = useMutation((data: SendMsgData) => postLetters(data));
@@ -27,7 +27,7 @@ export const useSendMsg = (onClose: () => void, receiver: number) => {
       await sendMutation.mutateAsync({ receiver, text: data.text });
       reset();
       console.log("send", { receiver, text: data.text });
-      onClose();
+      refetch();
     } catch (error) {
       console.error("send error", error);
     }

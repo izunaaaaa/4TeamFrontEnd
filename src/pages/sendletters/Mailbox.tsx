@@ -12,7 +12,7 @@ interface MailboxProps {
 }
 
 function Mailbox(chatId: MailboxProps) {
-  const { isLoading, error, data } = useQuery<LetterList[]>(
+  const { isLoading, refetch, data } = useQuery<LetterList[]>(
     "Letterlists",
     getLetterlists,
     { enabled: !chatId }
@@ -21,7 +21,7 @@ function Mailbox(chatId: MailboxProps) {
   const [clickedIdx, setClickedIdx] = useState<number | null>(null);
 
   // 브라우저 화면 크기 설정하는 chakra 내장함수
-  const [isMobile] = useMediaQuery("(max-width: 480px)");
+  const [isMobile] = useMediaQuery("(max-width: 769px)");
 
   //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
 
@@ -51,7 +51,7 @@ function Mailbox(chatId: MailboxProps) {
         bg={clickedIdx === idx ? "#dce0e7" : "transparent"}
         onClick={() => setClickedIdx(idx)}
       >
-        <MsgList {...item} isMobile={isMobile} />
+        <MsgList {...item} isMobile={isMobile} refetch={refetch} />
       </Box>
     ));
   };
@@ -60,7 +60,7 @@ function Mailbox(chatId: MailboxProps) {
     <Flex
       h={"100vh"}
       maxH={"100%"}
-      mt={isMobile ? "8rem" : "5rem"}
+      mt={isMobile ? "8rem" : "4rem"}
       ml={isMobile ? 0 : "15.5rem"}
       position={"fixed"}
       overscrollY={"auto"}
