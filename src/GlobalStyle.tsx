@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 
   * {
     margin: 0;
@@ -25,6 +24,11 @@ const GlobalStyle = createGlobalStyle`
   path {
     pointer-events: none;
   }
+
+  @font-face {
+	font-family: "nanumsquare";
+	src: url(./fonts/NanumSquare_acR.ttf ) format('nanum-square');
+}
 
   `;
 
