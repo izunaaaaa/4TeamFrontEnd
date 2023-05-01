@@ -1,9 +1,12 @@
 import axios from "axios";
 import { ClickBtnData } from "components/Card/CommentCard";
 import { CommentForm } from "components/Feed/FeedDetail";
-import { LoginData, SignUpData } from "components/form/User/interface/type";
+import {
+  LoginData,
+  SignUpData,
+  userValue,
+} from "components/form/User/interface/type";
 import { AuthFormat, PhoneNubmer } from "components/form/User/PhoneVerifyModal";
-import { accessData, accessUser } from "components/mypages/interface/type";
 import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
 import { Description } from "pages/main/interface/type";
@@ -36,7 +39,7 @@ export const getGroup = async () =>
     return res.data;
   });
 
-export const postAccessList = async (accessData: accessData) =>
+export const postAccessList = async (accessData: userValue[]) =>
   await instance.post(`/access/`, accessData).then((res) => res.data);
 
 export const logout = async () => {
@@ -197,13 +200,16 @@ export const getMyFeed = async (url: string) =>
 export const getAccess = async (groupPk: number) =>
   await instance.get(`/access/group/${groupPk}`).then((res) => res.data);
 
-export const postAccess = async (postAccessData: accessUser, groupPk: number) =>
+export const postAccess = async (
+  postAccessData: userValue | userValue[],
+  groupPk: number
+) =>
   await instance
     .post(`/access/group/${groupPk}`, postAccessData)
     .then((res) => res.data);
 
 export const putAccess = async (
-  putAccessData: accessUser,
+  putAccessData: userValue,
   accessInform: accessInform
 ) =>
   await instance

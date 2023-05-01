@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { useMutation } from "react-query";
-import { signUp, signUpManager } from "api/axios/axiosSetting";
+import { signUpManager } from "api/axios/axiosSetting";
 import useSignUpGroup from "./Hook/useSignUpGroup";
 import PhoneVerifyModal from "./PhoneVerifyModal";
 
@@ -55,14 +55,18 @@ const SignUpFormManager = () => {
   const { mutateAsync: signUpHandler } = useMutation(
     (signUpData: SignUpData) => signUpManager(signUpData),
     {
-      onSuccess: () => {
+      onSuccess: (res) => {
         toast({
           title: "회원가입 완료",
-          description: "로그인하여 Curb를 이용해주세요.",
+          description: "Curb에 오신것을 환영합니다.",
           status: "success",
           duration: 3000,
           isClosable: true,
         });
+
+        if (!res.new_group) {
+          navigate(`/community/mypage/profile`);
+        }
       },
       onError: (error: any) => {
         const detail_error = Object.values(error.response.data);
@@ -277,7 +281,7 @@ const SignUpFormManager = () => {
               {!newgroup ? (
                 group?.map((data: any) => {
                   return (
-                    <option key={data.pk} value={data.pk}>
+                    <option key={data.pk} value={data.name}>
                       {data.name}
                     </option>
                   );

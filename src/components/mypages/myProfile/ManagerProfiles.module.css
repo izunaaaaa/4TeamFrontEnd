@@ -1,0 +1,17 @@
+.accessForm {
+  margin: 30px 0px;
+  display: flex;
+  flex-direction: column;
+}
+.accessForm .inputLabel {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 10px 2px;
+}
+.accessForm input[type=file] {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  padding: 0;
+  border: 0;
+}/*# sourceMappingURL=ManagerProfiles.module.css.map */

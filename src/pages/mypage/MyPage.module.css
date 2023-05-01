@@ -1,0 +1,80 @@
+.myPageContents {
+  width: 79%;
+  margin: 0 auto;
+}
+
+.container {
+  width: 600px;
+  height: 100%;
+  display: flex;
+  margin-left: 33rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0.5rem 0 0.5rem;
+  border: 1px solid #8e8e8e;
+  position: relative;
+}
+.container.no-content {
+  border: none;
+}
+.container a {
+  text-decoration: none;
+  color: #333;
+}
+.container .tabMenu {
+  position: fixed;
+  top: 5rem;
+  z-index: 1;
+  width: 100%;
+  height: 60px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+.container .tabMenu.scrolled {
+  width: 580px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddcdcd;
+}
+.container .tabMenu .list {
+  display: flex;
+  list-style: none;
+  margin: 0 20px;
+  padding: 0;
+}
+.container .tabMenu .list .item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+}
+.container .tabMenu .list .item:last-child {
+  margin-right: 0;
+}
+.container .tabMenu .list .item a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #8e8e8e;
+  transition: color 0.2s ease-in-out;
+  padding: 10px;
+}
+.container .tabMenu .list .item a:hover {
+  color: #000;
+}
+.container .tabMenu .list .item a.active {
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+@media (max-width: 768px) {
+  .myPageContents {
+    width: 100%;
+  }
+}/*# sourceMappingURL=MyPage.module.css.map */

@@ -1,0 +1,10 @@
+.searchPageContents {
+  width: 79%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .searchPageContents {
+    width: 100%;
+  }
+}/*# sourceMappingURL=SearchFeed.module.css.map */

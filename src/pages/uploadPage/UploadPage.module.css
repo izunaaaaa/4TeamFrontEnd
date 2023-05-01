@@ -1,0 +1,78 @@
+@charset "UTF-8";
+.postForm {
+  border-radius: 30px;
+  width: 100%;
+}
+.postForm .postFormHeader {
+  padding: 15px 15px 10px 15px;
+  display: flex;
+  justify-content: space-between;
+}
+.postForm .postFormHeader h3 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.postForm .postFormHeader p {
+  margin: 0;
+}
+.postForm .postFormMain {
+  display: flex;
+  height: 500px;
+  padding: 10px;
+  margin: 25px 0;
+}
+.postForm .postFormMain p {
+  color: red;
+  font-size: 0.8rem;
+}
+.postForm .postFormMain p:before {
+  display: inline;
+  content: "⚠ ";
+}
+.postForm .postFormMain .fileForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 450px;
+  padding: 10px;
+}
+.postForm .postFormMain .fileForm input {
+  opacity: 0;
+  z-index: 100;
+  width: 100px;
+  height: 130px;
+}
+.postForm .postFormMain .fileForm button {
+  position: absolute;
+  border: 0;
+  background-color: transparent;
+}
+.postForm .postFormMain .fileForm .previewImg {
+  height: 100%;
+}
+.postForm .postFormMain .postFormDiv {
+  background-color: beige;
+  width: 50%;
+  height: 80%;
+  padding: 20px;
+}
+.postForm .postFormMain .postFormDiv .postFormNickname {
+  display: flex;
+  margin-top: 10px;
+}
+
+@media (max-width: 767px) {
+  .postForm {
+    padding: 5px 0px 0px 0px;
+    border-radius: 10px;
+    width: 100%;
+    height: 100vh;
+  }
+  .postForm .postFormMain {
+    flex-direction: column;
+  }
+}/*# sourceMappingURL=UploadPage.module.css.map */
