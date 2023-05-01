@@ -18,7 +18,9 @@ export const useSendMsg = (refetch: () => void, receiver: number) => {
   const onSubmit = async (data: { text: string }) => {
     if (data.text.trim() === "") {
       toast({
-        render: () => "내용을 입력해주세요",
+        title: "내용을 입력해주세요",
+        status: "info",
+        duration: 3000,
       });
       return;
     }
