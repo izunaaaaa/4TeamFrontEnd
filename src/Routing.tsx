@@ -19,6 +19,7 @@ import FindPassword from "components/form/User/FindPassword";
 import SearchFeed from "pages/searchPage/SearchFeed";
 import FeedPage from "pages/main/FeedPage";
 import UploadPage from "./pages/uploadPage/UploadPage";
+import FindPage from "pages/findPage/FindPage";
 
 const Routing = () => {
   return (
@@ -49,9 +50,13 @@ const Routing = () => {
         </Route>
 
         <Route path="/" element={<Landing />} />
-        <Route path="findId" element={<FindId />} />
-        <Route path="findPassword" element={<FindPassword />} />
+
+        <Route path="user" element={<FindPage />}>
+          <Route path="findId" element={<FindId />} />
+          <Route path="findPassword" element={<FindPassword />} />
+        </Route>
         <Route path="/login" element={<Login />} />
+
         <Route path="/signup/" element={<SignUp />}>
           <Route path="main" element={<SignUpMain />} />
           <Route path="student" element={<SignUpForm />} />

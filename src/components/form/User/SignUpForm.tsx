@@ -116,7 +116,6 @@ const SignUpForm = () => {
             />
             {errors.username && <p>{errors.username.message}</p>}
           </div>
-
           <div className={styles.typeDiv}>
             <label htmlFor="password">비밀번호</label>
             <Input
@@ -149,7 +148,6 @@ const SignUpForm = () => {
             />
             {errors.password && <p>{errors.password.message}</p>}
           </div>
-
           <div className={styles.typeDiv}>
             <label htmlFor="passwordConfirm">비밀번호 확인</label>
             <Input
@@ -173,7 +171,6 @@ const SignUpForm = () => {
             />
             {errors.passwordConfirm && <p>{errors.passwordConfirm.message}</p>}
           </div>
-
           <div className={styles.typeDiv}>
             <label htmlFor="name">성명</label>
             <Input
@@ -203,12 +200,13 @@ const SignUpForm = () => {
               <Input
                 id="number"
                 type="number"
-                placeholder="인증을 완료하세요."
+                placeholder="버튼을 눌러 인증을 완료하세요."
                 readOnly
                 defaultValue={phoneNumber}
                 {...register("phone_number")}
               />
               <Button
+                disabled={phoneNumber ? true : false}
                 height="50px"
                 onClick={() => {
                   onOpen();
@@ -241,7 +239,6 @@ const SignUpForm = () => {
             />
             {errors?.email && <p>{errors.email.message}</p>}
           </div>
-
           <div className={styles.typeDiv}>
             <label htmlFor="group">부트캠프</label>
             <Select

@@ -27,6 +27,7 @@ function FeedOption({ data, LoginUserData }: FeedOptionProps) {
 
       {LoginUserData?.id === data.user?.pk && (
         <Button
+          padding="0"
           bg="transparent"
           _hover={{ bg: "transparent" }}
           onClick={() => {
