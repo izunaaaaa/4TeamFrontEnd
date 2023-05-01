@@ -46,6 +46,16 @@ const SignUpForm = () => {
   const { mutate: signUpHandler } = useMutation(
     (signUpData: any) => signUp(signUpData),
     {
+      onSuccess: () => {
+        toast({
+          title: "회원가입 완료",
+          description: "로그인하여 Curb를 이용해주세요.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+
       onError: (error: any) => {
         const detail_error = Object.values(error.response.data);
         const isAccess = error.response.data["detail"];

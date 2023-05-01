@@ -11,7 +11,7 @@ interface UseFeedDetail {
 }
 
 const useFeedDetail = (feedID: string | number): UseFeedDetail => {
-  const fallBack: [] = [];
+  const fallBack: {} = {};
   const {
     data: feedDetail = fallBack,
     isLoading,

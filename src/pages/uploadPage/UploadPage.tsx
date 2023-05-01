@@ -33,20 +33,21 @@ const UploadPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const toast = useToast();
+  const id = "uploadId";
 
   const { state: feedId } = useLocation();
   const { LoginUserData } = useUser();
 
-  const { feedDetail } = useFeedDetail(feedId.id);
+  const { feedDetail } = useFeedDetail(feedId?.id);
   const feedThumbnail = feedDetail?.thumbnail ?? null;
+
+  const [category, setCategory] = useState(feedDetail?.category);
+  const [previewImg, setPreviewImg] = useState();
+  const [cropImg, setCropImg] = useState<string | null>(feedThumbnail);
 
   useEffect(() => {
     setCategory(feedDetail.category);
-  }, [feedDetail]);
-
-  const [category, setCategory] = useState(feedDetail.category);
-  const [previewImg, setPreviewImg] = useState();
-  const [cropImg, setCropImg] = useState<string | null>(feedThumbnail);
+  }, [feedDetail, previewImg]);
 
   /**카테고리 가져오기 */
   const { feedCategory } = useFeedCategory(LoginUserData?.group?.pk);
@@ -76,13 +77,15 @@ const UploadPage = () => {
       );
     },
     onError: () => {
-      toast({
-        title: "업로드 실패",
-        description: `카테고리와 제목은 필수 입니다.`,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      if (!toast.isActive(id)) {
+        toast({
+          title: "업로드 실패",
+          description: `카테고리와 제목은 필수 입니다.`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     },
   };
 
@@ -94,7 +97,7 @@ const UploadPage = () => {
 
   /**게시글 put */
   const { mutate: updateFeedHandler } = useMutation(
-    (updateData: PostFeed) => updateFeed(feedDetail.id, updateData),
+    (updateData: PostFeed) => updateFeed(feedDetail?.id, updateData),
     postState
   );
 
@@ -132,11 +135,12 @@ const UploadPage = () => {
     return new Blob([ab], { type: mimeString });
   }
 
+  console.log(feedDetail);
   /**양식 제출하기 */
   const submitHandler = async (data: PostFeed) => {
     let resUrl = "";
 
-    if (feedDetail) {
+    if (feedDetail.title) {
       if (cropImg === null) {
       } else if (cropImg !== feedDetail?.thumbnail) {
         const blob = dataURLToBlob(cropImg);
@@ -144,9 +148,11 @@ const UploadPage = () => {
         resUrl = await postUploadUrlHandler(file);
       }
       const postData: PostFeed = {
-        title: data.title,
-        category: data.category,
-        ...(data.description && { description: data.description }),
+        title: data.title || feedDetail.title,
+        category: data.category || feedDetail.category,
+        ...(data.description && {
+          description: data.description || feedDetail.description,
+        }),
         ...(cropImg ? { image: feedDetail?.thumbnail } : { image: null }),
         ...(resUrl && { image: resUrl }),
       };

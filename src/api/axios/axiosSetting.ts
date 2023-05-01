@@ -19,9 +19,11 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
-export const signUp = async (data: SignUpData) => {
-  await instance.post(`/users/signup/`, data);
-};
+export const signUp = async (data: SignUpData) =>
+  await instance.post(`/users/signup/`, data).then((res) => res.data);
+
+export const signUpManager = async (data: SignUpData) =>
+  await instance.post(`/users/signup/coach`, data).then((res) => res.data);
 
 export const sendPhoneNumber = async (phoneNumber: PhoneNubmer) =>
   await instance.post(`auth/send/`, phoneNumber).then((res) => res.data);
