@@ -25,8 +25,9 @@ export interface CommentType {
   };
   description: string;
   created_at: string;
-  commentlikeCount: string;
+  commentlikeCount: number;
   is_writer: boolean;
+  feed_writer: boolean;
   is_like: boolean;
   recomment: RecommentType[];
 }

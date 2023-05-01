@@ -8,7 +8,7 @@ interface UseComment {
   refetch: any;
 }
 
-const useComment = (feedId: number): UseComment => {
+const useComment = (feedId: string | undefined): UseComment => {
   const fallback: [] = [];
   const { data: feedComment = fallback, refetch } = useQuery(
     [Querykey.feedDetail, feedId, Querykey.feedComment],

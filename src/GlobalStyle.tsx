@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+ @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 
   * {
     margin: 0;

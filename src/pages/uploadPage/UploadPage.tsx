@@ -17,7 +17,7 @@ import { faCloudArrowUp, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postFeed, postUploadUrl, updateFeed } from "api/axios/axiosSetting";
 import { PostFeed } from "../../components/form/User/interface/type";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -26,6 +26,7 @@ import useFeedCategory from "../../components/form/feed/hook/useFeedCategory";
 import styles from "./UploadPage.module.scss";
 import useUser from "../../components/form/User/Hook/useUser";
 import { Category } from "UI/sidebar/hook/useSide";
+import useFeedDetail from "pages/main/hook/useFeedDetail";
 
 const UploadPage = () => {
   const { register, handleSubmit } = useForm<PostFeed>();
@@ -33,11 +34,18 @@ const UploadPage = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const { state: feedDetail } = useLocation();
+  const { state: feedId } = useLocation();
   const { LoginUserData } = useUser();
 
-  const [previewImg, setPreviewImg] = useState();
+  const { feedDetail } = useFeedDetail(feedId.id);
   const feedThumbnail = feedDetail?.thumbnail ?? null;
+
+  useEffect(() => {
+    setCategory(feedDetail.category);
+  }, [feedDetail]);
+
+  const [category, setCategory] = useState(feedDetail.category);
+  const [previewImg, setPreviewImg] = useState();
   const [cropImg, setCropImg] = useState<string | null>(feedThumbnail);
 
   /**카테고리 가져오기 */
@@ -274,7 +282,12 @@ const UploadPage = () => {
                 placeholder="카테고리를 입력해주세요"
                 h="40px"
                 size="sm"
-                {...register("category", {})}
+                {...register("category", {
+                  onChange: (e) => {
+                    setCategory(e.target.value);
+                  },
+                })}
+                value={category}
               >
                 {newCategory?.map((category: Category) => {
                   return (
@@ -289,12 +302,13 @@ const UploadPage = () => {
                 marginTop="10px"
                 type="text"
                 minH="40px"
-                defaultValue={feedDetail ? feedDetail.title : null}
+                defaultValue={feedDetail ? feedDetail.title : ""}
                 {...register("title", {})}
               />
               <Textarea
                 marginTop="10px"
                 placeholder="내용을 입력해주세요..."
+                defaultValue={feedDetail ? feedDetail.description : ""}
                 {...register("description")}
                 resize="none"
                 h={"100%"}
