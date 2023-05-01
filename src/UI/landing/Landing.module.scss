@@ -91,8 +91,9 @@
   background-size: 270px auto;
   opacity: 1;
   background: transparent
-    url("https://velog.velcdn.com/images/view_coding/post/16c386c5-bb7a-4ded-86d4-a5e2be0c79a0/image.jpg")
+    url("https://velog.velcdn.com/images/view_coding/post/baf27e9a-9e87-4364-a042-ac780b24acd6/image.jpg")
     no-repeat;
+  background-size: 270px;
 }
 .board {
   width: 270px;
@@ -103,8 +104,9 @@
   opacity: 0;
   animation: active-init-board 6s infinite;
   background: transparent
-    url("https://velog.velcdn.com/images/view_coding/post/b7af010a-ad33-42eb-8a9c-2d7fa329b050/image.jpg")
+    url("https://velog.velcdn.com/images/view_coding/post/5dca45fc-1e39-4253-9332-84245ef97dc1/image.jpg")
     no-repeat;
+  background-size: 270px;
 }
 .timetable {
   width: 270px;
@@ -115,8 +117,9 @@
   position: absolute;
   background-size: 270px auto;
   background: transparent
-    url("https://velog.velcdn.com/images/view_coding/post/c036fcb4-057e-4cbb-8190-d2a01615a140/image.jpg")
+    url("https://velog.velcdn.com/images/view_coding/post/de035793-5c6a-453f-b90e-44c89d295b0e/image.jpg")
     no-repeat;
+  background-size: 270px;
 }
 @keyframes active-init-board {
   0% {
@@ -175,6 +178,11 @@
     strong {
       font-size: 25px;
     }
+  }
+  .home,
+  .board,
+  .timetable {
+    background-size: 190px;
   }
 }
 @media (max-width: 376px) {
