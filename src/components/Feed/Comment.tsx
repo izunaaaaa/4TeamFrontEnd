@@ -7,8 +7,11 @@ import CommentCard from "components/Card/CommentCard";
 import ReCommentCard from "components/Card/ReCommentCard";
 import { CommentType } from "../../pages/main/interface/type";
 
-const Comment = (props: any) => {
-  const feedId = props.feedId;
+interface CommentProps {
+  feedId: string | undefined;
+}
+
+function Comment({ feedId }: CommentProps) {
   const { feedComment, refetch: refetchComment } = useComment(feedId);
 
   const queryClient = useQueryClient();
@@ -33,7 +36,6 @@ const Comment = (props: any) => {
             <CommentCard
               key={index}
               comment={comment}
-              index={index}
               successRefetch={successRefetch}
               successPost={successPost}
             />
@@ -52,6 +54,6 @@ const Comment = (props: any) => {
       })}
     </>
   );
-};
+}
 
 export default Comment;

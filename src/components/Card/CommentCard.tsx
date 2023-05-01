@@ -25,17 +25,26 @@ import moment from "moment";
 import "moment/locale/ko";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { Description } from "pages/main/interface/type";
+import { CommentType, Description } from "pages/main/interface/type";
 
-interface CommentCardProps {}
+interface CommentCardProps {
+  comment: CommentType;
+  successRefetch: object;
+  successPost: Function;
+}
 
-function CommentCard(props: any) {
-  const comment = props.comment;
-  const index = props.index;
+export interface ClickBtnData {
+  id: number;
+  commentType: string;
+}
+
+function CommentCard({
+  comment,
+  successPost,
+  successRefetch,
+}: CommentCardProps) {
   const { LoginUserData } = useUser();
   const { feedId } = useParams();
-  const successRefetch = props.successRefetch;
-  const successPost = props.successPost;
 
   const { register, handleSubmit, reset } = useForm<Description>();
   const toast = useToast();
@@ -47,7 +56,7 @@ function CommentCard(props: any) {
 
   /**댓글 좋아요 */
   const { mutateAsync: commentLikeHandler } = useMutation(
-    (commentData: any) => {
+    (commentData: ClickBtnData) => {
       return postCommentLike(commentData);
     },
     successRefetch
@@ -55,7 +64,7 @@ function CommentCard(props: any) {
 
   /**댓글 삭제 */
   const { mutate: deleteCommentHandler } = useMutation(
-    (id) => deleteComment(id),
+    (data: ClickBtnData) => deleteComment(data),
     {
       onSuccess: () => {
         successPost();
@@ -88,12 +97,12 @@ function CommentCard(props: any) {
   /**댓글 버튼 이벤트 */
   const btnHandler = async (
     e: React.MouseEvent,
-    id: string,
+    id: number,
     commentType: string
   ) => {
-    const eventTarget = e.target as any;
+    const eventTarget = e.target as HTMLButtonElement;
     const targetValue = eventTarget.value;
-    const data: any = {
+    const data: ClickBtnData = {
       id,
       commentType,
     };
@@ -120,7 +129,7 @@ function CommentCard(props: any) {
   const commentWriteTime = moment(comment.created_at).fromNow();
 
   return (
-    <Box width="100%" display="flex" key={index}>
+    <Box width="100%" display="flex" key={comment.id}>
       <Box margin="10px 0 5px 5px">
         <Avatar
           name="익명"
@@ -134,7 +143,7 @@ function CommentCard(props: any) {
             fontWeight="bold"
             color={comment.feed_writer ? "red.300" : "black"}
           >
-            {comment.feed_writer ? `글쓴이` : `익명${index + 1}`}
+            {comment.feed_writer ? `글쓴이` : `익명${comment.id + 1}`}
           </Box>
           <Flex onClick={(e) => btnHandler(e, comment.id, "comment")}>
             <ButtonGroup spacing="-1.5">

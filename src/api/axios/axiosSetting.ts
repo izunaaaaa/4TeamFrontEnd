@@ -1,4 +1,6 @@
 import axios from "axios";
+import { ClickBtnData } from "components/Card/CommentCard";
+import { CommentForm } from "components/Feed/FeedDetail";
 import { LoginData, SignUpData } from "components/form/User/interface/type";
 import { AuthFormat, PhoneNubmer } from "components/form/User/PhoneVerifyModal";
 import { accessData, accessUser } from "components/mypages/interface/type";
@@ -66,24 +68,24 @@ export const postFeedLike = async (feedId: FeedId) =>
     .post(`/likes/feedlike/${feedId?.id}`, feedId)
     .then((res) => res.data);
 
-export const getFeedDetail = async (feedId: string | undefined) =>
+export const getFeedDetail = async (feedId: string | number) =>
   await instance.get(`/feeds/${feedId}/`).then((res) => {
     return res.data;
   });
 
 /**comment */
-export const getComment = async (feedId: number) =>
+export const getComment = async (feedId: string | undefined) =>
   await instance.get(`/feeds/${feedId}/comment/`).then((res) => res.data);
 
-export const postComment = async (feedId: number, commentData: object) =>
+export const postComment = async (feedId: number, commentData: CommentForm) =>
   await instance
     .post(`/feeds/${feedId}/comment/`, commentData)
     .then((res) => res.data);
 
-export const deleteComment = async (commentData: any) =>
+export const deleteComment = async (commentData: ClickBtnData) =>
   await instance.delete(`/comments/${commentData.id}`);
 
-export const postCommentLike = async (commentData: any) =>
+export const postCommentLike = async (commentData: ClickBtnData) =>
   await instance
     .post(
       `likes/${commentData?.commentType}like/${commentData.id}`,
@@ -94,7 +96,7 @@ export const postCommentLike = async (commentData: any) =>
 /**recomment */
 export const postRecomment = async (
   feedId: string | undefined,
-  commentId: string | null,
+  commentId: number,
   description: Description
 ) =>
   await instance

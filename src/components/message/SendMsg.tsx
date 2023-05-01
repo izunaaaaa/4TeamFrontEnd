@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Button,
   Modal,
@@ -8,7 +7,6 @@ import {
   ModalFooter,
   ModalBody,
   Textarea,
-  FormControl,
   Input,
 } from "@chakra-ui/react";
 import { useSendMsg } from "./hook/useSendMsg";
@@ -17,10 +15,7 @@ import { useNavigate } from "react-router-dom";
 const SendMsg = ({ isOpen, onClose, receiver }: any) => {
   //쪽지 모달 폼 관리
 
-  const { register, handleSubmit, onSubmit, reset } = useSendMsg(
-    onClose,
-    receiver
-  );
+  const { register, handleSubmit, onSubmit } = useSendMsg(onClose, receiver);
 
   const navigate = useNavigate();
 

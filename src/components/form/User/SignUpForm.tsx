@@ -203,12 +203,13 @@ const SignUpForm = () => {
               <Input
                 id="number"
                 type="number"
-                placeholder="인증을 완료하세요."
+                placeholder="버튼을 눌러 인증을 완료하세요."
                 readOnly
                 defaultValue={phoneNumber}
                 {...register("phone_number")}
               />
               <Button
+                disabled={phoneNumber ? true : false}
                 height="50px"
                 onClick={() => {
                   onOpen();
