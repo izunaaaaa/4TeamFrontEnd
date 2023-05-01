@@ -60,7 +60,7 @@ function Mailbox(chatId: MailboxProps) {
     <Flex
       h={"100vh"}
       maxH={"100%"}
-      mt={isMobile ? "8rem" : "6rem"}
+      mt={isMobile ? "8rem" : "4rem"}
       ml={isMobile ? 0 : "15.5rem"}
       position={"fixed"}
       overscrollY={"auto"}
