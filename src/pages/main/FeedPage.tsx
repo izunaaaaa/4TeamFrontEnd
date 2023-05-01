@@ -1,11 +1,12 @@
 import { useFeed } from "./hook/useFeed";
 import styles from "./FeedPage.module.scss";
-import { Outlet, useParams } from "react-router-dom";
-import { Box, Flex, Img, Spinner } from "@chakra-ui/react";
+import { Link, Outlet, useParams } from "react-router-dom";
+import { Box, Flex, Image, Img, Spinner } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
 import useUser from "components/form/User/Hook/useUser";
 import { DefaultFeedData } from "./interface/type";
 import MainFeedCard from "components/Card/MainFeedCard";
+import adImage1 from "../../images/bangsam.png";
 
 function FeedPage() {
   const { pk: groupPk, id: categoryId } = useParams();
@@ -62,7 +63,25 @@ function FeedPage() {
             )} */}
           </div>
 
-          <div className={styles.sideDiv}></div>
+          <div className={styles.sideDiv}>
+            <Box
+              border="1.5px solid grey"
+              width="30px"
+              borderRadius="9px"
+              textAlign="center"
+            >
+              AD
+            </Box>
+            <Image
+              src={adImage1}
+              shadow="xl"
+              borderRadius="10px"
+              width="80%"
+              cursor="pointer"
+              margin="0"
+              onClick={() => window.open("https://bangsam.site/")}
+            />
+          </div>
         </Flex>
       </InfiniteScroll>
 

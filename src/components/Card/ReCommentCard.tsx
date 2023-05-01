@@ -16,6 +16,7 @@ import moment from "moment";
 import "moment/locale/ko";
 import { useMutation } from "react-query";
 import { deleteRecomment, postCommentLike } from "api/axios/axiosSetting";
+import SendBtn from "UI/Button/SendBtn";
 
 const ReCommentCard = (props: any) => {
   const { LoginUserData } = useUser();
@@ -98,7 +99,7 @@ const ReCommentCard = (props: any) => {
               fontWeight="bold"
               color={recomment.feed_writer ? "red.300" : "black"}
             >
-              {recomment.feed_writer ? "글쓴이" : `익명${recomment.pk}`}
+              {recomment.anonymous_number}
             </Box>
             <Flex onClick={(e) => btnHandler(e, recomment.pk, "recomment")}>
               <ButtonGroup spacing="-1.5">
@@ -111,7 +112,9 @@ const ReCommentCard = (props: any) => {
                   <FiThumbsUp />
                 </Button>
 
-                {recomment.user.pk !== LoginUserData.id ? null : (
+                {recomment.user.pk !== LoginUserData.id ? (
+                  <SendBtn userPk={recomment.user.pk} height={"20px"} />
+                ) : (
                   <Button
                     backgroundColor={"transparent"}
                     height="20px"

@@ -54,8 +54,8 @@ const Routing = () => {
           <Route path="findId" element={<FindId />} />
           <Route path="findPassword" element={<FindPassword />} />
           <Route path="main" element={<SignUpMain />} />
-          <Route path="student" element={<SignUpForm />} />
-          <Route path="manager" element={<SignUpFormManager />} />
+          <Route path="signup/student" element={<SignUpForm />} />
+          <Route path="signup/manager" element={<SignUpFormManager />} />
         </Route>
 
         {/* notfound */}

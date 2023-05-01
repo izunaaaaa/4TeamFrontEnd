@@ -117,15 +117,15 @@ const Login = (props: any) => {
               w={"100%"}
               justifyContent={"center"}
             >
-              <Link to="/findId" onClick={() => props.onClose()}>
+              <Link to="user/findId" onClick={() => props.onClose()}>
                 아이디 찾기
               </Link>
               <Text>|</Text>
-              <Link to="/findPassword" onClick={() => props.onClose()}>
+              <Link to="user/findPassword" onClick={() => props.onClose()}>
                 비밀번호 찾기
               </Link>
               <Text>|</Text>
-              <Link to={"/signup/main"} onClick={() => props.onClose()}>
+              <Link to={"user/main"} onClick={() => props.onClose()}>
                 회원가입
               </Link>
             </HStack>
