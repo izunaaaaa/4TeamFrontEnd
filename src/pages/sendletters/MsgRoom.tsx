@@ -14,7 +14,7 @@ export default function MsgRoom() {
   const chatId = chatIdString ? parseInt(chatIdString) : undefined;
 
   // 쪽지 내역 불러오기
-  const { data } = useQuery<ChatId[]>(
+  const { data, refetch } = useQuery<ChatId[]>(
     ["letters", chatId],
     () => {
       if (chatId === undefined) {
@@ -53,7 +53,7 @@ export default function MsgRoom() {
     }
   }, [resultPk.data, chatId]);
 
-  const isMobile = useMediaQuery("(max-width: 480px)");
+  const isMobile = useMediaQuery("(max-width: 360px)");
 
   return (
     <>
@@ -61,7 +61,7 @@ export default function MsgRoom() {
         bgColor={"white"}
         overflowX="hidden"
         h="78%"
-        w={isMobile ? "48vw" : "100vw"}
+        w={"480px"}
         mt={isMobile ? "0" : "20rem"}
         maxW="100%"
       >
@@ -75,11 +75,11 @@ export default function MsgRoom() {
               alignItems={"center"}
               px={5}
             >
-              <MsgDetail {...item} textId={id} />
+              <MsgDetail {...item} textId={id} refetch={refetch} />
             </Flex>
           );
         })}
-        {receiverPk && <SendMsgBar receiver={receiverPk} />}
+        {receiverPk && <SendMsgBar receiver={receiverPk} refetch={refetch} />}
       </Box>
     </>
   );

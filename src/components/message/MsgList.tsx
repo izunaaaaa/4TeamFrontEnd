@@ -28,6 +28,7 @@ const MsgList = ({
   created_at,
   last_letter,
   isMobile,
+  refetch,
 }: any) => {
   const formattedDate = useFormatDate(created_at);
 
@@ -45,6 +46,8 @@ const MsgList = ({
   const blockMutation = useMutation(deleteLetterlists, {
     onSuccess: () => {
       queryClient.invalidateQueries("Letterlists");
+      refetch();
+      onClose();
     },
     onError: (error) => {
       console.error("에러ㅠㅠ", error);
