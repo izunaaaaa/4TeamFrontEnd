@@ -60,9 +60,9 @@ export default function MsgRoom() {
       <Box
         bgColor={"white"}
         overflowX="hidden"
-        h="78%"
-        w={isMobile ? "90vw" : "45vw"}
-        mt={isMobile ? "20rem" : "0rem"}
+        h={isMobile ? "88vh" : "78vh"}
+        w={isMobile ? "100vmin" : "45vw"}
+        // mt={isMobile ? 0 : "20rem"}
         maxW="100%"
       >
         {/* 주고받은 쪽지내역 */}
