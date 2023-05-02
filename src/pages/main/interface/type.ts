@@ -23,6 +23,7 @@ export interface CommentType {
     pk: number;
     is_coach: boolean;
   };
+  anonymous_number: string;
   description: string;
   created_at: string;
   commentlikeCount: number;

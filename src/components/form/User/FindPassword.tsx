@@ -2,20 +2,15 @@ import { useState } from "react";
 import {
   Input,
   Button,
-  Stack,
   Box,
   Text,
   Heading,
   Container,
   VStack,
   useToast,
-  InputLeftElement,
   InputGroup,
   InputRightAddon,
-  InputAddon,
   InputLeftAddon,
-  FormControl,
-  FormLabel,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaLock, FaPhone, FaUserAlt } from "react-icons/fa";
@@ -26,7 +21,7 @@ import { useMutation } from "react-query";
 import { changePassword, findPassword } from "api/axios/axiosSetting";
 
 export default function FindPassword() {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
   const toast = useToast();
   const [firstVisible, setFirstVisible] = useState(false);
   const [secondVisible, setSecondVisible] = useState(false);
@@ -109,14 +104,20 @@ export default function FindPassword() {
     findPasswordHandler(data);
   };
   return (
-    <Container as="form" onSubmit={handleSubmit(onSubmit)}>
-      <VStack spacing={6}>
+    <Container
+      as="form"
+      onSubmit={handleSubmit(onSubmit)}
+      marginTop="55px"
+      width="100%"
+    >
+      <VStack spacing={7} maxW="500px" margin="0 auto">
         <Heading size="lg" mb={0}>
           비밀번호 찾기
         </Heading>
 
         <InputGroup>
           <InputLeftAddon
+            h="45px"
             children={
               <Box>
                 <BsFillPersonVcardFill />
@@ -125,6 +126,7 @@ export default function FindPassword() {
           />
           <Input
             isDisabled={password}
+            h="45px"
             type="text"
             {...register("username", { required: true })}
             placeholder="아이디을 입력하세요"

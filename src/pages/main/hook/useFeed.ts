@@ -40,11 +40,14 @@ export const useFeed = (
           return undefined;
         }
       },
-      onError: () => {
+      retry: false,
+
+      onError: (err) => {
         navigate("/error");
       },
     }
   );
+  console.log(isLoading);
 
   return {
     feedData,

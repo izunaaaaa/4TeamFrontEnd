@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Card,
   CardBody,
@@ -36,7 +35,7 @@ const SignUpMain = () => {
             </CardBody>
 
             <CardFooter>
-              <Button onClick={() => navigate("/signup/student")}>
+              <Button onClick={() => navigate("/user/signup/student")}>
                 수강생 가입
               </Button>
             </CardFooter>
@@ -59,7 +58,7 @@ const SignUpMain = () => {
             </CardBody>
 
             <CardFooter>
-              <Button onClick={() => navigate("/signup/manager")}>
+              <Button onClick={() => navigate("/user/signup/manager")}>
                 매니저 가입
               </Button>
             </CardFooter>

@@ -1,3 +1,4 @@
+import { BASE_URL } from "api/URL/BaseURL";
 import axios from "axios";
 import { ClickBtnData } from "components/Card/CommentCard";
 import { CommentForm } from "components/Feed/FeedDetail";
@@ -12,10 +13,7 @@ import Cookie from "js-cookie";
 import { Description } from "pages/main/interface/type";
 import { FeedId } from "UI/Button/LikeBtn";
 export const instance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "development"
-      ? "/api/v1/"
-      : "https://backend.curb.site/api/v1/",
+  baseURL: process.env.NODE_ENV === "development" ? "/api/v1/" : BASE_URL,
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },

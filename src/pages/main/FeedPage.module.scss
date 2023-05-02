@@ -5,7 +5,7 @@
 .feeds {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 80%;
   height: 100%;
 }
 
@@ -92,7 +92,7 @@
     flex-direction: column;
   }
   .feedDiv {
-    width: 80%;
+    width: 100%;
     .menu {
       position: absolute;
       z-index: 100;
@@ -115,12 +115,11 @@
 }
 
 .sideDiv {
-  background-color: azure;
-  height: 300px;
-  width: 500px;
+  height: 100%;
+  width: 35%;
   position: sticky;
-  top: 100px;
   right: 3%;
+  top: 15%;
   scroll-behavior: smooth;
 }
 

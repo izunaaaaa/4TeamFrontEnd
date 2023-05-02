@@ -1,5 +1,4 @@
-import { Box, Flex, Img } from "@chakra-ui/react";
-import React from "react";
+import { Flex, Img } from "@chakra-ui/react";
 import styles from "./Home.module.scss";
 
 const Home = () => {
