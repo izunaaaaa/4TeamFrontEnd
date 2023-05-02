@@ -33,7 +33,7 @@
   background-color: #fff;
   position: absolute;
   overflow: auto;
-  top: 80px;
+  top: 72px;
   padding: 15px;
   box-shadow: 4px 5px 10px 0 rgba(0, 0, 0, 0.2);
 }
@@ -71,7 +71,6 @@
 @media (max-width: 767px) {
   .autoSearchContainer {
     z-index: 3;
-    height: 300px;
     width: 80%;
     background-color: #fff;
     overflow: auto;
@@ -84,7 +83,7 @@
   }
   .searchWrapper {
     width: 80%;
-    height: 45px;
+    height: 40px;
     background-color: #f5f5f5;
     margin: 0;
     display: flex;
