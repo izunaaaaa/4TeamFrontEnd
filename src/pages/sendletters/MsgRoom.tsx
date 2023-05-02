@@ -22,7 +22,7 @@ export default function MsgRoom() {
       }
       return getLetters(chatId);
     },
-    { enabled: chatId !== undefined }
+    { enabled: chatId !== undefined, staleTime: 0, cacheTime: 0 }
   );
 
   //삭제 id 상태 관리
@@ -75,7 +75,12 @@ export default function MsgRoom() {
               alignItems={"center"}
               px={5}
             >
-              <MsgDetail {...item} textId={id} />
+              <MsgDetail
+                {...item}
+                textId={id}
+                refetch={refetch}
+                chatId={chatId}
+              />
             </Flex>
           );
         })}

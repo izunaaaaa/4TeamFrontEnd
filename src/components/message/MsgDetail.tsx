@@ -32,7 +32,14 @@ import { deleteLetters } from "api/axios/axiosSetting";
 import { ChatId } from "interface/Interface";
 import useFormatDate from "./hook/useFormatDate";
 
-const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
+const MsgDetail = ({
+  text,
+  is_sender,
+  id,
+  created_at,
+  refetch,
+  chatId,
+}: any) => {
   //마우스 hover 상태 관리
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseEnter = () => {
@@ -48,8 +55,7 @@ const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
   const queryClient = useQueryClient();
   const deleteMutation = useMutation(deleteLetters, {
     onSuccess: () => {
-      queryClient.invalidateQueries("letters");
-      onClose();
+      queryClient.invalidateQueries(["letters", chatId]);
     },
     onError: (error) => {
       console.error("에러!!", error);
