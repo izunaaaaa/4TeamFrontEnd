@@ -1,4 +1,4 @@
-import { BASE_URL } from "api/URL/BaseURL";
+import { BASE_URL } from "api/BaseURL";
 import axios from "axios";
 import { ClickBtnData } from "components/Card/CommentCard";
 import { CommentForm } from "components/Feed/FeedDetail";
