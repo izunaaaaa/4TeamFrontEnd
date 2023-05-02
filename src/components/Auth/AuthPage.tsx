@@ -12,8 +12,9 @@ export default function AuthPage(props: any) {
       if (!isLoggedIn) {
         navigate("/errorpage");
       }
+    } else if (isLoading) {
     }
-  }, [isLoading, isLoggedIn, LoginUserData, navigate]);
+  }, [isLoading, isLoggedIn, LoginUserData]);
   if (!isLoading) {
     return <>{props.children}</>;
   } else {
