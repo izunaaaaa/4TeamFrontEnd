@@ -101,11 +101,9 @@ const Login = (props: any) => {
               isLoading={loginLoading}
               type="submit"
               mt="4"
-              color={"white"}
               bg={"#ff404c"}
-              _hover={{
-                backgroundColor: "#ff7982",
-              }}
+              color="white"
+              colorScheme={"red"}
               width={"100%"}
             >
               로그인

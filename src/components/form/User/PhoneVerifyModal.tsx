@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Box,
   Button,
   Flex,
   Input,
+  InputGroup,
+  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
 import { useMutation } from "react-query";
 import { sendAuthCode, sendPhoneNumber } from "api/axios/axiosSetting";
+import Timer from "./Timer";
 
 export interface PhoneNubmer {
   phone_number: string;
@@ -31,13 +34,28 @@ const PhoneVerifyModal = (props: any) => {
   const [number, setNumber] = useState("");
   const phoneRef = useRef<any>();
   const verifyCode = useRef<any>();
+  const [verifyTime, setVerifyTime] = useState(false);
 
   useEffect(() => {
     props.getPhoneNumber(number);
   }, [number, props]);
 
   const { mutateAsync: sendPhoneNumberHandler } = useMutation(
-    (phoneNumber: PhoneNubmer) => sendPhoneNumber(phoneNumber)
+    (phoneNumber: PhoneNubmer) => sendPhoneNumber(phoneNumber),
+    {
+      onSuccess: () => {
+        setVerifyTime(true);
+      },
+      onError: () => {
+        if (!toast.isActive(id)) {
+          toast({
+            title: "인증오류",
+            description: "올바른 번호를 입력해주세요.",
+            status: "error",
+          });
+        }
+      },
+    }
   );
 
   const { mutateAsync: sendAuthCodeHandler } = useMutation(
@@ -66,42 +84,71 @@ const PhoneVerifyModal = (props: any) => {
   );
 
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose}>
+    <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Modal Title</ModalHeader>
+      <ModalContent padding="20px 0px">
+        <ModalHeader textAlign="center">휴대폰 인증</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <label htmlFor="phoneVerification">휴대폰인증</label>
-          <Flex>
-            <Input
-              id="phoneVerification"
-              placeholder="번호를 입력해주세요."
-              onChange={(e) => {
-                phoneRef.current = e.target.value;
-              }}
-            />
-            <Button
-              onClick={() => {
-                const phoneNubmerFormat = {
-                  phone_number: phoneRef.current,
-                };
-                sendPhoneNumberHandler(phoneNubmerFormat);
-              }}
+          <Box padding="10px 0">
+            <Box
+              as="label"
+              htmlFor="phoneVerification"
+              fontWeight="bold"
+              fontSize="lg"
             >
-              인증번호보내기
-            </Button>
-          </Flex>
-          <label htmlFor="phoneVerification">인증번호</label>
-          <Flex>
-            <Input
-              id="phoneVerification"
-              placeholder="인증번호를 입력해주세요."
-              onChange={(e) => {
-                verifyCode.current = e.target.value;
-              }}
-            />
+              전화번호
+            </Box>
+            <Flex>
+              <Input
+                id="phoneVerification"
+                placeholder="번호를 입력해주세요."
+                onChange={(e) => {
+                  phoneRef.current = e.target.value;
+                }}
+              />
+              <Button
+                onClick={() => {
+                  const phoneNubmerFormat = {
+                    phone_number: phoneRef.current,
+                  };
+                  setVerifyTime(false);
+                  sendPhoneNumberHandler(phoneNubmerFormat);
+                }}
+              >
+                인증번호전송
+              </Button>
+            </Flex>
+          </Box>
+          <Box padding="10px 0">
+            <Box
+              as="label"
+              htmlFor="phoneVerification"
+              fontWeight="bold"
+              fontSize="lg"
+            >
+              인증번호
+            </Box>
+            <Flex>
+              <InputGroup>
+                <Input
+                  id="phoneVerification"
+                  placeholder="인증번호를 입력해주세요."
+                  onChange={(e) => {
+                    verifyCode.current = e.target.value;
+                  }}
+                />
+
+                {verifyTime && (
+                  <InputRightElement width="93px" bg="#EDF2F7">
+                    <Timer mm="5" ss="00" />
+                  </InputRightElement>
+                )}
+              </InputGroup>
+            </Flex>
             <Button
+              margin="15px 0"
+              w="100%"
               onClick={() => {
                 const verifyFormat = {
                   phone_number: phoneRef.current,
@@ -112,14 +159,8 @@ const PhoneVerifyModal = (props: any) => {
             >
               인증확인
             </Button>
-          </Flex>
+          </Box>
         </ModalBody>
-
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={props.onClose}>
-            Close
-          </Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

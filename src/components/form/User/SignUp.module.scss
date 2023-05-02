@@ -92,29 +92,6 @@ select {
   border: 1px solid black;
 }
 
-.buttonDiv {
-  display: flex;
-  margin: 20px auto;
-  button {
-    &:nth-child(1) {
-      background-color: #a7a8b1;
-      &:hover {
-        background-color: grey;
-      }
-    }
-    background-color: rgb(255, 64, 76);
-    color: white;
-    border-radius: 10px;
-    width: 150px;
-    height: 60px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin: 0px 10px;
-    &:hover {
-      background-color: #ff7982;
-    }
-  }
-}
 .error {
   color: red;
   font-size: 0.8rem;
@@ -140,7 +117,6 @@ select {
     width: auto;
     max-width: 560px;
     padding: 20px 15px 20px 15px;
-    margin-bottom: 80px;
     border-radius: 20px;
 
     .typeDiv {
@@ -150,13 +126,6 @@ select {
       }
       input {
         width: 100%;
-      }
-    }
-
-    .buttonDiv {
-      button {
-        width: 120px;
-        height: 48px;
       }
     }
   }

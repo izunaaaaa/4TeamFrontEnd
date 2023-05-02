@@ -5,6 +5,7 @@ import {
   Flex,
   FormLabel,
   HStack,
+  Image,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -12,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import sampleImg from "../../../images/sample.png";
 import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
@@ -180,7 +181,12 @@ const ManagerProfiles = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Box width="100%" justifySelf="flex-start" alignSelf="flex-start">
+        <Box
+          width="100%"
+          justifySelf="flex-start"
+          alignSelf="flex-start"
+          marginBottom="30px"
+        >
           <form className={styles.accessForm} onSubmit={handleSubmit(onSubmit)}>
             <label className={styles.inputLabel}>수강생 목록 업로드</label>
             <InputGroup>
@@ -250,6 +256,9 @@ const ManagerProfiles = () => {
               </HStack>
             </InputGroup>
           </form>
+          <label className={styles.inputLabel}>파일양식 예시</label>
+
+          <Image src={sampleImg} width="300px" marginTop="10px" />
         </Box>
 
         <AccessInform
