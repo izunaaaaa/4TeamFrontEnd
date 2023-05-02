@@ -55,7 +55,9 @@ const MsgDetail = ({
   const queryClient = useQueryClient();
   const deleteMutation = useMutation(deleteLetters, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["letters", chatId]);
+      queryClient.invalidateQueries(["letters"]);
+      queryClient.refetchQueries(["letters"]);
+      onClose();
     },
     onError: (error) => {
       console.error("에러!!", error);
@@ -124,7 +126,7 @@ const MsgDetail = ({
               mr={3}
               onClick={() => {
                 deleteMutation.mutate(id);
-                onClose();
+                // onClose();
               }}
             >
               Delete
