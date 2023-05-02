@@ -2,22 +2,21 @@ import { useState } from "react";
 import {
   Input,
   Button,
-  Stack,
   Box,
-  Text,
   Heading,
   Container,
   VStack,
   useToast,
   FormControl,
   FormLabel,
+  Flex,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { findId } from "api/axios/axiosSetting";
 
 export default function FindId() {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
   const [id, setId] = useState(null);
   const toast = useToast();
   const { mutateAsync: findIdHandler, isLoading } = useMutation(
@@ -95,12 +94,13 @@ export default function FindId() {
           아이디 찾기
         </Button>
         {id ? (
-          <Text>
-            ID :
-            <Heading as="span" size={"lg"}>
-              {id}{" "}
-            </Heading>
-          </Text>
+          <Flex flexDir="row" fontSize="2xl">
+            아이디는 &nbsp;
+            <Box color="red" fontWeight="bold">
+              "{id}"
+            </Box>
+            &nbsp;입니다.
+          </Flex>
         ) : null}
       </VStack>
     </Container>

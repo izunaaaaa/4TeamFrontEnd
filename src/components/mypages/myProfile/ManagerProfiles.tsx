@@ -239,17 +239,11 @@ const ManagerProfiles = () => {
                     w="80px"
                     margin="9px"
                   >
-                    <FormLabel htmlFor="groupFile" margin="0" fontWeight="bold">
+                    <FormLabel htmlFor="groupFile" margin="0">
                       업로드
                     </FormLabel>
                   </Button>
-                  <Button
-                    h="40px"
-                    w="80px"
-                    type="submit"
-                    margin="9px"
-                    colorScheme="twitter"
-                  >
+                  <Button h="40px" w="80px" type="submit" margin="9px">
                     제출
                   </Button>
                 </ButtonGroup>
