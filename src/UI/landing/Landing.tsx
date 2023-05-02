@@ -20,7 +20,7 @@ function Landing() {
   }
 
   return (
-    <>
+    <div className={styles.landingHome}>
       <div className={styles.header}>
         <div className={styles.logo}>
           <img
@@ -61,7 +61,7 @@ function Landing() {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 export default Landing;
