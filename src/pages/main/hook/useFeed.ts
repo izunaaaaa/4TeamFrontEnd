@@ -47,7 +47,6 @@ export const useFeed = (
       },
     }
   );
-  console.log(isLoading);
 
   return {
     feedData,

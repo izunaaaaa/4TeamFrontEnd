@@ -24,7 +24,7 @@ function LikeBtn({ id, likeCount, isLike, feedDetail }: LikeBtnProps) {
     ? {
         onSuccess: () => {
           queryClient.invalidateQueries(Querykey.feedData);
-          queryClient.invalidateQueries([Querykey.feedDetail, id]);
+          queryClient.invalidateQueries([Querykey.feedDetail, Number(id)]);
         },
       }
     : {
