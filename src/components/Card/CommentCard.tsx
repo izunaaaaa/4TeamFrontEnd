@@ -107,7 +107,6 @@ function CommentCard({
       commentType,
     };
 
-    console.log(targetValue);
     if (targetValue === "like") {
       if (isLike) {
         setIsLike(false);

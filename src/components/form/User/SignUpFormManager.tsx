@@ -24,6 +24,7 @@ import { useMutation } from "react-query";
 import { signUpManager } from "api/axios/axiosSetting";
 import useSignUpGroup from "./Hook/useSignUpGroup";
 import PhoneVerifyModal from "./PhoneVerifyModal";
+import SignUpFormBtn from "UI/Button/SignUpFormBtn";
 
 const SignUpFormManager = () => {
   const {
@@ -345,18 +346,8 @@ const SignUpFormManager = () => {
               )}
             </Flex>
           </Box>
-          <div className={styles.buttonDiv}>
-            <button
-              type="button"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              이전
-            </button>
 
-            <button>회원가입</button>
-          </div>
+          <SignUpFormBtn />
         </form>
       </div>
     </>
