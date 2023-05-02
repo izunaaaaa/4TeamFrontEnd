@@ -62,10 +62,12 @@ function Header(): ReactElement {
           <div className={styles.nav_barMobile}>
             <div className={styles.sidebar_top}>
               {/* <h1>CurB</h1> */}
-              <img
-                src="https://velog.velcdn.com/images/view_coding/post/a8381e96-0dae-45bf-b30f-985c1d2d6359/image.png"
-                alt="logo"
-              />
+              <Link to={"home"}>
+                <img
+                  src="https://velog.velcdn.com/images/view_coding/post/a8381e96-0dae-45bf-b30f-985c1d2d6359/image.png"
+                  alt="logo"
+                />
+              </Link>
             </div>
             <div className={styles.sidebar_bottom}>
               <div className={styles.sidebar_btn} ref={sidebarRef}>

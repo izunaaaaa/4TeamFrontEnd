@@ -1,6 +1,6 @@
 import { useFeed } from "./hook/useFeed";
 import styles from "./FeedPage.module.scss";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { Box, Flex, Image, Img, Spinner } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
 import useUser from "components/form/User/Hook/useUser";
@@ -12,10 +12,8 @@ function FeedPage() {
   const { pk: groupPk, id: categoryId } = useParams();
   const { LoginUserData } = useUser();
 
-  const { feedData, fetchNextPage, hasNextPage, isFetching } = useFeed(
-    groupPk,
-    categoryId
-  );
+  const { feedData, fetchNextPage, hasNextPage, isFetching, isLoading } =
+    useFeed(groupPk, categoryId);
 
   return (
     <>
@@ -57,31 +55,29 @@ function FeedPage() {
                 );
               return results;
             })}
-
-            {/* {feedData.pages?.map((pageData: any) =>
-              console.log(pageData.results)
-            )} */}
           </div>
 
-          <div className={styles.sideDiv}>
-            <Box
-              border="1.5px solid grey"
-              width="30px"
-              borderRadius="9px"
-              textAlign="center"
-            >
-              AD
-            </Box>
-            <Image
-              src={adImage1}
-              shadow="xl"
-              borderRadius="10px"
-              width="80%"
-              cursor="pointer"
-              margin="0"
-              onClick={() => window.open("https://bangsam.site/")}
-            />
-          </div>
+          {!isLoading && (
+            <div className={styles.sideDiv}>
+              <Box
+                border="1.5px solid grey"
+                width="30px"
+                borderRadius="9px"
+                textAlign="center"
+              >
+                AD
+              </Box>
+              <Image
+                src={adImage1}
+                shadow="xl"
+                borderRadius="10px"
+                width="80%"
+                cursor="pointer"
+                margin="0"
+                onClick={() => window.open("https://bangsam.site/")}
+              />
+            </div>
+          )}
         </Flex>
       </InfiniteScroll>
 
