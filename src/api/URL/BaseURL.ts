@@ -1,1 +1,1 @@
-export const BASE_URL = "https://backend.curb.site/api/v1";
+export const BASE_URL = "https://backend.curb.site/api/v1/";
