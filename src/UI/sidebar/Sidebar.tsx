@@ -2,12 +2,6 @@ import { useState } from "react";
 import styles from "./Sidebar.module.scss";
 import { SidebarProps } from "../../interface/Interface";
 import {
-  faCirclePlus,
-  faPen,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   postCategory,
   deleteCategory,
   updateCategory,
@@ -18,6 +12,7 @@ import { Category } from "./hook/useSide";
 import { Link } from "react-router-dom";
 import useUser from "components/form/User/Hook/useUser";
 import { useToast } from "@chakra-ui/react";
+import { BsTrash3, BsPencil, BsPlusCircleFill } from "react-icons/bs";
 
 function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const [newChannelName, setNewChannelName] = useState("");
@@ -158,14 +153,10 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
               <div
                 onClick={() => openEditModal(item.group.pk, item.id, item.name)}
               >
-                <span className={styles.fapen}>
-                  <FontAwesomeIcon icon={faPen} size={"sm"} />
-                </span>
+                <BsPencil className={styles.fapen} size="16" />
               </div>
               <div onClick={() => deleteCategorytModal(item.group.pk, item.id)}>
-                <span>
-                  <FontAwesomeIcon icon={faTrash} size={"sm"} />
-                </span>
+                <BsTrash3 size="16" />
               </div>
             </div>
           )}
@@ -175,7 +166,7 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
   const renderAddChannelButton = () => (
     <li className={styles.navmenu_add} onClick={() => toggleModal("add")}>
       <p>
-        <FontAwesomeIcon icon={faCirclePlus} size="lg" /> <span>채널 추가</span>
+        <BsPlusCircleFill size="18" /> <span>채널 추가</span>
       </p>
     </li>
   );
@@ -206,18 +197,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
                   placeholder="채널 이름 입력"
                 />
                 <div>
-                  <button
-                    className={styles.sideBtn_le}
-                    onClick={handleAddChannel}
-                  >
-                    추가
-                  </button>
-                  <button
-                    className={styles.sideBtn_ri}
-                    onClick={() => toggleModal(null)}
-                  >
-                    취소
-                  </button>
+                  <button onClick={() => toggleModal(null)}>취소</button>
+                  <button onClick={handleAddChannel}>추가</button>
                 </div>
               </div>
             </div>
@@ -238,15 +219,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
                 <h2>카테고리 삭제</h2>
                 <p>정말로 삭제하시겠습니까?</p>
                 <div>
-                  <button className={styles.sideBtn_le} onClick={onDelete}>
-                    삭제
-                  </button>
-                  <button
-                    className={styles.sideBtn_ri}
-                    onClick={() => toggleModal(null)}
-                  >
-                    취소
-                  </button>
+                  <button onClick={() => toggleModal(null)}>취소</button>
+                  <button onClick={onDelete}>삭제</button>
                 </div>
               </div>
             </div>
@@ -274,15 +248,8 @@ function Sidebar({ sidebar, setSidebar }: SidebarProps) {
                   placeholder="채널 이름 수정"
                 />
                 <div>
-                  <button className={styles.sideBtn_le} onClick={onUpdate}>
-                    수정
-                  </button>
-                  <button
-                    className={styles.sideBtn_ri}
-                    onClick={() => toggleModal(null)}
-                  >
-                    취소
-                  </button>
+                  <button onClick={() => toggleModal(null)}>취소</button>
+                  <button onClick={onUpdate}>수정</button>
                 </div>
               </div>
             </div>

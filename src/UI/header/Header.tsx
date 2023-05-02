@@ -64,7 +64,7 @@ function Header(): ReactElement {
               {/* <h1>CurB</h1> */}
               <Link to={"home"}>
                 <img
-                  src="https://velog.velcdn.com/images/view_coding/post/a8381e96-0dae-45bf-b30f-985c1d2d6359/image.png"
+                  src="https://velog.velcdn.com/images/view_coding/post/ae532678-7a1e-4916-95d1-86b330f60f11/image.png"
                   alt="logo"
                 />
               </Link>
