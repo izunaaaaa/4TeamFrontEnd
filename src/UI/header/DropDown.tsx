@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./DropDown.module.scss";
 import useClickOutside from "./useClickOutside";
 import { logout } from "api/axios/axiosSetting";
+import { useMutation, useQueryClient } from "react-query";
+import { useToast } from "@chakra-ui/react";
+import { Querykey } from "api/react-query/QueryKey";
 
 const list = [
   { id: 1, title: "마이페이지", link: "mypage/feedlist" },
@@ -11,6 +14,7 @@ const list = [
 ];
 
 function DropDown() {
+  const toast = useToast();
   const [dropOpen, setDropOpen] = useState<boolean>(false);
   const dropListRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
@@ -23,15 +27,19 @@ function DropDown() {
     setDropOpen(false);
   });
 
-  const handleLogout = async () => {
-    try {
-      await logout();
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: logoutHandler } = useMutation(() => logout(), {
+    onSuccess: async (res) => {
+      toast({
+        title: "로그아웃 되었습니다.",
+        status: "info",
+      });
+
+      await queryClient.resetQueries(Querykey.userData);
       navigate("/");
-      window.location.reload();
-    } catch (error) {
-      console.log("logout error");
-    }
-  };
+    },
+  });
 
   return (
     <>
@@ -56,7 +64,10 @@ function DropDown() {
                   </Link>
                 </li>
               ))}
-              <li className={styles.drop_listItem} onClick={handleLogout}>
+              <li
+                className={styles.drop_listItem}
+                onClick={() => logoutHandler()}
+              >
                 <span>로그아웃</span>
               </li>
             </ul>

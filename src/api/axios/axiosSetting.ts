@@ -40,9 +40,18 @@ export const getGroup = async () =>
 export const postAccessList = async (accessData: userValue[]) =>
   await instance.post(`/access/`, accessData).then((res) => res.data);
 
-export const logout = async () => {
-  await instance.post(`/users/logout/`);
-};
+export const logout = async () =>
+  await instance
+    .post(
+      `/users/logout/`,
+      {},
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((res) => res.data);
 
 export const login = async (data: LoginData) =>
   await instance.post(`/users/login/`, data).then((res) => res.data);

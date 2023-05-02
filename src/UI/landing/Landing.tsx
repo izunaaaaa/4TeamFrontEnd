@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
 import styles from "./Landing.module.scss";
 import Login from "components/form/User/Login";
 import { useDisclosure } from "@chakra-ui/react";
 import useUser from "components/form/User/Hook/useUser";
 import { useNavigate } from "react-router-dom";
-import { useSide } from "UI/sidebar/hook/useSide";
 
 function Landing() {
   const {
