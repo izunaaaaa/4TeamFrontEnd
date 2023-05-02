@@ -41,13 +41,12 @@ export const useFeed = (
         }
       },
       retry: false,
-
+      //
       onError: (err) => {
         navigate("/error");
       },
     }
   );
-  console.log(isLoading);
 
   return {
     feedData,

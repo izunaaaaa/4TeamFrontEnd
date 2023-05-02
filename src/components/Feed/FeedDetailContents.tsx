@@ -1,6 +1,5 @@
 import { Box, Button, ButtonGroup, HStack, Image } from "@chakra-ui/react";
 import { DefaultFeedData } from "pages/main/interface/type";
-import React from "react";
 import { FiMessageSquare } from "react-icons/fi";
 import LikeBtn from "UI/Button/LikeBtn";
 import Comment from "./Comment";
@@ -10,6 +9,9 @@ interface FeedDetailContentsProps {
   feedData: DefaultFeedData;
   feedId: string | undefined;
   scrollRef: React.MutableRefObject<HTMLDivElement | null>;
+}
+export interface FeedId {
+  id: string | undefined;
 }
 
 function FeedDetailContents({
@@ -36,6 +38,7 @@ function FeedDetailContents({
             isLike={feedData.is_like}
             feedDetail={true}
           />
+
           <Button
             backgroundColor={"transparent"}
             margin={0}
