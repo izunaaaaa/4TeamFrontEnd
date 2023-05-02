@@ -1,7 +1,7 @@
 import { useFeed } from "./hook/useFeed";
 import styles from "./FeedPage.module.scss";
 import { Outlet, useParams } from "react-router-dom";
-import { Box, Flex, Image, Img, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Image, Spinner } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroller";
 import useUser from "components/form/User/Hook/useUser";
 import { DefaultFeedData } from "./interface/type";
@@ -46,7 +46,7 @@ function FeedPage() {
                     />
                   ))
                 ) : (
-                  <Img
+                  <Image
                     key={Math.random()}
                     margin="0 auto"
                     w="80%"
@@ -74,6 +74,7 @@ function FeedPage() {
                 width="80%"
                 cursor="pointer"
                 margin="0"
+                fallbackSrc="https://velog.velcdn.com/images/view_coding/post/a8381e96-0dae-45bf-b30f-985c1d2d6359/image.png"
                 onClick={() => window.open("https://bangsam.site/")}
               />
             </div>
