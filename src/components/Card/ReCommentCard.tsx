@@ -83,7 +83,6 @@ const ReCommentCard = (props: any) => {
       <Flex key={index} width="100%">
         <Box margin="10px">
           <Avatar
-            name="익명"
             size="xs"
             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
           />

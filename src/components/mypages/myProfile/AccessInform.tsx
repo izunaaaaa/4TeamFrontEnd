@@ -17,6 +17,7 @@ import { userValue } from "components/form/User/interface/type";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import AccessInformModal from "UI/Modal/AccessInformModal";
+import { FcCheckmark } from "react-icons/fc";
 
 export interface accessInform {
   groupPk: number | undefined;
@@ -66,6 +67,7 @@ const AccessInform = (props: any) => {
               <Th>name</Th>
               <Th>email</Th>
               <Th>phoneNumber</Th>
+              <Th>Is Sign Up</Th>
               <Th textAlign="center">
                 <Button onClick={() => onOpen()}>추가하기</Button>
               </Th>
@@ -83,6 +85,11 @@ const AccessInform = (props: any) => {
                   <Td>{data.name}</Td>
                   <Td>{data.email}</Td>
                   <Td>{data.phone_number}</Td>
+                  <Td>
+                    {!data.is_signup ? null : (
+                      <FcCheckmark size="1.7rem" style={{ margin: "0 auto" }} />
+                    )}
+                  </Td>
                   <Td textAlign="center">
                     <ButtonGroup spacing={1}>
                       <Button

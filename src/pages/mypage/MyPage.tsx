@@ -17,11 +17,14 @@ import Profiles from "components/mypages/myProfile/Profiles";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./MyPage.module.scss";
 import { DefaultFeedData } from "pages/main/interface/type";
+import useUser from "components/form/User/Hook/useUser";
 
 export default function MyPage() {
   const navigate = useNavigate();
   const [feedData, setFeedData] = useState({});
   const { type }: { type?: string } = useParams();
+
+  const { LoginUserData } = useUser();
 
   /**routing */
   const handleTab = (tab: string) => {
@@ -89,7 +92,7 @@ export default function MyPage() {
                 _selected={{ bg: "#f1f4f7" }}
                 onClick={() => handleTab("profile")}
               >
-                프로필
+                {LoginUserData ? "유저정보" : "프로필"}
               </Tab>
             </TabList>
           </Tabs>

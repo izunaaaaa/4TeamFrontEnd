@@ -157,25 +157,35 @@ export const getFeedCategory = async (group: number) =>
   await instance.get(`/categories/${group}`).then((res) => res.data);
 
 export const postUploadUrl = async (imgFile: File) =>
-  await instance.post(`/media/uploadURL`).then(async (res) => {
-    let resImgUrl = "";
-    const url = res.data.uploadURL;
-
-    const form = new FormData();
-    form.append("file", imgFile);
-
-    await axios
-      .post(url, form, {
+  await instance
+    .post(
+      `/media/uploadURL`,
+      {},
+      {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
         },
-      })
-      .then((res) => {
-        resImgUrl = res.data.result.variants[0];
-      });
+      }
+    )
+    .then(async (res) => {
+      let resImgUrl = "";
+      const url = res.data.uploadURL;
 
-    return resImgUrl;
-  });
+      const form = new FormData();
+      form.append("file", imgFile);
+
+      await axios
+        .post(url, form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          resImgUrl = res.data.result.variants[0];
+        });
+
+      return resImgUrl;
+    });
 
 export const postFeed = async (postData: any) =>
   await instance
