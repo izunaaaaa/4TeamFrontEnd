@@ -25,11 +25,11 @@ const SendMsgBar = ({ refetch, receiver }: any) => {
 
   return (
     <Grid
-      ml={10}
-      w={"70vmin"}
+      w={"60vmin"}
       bg={"white"}
       position={"fixed"}
       bottom={3}
+      right={20}
       textAlign={"center"}
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex" }}>
