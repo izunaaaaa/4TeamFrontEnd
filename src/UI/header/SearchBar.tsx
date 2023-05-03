@@ -6,7 +6,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useClickOutside from "./useClickOutside";
 import { useQuery } from "react-query";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getSearchData } from "api/axios/axiosSetting";
 import useUser from "components/form/User/Hook/useUser";
 
@@ -28,6 +28,7 @@ function SearchBar() {
   const groupPk = LoginUserData?.group?.pk;
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { data: searchResults, refetch } = useQuery<SearchResult>(
     ["search", keyword],
@@ -45,6 +46,12 @@ function SearchBar() {
       clearTimeout(debounce);
     };
   }, [keyword, refetch]);
+
+  useEffect(() => {
+    if (!location.pathname.includes("search/group_id")) {
+      setKeyword("");
+    }
+  }, [location.pathname]);
 
   const toggleSearchbar = async () => {
     setSearchbarVisible(!searchbarVisible);
@@ -69,8 +76,8 @@ function SearchBar() {
   const onClickSearchDiv = () => {
     if (keyword) {
       navigate(`search/group_id/${groupPk}/keyword/${keyword}`);
-      setSearchbarVisible(false);
     }
+    setSearchbarVisible(false);
   };
 
   return (
@@ -106,9 +113,7 @@ function SearchBar() {
                       setSearchbarVisible(false);
                     }}
                   >
-                    <Link
-                      to={`/search/group_id/${groupPk}/keyword/${result.title}`}
-                    >
+                    <Link to={`search/group_id/${groupPk}/keyword/${keyword}`}>
                       <span>{result.title}</span>
                     </Link>
                   </li>
