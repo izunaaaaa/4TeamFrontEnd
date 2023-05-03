@@ -6,7 +6,7 @@ const Home = () => {
     <Flex className={styles.community_home}>
       <Img
         className={styles.community_img}
-        src="https://velog.velcdn.com/images/view_coding/post/96f6b4e2-defc-4609-8519-2a2146f44b64/image.png"
+        src="https://velog.velcdn.com/images/view_coding/post/9a2ffd3f-91e8-4014-8d90-9301e9551124/image.png"
       />
     </Flex>
   );
