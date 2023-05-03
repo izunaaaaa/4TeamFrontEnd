@@ -39,7 +39,13 @@ export const getGroup = async () =>
   });
 
 export const postAccessList = async (accessData: userValue[]) =>
-  await instance.post(`/access/`, accessData).then((res) => res.data);
+  await instance
+    .post(`/access/`, accessData, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((res) => res.data);
 
 export const logout = async () =>
   await instance
@@ -78,7 +84,11 @@ export const getFeeds = async (url: string) =>
 
 export const postFeedLike = async (feedId: FeedId) =>
   await instance
-    .post(`/likes/feedlike/${feedId?.id}`, feedId)
+    .post(`/likes/feedlike/${feedId?.id}`, feedId, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
     .then((res) => res.data);
 
 export const getFeedDetail = async (feedId: string | number) =>
@@ -92,17 +102,30 @@ export const getComment = async (feedId: string | undefined) =>
 
 export const postComment = async (feedId: number, commentData: CommentForm) =>
   await instance
-    .post(`/feeds/${feedId}/comment/`, commentData)
+    .post(`/feeds/${feedId}/comment/`, commentData, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
     .then((res) => res.data);
 
 export const deleteComment = async (commentData: ClickBtnData) =>
-  await instance.delete(`/comments/${commentData.id}`);
+  await instance.delete(`/comments/${commentData.id}`, {
+    headers: {
+      "X-CSRFToken": Cookie.get("csrftoken") || "",
+    },
+  });
 
 export const postCommentLike = async (commentData: ClickBtnData) =>
   await instance
     .post(
       `likes/${commentData?.commentType}like/${commentData.id}`,
-      commentData.id
+      commentData.id,
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
     )
     .then((res) => res.data);
 
@@ -113,12 +136,20 @@ export const postRecomment = async (
   description: Description
 ) =>
   await instance
-    .post(`/feeds/${feedId}/comment/${commentId}/recomment/`, description)
+    .post(`/feeds/${feedId}/comment/${commentId}/recomment/`, description, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
     .then((res) => res.data);
 
 export const deleteRecomment = async (recommentData: any) =>
   await instance
-    .delete(`/comments/recomments/${recommentData?.id}`)
+    .delete(`/comments/recomments/${recommentData?.id}`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
     .then((res) => res.data);
 
 /**Feed 올리기 */
@@ -147,15 +178,47 @@ export const postUploadUrl = async (imgFile: File) =>
   });
 
 export const postFeed = async (postData: any) =>
-  await instance.post(`/feeds/`, postData).then((res) => res.data);
+  await instance
+    .post(
+      `/feeds/`,
+      postData,
+
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((res) => res.data);
 
 /**Feed 수정하기 */
 export const updateFeed = async (feedId: number, updateData: any) =>
-  await instance.put(`/feeds/${feedId}/`, updateData).then((res) => res.data);
+  await instance
+    .put(
+      `/feeds/${feedId}/`,
+      updateData,
+
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((res) => res.data);
 
 /**Feed 삭제하기 */
 export const deleteFeed = async (feedId: number) =>
-  await instance.delete(`/feeds/${feedId}`).then((res) => res.data);
+  await instance
+    .delete(
+      `/feeds/${feedId}`,
+
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((res) => res.data);
 
 //쪽지 목록 조회
 export const getLetterlists = async () => {
@@ -165,7 +228,13 @@ export const getLetterlists = async () => {
 
 //쪽지 차단
 export const deleteLetterlists = async (id: number) => {
-  await instance.delete(`letterlist/${id}`).then((res) => res.data);
+  await instance
+    .delete(`letterlist/${id}`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((res) => res.data);
 };
 
 //쪽지 조회
@@ -175,23 +244,38 @@ export const getLetters = async (chatId: number) =>
 // 쪽지 보내기
 export const postLetters = async (data: { receiver: number; text: string }) => {
   try {
-    const response = await instance.post(`/letterlist/message/`, {
-      receiver: data.receiver,
-      text: data.text,
-    });
-    console.log("Response received:", response.data); // 응답 출력
+    const response = await instance.post(
+      `/letterlist/message/`,
+      {
+        receiver: data.receiver,
+        text: data.text,
+      },
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error during request:", error);
     throw error;
   }
 };
 
 // 쪽지 삭제
-export const deleteLetters = async (textId: number) =>
-  await instance
-    .delete(`/letterlist/message/${textId}`)
-    .then((res) => res.data);
+export const deleteLetters = async (textId: number) => {
+  if (textId) {
+    try {
+      const response = await instance.delete(`/letterlist/message/${textId}`, {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      });
+      return response.data;
+    } catch (error) {}
+  } else {
+  }
+};
 
 /**MyPage  */
 export const getMyFeed = async (url: string) =>
@@ -205,7 +289,16 @@ export const postAccess = async (
   groupPk: number
 ) =>
   await instance
-    .post(`/access/group/${groupPk}`, postAccessData)
+    .post(
+      `/access/group/${groupPk}`,
+      postAccessData,
+
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
     .then((res) => res.data);
 
 export const putAccess = async (
@@ -215,26 +308,49 @@ export const putAccess = async (
   await instance
     .put(
       `/access/group/${accessInform.groupPk}/${accessInform.userId}`,
-      putAccessData
+      putAccessData,
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
     )
     .then((res) => res.data);
 
 export const deleteAccess = async (accessInform: accessInform) =>
   await instance
-    .delete(`/access/group/${accessInform.groupPk}/${accessInform.userId}`)
+    .delete(`/access/group/${accessInform.groupPk}/${accessInform.userId}`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
     .then((res) => res.data);
 
 export const getCategories = async (groupPk: number) =>
   await instance.get(`/categories/${groupPk}`).then((res) => res.data);
 
 export const postCategory = async (name: string, groupPk: number) =>
-  await instance.post(`/categories/${groupPk}`, { name }).then((res) => {
-    return res.data;
-  });
+  await instance
+    .post(
+      `/categories/${groupPk}`,
+      { name },
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((res) => {
+      return res.data;
+    });
 
 export const deleteCategory = async (groupPk: number, id: number) =>
   await instance
-    .delete(`/categories/${groupPk}/${id}/`)
+    .delete(`/categories/${groupPk}/${id}/`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
     .then((res) => res.data);
 
 export const updateCategory = async (
@@ -242,9 +358,19 @@ export const updateCategory = async (
   id: number,
   name: string
 ) =>
-  await instance.put(`/categories/${groupPk}/${id}/`, { name }).then((res) => {
-    return res.data;
-  });
+  await instance
+    .put(
+      `/categories/${groupPk}/${id}/`,
+      { name },
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((res) => {
+      return res.data;
+    });
 
 export const getSearchData = async (
   groupId: number | string,

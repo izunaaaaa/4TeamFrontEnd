@@ -41,7 +41,6 @@ export const useFeed = (
         }
       },
       retry: false,
-      //
       onError: (err) => {
         navigate("/error");
       },

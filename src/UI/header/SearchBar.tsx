@@ -26,7 +26,6 @@ function SearchBar() {
   const { LoginUserData } = useUser();
 
   const groupPk = LoginUserData?.group?.pk;
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -61,38 +60,45 @@ function SearchBar() {
     setSearchbarVisible(false);
   });
 
-  const onChangeData = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleKeywordChange = (e: React.FormEvent<HTMLInputElement>) => {
     setKeyword(e.currentTarget.value);
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    if (keyword) {
-      navigate(`search/group_id/${groupPk}/keyword/${keyword}`);
-    }
-    e.preventDefault();
+  const handleResultClick = (result: Type) => {
+    setKeyword(result.title);
     setSearchbarVisible(false);
+    navigate(`search/group_id/${groupPk}/keyword/${result.title}`);
   };
 
-  const onClickSearchDiv = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // 기본 동작 방지
+    navigateToSearchResult();
+  };
+
+  const navigateToSearchResult = () => {
     if (keyword) {
       navigate(`search/group_id/${groupPk}/keyword/${keyword}`);
+      setSearchbarVisible(false);
     }
-    setSearchbarVisible(false);
+  };
+
+  const handleClickSearchDiv = () => {
+    navigateToSearchResult();
   };
 
   return (
     <>
-      <form className={styles.searchWrapper} onSubmit={onSubmit}>
+      <form className={styles.searchWrapper} onSubmit={handleSubmit}>
         <input
           className={styles.searchInput}
           type="text"
           placeholder="Search title"
           value={keyword}
-          onChange={onChangeData}
+          onChange={handleKeywordChange}
           onClick={toggleSearchbar}
         />
 
-        <div className={styles.searchDiv} onClick={onClickSearchDiv}>
+        <div className={styles.searchDiv} onClick={handleClickSearchDiv}>
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
             className={styles.searchIcon}
@@ -101,7 +107,7 @@ function SearchBar() {
 
         {searchbarVisible &&
           searchResults &&
-          searchResults.result.some((result) => result.title !== "") && (
+          searchResults.result.length > 0 && (
             <div className={styles.autoSearchContainer} ref={searchbarRef}>
               <ul>
                 {searchResults.result.map((result: Type) => (
@@ -109,13 +115,10 @@ function SearchBar() {
                     className={styles.autoSearchData}
                     key={result.id}
                     onClick={() => {
-                      setKeyword(result.title);
-                      setSearchbarVisible(false);
+                      handleResultClick(result);
                     }}
                   >
-                    <Link to={`search/group_id/${groupPk}/keyword/${keyword}`}>
-                      <span>{result.title}</span>
-                    </Link>
+                    <span>{result.title}</span>
                   </li>
                 ))}
               </ul>

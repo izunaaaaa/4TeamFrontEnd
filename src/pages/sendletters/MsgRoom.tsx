@@ -22,7 +22,7 @@ export default function MsgRoom() {
       }
       return getLetters(chatId);
     },
-    { enabled: chatId !== undefined, staleTime: 0, cacheTime: 0 }
+    { enabled: chatId !== undefined }
   );
 
   //삭제 id 상태 관리
@@ -53,15 +53,15 @@ export default function MsgRoom() {
     }
   }, [resultPk.data, chatId]);
 
-  const isMobile = window.innerWidth <= 480;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   return (
     <>
       <Box
         bgColor={"white"}
         overflowX="hidden"
-        h={isMobile ? "88vh" : "78vh"}
-        w={isMobile ? "100vmin" : "45vw"}
+        h={isMobile === true ? "90vh" : "80vh"}
+        w={isMobile === true ? "100vw" : "45vw"}
         // mt={isMobile ? 0 : "20rem"}
         maxW="100%"
       >
