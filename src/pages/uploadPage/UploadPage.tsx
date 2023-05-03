@@ -220,7 +220,7 @@ const UploadPage = () => {
             <Button onClick={() => navigate(-1)} bg="transparent">
               <FontAwesomeIcon icon={faArrowLeft} />
             </Button>
-            {feedDetail ? (
+            {feedDetail.id ? (
               <Box lineHeight={2} fontSize="xl">
                 게시물 수정하기
               </Box>

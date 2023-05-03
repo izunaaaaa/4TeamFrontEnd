@@ -142,7 +142,7 @@ function CommentCard({
             fontWeight="bold"
             color={comment.feed_writer ? "red.300" : "black"}
           >
-            {comment.feed_writer ? `글쓴이` : comment.anonymous_number}
+            {comment.anonymous_number}
           </Box>
           <Flex onClick={(e) => btnHandler(e, comment.id, "comment")}>
             <ButtonGroup spacing="-1.5">
