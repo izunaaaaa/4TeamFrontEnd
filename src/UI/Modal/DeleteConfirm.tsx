@@ -10,26 +10,55 @@ import {
 import { deleteFeed } from "api/axios/axiosSetting";
 import { Querykey } from "api/react-query/QueryKey";
 import { useMutation, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DeleteConfirm.module.scss";
 
 const DeleteConfirm = (props: any) => {
   const feedId = props.feedId;
   const toast = useToast();
-  const { id: categoryId } = useParams();
+  const {
+    id: categoryId,
+    type: myFeedType,
+    feedId: feedPk,
+    keyword,
+  } = useParams();
   const queryclient = useQueryClient();
+  const navigate = useNavigate();
+
+  const mutateSuccess = categoryId
+    ? {
+        onSuccess: () => {
+          if (feedPk) {
+            navigate(-1);
+          }
+          queryclient.invalidateQueries([Querykey.feedData, categoryId]);
+          toast({
+            title: "삭제되었습니다.",
+            status: "success",
+            duration: 3000,
+          });
+        },
+      }
+    : {
+        onSuccess: () => {
+          toast({
+            title: "삭제되었습니다.",
+            status: "success",
+            duration: 3000,
+          });
+          navigate(-1);
+          if (keyword)
+            return queryclient.invalidateQueries(["searchFeed", keyword]);
+          queryclient.invalidateQueries(["myFeed", myFeedType]);
+        },
+      };
 
   const { mutate: deleteFeedHandler, isLoading: deleteFeedLoading } =
-    useMutation((feedId: number) => deleteFeed(feedId), {
-      onSuccess: () => {
-        toast({
-          title: "삭제되었습니다.",
-          status: "success",
-          duration: 4000,
-        });
-        queryclient.invalidateQueries([Querykey.feedData, categoryId]);
-      },
-    });
+    useMutation(
+      (feedId: number) => deleteFeed(feedId),
+
+      mutateSuccess
+    );
 
   return (
     <>

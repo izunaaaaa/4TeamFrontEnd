@@ -82,6 +82,7 @@
     display: flex;
     align-items: center;
     margin: 120px 0 10px 0px;
+    width: 100%;
     flex-direction: column;
   }
   .feedDiv {
@@ -116,6 +117,9 @@
 }
 
 @media (max-width: 1150px) {
+  .feeds {
+    width: 100%;
+  }
   .sideDiv {
     display: none;
   }

@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Image,
-  Img,
-} from "@chakra-ui/react";
-import React from "react";
+import { Avatar, Box, Button, Flex, HStack, Image } from "@chakra-ui/react";
 import styles from "../../pages/main/FeedPage.module.scss";
 import moment from "moment";
 import "moment/locale/ko";
@@ -17,7 +8,7 @@ import { FiMessageSquare } from "react-icons/fi";
 import SendBtn from "UI/Button/SendBtn";
 import { useNavigate } from "react-router-dom";
 import { DefaultFeedData } from "pages/main/interface/type";
-import { LoginData, UserData } from "components/form/User/interface/type";
+import { UserData } from "components/form/User/interface/type";
 
 interface MainFeedCardProps {
   key: number;
@@ -48,7 +39,11 @@ function MainFeedCard({ LoginUserData, data }: MainFeedCardProps) {
               <p>{groupName}의 개발자</p>
               {moment(data.created_at).fromNow()}
             </h1>
-            <FeedOption data={data} LoginUserData={LoginUserData} />
+            <FeedOption
+              data={data}
+              LoginUserData={LoginUserData}
+              feedType="mainFeed"
+            />
           </Flex>
         </div>
         {data.thumbnail && (

@@ -19,7 +19,7 @@ export const useSide = (groupPk: number) => {
     ["categories", groupPk],
     () => getCategories(groupPk),
     {
-      // enabled: !!groupPk,
+      enabled: !!groupPk,
     }
   );
 
