@@ -16,7 +16,13 @@ const SignUpFormBtn = () => {
         이전
       </Button>
 
-      <Button bg={"#ff404c"} color="white" colorScheme={"red"} w="30%">
+      <Button
+        bg={"#ff404c"}
+        color="white"
+        colorScheme={"red"}
+        w="30% "
+        type="submit"
+      >
         회원가입
       </Button>
     </ButtonGroup>
