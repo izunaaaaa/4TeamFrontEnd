@@ -6,7 +6,14 @@ const useFeedCategory = (group: number) => {
   const fallback: [] = [];
   const { data: feedCategory = fallback } = useQuery(
     Querykey.feedCategory,
-    () => getFeedCategory(group)
+    () => getFeedCategory(group),
+
+    {
+      retry: false,
+      onError: () => {
+        return;
+      },
+    }
   );
 
   return { feedCategory };
