@@ -61,7 +61,6 @@
   font-weight: 600;
   border-radius: 10px;
   position: relative;
-  //border: 1px solid red;
 
   span {
     text-decoration: none;
@@ -167,6 +166,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  h2 {
+    font-size: 1em;
+  }
 }
 
 @media (max-width: 767px) {
