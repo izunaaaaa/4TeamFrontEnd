@@ -7,7 +7,7 @@ const MobileMsg: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 769) {
+      if (window.innerWidth > 767) {
         setMarginLeft("20rem");
       } else {
         setMarginLeft(0);
