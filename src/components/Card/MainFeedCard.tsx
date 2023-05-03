@@ -30,7 +30,6 @@ function MainFeedCard({ LoginUserData, data }: MainFeedCardProps) {
       <div key={data.id} className={styles.feedDiv}>
         <div className={styles.feedUser}>
           <Avatar
-            name="익명"
             size="sm"
             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
           />

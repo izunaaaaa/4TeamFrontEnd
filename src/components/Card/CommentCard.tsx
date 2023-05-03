@@ -132,7 +132,6 @@ function CommentCard({
     <Box width="100%" display="flex" key={comment.id}>
       <Box margin="10px 0 5px 5px">
         <Avatar
-          name="익명"
           size="xs"
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
         />
