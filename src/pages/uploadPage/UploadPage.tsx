@@ -42,7 +42,7 @@ const UploadPage = () => {
   const feedThumbnail = feedDetail?.thumbnail ?? null;
 
   const [category, setCategory] = useState(feedDetail?.category);
-  const [previewImg, setPreviewImg] = useState();
+  const [previewImg, setPreviewImg] = useState<string>();
   const [cropImg, setCropImg] = useState<string | null>(feedThumbnail);
 
   useEffect(() => {
@@ -103,16 +103,15 @@ const UploadPage = () => {
 
   /**업로드 이미지 크롭 모달창으로 보내기*/
   const changeImg = async (e: React.ChangeEvent) => {
-    const reader: any = new FileReader();
+    const reader = new FileReader();
 
     const target = e.currentTarget as HTMLInputElement;
 
     const file = target.files?.[0];
-
     if (!file) return;
 
     reader.readAsDataURL(file);
-    const data: any = URL.createObjectURL(file);
+    const data = URL.createObjectURL(file);
 
     setPreviewImg(data);
     onOpen();
@@ -135,7 +134,6 @@ const UploadPage = () => {
     return new Blob([ab], { type: mimeString });
   }
 
-  console.log(feedDetail);
   /**양식 제출하기 */
   const submitHandler = async (data: PostFeed) => {
     let resUrl = "";
@@ -145,6 +143,7 @@ const UploadPage = () => {
       } else if (cropImg !== feedDetail?.thumbnail) {
         const blob = dataURLToBlob(cropImg);
         const file = new File([blob], "image.jpeg", { type: "image/jpeg" });
+
         resUrl = await postUploadUrlHandler(file);
       }
       const postData: PostFeed = {

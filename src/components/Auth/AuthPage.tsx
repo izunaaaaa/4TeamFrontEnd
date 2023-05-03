@@ -3,8 +3,11 @@ import useUser from "components/form/User/Hook/useUser";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// URL 에 userName 포함한 경우 사용
-export default function AuthPage(props: any) {
+type AuthPageProps = {
+  children: React.ReactNode;
+};
+
+export default function AuthPage({ children }: AuthPageProps) {
   const { isLoggedIn, isLoading, LoginUserData } = useUser();
   const navigate = useNavigate();
   useEffect(() => {
@@ -12,11 +15,10 @@ export default function AuthPage(props: any) {
       if (!isLoggedIn) {
         navigate("/errorpage");
       }
-    } else if (isLoading) {
     }
-  }, [isLoading, isLoggedIn, LoginUserData]);
+  }, [isLoading, isLoggedIn, LoginUserData, navigate]);
   if (!isLoading) {
-    return <>{props.children}</>;
+    return <>{children}</>;
   } else {
     return <Spinner />;
   }
