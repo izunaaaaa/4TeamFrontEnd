@@ -19,9 +19,9 @@ import { deleteRecomment, postCommentLike } from "api/axios/axiosSetting";
 import SendBtn from "UI/Button/SendBtn";
 
 const ReCommentCard = (props: any) => {
-  const { LoginUserData } = useUser();
   const recomment = props.recomment;
   const index = props.index;
+  const { LoginUserData } = useUser();
   const commentWriteTime = moment(recomment.created_at).fromNow();
   const toast = useToast();
   const id = "deleteRecomment";

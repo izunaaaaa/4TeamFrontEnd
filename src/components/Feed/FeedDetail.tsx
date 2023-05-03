@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  Container,
   Flex,
   Modal,
   ModalContent,
@@ -122,10 +123,15 @@ const FeedDetail = () => {
               feedId={feedId}
               scrollRef={scrollRef}
             />
-            <Box
+            <Container
               as="form"
+              onKeyDown={(e: any) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(commentSubmit)();
+                }
+              }}
               className={styles.commentInput}
-              onSubmit={handleSubmit(commentSubmit)}
             >
               <textarea
                 placeholder="댓글달기"
@@ -134,14 +140,13 @@ const FeedDetail = () => {
                 })}
               />
               <Button
-                type="submit"
-                onSubmit={handleSubmit(commentSubmit)}
                 isLoading={commentLoading}
                 h="100%"
+                onClick={handleSubmit(commentSubmit)}
               >
                 게시
               </Button>
-            </Box>
+            </Container>
           </Box>
         </ModalContent>
       </Modal>
