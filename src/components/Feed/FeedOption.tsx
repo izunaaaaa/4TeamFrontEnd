@@ -8,9 +8,10 @@ interface FeedOptionProps {
   data: DefaultFeedData;
   LoginUserData: UserData;
   refetchFeed?: void;
+  feedType?: string;
 }
 
-function FeedOption({ data, LoginUserData }: FeedOptionProps) {
+function FeedOption({ data, LoginUserData, feedType }: FeedOptionProps) {
   const {
     isOpen: isOptionOpen,
     onOpen: onOptionOpen,
@@ -23,6 +24,7 @@ function FeedOption({ data, LoginUserData }: FeedOptionProps) {
         onClose={onOptionClose}
         isOpen={isOptionOpen}
         feedData={data}
+        feedType={feedType}
       />
 
       {LoginUserData?.id === data.user?.pk && (

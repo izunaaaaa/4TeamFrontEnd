@@ -24,7 +24,7 @@ function Comment({ feedId }: CommentProps) {
 
   const successPost = () => {
     queryClient.invalidateQueries([Querykey.feedData]);
-    queryClient.invalidateQueries([Querykey.feedDetail, feedId]);
+    queryClient.invalidateQueries([Querykey.feedDetail, Number(feedId)]);
     refetchComment();
   };
 

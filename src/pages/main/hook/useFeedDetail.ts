@@ -16,8 +16,15 @@ const useFeedDetail = (feedID: string | number): UseFeedDetail => {
     data: feedDetail = fallBack,
     isLoading,
     refetch,
-  } = useQuery([Querykey.feedDetail, feedID], () => getFeedDetail(feedID));
-  //
+  } = useQuery(
+    [Querykey.feedDetail, feedID],
+    () => getFeedDetail(feedID),
+
+    {
+      enabled: !!feedID,
+    }
+  );
+
   return { feedDetail, isLoading, refetch };
 };
 
