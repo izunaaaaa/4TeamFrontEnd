@@ -86,6 +86,7 @@ function CommentCard({
     {
       onSuccess: () => {
         successPost();
+        setIsOpenRecommentInput(false);
       },
     }
   );

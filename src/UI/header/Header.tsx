@@ -1,14 +1,12 @@
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 
-import { CgMenuLeft } from "react-icons/cg";
+import { HiMenu } from "react-icons/hi";
 import styles from "./Header.module.scss";
 import useClickOutside from "./useClickOutside";
 import Sidebar from "UI/sidebar/Sidebar";
 import DropDown from "./DropDown";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
-import useUser from "components/form/User/Hook/useUser";
-import { useSide } from "UI/sidebar/hook/useSide";
 
 function Header(): ReactElement {
   const [mediaWidth, setMediaWidth] = useState<number>(window.innerWidth);
@@ -72,7 +70,11 @@ function Header(): ReactElement {
             <div className={styles.sidebar_bottom}>
               <div className={styles.sidebar_btn} ref={sidebarRef}>
                 <div onClick={handleSidebarToggle}>
-                  <CgMenuLeft color="#161616" size="2.5rem" />
+                  <HiMenu
+                    color="#161616"
+                    size="2.5rem"
+                    style={{ color: "grey" }}
+                  />
                 </div>
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
               </div>

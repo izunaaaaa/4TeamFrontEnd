@@ -35,7 +35,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <QueryClientProvider client={client}>
     <ChakraProvider>
-      {/* <ReactQueryDevtools /> */}
+      <ReactQueryDevtools />
       <App />
     </ChakraProvider>
   </QueryClientProvider>

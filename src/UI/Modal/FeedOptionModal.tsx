@@ -14,6 +14,7 @@ const FeedOptionModal = (props: any) => {
   const isOpen = props.isOpen;
   const onClose = props.onClose;
   const feedData = props.feedData;
+  const feedType = props.feedType;
 
   const navigate = useNavigate();
 
@@ -29,6 +30,7 @@ const FeedOptionModal = (props: any) => {
         onClose={onDeleteClose}
         isOpen={isDeleteOpen}
         feedId={feedData.id}
+        feedType={feedType}
       />
 
       <Modal isOpen={isOpen} onClose={onClose} size="sm" isCentered>

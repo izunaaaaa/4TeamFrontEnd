@@ -6,7 +6,7 @@ import {
   deleteCategory,
   updateCategory,
 } from "api/axios/axiosSetting";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { useSide } from "./hook/useSide";
 import { Category } from "./hook/useSide";
 import { Link } from "react-router-dom";

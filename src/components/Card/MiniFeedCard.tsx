@@ -1,5 +1,5 @@
-import { AspectRatio, Img } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { AspectRatio, Box, Img } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const MiniFeedCard = (props: any) => {
   const data = props.feedData;
@@ -25,7 +25,9 @@ const MiniFeedCard = (props: any) => {
           height="100%"
         />
       ) : (
-        <p>{data.title}</p>
+        <Box bg="rgba(223,224,252)" fontSize="2xl">
+          {data.title}
+        </Box>
       )}
     </AspectRatio>
   );
