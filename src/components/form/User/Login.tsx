@@ -47,12 +47,12 @@ const Login = (props: any) => {
           toast({
             id,
             title: `로그인 성공!!`,
+            description: "Curb에 오신 것을 환영합니다.",
             status: "success",
             isClosable: true,
           });
         }
         navigate("/community/home");
-        window.location.reload();
       },
     }
   );
@@ -101,11 +101,9 @@ const Login = (props: any) => {
               isLoading={loginLoading}
               type="submit"
               mt="4"
-              color={"white"}
               bg={"#ff404c"}
-              _hover={{
-                backgroundColor: "#ff7982",
-              }}
+              color="white"
+              colorScheme={"red"}
               width={"100%"}
             >
               로그인

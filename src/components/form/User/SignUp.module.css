@@ -91,30 +91,6 @@ select {
   border: 1px solid black;
 }
 
-.buttonDiv {
-  display: flex;
-  margin: 20px auto;
-}
-.buttonDiv button {
-  background-color: rgb(255, 64, 76);
-  color: white;
-  border-radius: 10px;
-  width: 150px;
-  height: 60px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 0px 10px;
-}
-.buttonDiv button:nth-child(1) {
-  background-color: #a7a8b1;
-}
-.buttonDiv button:nth-child(1):hover {
-  background-color: grey;
-}
-.buttonDiv button:hover {
-  background-color: #ff7982;
-}
-
 .error {
   color: red;
   font-size: 0.8rem;
@@ -138,7 +114,6 @@ select {
     width: auto;
     max-width: 560px;
     padding: 20px 15px 20px 15px;
-    margin-bottom: 80px;
     border-radius: 20px;
   }
   .signUp .typeDiv {
@@ -149,9 +124,5 @@ select {
   }
   .signUp .typeDiv input {
     width: 100%;
-  }
-  .signUp .buttonDiv button {
-    width: 120px;
-    height: 48px;
   }
 }/*# sourceMappingURL=SignUp.module.css.map */

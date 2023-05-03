@@ -4,11 +4,6 @@ import {
   Flex,
   HStack,
   Img,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure,
-  Modal,
-  ModalBody,
   AspectRatio,
   Tabs,
   TabList,
@@ -16,7 +11,6 @@ import {
   Box,
   Spinner,
 } from "@chakra-ui/react";
-import FeedDetail from "components/Feed/FeedDetail";
 import useMyFeed from "components/mypages/Hook/useMyFeed";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import Profiles from "components/mypages/myProfile/Profiles";
@@ -128,7 +122,9 @@ export default function MyPage() {
                       height="100%"
                     />
                   ) : (
-                    <p>{data.title}</p>
+                    <Box bg="rgba(223,224,252)" fontSize="2xl">
+                      {data.title}
+                    </Box>
                   )}
                 </AspectRatio>
               ))

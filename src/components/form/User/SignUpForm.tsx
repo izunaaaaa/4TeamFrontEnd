@@ -22,6 +22,7 @@ import useSignUpGroup from "./Hook/useSignUpGroup";
 import { useState } from "react";
 import PhoneVerifyModal from "./PhoneVerifyModal";
 import { signUp } from "api/axios/axiosSetting";
+import SignUpFormBtn from "UI/Button/SignUpFormBtn";
 
 const SignUpForm = () => {
   const {
@@ -54,6 +55,7 @@ const SignUpForm = () => {
           duration: 3000,
           isClosable: true,
         });
+        navigate(`/community/mypage/profile`);
       },
 
       onError: (error: any) => {
@@ -94,7 +96,6 @@ const SignUpForm = () => {
         isClosable: true,
       });
 
-    console.log(newSignUpData);
     signUpHandler(newSignUpData);
   };
 
@@ -298,18 +299,7 @@ const SignUpForm = () => {
           {errors?.gender && (
             <p className={styles.error}>{errors.gender?.message}</p>
           )}
-          <div className={styles.buttonDiv}>
-            <button
-              type="button"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              이전
-            </button>
-
-            <button>회원가입</button>
-          </div>
+          <SignUpFormBtn />
         </form>
       </div>
       <PhoneVerifyModal
