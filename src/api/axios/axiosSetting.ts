@@ -1,3 +1,4 @@
+import { BASE_URL } from "api/BaseURL";
 import axios from "axios";
 import { ClickBtnData } from "components/Card/CommentCard";
 import { CommentForm } from "components/Feed/FeedDetail";
@@ -11,7 +12,6 @@ import { accessInform } from "components/mypages/myProfile/AccessInform";
 import Cookie from "js-cookie";
 import { Description } from "pages/main/interface/type";
 import { FeedId } from "UI/Button/LikeBtn";
-import { BASE_URL } from "api/URL/BaseURL";
 
 export const instance = axios.create({
   baseURL: process.env.NODE_ENV === "development" ? "/api/v1/" : BASE_URL,

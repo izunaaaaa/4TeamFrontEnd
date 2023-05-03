@@ -57,7 +57,7 @@ function DropDown() {
                 </li>
               ))}
               <li className={styles.drop_listItem} onClick={handleLogout}>
-                <span>로그 아웃</span>
+                <span>로그아웃</span>
               </li>
             </ul>
           </div>
