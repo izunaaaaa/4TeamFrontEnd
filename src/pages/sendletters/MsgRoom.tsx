@@ -54,7 +54,7 @@ export default function MsgRoom() {
   }, [resultPk.data, chatId]);
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+  const [isLargerThan768] = useMediaQuery("(min-width: 769px)");
 
   return (
     <>
@@ -62,7 +62,7 @@ export default function MsgRoom() {
         bgColor={"white"}
         overflowX="hidden"
         h={isMobile === true ? "90vh" : "80vh"}
-        w={isLargerThan768 ? "45vw" : "100vw"}
+        w={isLargerThan768 ? "40vw" : "100vw"}
         maxW="100%"
       >
         {/* 주고받은 쪽지내역 */}
