@@ -3,9 +3,9 @@ import useUser from "components/form/User/Hook/useUser";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-type AuthPageProps = {
+interface AuthPageProps {
   children: React.ReactNode;
-};
+}
 
 export default function AuthPage({ children }: AuthPageProps) {
   const { isLoggedIn, isLoading, LoginUserData } = useUser();
