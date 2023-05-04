@@ -14,11 +14,10 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { faScissors, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import useFormatDate from "./hook/useFormatDate";
-import { LetterList } from "interface/Interface";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteLetterlists } from "api/axios/axiosSetting";
 

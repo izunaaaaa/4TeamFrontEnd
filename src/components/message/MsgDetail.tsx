@@ -21,19 +21,10 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteLetters } from "api/axios/axiosSetting";
 import useFormatDate from "./hook/useFormatDate";
-import { useParams } from "react-router-dom";
 
-const MsgDetail = ({
-  text,
-  is_sender,
-  id,
-  created_at,
-  refetch,
-  chatId,
-}: any) => {
+const MsgDetail = ({ text, is_sender, id, created_at, chatId }: any) => {
   //마우스 hover 상태 관리
 
-  const { chatId } = useParams();
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -47,7 +38,6 @@ const MsgDetail = ({
   // 삭제 처리 로직
   const queryClient = useQueryClient();
 
-
   const { mutateAsync: deleteMutation } = useMutation(
     (id: any) => deleteLetters(id),
     {
@@ -57,7 +47,6 @@ const MsgDetail = ({
       },
     }
   );
-
 
   const formattedDate = useFormatDate(created_at);
 
