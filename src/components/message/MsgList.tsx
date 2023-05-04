@@ -83,9 +83,11 @@ const MsgList = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>쪽지를 차단하시겠습니까?</ModalHeader>
+          <ModalHeader>쪽지함을 삭제하시겠습니까?</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>내용 </ModalBody>
+          <ModalBody>
+            쪽지함을 삭제하면 상대의 대화창도 함께 삭제됩니다.{" "}
+          </ModalBody>
           <ModalFooter>
             <Button
               colorScheme="red"

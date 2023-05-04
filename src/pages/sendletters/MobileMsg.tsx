@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MsgRoom from "./MsgRoom";
 import { Box } from "@chakra-ui/react";
 
-const MobileMsg = () => {
-  const isMobile =
-    window.innerWidth < 480 ? "0" : window.innerWidth < 769 ? "15rem" : "23rem";
+const MobileMsg: React.FC = () => {
+  const [marginLeft, setMarginLeft] = useState<number | string>(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 767) {
+        setMarginLeft("20rem");
+      } else {
+        setMarginLeft(0);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
-    <Box ml={isMobile}>
+    <Box ml={marginLeft}>
       <MsgRoom />
     </Box>
   );

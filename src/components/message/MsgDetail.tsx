@@ -23,7 +23,14 @@ import { deleteLetters } from "api/axios/axiosSetting";
 import useFormatDate from "./hook/useFormatDate";
 import { useParams } from "react-router-dom";
 
-const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
+const MsgDetail = ({
+  text,
+  is_sender,
+  id,
+  created_at,
+  refetch,
+  chatId,
+}: any) => {
   //마우스 hover 상태 관리
 
   const { chatId } = useParams();
@@ -40,6 +47,7 @@ const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
   // 삭제 처리 로직
   const queryClient = useQueryClient();
 
+
   const { mutateAsync: deleteMutation } = useMutation(
     (id: any) => deleteLetters(id),
     {
@@ -50,13 +58,6 @@ const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
     }
   );
 
-  // const deleteMutation = useMutation((id: any) => deleteLetters(id), {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(["letters", Number(chatId)]);
-  //     onClose();
-  //   },
-  //   onError: (error) => {},
-  // });
 
   const formattedDate = useFormatDate(created_at);
 

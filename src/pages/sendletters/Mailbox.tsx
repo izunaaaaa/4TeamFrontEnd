@@ -21,7 +21,7 @@ function Mailbox(chatId: MailboxProps) {
   const [clickedIdx, setClickedIdx] = useState<number | null>(null);
 
   // 브라우저 화면 크기 설정하는 chakra 내장함수
-  const [isMobile] = useMediaQuery("(max-width: 480px)");
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   //받은 쪽지가 없는 경우, 스켈레톤이 나오게 설정
 

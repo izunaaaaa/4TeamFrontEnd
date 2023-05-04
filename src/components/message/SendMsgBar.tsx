@@ -8,18 +8,20 @@ import {
 } from "@chakra-ui/react";
 
 const SendMsgBar = ({ refetch, receiver }: any) => {
-  const isMobile = useMediaQuery("(max-width: 480px)");
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   const { register, handleSubmit, onSubmit } = useSendMsg(refetch, receiver);
 
+
   return (
     <Grid
-      ml={10}
-      w={"70vmin"}
+      w={"60vmin"}
       bg={"white"}
       position={"fixed"}
       bottom={3}
-      textAlign={"center"}
+      ml={isMobile ? "6rem" : 0}
+      justifyItems={"center"}
+      alignItems={"center"}
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex" }}>
         <InputGroup size="md">
