@@ -1,23 +1,17 @@
-import React from "react";
 import { useSendMsg } from "./hook/useSendMsg";
 import {
   Input,
   Button,
-  Box,
   Grid,
-  Flex,
   InputGroup,
-  InputRightElement,
   useMediaQuery,
 } from "@chakra-ui/react";
 
 const SendMsgBar = ({ refetch, receiver }: any) => {
   const [isMobile] = useMediaQuery("(max-width: 480px)");
 
-  const { register, handleSubmit, onSubmit, reset } = useSendMsg(
-    refetch,
-    receiver
-  );
+  const { register, handleSubmit, onSubmit } = useSendMsg(refetch, receiver);
+
 
   return (
     <Grid

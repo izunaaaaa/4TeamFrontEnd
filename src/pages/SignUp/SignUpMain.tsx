@@ -12,13 +12,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import codingImg from "../../images/coding.png";
 import readingImg from "../../images/reading.png";
+import styles from "./SignUpMain.module.scss";
 
 const SignUpMain = () => {
   const navigate = useNavigate();
   return (
     <>
-      <HStack display="flex" justifyContent="center" marginTop="80px">
-        <Card w="md" h="md" padding="30px">
+      <div className={styles.signupCard}>
+        <Card w="md" h="md" padding="30px" margin="5px">
           <Center
             display="flex"
             flexDirection="column"
@@ -29,7 +30,7 @@ const SignUpMain = () => {
             </CardHeader>
             <Heading size="md">수강생</Heading>
 
-            <CardBody textTransform="uppercase">
+            <CardBody textTransform="uppercase" padding="30px 0" height="500px">
               <p>국비교육 수강생(내일배움카드 발급자)</p>
               <p>국비교육 외 부트캠프 수강생</p>
             </CardBody>
@@ -41,7 +42,8 @@ const SignUpMain = () => {
             </CardFooter>
           </Center>
         </Card>
-        <Card w="md" h="md" padding="30px">
+
+        <Card w="md" h="md" padding="30px" margin="5px">
           <Center
             display="flex"
             flexDirection="column"
@@ -52,7 +54,7 @@ const SignUpMain = () => {
             </CardHeader>
             <Heading size="md">매니저</Heading>
 
-            <CardBody textTransform="uppercase">
+            <CardBody textTransform="uppercase" padding="30px 0">
               <p>부트캠프 소속 매니저</p>
               <p>인증서류 필요</p>
             </CardBody>
@@ -64,7 +66,7 @@ const SignUpMain = () => {
             </CardFooter>
           </Center>
         </Card>
-      </HStack>
+      </div>
     </>
   );
 };

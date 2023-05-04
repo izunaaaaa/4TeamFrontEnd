@@ -51,11 +51,9 @@ function Landing() {
       <div className={styles.footer}>
         <div className={styles.footerContent}>
           <ul>
-            {["김두홍", "박현지", "송가연", "이풍현", "임창섭", "최현우"].map(
-              (name) => (
-                <li key={name}>{name}</li>
-              )
-            )}
+            {["김두홍", "박현지", "송가연", "이풍현", "최현우"].map((name) => (
+              <li key={name}>{name}</li>
+            ))}
           </ul>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Box, useMediaQuery, VStack } from "@chakra-ui/react";
+import { Flex, Box } from "@chakra-ui/react";
 
 import MsgDetail from "../../components/message/MsgDetail";
 import { useQuery } from "react-query";
@@ -22,7 +22,7 @@ export default function MsgRoom() {
       }
       return getLetters(chatId);
     },
-    { enabled: chatId !== undefined }
+    { enabled: !!chatId }
   );
 
   //삭제 id 상태 관리
@@ -48,7 +48,6 @@ export default function MsgRoom() {
       );
       if (targetReceiver) {
         setReceiverPk(targetReceiver.receiver_pk);
-        console.log("receiverPk:", targetReceiver.receiver_pk);
       }
     }
   }, [resultPk.data, chatId]);

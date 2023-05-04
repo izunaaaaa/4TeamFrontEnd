@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Flex, Box, Text, useMediaQuery, Spinner } from "@chakra-ui/react";
+import { useState } from "react";
+import { Flex, Box, useMediaQuery, Spinner } from "@chakra-ui/react";
 import MsgList from "../../components/message/MsgList";
 import { useQuery } from "react-query";
 import { getLetterlists } from "api/axios/axiosSetting";
@@ -12,10 +12,10 @@ interface MailboxProps {
 }
 
 function Mailbox(chatId: MailboxProps) {
-  const { isLoading, refetch, data } = useQuery<LetterList[]>(
+  const { isLoading, data } = useQuery<LetterList[]>(
     "Letterlists",
     getLetterlists,
-    { enabled: !chatId }
+    { enabled: !!chatId }
   );
 
   const [clickedIdx, setClickedIdx] = useState<number | null>(null);
