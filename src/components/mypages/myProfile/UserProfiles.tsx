@@ -4,16 +4,16 @@ import React from "react";
 
 const UserProfiles = () => {
   const { LoginUserData } = useUser();
-  console.log(LoginUserData);
   return (
     <Flex
       marginTop="30px"
       width="100%"
       justifyContent="center"
-      flexDir="column"
       alignItems="center"
+      padding="30px"
+      height="100%"
     >
-      <Box textAlign="center">
+      <Box textAlign="center" width="50%">
         <Avatar
           size={{
             base: "2xl",
@@ -26,21 +26,23 @@ const UserProfiles = () => {
       </Box>
       <Flex
         marginTop="30px"
-        w="100%"
+        w="70%"
         justifyContent="center"
+        alignItems="center"
         textAlign="center"
+        flexDir="column"
       >
-        <Flex flexDir="column" w="32%" padding="10px 5px" bg="#f1f4f7">
+        <Flex flexDir="column" padding="10px 5px" bg="#f1f4f7" w="80%">
           <Box fontWeight="bold">부트캠프</Box>
           <Box padding="10px">{LoginUserData?.group?.name}</Box>
         </Flex>
 
-        <Flex flexDir="column" w="32%" padding="10px 5px" bg="#f1f4f7">
+        <Flex flexDir="column" padding="10px 5px" bg="#f1f4f7" w="80%">
           <Box fontWeight="bold">전화번호</Box>
 
           <Box padding="10px">{LoginUserData?.phone_number}</Box>
         </Flex>
-        <Flex flexDir="column" w="32%" padding="10px 5px" bg="#f1f4f7">
+        <Flex flexDir="column" padding="10px 5px" bg="#f1f4f7" w="80%">
           <Box fontWeight="bold">이메일</Box>
           <Box padding="10px"> {LoginUserData?.email}</Box>
         </Flex>

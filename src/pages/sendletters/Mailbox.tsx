@@ -15,7 +15,7 @@ function Mailbox(chatId: MailboxProps) {
   const { isLoading, refetch, data } = useQuery<LetterList[]>(
     "Letterlists",
     getLetterlists,
-    { enabled: !chatId }
+    { enabled: !!chatId }
   );
 
   const [clickedIdx, setClickedIdx] = useState<number | null>(null);
