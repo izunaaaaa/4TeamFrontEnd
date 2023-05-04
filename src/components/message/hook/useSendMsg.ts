@@ -20,8 +20,6 @@ export const useSendMsg = (refetch: () => void, receiver: number) => {
 
   const { chatId } = useParams();
 
-  console.log("1", chatId);
-
   const onSubmit = async (data: { text: string }) => {
     if (data.text.trim() === "") {
       toast({

@@ -190,7 +190,7 @@ const UploadPage = () => {
         justifyContent="center"
         margin={{
           md: "100px 0px 0px var(--nav-medium-width)",
-          sm: "8.7em 0px 0px 0px",
+          base: "8.7em 0px 0px 0px",
         }}
         h="100%"
       >

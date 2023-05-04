@@ -66,13 +66,14 @@
 }
 
 @media (max-width: 767px) {
+  .postFormMain {
+    flex-direction: column;
+    margin-top: 100px;
+  }
   .postForm {
     padding: 5px 0px 0px 0px;
     border-radius: 10px;
     width: 100%;
     height: 100vh;
-  }
-  .postForm .postFormMain {
-    flex-direction: column;
   }
 }/*# sourceMappingURL=UploadPage.module.css.map */
