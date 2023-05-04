@@ -1,16 +1,11 @@
 import React, { useState } from "react";
 import {
-  Stack,
   Text,
   Box,
-  Avatar,
   HStack,
   useDisclosure,
   Button,
-  Badge,
-  Flex,
   VStack,
-  Input,
 } from "@chakra-ui/react";
 import {
   Modal,
@@ -22,18 +17,16 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPaperclip,
-  faScissors,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteLetters } from "api/axios/axiosSetting";
-import { ChatId } from "interface/Interface";
 import useFormatDate from "./hook/useFormatDate";
+import { useParams } from "react-router-dom";
 
 const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
   //마우스 hover 상태 관리
+
+  const { chatId } = useParams();
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -46,15 +39,24 @@ const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // 삭제 처리 로직
   const queryClient = useQueryClient();
-  const deleteMutation = useMutation(deleteLetters, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("letters");
-      onClose();
-    },
-    onError: (error) => {
-      console.error("에러!!", error);
-    },
-  });
+
+  const { mutateAsync: deleteMutation } = useMutation(
+    (id: any) => deleteLetters(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["letters", Number(chatId)]);
+        onClose();
+      },
+    }
+  );
+
+  // const deleteMutation = useMutation((id: any) => deleteLetters(id), {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(["letters", Number(chatId)]);
+  //     onClose();
+  //   },
+  //   onError: (error) => {},
+  // });
 
   const formattedDate = useFormatDate(created_at);
 
@@ -116,9 +118,10 @@ const MsgDetail = ({ text, is_sender, id, created_at }: any) => {
             <Button
               colorScheme="red"
               mr={3}
-              onClick={() => {
-                deleteMutation.mutate(id);
+              onClick={async () => {
+                deleteMutation(id);
                 onClose();
+                window.location.reload();
               }}
             >
               Delete

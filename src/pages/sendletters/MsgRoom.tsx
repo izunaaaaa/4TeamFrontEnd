@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Box, useMediaQuery, VStack } from "@chakra-ui/react";
+import { Flex, Box } from "@chakra-ui/react";
 
 import MsgDetail from "../../components/message/MsgDetail";
 import { useQuery } from "react-query";

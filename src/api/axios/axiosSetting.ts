@@ -272,19 +272,14 @@ export const postLetters = async (data: { receiver: number; text: string }) => {
 };
 
 // 쪽지 삭제
-export const deleteLetters = async (textId: number) => {
-  if (textId) {
-    try {
-      const response = await instance.delete(`/letterlist/message/${textId}`, {
-        headers: {
-          "X-CSRFToken": Cookie.get("csrftoken") || "",
-        },
-      });
-      return response.data;
-    } catch (error) {}
-  } else {
-  }
-};
+export const deleteLetters = async (textId: number) =>
+  await instance
+    .delete(`/letterlist/message/${textId}/`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((res) => res.data);
 
 /**MyPage  */
 export const getMyFeed = async (url: string) =>

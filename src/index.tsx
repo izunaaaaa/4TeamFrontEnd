@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import { theme } from "UI/toast/Toast";
 
@@ -34,6 +35,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <QueryClientProvider client={client}>
     <ChakraProvider>
+      <ReactQueryDevtools />
       <App />
     </ChakraProvider>
   </QueryClientProvider>
