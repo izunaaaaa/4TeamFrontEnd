@@ -12,7 +12,6 @@ const SendMsgBar = ({ refetch, receiver }: any) => {
 
   const { register, handleSubmit, onSubmit } = useSendMsg(refetch, receiver);
 
-
   return (
     <Grid
       w={"60vmin"}

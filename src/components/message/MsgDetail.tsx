@@ -110,8 +110,6 @@ const MsgDetail = ({ text, is_sender, id, created_at, chatId }: any) => {
               mr={3}
               onClick={async () => {
                 deleteMutation(id);
-                onClose();
-                window.location.reload();
               }}
             >
               Delete
