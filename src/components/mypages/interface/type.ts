@@ -1,5 +1,3 @@
-import { group } from "interface/Interface";
-
 export interface memebers {
   name: string;
   email: string;

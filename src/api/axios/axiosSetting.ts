@@ -13,6 +13,7 @@ import Cookie from "js-cookie";
 import { Description } from "pages/main/interface/type";
 import { FeedId } from "UI/Button/LikeBtn";
 
+/**instance setting */
 export const instance = axios.create({
   baseURL: process.env.NODE_ENV === "development" ? "/api/v1/" : BASE_URL,
   headers: {

@@ -93,7 +93,6 @@ const MsgDetail = ({ text, is_sender, id, created_at, chatId }: any) => {
         </VStack>
       </HStack>
 
-      {/* 모달 */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
