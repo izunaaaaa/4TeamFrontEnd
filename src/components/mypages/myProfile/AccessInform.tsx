@@ -15,20 +15,29 @@ import { deleteAccess } from "api/axios/axiosSetting";
 import { Querykey } from "api/react-query/QueryKey";
 import { userValue } from "components/form/User/interface/type";
 import { useState } from "react";
+import { UserData } from "components/form/User/interface/type";
 import { useMutation, useQueryClient } from "react-query";
 import AccessInformModal from "UI/Modal/AccessInformModal";
 import { FcCheckmark } from "react-icons/fc";
+import { memebers } from "../interface/type";
 
 export interface accessInform {
   groupPk: number | undefined;
   userId: number | undefined;
 }
 
-const AccessInform = (props: any) => {
-  const groupAccess = props.groupAccess;
-  const loginGroup = props.LoginUserData?.group?.pk;
+interface AccessInformProps {
+  groupAccess: memebers[];
+  loginGroup: number;
+  LoginUserData: UserData;
+}
 
-  const loginGroupName = props.LoginUserData?.group?.name;
+function AccessInform({
+  groupAccess,
+  loginGroup,
+  LoginUserData,
+}: AccessInformProps) {
+  const loginGroupName = LoginUserData?.group?.name;
 
   const [accessUserInform, setAccessUserInform] = useState<accessInform | null>(
     null
@@ -118,6 +127,6 @@ const AccessInform = (props: any) => {
       </TableContainer>
     </>
   );
-};
+}
 
 export default AccessInform;
