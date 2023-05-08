@@ -152,12 +152,13 @@
 
 ##  :bulb: 프로젝트를 진행하면서 고민했던 문제들
 
-🙌자세한 내용은 
+🙌[자세한 내용은](https://github.com/chhw130/CurB_Frontend/wiki/Curb-solution) 
 
 - 로그인 구현에 대해서(session id or jwt)
 - 서버데이터를 어떻게 처리에 대한 고민(react-query의 도입)
-- 유효성 검사에 대해 백과 프론트가 취해야하는 자세
-- cors오류에 대해서
+- 벡엔드와의 적극 협업을 위한 벡엔드 문서 숙지(swagger, Redoc)
+- cors오류 해결을 위한 proxy사용(react-middle-ware)
+- 불필요한 쿼리요청 최소화 
 
 
 
