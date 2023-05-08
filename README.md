@@ -142,7 +142,7 @@
 <img width="1440" alt="스크린샷 2023-05-07 오후 9 48 10" src="https://user-images.githubusercontent.com/116826162/236809205-d79aab35-76da-473f-8545-9b00d40a6d3c.png">
 
 
-👏[자세한 UI보러가기]
+👏[자세한 UI보러가기](https://github.com/chhw130/CurB_Frontend/wiki/Curb-UI)
 
 
 <br>
