@@ -6,7 +6,6 @@ import {
   CardHeader,
   Center,
   Heading,
-  HStack,
   Img,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +25,7 @@ const SignUpMain = () => {
             justifyContent="space-around"
           >
             <CardHeader>
-              <Img src={readingImg} w="150px" />
+              <Img src={readingImg} w="150px" loading="lazy" />
             </CardHeader>
             <Heading size="md">수강생</Heading>
 
@@ -50,7 +49,7 @@ const SignUpMain = () => {
             justifyContent="space-around"
           >
             <CardHeader marginTop="10px">
-              <Img src={codingImg} w="140px" />
+              <Img src={codingImg} w="140px" loading="lazy" />
             </CardHeader>
             <Heading size="md">매니저</Heading>
 
