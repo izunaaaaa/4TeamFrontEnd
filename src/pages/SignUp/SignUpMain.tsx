@@ -25,7 +25,7 @@ const SignUpMain = () => {
             justifyContent="space-around"
           >
             <CardHeader>
-              <Img src={readingImg} w="150px" loading="lazy" />
+              <Img src={readingImg} w="150px" loading="lazy" h="150px" />
             </CardHeader>
             <Heading size="md">수강생</Heading>
 
@@ -49,7 +49,7 @@ const SignUpMain = () => {
             justifyContent="space-around"
           >
             <CardHeader marginTop="10px">
-              <Img src={codingImg} w="140px" loading="lazy" />
+              <Img src={codingImg} w="140px" loading="lazy" h="150px" />
             </CardHeader>
             <Heading size="md">매니저</Heading>
 
