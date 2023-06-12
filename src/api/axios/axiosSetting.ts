@@ -1,4 +1,3 @@
-import { BASE_URL } from "api/BaseURL";
 import axios from "axios";
 import { ClickBtnData } from "components/Card/CommentCard";
 import { CommentForm } from "components/Feed/FeedDetail";
@@ -15,7 +14,8 @@ import { FeedId } from "UI/Button/LikeBtn";
 
 /**instance setting */
 export const instance = axios.create({
-  baseURL: process.env.NODE_ENV === "development" ? "/api/v1/" : BASE_URL,
+  baseURL:
+    process.env.NODE_ENV === "development" ? "/api/v1/" : process.env.BASE_URL,
   headers: {
     "X-CSRFToken": Cookie.get("csrftoken") || "",
   },
