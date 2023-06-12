@@ -63,7 +63,7 @@
 	![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
 
 
-[백엔드 레포](https://github.com/izunaaaaa/CurB_Backend) 클릭!
+[백엔드 레포](https://github.com/izunaaaaa/CurB_Backend) 백엔드가 궁금하다면 클릭
 
 
 <br>
@@ -146,7 +146,6 @@
 
 
 <br>
-----
 <br>
 
 ##  :bulb: 프로젝트를 진행하면서 고민했던 문제들
