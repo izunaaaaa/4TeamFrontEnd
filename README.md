@@ -1,6 +1,6 @@
 # 프로젝트 소개
 ### 프로젝트 기간 : 2023.03.06 ~ 2023.03.27 
----
+
 
 <img src="https://user-images.githubusercontent.com/116826162/236802773-779f923d-7d03-43cf-a618-82ec9bab65ea.png" width="20%"/>
 
@@ -8,6 +8,7 @@
 
 <https://curb.site>
 
+[백엔드 레포](https://github.com/izunaaaaa/CurB_Backend)
 
 
 
