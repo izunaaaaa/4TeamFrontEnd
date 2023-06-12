@@ -32,9 +32,7 @@
 
 
 <br>
-
 ----
-
 <br>
 
 ## 🔧 기술 스택
@@ -147,18 +145,15 @@
 
 <br>
 ----
-
 <br>
 
 ##  :bulb: 프로젝트를 진행하면서 고민했던 문제들
 
-🙌[자세한 내용은](https://github.com/chhw130/CurB_Frontend/wiki/Curb-solution) 
 
-- 로그인 구현에 대해서(session id or jwt)
-- 서버데이터를 어떻게 처리에 대한 고민(react-query의 도입)
-- 벡엔드와의 적극 협업을 위한 벡엔드 문서 숙지(swagger, Redoc)
-- cors오류 해결을 위한 proxy사용(react-middle-ware)
-- 불필요한 쿼리요청 최소화 
+- [로그인 구현에 대해서(session id or jwt)](https://velog.io/@chhw130/%EB%A1%9C%EA%B7%B8%EC%9D%B8%EB%B0%A9%EC%8B%9D%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0session-ID-Token%EB%B0%A9%EC%8B%9D)
+- [서버데이터를 어떻게 처리에 대한 고민(react-query의 도입)](https://velog.io/@chhw130/React-redux%EC%99%80-react-query)
+- [cors오류 해결을 위한 proxy사용(react-middle-ware)](https://velog.io/@chhw130/%EC%A7%80%EA%B8%8B%EC%A7%80%EA%B8%8B%ED%95%9C-CORS-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95)
+- [불필요한 쿼리요청 최소화](https://velog.io/@chhw130/React-react-query%EB%A1%9C-%EC%BF%BC%EB%A6%AC%EC%9A%94%EC%B2%AD-%EC%B5%9C%EC%A0%81%ED%99%94%ED%95%98%EA%B8%B0refetch)
 
 
 
