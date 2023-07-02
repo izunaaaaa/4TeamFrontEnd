@@ -8,12 +8,8 @@
 
 <https://curb.site>
 
+<img width="891" alt="스크린샷 2023-07-02 오후 6 28 33" src="https://github.com/chhw130/CurB_Frontend/assets/116826162/e68f056e-3a68-4af8-8285-ef364aef2336">
 
-
-
-· Curb는 부트캠프 전용 커뮤니티 사이트입니다. Curb의 의미는 Community u r Bootcamp(부트캠프 커뮤니티)의 줄임말이자 야구에서의 “커브” 종적인 변화를 주는 변화구라는 의미를 가지고 있습니다. 이를 종합하여 부트캠프의 활성화를 위한 변화구가 될 커뮤니티라는 뜻을 지니고 있습니다.
-
-· 같은 소속감을 가진 사람들과 익명이라는 특이점을 가지고  게시글을 공유하고 댓글과 대댓글을 작성할 수 있으며, 쪽지로 개인메시지를 주고 받을 수 있습니다.
 
 
 <br>
@@ -63,7 +59,7 @@
 	![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
 	![Chakra UI](https://shields.io/badge/chakra--ui-black?logo=chakraui&style=for-the-badge)
 
-[백엔드 레포](https://github.com/izunaaaaa/CurB_Backend) 백엔드가 궁금하다면 클릭
+👉[백엔드가 궁금하다면 클릭](https://github.com/izunaaaaa/CurB_Backend) 
 
 
 <br>
@@ -154,6 +150,7 @@
 - [로그인 구현에 대해서(session id or jwt)](https://velog.io/@chhw130/%EB%A1%9C%EA%B7%B8%EC%9D%B8%EB%B0%A9%EC%8B%9D%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0session-ID-Token%EB%B0%A9%EC%8B%9D)
 - [서버데이터를 어떻게 처리에 대한 고민(react-query의 도입)](https://velog.io/@chhw130/React-redux%EC%99%80-react-query)
 - [cors오류 해결을 위한 proxy사용(react-middle-ware)](https://velog.io/@chhw130/%EC%A7%80%EA%B8%8B%EC%A7%80%EA%B8%8B%ED%95%9C-CORS-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95)
+- [react-easy-crop와 Canvas 통한 사진 게시물 사진 크롭처리](https://velog.io/@chhw130/%EC%9D%B4%EB%AF%B8%EC%A7%80-%ED%81%AC%EB%A1%AD-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0blob-base64)
 - [불필요한 쿼리요청 최소화](https://velog.io/@chhw130/React-react-query%EB%A1%9C-%EC%BF%BC%EB%A6%AC%EC%9A%94%EC%B2%AD-%EC%B5%9C%EC%A0%81%ED%99%94%ED%95%98%EA%B8%B0refetch)
 
 
