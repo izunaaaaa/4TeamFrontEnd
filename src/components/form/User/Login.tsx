@@ -23,7 +23,12 @@ import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "api/axios/axiosSetting";
 
-const Login = (props: any) => {
+interface LoginProps {
+  isOpen: boolean;
+  onClose: Function;
+}
+
+const Login = ({ isOpen, onClose }: LoginProps) => {
   const { handleSubmit, register } = useForm<LoginData>();
   const toast = useToast();
   const id = "loginId";
@@ -61,12 +66,7 @@ const Login = (props: any) => {
     loginHandler(data);
   };
   return (
-    <Modal
-      motionPreset={"scale"}
-      isOpen={props.isOpen}
-      onClose={props.onClose}
-      size="md"
-    >
+    <Modal motionPreset={"scale"} isOpen={isOpen} onClose={onClose()} size="md">
       <ModalOverlay />
       <ModalContent p="5" pt="10" pb={"10"}>
         <ModalHeader fontSize={"2xl"} textAlign={"center"} mt={"5"}>
@@ -115,15 +115,15 @@ const Login = (props: any) => {
               w={"100%"}
               justifyContent={"center"}
             >
-              <Link to="user/findId" onClick={() => props.onClose()}>
+              <Link to="user/findId" onClick={() => onClose()}>
                 아이디 찾기
               </Link>
               <Text>|</Text>
-              <Link to="user/findPassword" onClick={() => props.onClose()}>
+              <Link to="user/findPassword" onClick={() => onClose()}>
                 비밀번호 찾기
               </Link>
               <Text>|</Text>
-              <Link to={"user/main"} onClick={() => props.onClose()}>
+              <Link to={"user/main"} onClick={() => onClose()}>
                 회원가입
               </Link>
             </HStack>

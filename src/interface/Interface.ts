@@ -1,4 +1,3 @@
-import { RefObject } from "react";
 import { IconDefinition, SizeProp } from "@fortawesome/fontawesome-svg-core";
 
 export interface DefaultValue {
@@ -23,10 +22,6 @@ export interface SidebarProps {
   sidebar: boolean;
   setSidebar: (sidebar: boolean) => void;
 }
-
-// export interface dropDownProps {
-//   dropDown: boolean;
-// }
 
 export interface ListItem {
   id: number;
