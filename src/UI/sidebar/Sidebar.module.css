@@ -16,13 +16,6 @@
   display: none; /* 크롬, 사파리, 오페라, 엣지 */
 }
 
-@media (max-width: 767px) {
-  .nav_menu {
-    width: 250px;
-    position: fixed;
-    top: 8.5rem;
-  }
-}
 .nav_menu.active {
   left: 0;
 }
@@ -49,6 +42,13 @@
 .navmenu_add p span {
   margin-left: 10px;
 }
+.navmenu_add:hover {
+  background: #fed9d8;
+  transition: 150ms;
+}
+.navmenu_add:hover p {
+  color: #161616;
+}
 
 .nav_text {
   padding: 8px;
@@ -67,21 +67,12 @@
   text-decoration: none;
   color: #2e2e2e;
 }
-
 .nav_text:hover {
   background: #fff;
   transition: 150ms;
   border-radius: 10px;
 }
 .nav_text:hover span {
-  color: #161616;
-}
-
-.navmenu_add:hover {
-  background: #fed9d8;
-  transition: 150ms;
-}
-.navmenu_add:hover p {
   color: #161616;
 }
 
@@ -134,20 +125,25 @@
   align-items: center;
   justify-content: center;
 }
-.modalContent .sideBtn_le {
-  color: rgb(29, 29, 29);
-  width: 6rem;
-  height: 45px;
-  border-radius: 5px;
-  background-color: #e1e3ea;
-  margin-right: 8px;
-}
-.modalContent .sideBtn_ri {
+.modalContent button {
   color: white;
   width: 6rem;
   height: 45px;
   border-radius: 5px;
-  background-color: #6165e0;
+  background-color: rgb(255, 64, 76);
+}
+.modalContent button:nth-child(1) {
+  background-color: grey;
+  width: 6rem;
+  height: 45px;
+  border-radius: 5px;
+  margin-right: 8px;
+}
+.modalContent button:nth-child(1):hover {
+  background-color: #a7a8b1;
+}
+.modalContent button:hover {
+  background-color: #ff7982;
 }
 .modalContent h2 {
   font-size: 1rem;
@@ -167,4 +163,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-}/*# sourceMappingURL=Sidebar.module.css.map */
+}
+.modalinner h2 {
+  font-size: 1em;
+}
+
+@media (max-width: 767px) {
+  .nav_menu {
+    width: 250px;
+    position: fixed;
+    top: 8.5rem;
+  }
+}
