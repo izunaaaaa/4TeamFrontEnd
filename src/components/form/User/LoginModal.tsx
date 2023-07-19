@@ -25,10 +25,10 @@ import { login } from "api/axios/axiosSetting";
 
 interface LoginProps {
   isOpen: boolean;
-  onClose: Function;
+  onClose: () => void;
 }
 
-const Login = ({ isOpen, onClose }: LoginProps) => {
+const LoginModal = ({ isOpen, onClose }: LoginProps) => {
   const { handleSubmit, register } = useForm<LoginData>();
   const toast = useToast();
   const id = "loginId";
@@ -66,7 +66,7 @@ const Login = ({ isOpen, onClose }: LoginProps) => {
     loginHandler(data);
   };
   return (
-    <Modal motionPreset={"scale"} isOpen={isOpen} onClose={onClose()} size="md">
+    <Modal motionPreset={"scale"} isOpen={isOpen} onClose={onClose} size="md">
       <ModalOverlay />
       <ModalContent p="5" pt="10" pb={"10"}>
         <ModalHeader fontSize={"2xl"} textAlign={"center"} mt={"5"}>
@@ -135,4 +135,4 @@ const Login = ({ isOpen, onClose }: LoginProps) => {
   );
 };
 
-export default Login;
+export default LoginModal;

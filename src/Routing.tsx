@@ -3,7 +3,6 @@ import MsgRoom from "./pages/sendletters/MsgRoom";
 import Mailbox from "./pages/sendletters/Mailbox";
 import Layout from "./UI/Layout";
 import MyPage from "pages/mypage/MyPage";
-import Login from "components/form/User/Login";
 import SignUpForm from "components/form/User/SignUpForm";
 import SignUpMain from "pages/SignUp/SignUpMain";
 import SignUpFormManager from "components/form/User/SignUpFormManager";
@@ -24,7 +23,6 @@ const Routing = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
 
         <Route path="user" element={<FindPage />}>
           <Route path="findId" element={<FindId />} />
